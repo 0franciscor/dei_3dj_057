@@ -1,0 +1,38 @@
+@startuml DMWarehouseManagement
+
+package WarehouseManagement <<Frame>> {
+  
+  class Store{
+    name : String
+    storeID : String
+  }
+  
+  class Warehouse{
+    warehouseID : String
+    designation : String
+    address : String
+    coordinates : String
+    centralWarehouse : Boolean
+  }
+  
+  class ChargingStation{
+    currentOccupation : Integer
+    totalOccupation : Int    
+  }
+  
+}
+
+class Truck{
+  tare : Float
+  maxCapacity : Float
+  maxCharge : Float
+  range : Float
+  fastChargeTime : Float
+}
+
+
+Warehouse <|-- Store : associated with
+Warehouse --|> ChargingStation: has
+ChargingStation <|-- Truck : parks at
+
+@enduml

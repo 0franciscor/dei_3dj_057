@@ -1,0 +1,20 @@
+@startuml DMLogistics
+
+package Logistics <<Frame>> {
+   class DeliveryPlan
+   class Delivery 
+   class Route 
+   class Truck 
+   class Fleet
+   
+}
+
+package WarehouseManagement <<Frame>> {
+    class Order
+}
+package LogisticsDB <<Database>> {
+  class Class9
+}
+
+
+@enduml

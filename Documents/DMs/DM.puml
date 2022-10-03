@@ -1,0 +1,29 @@
+@startuml DM
+
+package Authz <<Frame>> {
+  class Class4
+}
+
+package WarehouseManagement <<Frame>> {
+  class Class3
+}
+
+package Logistics <<Frame>> {
+   class Class1 
+}
+
+package AuthzDB <<Database>> {
+  class Class7
+}
+
+package WarehouseManagementDB <<Database>> {
+  class Class8
+}
+
+package LogisticsDB <<Database>> {
+  class Class9
+}
+
+
+
+@enduml

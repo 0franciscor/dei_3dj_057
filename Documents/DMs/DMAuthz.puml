@@ -1,0 +1,11 @@
+@startuml DMAuthz
+
+package Authz <<Frame>> {
+  class Class4
+}
+
+package AuthzDB <<Database>> {
+  class Class7
+}
+
+@enduml
