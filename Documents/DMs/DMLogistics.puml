@@ -1,20 +1,73 @@
 @startuml DMLogistics
 
-package Logistics <<Frame>> {
-   class DeliveryPlan
-   class Delivery 
-   class Route 
-   class Truck 
-   class Fleet
-   
+skinparam classAttributeIconSize 0
+hide empty attributes
+skinparam classBackgroundColor beige
+skinparam ArrowColor #222222
+
+package "<<aggregate>> Logistics"{
+    entity DeliveryPlan
+    entity Delivery 
+    entity Route 
+    entity Truck 
+    class DeliveryIndentifier
+    class DeliveryDate
+    class DeliveryMass
+    class Destination
+    class LoadTime
+    class DownloadTime
+    class Tare
+    class Capacity
+    class MaximumBatteryCapacity
+    class Autonomy
+    class FastChargeTime
+
 }
 
-package WarehouseManagement <<Frame>> {
-    class Order
-}
-package LogisticsDB <<Database>> {
-  class Class9
+entity DeliveryPlan <<entity>> <<Root>>{
+
 }
 
+entity Delivery <<entity>>{
+  
+}
+
+class DeliveryIndentifier <<(V,#FF8B40) value object>>
+class DeliveryDate <<(V,#FF8B40) value object>>
+class DeliveryMass <<(V,#FF8B40) value object>>
+class Destination <<(V,#FF8B40) value object>>
+class LoadTime <<(V,#FF8B40) value object>>
+class DownloadTime <<(V,#FF8B40) value object>>
+
+
+entity Route <<entity>>{
+
+}
+
+entity Truck <<entity>>{
+
+}
+class Tare <<(V,#FF8B40) value object>>
+class Capacity <<(V,#FF8B40) value object>>
+class MaximumBatteryCapacity <<(V,#FF8B40) value object>>
+class Autonomy <<(V,#FF8B40) value object>>
+class FastChargeTime <<(V,#FF8B40) value object>>
+
+DeliveryPlan --> "1..*" Delivery : composed by 
+DeliveryPlan "0..*"--> "1" Truck : associated with 
+
+
+Delivery ->"1" DeliveryDate
+Delivery --> "1" DeliveryIndentifier
+Delivery --> "1" DeliveryMass
+Delivery --> "1" Destination
+Delivery --> "1" LoadTime
+Delivery --->"1" DownloadTime
+
+Truck --> "1" Tare
+Truck --> "1" Capacity 
+Truck --> "1" MaximumBatteryCapacity
+Truck --> "1" Autonomy
+Truck --> "1" FastChargeTime
 
 @enduml

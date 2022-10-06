@@ -1,11 +1,50 @@
-@startuml DMAuthz
 
-package Authz <<Frame>> {
-  class Class4
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam classAttributeIconSize 0
+hide empty attributes
+skinparam classBackgroundColor beige
+skinparam ArrowColor #222222
+
+
+package "<<aggregate>> Authz" {
+    entity User
+    class Password
+    class Email
+    class Name
+    class Role
 }
 
-package AuthzDB <<Database>> {
-  class Class7
+entity User <<entity>> <<root>> {
+    - isActive
+    - isExternalSystem
+
 }
+
+entity User
+note left: User can represent people or external systems.
+
+class Password <<(V,#FF8B40) value object>> {}
+class Role <<(V,#FF8B40) value object>> {}
+class Name <<(V,#FF8B40) value object>> {}
+class Email <<(V,#FF8B40) value object>> {}
+
+User ---> "1" Password : associated with a
+User --> "1" Name : characterized by
+User --> "1" Email : identified by
+User ---> "1..*" Role : plays a
+
+
+
+package "<<aggregate>> Employee" {
+    entity Employee
+}
+
+entity Employee <<entity>> <<root>> {
+    -identifier
+}
+
+Employee --> "1" User : is a
 
 @enduml

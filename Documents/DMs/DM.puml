@@ -1,27 +1,18 @@
 @startuml DM
 
-package Authz <<Frame>> {
-  class Class4
+skinparam classAttributeIconSize 0
+hide empty attributes
+skinparam classBackgroundColor beige
+skinparam ArrowColor #222222
+
+package "<<aggregate>> WarehouseManagement"{
 }
 
-package WarehouseManagement <<Frame>> {
-  class Class3
+package "<<aggregate>> Logistics"{
+
 }
 
-package Logistics <<Frame>> {
-   class Class1 
-}
-
-package AuthzDB <<Database>> {
-  class Class7
-}
-
-package WarehouseManagementDB <<Database>> {
-  class Class8
-}
-
-package LogisticsDB <<Database>> {
-  class Class9
+package "<<aggregate>> Authz" {
 }
 
 
