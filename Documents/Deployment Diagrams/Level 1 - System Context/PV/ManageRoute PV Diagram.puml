@@ -1,0 +1,13 @@
+@startuml PV System Context Diagram
+
+
+
+actor "User" as User
+participant ElectricGo 
+
+User -> ElectricGo: Authentication Request
+ElectricGo --> User: Authentication Response
+
+User -> ElectricGo: Another authentication Request
+User <-- ElectricGo: Another authentication Response
+@enduml

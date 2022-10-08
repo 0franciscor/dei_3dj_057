@@ -1,0 +1,6 @@
+@startuml PV System Context Diagram
+"Gestor de Armazem" as GA
+"Gestor de Frota" as GF
+"Gestor de Logistica" as GL
+
+@enduml

@@ -56,7 +56,7 @@ class FastChargeTime <<(V,#FF8B40) value object>>
 
 Warehouse "1" <- "1" Store : associated with
 Warehouse "1" --> "1" ChargingStation: has
-ChargingStation "*" <---  "1" Truck : parks at
+ChargingStation "1" <---  "*" Truck : parks at
 
 Warehouse "1" --> "1" WarehouseIndentifier 
 Warehouse "1" --> "1" WarehouseDesignation 

@@ -1,0 +1,14 @@
+@startuml LV System Context Diagram
+
+component "<<system>>" as system
+
+interface "Google Maps API" as mapsAPI
+interface "User Interface 1" as UI1
+interface "Payment API" as paymentAPI
+
+system -(0- mapsAPI
+UI1 -0- system
+system -(0- paymentAPI
+
+
+@enduml

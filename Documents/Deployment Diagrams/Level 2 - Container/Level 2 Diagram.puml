@@ -1,0 +1,26 @@
+@startuml LV System Context Diagram
+top to bottom direction
+
+component "<<system>>" as system{
+
+component "<<authz>>" as authz
+
+component "<<warehouse management>>" as whManagement
+
+component "<<logistics>>" as logistics
+
+}
+
+interface "Google Maps API" as mapsAPI
+interface "User Interface 1" as UI1
+interface "Payment API" as paymentAPI
+
+UI1 --(0-- authz
+whManagement -0)- authz
+whManagement -(0- logistics
+
+logistics -(0- mapsAPI
+logistics -(0- paymentAPI
+logistics -0)- authz
+
+@enduml
