@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty attributes
+skinparam classBackgroundColor beige
+skinparam ArrowColor #222222
+
+package "<<aggregate>> Planning"{
+    entity Route
+    entity Trail
+    class InitialPoint
+    class EndPoint
+    class Distance
+}
+
+package "<<aggregate>> Logistics"{
+    entity DeliveryPlan
+
+}
+
+entity DeliveryPlan <<entity>> <<Root>>{
+
+}
+
+entity Route <<entity>> <<root>>{
+
+}
+
+entity Trail <<entity>> {
+    -Available
+}
+
+class InitialPoint <<(V,#FF8B40) value object>>
+class EndPoint <<(V,#FF8B40) value object>>
+class Distance <<(V,#FF8B40) value object>>
+
+
+
+Route "1..*" -> "1..*" Trail : is composed 
+Route "1" <-- "1" DeliveryPlan : follows     
+
+Trail --> "1" InitialPoint
+Trail --> "1" EndPoint
+Trail --> "1" Distance
+@enduml

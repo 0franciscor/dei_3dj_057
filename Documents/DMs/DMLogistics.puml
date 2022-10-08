@@ -8,7 +8,6 @@ skinparam ArrowColor #222222
 package "<<aggregate>> Logistics"{
     entity DeliveryPlan
     entity Delivery 
-    entity Route 
     entity Truck 
     class DeliveryIndentifier
     class DeliveryDate
@@ -40,10 +39,6 @@ class LoadTime <<(V,#FF8B40) value object>>
 class DownloadTime <<(V,#FF8B40) value object>>
 
 
-entity Route <<entity>>{
-
-}
-
 entity Truck <<entity>>{
 
 }
@@ -54,7 +49,7 @@ class Autonomy <<(V,#FF8B40) value object>>
 class FastChargeTime <<(V,#FF8B40) value object>>
 
 DeliveryPlan --> "1..*" Delivery : composed by 
-DeliveryPlan "0..*"--> "1" Truck : associated with 
+DeliveryPlan "0..1"--> "1" Truck : associated with 
 
 
 Delivery ->"1" DeliveryDate

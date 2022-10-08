@@ -9,21 +9,24 @@ package "<<aggregate>> WarehouseManagement"{
   entity Warehouse
   entity Store
   entity ChargingStation
-  entity Truck
-
   class WarehouseIndentifier
   class WarehouseDesignation
   class WarehouseAddress
   class WarehouseCoordinates
+  class StoreName
+  class StoreIndentifier 
+  class CurrentOccupation
+  class TotalOccupation
+
+}
+
+package "<<aggregate>> Logistics"{
+  entity Truck 
   class Tare
   class Capacity
   class MaximumBatteryCapacity
   class Autonomy
   class FastChargeTime
-  class StoreName
-  class StoreIndentifier 
-  class CurrentOccupation
-  class TotalOccupation
 
 }
 
