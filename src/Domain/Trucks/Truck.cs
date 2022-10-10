@@ -1,15 +1,10 @@
-public class Truck
-{
 
-    private Truck()
+namespace src.Domain.Deliveries{
+
+
+    public class Truck
     {
+
     
     }
-
-    public Truck()
-    {
-
-    }
-
-
 }

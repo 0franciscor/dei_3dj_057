@@ -1,5 +1,10 @@
-public abstract class Entity<TEntityId>
-where TEntityId: EntityId
+using System;
+namespace src.Domain.Shared
 {
-        public TEntityId Id { get;  protected set; }
+
+        public abstract class Entity<TEntityId>
+        where TEntityId: EntityId
+        {
+                public TEntityId Id { get;  protected set; }
+        }       
 }

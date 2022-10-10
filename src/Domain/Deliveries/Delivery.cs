@@ -1,15 +1,14 @@
-public class Delivery
+using src.Domain.Shared;
+
+
+namespace src.Domain.Deliveries
 {
-
-    private Delivery()
-    {
-    
-    }
-
-    public Delivery()
+    public class Delivery
     {
 
-    }
+        
 
 
+    }    
 }
+

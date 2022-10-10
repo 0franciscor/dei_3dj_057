@@ -1,22 +1,15 @@
-using Shared;
+using src.Domain.Shared;
 
 namespace src.Domain.Deliveries
 {
-    public class DeliveryPlanID : EntityId
+    public class DeliveryPlanID
     {
 
-        public DeliveryPlanID(String value):base(value)
+        public DeliveryPlanID(string value)
         {
 
         }
 
-        override
-        protected  Object createFromString(String text){
-            return text;
-        }
-        override
-        public String AsString(){
-            return (String) base.Value;
-        }
+        
     }
 }
