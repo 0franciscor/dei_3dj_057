@@ -9,17 +9,23 @@ component "<<warehouse management>>" as whManagement
 
 component "<<logistics>>" as logistics
 
-}
+component "<<planning>>" as planning
 
-interface "Google Maps API" as mapsAPI
+}
 interface "User Interface 1" as UI1
+interface "User Interface 2" as UI2
+interface "User Interface 3" as UI3
+interface "Google Maps API" as mapsAPI
 interface "Payment API" as paymentAPI
 
-UI1 --(0-- authz
+UI1 -(0- authz
+UI2 -(0- authz
+UI3 -(0- authz
 whManagement -0)- authz
 whManagement -(0- logistics
+planning -0)- logistics
 
-logistics -(0- mapsAPI
+planning -(0- mapsAPI
 logistics -(0- paymentAPI
 logistics -0)- authz
 
