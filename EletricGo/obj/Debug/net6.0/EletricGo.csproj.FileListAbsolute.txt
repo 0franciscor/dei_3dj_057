@@ -1,0 +1,15 @@
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\bin\Debug\net6.0\EletricGo.exe
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\bin\Debug\net6.0\EletricGo.deps.json
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\bin\Debug\net6.0\EletricGo.runtimeconfig.json
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\bin\Debug\net6.0\EletricGo.dll
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\bin\Debug\net6.0\EletricGo.pdb
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\EletricGo.csproj.AssemblyReference.cache
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\EletricGo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\EletricGo.AssemblyInfoInputs.cache
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\EletricGo.AssemblyInfo.cs
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\EletricGo.csproj.CoreCompileInputs.cache
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\EletricGo.dll
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\refint\EletricGo.dll
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\EletricGo.pdb
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\EletricGo.genruntimeconfig.cache
+C:\Users\franc\Documents\Repositórios\dei_lapr5_3dj\EletricGo\obj\Debug\net6.0\ref\EletricGo.dll
