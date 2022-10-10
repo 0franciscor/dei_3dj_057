@@ -1,17 +1,16 @@
 using System;
-using src.Domain.Shared;
-using Newtonsoft.Json;
+using EletricGo.Domain.Shared;
 
-namespace src.Domain.Warehouse
+namespace EletricGo.Domain.Warehouse
 {
-    public class Warehouse : EntityId
+    public class WarehouseID : EntityID
     {
-        [JsonConstructor]
-        public WarehouseId(Guid value) : base(value)
+        //[JsonConstructor]
+        public WarehouseID(Guid value) : base(value)
         {
         }
 
-        public WarehouseId(String value) : base(value)
+        public WarehouseID(String value) : base(value)
         {
         }
 

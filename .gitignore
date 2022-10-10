@@ -27,6 +27,9 @@ dist/
 .idea/
 
 # VS Code IDE
+.vscode/
+
+#Visual Studio IDE
 .vs/
 
 # Unit test reports

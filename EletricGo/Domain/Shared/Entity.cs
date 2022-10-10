@@ -1,10 +1,6 @@
-using System;
-namespace src.Domain.Shared
-{
-
-        public abstract class Entity<TEntityId>
-        where TEntityId: EntityId
-        {
-                public TEntityId Id { get;  protected set; }
-        }       
-}
+namespace EletricGo.Domain.Shared {
+    public abstract class Entity<TEntityId> where TEntityId : EntityID
+    {
+        public TEntityId Id { get; protected set; }
+    }
+}      

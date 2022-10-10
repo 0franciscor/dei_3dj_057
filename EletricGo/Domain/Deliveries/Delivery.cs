@@ -1,13 +1,7 @@
-using src.Domain.Shared;
-
-
-namespace src.Domain.Deliveries
+namespace EletricGo.Domain.Deliveries
 {
     public class Delivery
     {
-
-        
-
 
     }    
 }

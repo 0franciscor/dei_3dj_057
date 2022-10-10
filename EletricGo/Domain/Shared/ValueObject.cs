@@ -1,6 +1,10 @@
-interface ValueObject{
-    override String toString();
-    override boolean equals(Object obj);
-    
-    override int hashCode();
+namespace EletricGo.Domain.Shared {
+    interface ValueObject
+    {
+        String toString();
+
+        Boolean equals(Object obj);
+
+        int hashCode();
+    }
 }

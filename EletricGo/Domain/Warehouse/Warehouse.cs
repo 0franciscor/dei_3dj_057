@@ -1,14 +1,18 @@
 using System;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Categories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using EletricGo.Domain.Shared;
 
-namespace DDDSample1.Domain.Products
+namespace EletricGo.Domain.Products
 {
-    public class Product : Entity<ProductId>, IAggregateRoot
+    public class Product : Entity<ProductID>, IAggregateRoot
     {
         public string Description { get;  private set; }
 
-        public CategoryId CategoryId { get;  private set; }
+        public CategoryID categoryID { get;  private set; }
+
         public bool Active{ get;  private set; }
 
         private Product()
@@ -16,20 +20,21 @@ namespace DDDSample1.Domain.Products
             this.Active = true;
         }
 
-        public Product(string description, CategoryId catId)
+        public Product(string description, CategoryID catID)
         {
-            if (catId == null)
+            if (categoryID == null)
                 throw new BusinessRuleValidationException("Every product requires a category.");
+            
             this.Id = new ProductId(Guid.NewGuid());
             this.Description = description;
-            this.CategoryId = catId;
+            this.categoryID = catID;
             this.Active = true;
         }
 
         public void ChangeDescription(string description)
         {
             if (!this.Active)
-                throw new BusinessRuleValidationException("It is not possible to change the description to an inactive product.");
+                throw new BusinessRuleValidation("It is not possible to change the description to an inactive product.");
             this.Description = description;
         }
 
@@ -39,7 +44,7 @@ namespace DDDSample1.Domain.Products
                 throw new BusinessRuleValidationException("It is not possible to change the category of an inactive product.");
             if (catId == null)
                 throw new BusinessRuleValidationException("Every product requires a category.");
-            this.CategoryId = catId;;
+            this.categoryID = catId;;
         }
         public void MarkAsInative()
         {

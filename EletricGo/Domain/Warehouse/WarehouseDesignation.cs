@@ -1,14 +1,14 @@
 using System;
-using src.Domain.Shared;
-using Newtonsoft.Json;
+using EletricGo.Domain.Shared;
+//using Newtonsoft.Json;
 
-namespace src.Domain.Warehouse
+namespace EletricGo.Domain.Warehouse
 {
     public class WarehouseDesignation : ValueObject
     {
         private String designation;
 
-        [JsonConstructor]
+        //[JsonConstructor]
         public WarehouseDesignation(Guid value) : base(value)
         {
         }
@@ -17,25 +17,26 @@ namespace src.Domain.Warehouse
         {
         }
 
-       override String toString(){
+        String toString(){
             return "Warehouse Designation:" + designation;
-       }
+        }
 
-        override boolean equals(Object obj ){
-            if ( this == obj){
+        Boolean equals(Object obj ){
+            if (this == obj)
                 return true;
-            }
+          
 
-            if(!(obj.GetType == typeof(WarehouseDesignation) )){
+            if(!(obj.GetType == typeof(WarehouseDesignation)))
                 return false;
-            }
+            
 
             WarehouseDesignation whDes = (WarehouseDesignation) obj;
+          
             return this.designation.Equals(whDes.designation);
         }
     
-         override int hashCode(){
+        int hashCode(){
             return this.designation.GetHashCode();
-         }
+        }
     }
 }

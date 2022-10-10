@@ -1,11 +1,11 @@
 using System;
 
-namespace src.Domain.Shared
+namespace EletricGo.Domain.Shared
 {
     /// <summary>
     /// Base class for entities.
     /// </summary>
-    public abstract class EntityId: IEquatable<EntityId>, IComparable<EntityId>
+    public abstract class EntityID: IEquatable<EntityID>, IComparable<EntityID>
     {
         protected Object ObjValue {get;}
 
@@ -17,7 +17,7 @@ namespace src.Domain.Shared
                 } 
         }
 
-        protected EntityId(Object value)
+        protected EntityID(Object value)
         {
             if (value.GetType() == typeof(String))
                 this.ObjValue = createFromString((String)value);
@@ -34,7 +34,7 @@ namespace src.Domain.Shared
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is EntityId other && Equals(other);
+            return obj is EntityID other && Equals(other);
         }
 
         public override int GetHashCode()
@@ -42,7 +42,7 @@ namespace src.Domain.Shared
             return Value.GetHashCode();
         }
 
-        public bool Equals(EntityId other)
+        public bool Equals(EntityID other)
         {
             if (other == null)
                 return false;
@@ -51,13 +51,13 @@ namespace src.Domain.Shared
             return this.Value == other.Value;
         }
 
-        public int CompareTo(EntityId other){
+        public int CompareTo(EntityID other){
             if (other == null)
                 return -1;
             return this.Value.CompareTo(other.Value);
         }
 
-        public static bool operator ==(EntityId obj1, EntityId obj2)
+        public static bool operator ==(EntityID obj1, EntityID obj2)
         {
             if (object.Equals(obj1, null))
             {
@@ -69,7 +69,7 @@ namespace src.Domain.Shared
             }
             return obj1.Equals(obj2);
         }
-        public static bool operator !=(EntityId x, EntityId y) 
+        public static bool operator !=(EntityID x, EntityID y) 
         {
             return !(x == y);
         }
