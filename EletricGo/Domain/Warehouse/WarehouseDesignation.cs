@@ -4,9 +4,9 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouse
 {
-    public class WarehouseDesignation : ValueObject
+    public class WarehouseDesignation// : ValueObject
     {
-        private String designation;
+        /*private String designation;
 
         //[JsonConstructor]
         public WarehouseDesignation(Guid value) : base(value)
@@ -26,7 +26,7 @@ namespace EletricGo.Domain.Warehouse
                 return true;
           
 
-            if(!(obj.GetType == typeof(WarehouseDesignation)))
+            if(!(obj.GetType ==typeof(WarehouseDesignation)))
                 return false;
             
 
@@ -37,6 +37,6 @@ namespace EletricGo.Domain.Warehouse
     
         int hashCode(){
             return this.designation.GetHashCode();
-        }
+        }*/
     }
 }

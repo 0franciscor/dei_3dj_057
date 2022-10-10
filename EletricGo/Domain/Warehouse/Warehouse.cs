@@ -4,47 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EletricGo.Domain.Shared;
+using EletricGo.Domain.Warehouse;
 
 namespace EletricGo.Domain.Products
 {
-    public class Product : Entity<ProductID>, IAggregateRoot
+    public class Warehouse : Entity<WarehouseID> //: IAgg
     {
         public string Description { get;  private set; }
 
-        public CategoryID categoryID { get;  private set; }
+        public WarehouseID warehouseID { get;  private set; }
 
         public bool Active{ get;  private set; }
 
-        private Product()
+        private Warehouse()
         {
             this.Active = true;
         }
 
-        public Product(string description, CategoryID catID)
+        public Warehouse(string description, WarehouseID whID)
         {
-            if (categoryID == null)
-                throw new BusinessRuleValidationException("Every product requires a category.");
+            if (warehouseID == null)
+                //throw new BusinessRuleValidationException("Every product requires a category.");
             
-            this.Id = new ProductId(Guid.NewGuid());
+            this.Id = new WarehouseID(Guid.NewGuid());
             this.Description = description;
-            this.categoryID = catID;
+            this.warehouseID = whID;
             this.Active = true;
         }
 
         public void ChangeDescription(string description)
         {
             if (!this.Active)
-                throw new BusinessRuleValidation("It is not possible to change the description to an inactive product.");
+                //throw new BusinessRuleValidation("It is not possible to change the description to an inactive product.");
             this.Description = description;
         }
 
-        public void ChangeCategoryId(CategoryId catId)
+        public void ChangeWarehouseID(WarehouseID whID)
         {
             if (!this.Active)
-                throw new BusinessRuleValidationException("It is not possible to change the category of an inactive product.");
-            if (catId == null)
-                throw new BusinessRuleValidationException("Every product requires a category.");
-            this.categoryID = catId;;
+                //throw new BusinessRuleValidationException("It is not possible to change the category of an inactive product.");
+            if (whID == null)
+                //throw new BusinessRuleValidationException("Every product requires a category.");
+            this.warehouseID = warehouseID;
         }
         public void MarkAsInative()
         {
