@@ -18,15 +18,17 @@ interface "User Interface 3" as UI3
 interface "Google Maps API" as mapsAPI
 interface "Payment API" as paymentAPI
 
-UI1 -(0- authz
-UI2 -(0- authz
-UI3 -(0- authz
+authz -(0- UI1
+authz -(0- UI2
+authz -(0- UI3
+
 whManagement -0)- authz
+logistics -0)- authz
 whManagement -(0- logistics
 planning -0)- logistics
 
 planning -(0- mapsAPI
 logistics -(0- paymentAPI
-logistics -0)- authz
+
 
 @enduml
