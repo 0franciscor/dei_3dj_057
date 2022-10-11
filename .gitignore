@@ -16,6 +16,12 @@ dist/
 # Log files
 *.log
 
+# Debug folders
+bin/
+
+# Log files
+obj/
+
 # Package files
 *.jar
 
