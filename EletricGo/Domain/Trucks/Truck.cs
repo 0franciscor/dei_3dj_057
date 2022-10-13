@@ -23,6 +23,30 @@ namespace EletricGo.Domain.Trucks
             this.fastChargeTime = fastChargeTime;
         }
 
+        public Truck(TruckDTO truckDTO)
+        {
+            this.truckID = new TruckID(truckDTO.truckID);
+            this.tare = new Tare(truckDTO.tare);
+            this.capacity = new Capacity(truckDTO.capacity);
+            this.maxBatteryCapacity = new MaxBatteryCapacity(truckDTO.maxBatteryCapacity);
+            this.autonomy = new Autonomy(truckDTO.autonomy);
+            this.fastChargeTime = new FastChargeTime(truckDTO.fastChargeTime);
+        }
+
+        public TruckDTO toTruckDTO()
+        {
+            return new TruckDTO(this.truckID.AsGuid(), this.tare.AsFloat(), this.capacity.AsFloat(), this.maxBatteryCapacity.AsFloat(), this.autonomy.AsFloat(), this.fastChargeTime.AsFloat());
+        }
+
+        public void Update(TruckDTO truckDTO)
+        {
+            this.truckID = new TruckID(truckDTO.truckID);
+            this.tare = new Tare(truckDTO.tare);
+            this.capacity = new Capacity(truckDTO.capacity);
+            this.maxBatteryCapacity = new MaxBatteryCapacity(truckDTO.maxBatteryCapacity);
+            this.autonomy = new Autonomy(truckDTO.autonomy);
+            this.fastChargeTime = new FastChargeTime(truckDTO.fastChargeTime);
+        }
 
     }
 }

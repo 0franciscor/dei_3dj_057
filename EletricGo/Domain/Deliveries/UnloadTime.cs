@@ -1,21 +1,21 @@
 using EletricGo.Domain.Shared;
 
 
-namespace EletricGo.Domain.Trucks
+namespace EletricGo.Domain.Deliveries
 {
-    public class MaxBatteryCapacity : ValueObject
+    public class UnloadTime : ValueObject
     {
 
-        private float maxBatteryCapacity;
+        private float time;
 
-        public MaxBatteryCapacity(float maxBatteryCapacity)
+        public UnloadTime(float time)
         {
-            this.maxBatteryCapacity = maxBatteryCapacity;
+            this.time = time;
         }
 
         public String toString()
         {
-            return maxBatteryCapacity.ToString();
+            return time.ToString();
         }
         
         public Boolean equals(Object obj)
@@ -30,7 +30,7 @@ namespace EletricGo.Domain.Trucks
 
         public float AsFloat()
         {
-            return maxBatteryCapacity;
+            return time;
         }
 
     }    

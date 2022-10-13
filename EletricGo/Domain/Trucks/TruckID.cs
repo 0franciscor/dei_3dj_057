@@ -5,16 +5,14 @@ namespace EletricGo.Domain.Trucks
     public class TruckID : EntityID
     {
 
-        private Guid truckID;
 
         public TruckID(Guid value) : base(value)
         {
-            this.truckID = value;
+
         }
 
         public TruckID(String value) : base(value)
         {
-            this.truckID = (Guid)createFromString(value);
         }
 
         override

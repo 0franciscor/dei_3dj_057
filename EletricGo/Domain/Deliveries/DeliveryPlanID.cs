@@ -4,7 +4,6 @@ namespace EletricGo.Domain.Deliveries
 {
     public class DeliveryPlanID : EntityID
     {
-
         private Guid deliveryPlanID;
 
         public DeliveryPlanID(String value) : base(value)
