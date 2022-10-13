@@ -36,6 +36,7 @@ namespace EletricGo.Domain.Deliveries
             {
                 this.deliveries.Add(new Delivery(deliveryDTO));
             }
+            this.truck = new Truck(deliveryPlanDTO.truck);
         }
 
         public DeliveryPlanDTO toDeliveryPlanDTO()
