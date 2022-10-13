@@ -26,6 +26,20 @@ namespace EletricGo.Domain.Deliveries
             this.deliveryMass = deliveryMass;
         }
 
+        public Delivery(DeliveryDTO deliveryDTO)
+        {
+            this.deliveryID = new DeliveryID(deliveryDTO.deliveryID);
+            this.deliveryDate = new DeliveryDate(deliveryDTO.deliveryDate);
+            this.loadTime = new LoadTime(deliveryDTO.loadTime);
+            this.destiantion = new Destiantion(deliveryDTO.destiantion);
+            this.deliveryMass = new DeliveryMass(deliveryDTO.deliveryMass);
+        }
+
+        public DeliveryDTO toDeliveryDTO()
+        {
+            return new DeliveryDTO(this.deliveryID.AsGuid(), this.deliveryDate.AsDateTime(), this.loadTime.AsFloat(), this.destiantion.AsString(), this.deliveryMass.AsFloat());
+        }
+
     }    
 }
 

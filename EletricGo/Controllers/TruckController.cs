@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
-
+using EletricGo.Domain.Shared;
+using EletricGo.Domain.Trucks;
 
 namespace EletricGo.Controllers
 {
@@ -10,9 +11,9 @@ namespace EletricGo.Controllers
     [ApiController]
     public class TruckController : ControllerBase
     {
-        private readonly ITruckService _truckService;
+        private readonly TruckService _truckService;
 
-        public TruckController(ITruckService truckService)
+        public TruckController(TruckService truckService)
         {
             _truckService = truckService;
         }
@@ -24,7 +25,7 @@ namespace EletricGo.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TruckDTO>> Get(Guid id)
+        public async Task<ActionResult<TruckDTO>> Get(TruckID id)
         {
             return await _truckService.GetTruck(id);
         }
@@ -36,13 +37,13 @@ namespace EletricGo.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<TruckDTO>> Put(Guid id, [FromBody] TruckDTO truckDTO)
+        public async Task<ActionResult<TruckDTO>> Put(TruckID id, [FromBody] TruckDTO truckDTO)
         {
             return await _truckService.UpdateTruck(id, truckDTO);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TruckDTO>> Delete(Guid id)
+        public async Task<ActionResult<TruckDTO>> Delete(TruckID id)
         {
             return await _truckService.DeleteTruck(id);
         }

@@ -1,8 +1,7 @@
 using EletricGo.Domain.Shared;
 
-namespace EletricGo.Domain.Deliveries
+namespace EletricGo.Domain.Trucks
 {
-
     public class TruckService
     {
         private readonly ITruckRepository _truckRepository;
@@ -15,35 +14,35 @@ namespace EletricGo.Domain.Deliveries
         public async Task<List<TruckDTO>> GetTrucks()
         {
             var trucks = await _truckRepository.GetAll();
-            return trucks.Select(x => x.ToTruckDTO()).ToList();
+            return trucks.Select(x => x.toTruckDTO()).ToList();
         }
 
-        public async Task<TruckDTO> GetTruck(Guid id)
+        public async Task<TruckDTO> GetTruck(TruckID id)
         {
             var truck = await _truckRepository.Get(id);
-            return truck.ToTruckDTO();
+            return truck.toTruckDTO();
         }
 
         public async Task<TruckDTO> CreateTruck(TruckDTO truckDTO)
         {
             var truck = new Truck(truckDTO);
             await _truckRepository.Add(truck);
-            return truck.ToTruckDTO();
+            return truck.toTruckDTO();
         }
 
-        public async Task<TruckDTO> UpdateTruck(Guid id, TruckDTO truckDTO)
+        public async Task<TruckDTO> UpdateTruck(TruckID id, TruckDTO truckDTO)
         {
             var truck = await _truckRepository.Get(id);
             truck.Update(truckDTO);
             await _truckRepository.Update(truck);
-            return truck.ToTruckDTO();
+            return truck.toTruckDTO();
         }
 
-        public async Task<TruckDTO> DeleteTruck(Guid id)
+        public async Task<TruckDTO> DeleteTruck(TruckID id)
         {
             var truck = await _truckRepository.Get(id);
             await _truckRepository.Delete(truck);
-            return truck.ToTruckDTO();
+            return truck.toTruckDTO();
         }
     }
 

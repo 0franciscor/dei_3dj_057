@@ -28,5 +28,10 @@ namespace EletricGo.Domain.Deliveries
             return 0;
         }
 
+        public float AsFloat()
+        {
+            return mass;
+        }
+
     }    
 }

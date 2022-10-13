@@ -25,7 +25,7 @@ namespace EletricGo.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DeliveryPlanDTO>> Get(Guid id)
+        public async Task<ActionResult<DeliveryPlanDTO>> Get(DeliveryPlanID id)
         {
             return await _deliveryPlanService.GetDeliveryPlan(id);
         }
@@ -37,13 +37,13 @@ namespace EletricGo.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<DeliveryPlanDTO>> Put(Guid id, [FromBody] DeliveryPlanDTO deliveryPlanDTO)
+        public async Task<ActionResult<DeliveryPlanDTO>> Put(DeliveryPlanID id, [FromBody] DeliveryPlanDTO deliveryPlanDTO)
         {
             return await _deliveryPlanService.UpdateDeliveryPlan(id, deliveryPlanDTO);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<DeliveryPlanDTO>> Delete(Guid id)
+        public async Task<ActionResult<DeliveryPlanDTO>> Delete(DeliveryPlanID id)
         {
             return await _deliveryPlanService.DeleteDeliveryPlan(id);
         }

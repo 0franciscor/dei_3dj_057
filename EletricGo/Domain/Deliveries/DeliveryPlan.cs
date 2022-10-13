@@ -13,17 +13,41 @@ namespace EletricGo.Domain.Deliveries
        
         public DeliveryPlan(DeliveryPlanID deliveryPlanID, List<Delivery> deliveries)
         {
-            this.Id = new DeliveryPlanID(Guid.NewGuid());
             this.deliveryPlanID = deliveryPlanID;
             this.deliveries = deliveries;
         }
 
         public DeliveryPlan(DeliveryPlanID deliveryPlanID)
         {
-            this.Id = new DeliveryPlanID(Guid.NewGuid());
             this.deliveryPlanID = deliveryPlanID;
             this.deliveries = new List<Delivery>();
         }
+
+        public DeliveryPlan(DeliveryPlanDTO deliveryPlanDTO)
+        {
+            this.deliveryPlanID = new DeliveryPlanID(deliveryPlanDTO.deliveryPlanID);
+            this.deliveries = new List<Delivery>();
+            foreach (DeliveryDTO deliveryDTO in deliveryPlanDTO.deliveries)
+            {
+                this.deliveries.Add(new Delivery(deliveryDTO));
+            }
+        }
+
+        public DeliveryPlanDTO toDeliveryPlanDTO()
+        {
+            return new DeliveryPlanDTO(this.deliveryPlanID.AsGuid(), this.deliveries.Select(x => x.toDeliveryDTO()).ToList());
+        }
+
+        public void Update(DeliveryPlanDTO deliveryPlanDTO)
+        {
+            this.deliveryPlanID = new DeliveryPlanID(deliveryPlanDTO.deliveryPlanID);
+            this.deliveries = new List<Delivery>();
+            foreach (DeliveryDTO deliveryDTO in deliveryPlanDTO.deliveries)
+            {
+                this.deliveries.Add(new Delivery(deliveryDTO));
+            }
+        }
+
        
     }
 

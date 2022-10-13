@@ -27,5 +27,10 @@ namespace EletricGo.Domain.Trucks
             return 0;
         }
 
+        public float AsFloat()
+        {
+            return fastChargeTime;
+        }
+
     }
 }

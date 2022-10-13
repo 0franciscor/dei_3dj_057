@@ -28,5 +28,9 @@ namespace EletricGo.Domain.Deliveries
             return 0;
         }
 
+        public DateTime AsDateTime()
+        {
+            return dateTime;
+        }
     }    
 }

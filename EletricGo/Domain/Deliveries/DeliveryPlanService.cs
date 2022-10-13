@@ -6,7 +6,7 @@ namespace EletricGo.Domain.Deliveries{
     {
         private readonly IDeliveryPlanRepository _deliveryPlanRepository;
 
-        public DeliveryService(IDeliveryPlanRepository deliveryPlanRepository)
+        public DeliveryPlanService(IDeliveryPlanRepository deliveryPlanRepository)
         {
             _deliveryPlanRepository = deliveryPlanRepository;
         }
@@ -14,35 +14,35 @@ namespace EletricGo.Domain.Deliveries{
         public async Task<List<DeliveryPlanDTO>> GetDeliveryPlans()
         {
             var deliveryPlans = await _deliveryPlanRepository.GetAll();
-            return deliveryPlans.Select(x => x.ToDeliveryPlanDTO()).ToList();
+            return deliveryPlans.Select(x => x.toDeliveryPlanDTO()).ToList();
         }
 
-        public async Task<DeliveryPlanDTO> GetDeliveryPlan(Guid id)
+        public async Task<DeliveryPlanDTO> GetDeliveryPlan(DeliveryPlanID id)
         {
             var deliveryPlan = await _deliveryPlanRepository.Get(id);
-            return deliveryPlan.ToDeliveryPlanDTO();
+            return deliveryPlan.toDeliveryPlanDTO();
         }
 
         public async Task<DeliveryPlanDTO> CreateDeliveryPlan(DeliveryPlanDTO deliveryPlanDTO)
         {
-            var deliveryPlan = new Delivery(deliveryPlanDTO);
+            var deliveryPlan = new DeliveryPlan(deliveryPlanDTO);
             await _deliveryPlanRepository.Add(deliveryPlan);
-            return deliveryPlan.ToDeliveryPlanDTO();
+            return deliveryPlan.toDeliveryPlanDTO();
         }
 
-        public async Task<DeliveryPlanDTO> UpdateDeliveryPlan(Guid id, DeliveryPlanDTO deliveryPlanDTO)
+        public async Task<DeliveryPlanDTO> UpdateDeliveryPlan(DeliveryPlanID id, DeliveryPlanDTO deliveryPlanDTO)
         {
             var deliveryPlan = await _deliveryPlanRepository.Get(id);
             deliveryPlan.Update(deliveryPlanDTO);
             await _deliveryPlanRepository.Update(deliveryPlan);
-            return deliveryPlan.ToDeliveryPlanDTO();
+            return deliveryPlan.toDeliveryPlanDTO();
         }
 
-        public async Task<DeliveryPlanDTO> DeleteDeliveryPlan(Guid id)
+        public async Task<DeliveryPlanDTO> DeleteDeliveryPlan(DeliveryPlanID id)
         {
             var deliveryPlan = await _deliveryPlanRepository.Get(id);
             await _deliveryPlanRepository.Delete(deliveryPlan);
-            return deliveryPlan.ToDeliveryPlanDTO();
+            return deliveryPlan.toDeliveryPlanDTO();
         }
     }
 

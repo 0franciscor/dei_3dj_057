@@ -1,8 +1,9 @@
 using EletricGo.Domain.Shared;
 
-namespace EletricGo.Domain.Deliveries{
-    public interface ITruckRepository : IRepository<Truck,TruckID>
-    {
+namespace EletricGo.Domain.Trucks{
+    public interface ITruckRepository : IRepository<Truck, TruckID>{
+    
+
     }
 
 }
