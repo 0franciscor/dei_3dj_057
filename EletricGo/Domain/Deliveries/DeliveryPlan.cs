@@ -1,5 +1,5 @@
 using EletricGo.Domain.Shared;
-
+using EletricGo.Domain.Trucks;
 
 namespace EletricGo.Domain.Deliveries
 {
@@ -10,17 +10,22 @@ namespace EletricGo.Domain.Deliveries
         
         public List<Delivery> deliveries { get; private set; }
 
+        public Truck truck { get; private set; }
+
        
-        public DeliveryPlan(DeliveryPlanID deliveryPlanID, List<Delivery> deliveries)
+        public DeliveryPlan(DeliveryPlanID deliveryPlanID, List<Delivery> deliveries, Truck truck)
         {
             this.deliveryPlanID = deliveryPlanID;
             this.deliveries = deliveries;
+            this.truck = truck;
         }
 
-        public DeliveryPlan(DeliveryPlanID deliveryPlanID)
+
+        public DeliveryPlan(DeliveryPlanID deliveryPlanID, Truck truck)
         {
             this.deliveryPlanID = deliveryPlanID;
             this.deliveries = new List<Delivery>();
+            this.truck = truck;
         }
 
         public DeliveryPlan(DeliveryPlanDTO deliveryPlanDTO)
@@ -35,7 +40,7 @@ namespace EletricGo.Domain.Deliveries
 
         public DeliveryPlanDTO toDeliveryPlanDTO()
         {
-            return new DeliveryPlanDTO(this.deliveryPlanID.AsGuid(), this.deliveries.Select(x => x.toDeliveryDTO()).ToList());
+            return new DeliveryPlanDTO(this.deliveryPlanID.AsGuid(), this.deliveries.Select(x => x.toDeliveryDTO()).ToList(), this.truck.toTruckDTO());
         }
 
         public void Update(DeliveryPlanDTO deliveryPlanDTO)
@@ -46,6 +51,7 @@ namespace EletricGo.Domain.Deliveries
             {
                 this.deliveries.Add(new Delivery(deliveryDTO));
             }
+            this.truck = new Truck(deliveryPlanDTO.truck);
         }
 
        
