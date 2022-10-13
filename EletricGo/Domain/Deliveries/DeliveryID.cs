@@ -1,20 +1,21 @@
 using EletricGo.Domain.Shared;
 
+
 namespace EletricGo.Domain.Deliveries
 {
-    public class DeliveryPlanID : EntityID
+    public class DeliveryID : EntityID
     {
 
-        private Guid deliveryPlanID;
+        private Guid deliveryID;
 
-        public DeliveryPlanID(String value) : base(value)
+         public DeliveryID(Guid value) : base(value)
         {
-            this.deliveryPlanID = (Guid)createFromString(value);
+            this.deliveryID = value;
         }
 
-        public DeliveryPlanID(Guid value) : base(value)
+        public DeliveryID(String value) : base(value)
         {
-            this.deliveryPlanID = value;
+            this.deliveryID = (Guid)createFromString(value);
         }
 
         override
@@ -30,6 +31,6 @@ namespace EletricGo.Domain.Deliveries
         public Guid AsGuid(){
             return (Guid) base.ObjValue;
         }
-    }
 
+    }    
 }

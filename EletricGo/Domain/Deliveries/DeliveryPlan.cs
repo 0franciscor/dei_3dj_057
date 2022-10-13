@@ -3,26 +3,28 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class DeliveryPlan
+    public class DeliveryPlan : Entity<DeliveryPlanID>
     {
-        private string deliveryID;
-
-        private string truckID;
         
+        public DeliveryPlanID deliveryPlanID { get; private set; }
+        
+        public List<Delivery> deliveries { get; private set; }
 
-        private DeliveryPlan()
+       
+        public DeliveryPlan(DeliveryPlanID deliveryPlanID, List<Delivery> deliveries)
         {
-        
+            this.Id = new DeliveryPlanID(Guid.NewGuid());
+            this.deliveryPlanID = deliveryPlanID;
+            this.deliveries = deliveries;
         }
 
-        public DeliveryPlan(string deliveryID, string truckID)
+        public DeliveryPlan(DeliveryPlanID deliveryPlanID)
         {
-            this.deliveryID=deliveryID;
-            this.truckID=truckID;
+            this.Id = new DeliveryPlanID(Guid.NewGuid());
+            this.deliveryPlanID = deliveryPlanID;
+            this.deliveries = new List<Delivery>();
         }
-
-        
-        
+       
     }
 
 }
