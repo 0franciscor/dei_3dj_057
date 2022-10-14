@@ -5,8 +5,6 @@ namespace EletricGo.Domain.Deliveries{
     
 
     }
-        
-
-    
+         
 
 }

@@ -4,39 +4,25 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouse
 {
-    public class WarehouseDesignation// : ValueObject
+    public class WarehouseDesignation : ValueObject
     {
-        /*private String designation;
+        public string Value { get; private set; }
 
-        //[JsonConstructor]
-        public WarehouseDesignation(Guid value) : base(value)
+        public WarehouseDesignation(string value)
         {
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentNullException("value");
+            this.Value = value;
         }
 
-        public WarehouseDesignation(String value) : base(value)
+        protected override bool EqualsCore(WarehouseDesignation other)
         {
+            return this.Value == other.Value;
         }
 
-        String toString(){
-            return "Warehouse Designation:" + designation;
+        protected override int GetHashCodeCore()
+        {
+            return this.Value.GetHashCode();
         }
-
-        Boolean equals(Object obj ){
-            if (this == obj)
-                return true;
-          
-
-            if(!(obj.GetType ==typeof(WarehouseDesignation)))
-                return false;
-            
-
-            WarehouseDesignation whDes = (WarehouseDesignation) obj;
-          
-            return this.designation.Equals(whDes.designation);
-        }
-    
-        int hashCode(){
-            return this.designation.GetHashCode();
-        }*/
     }
 }
