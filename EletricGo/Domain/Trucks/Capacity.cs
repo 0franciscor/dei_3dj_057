@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class Capacity : ValueObject
+    public class Capacity : IValueObject<Capacity>
     {
         private float capacity;
 

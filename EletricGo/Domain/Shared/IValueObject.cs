@@ -1,5 +1,6 @@
 namespace EletricGo.Domain.Shared {
-    interface ValueObject
+    
+    interface IValueObject<T>
     {
         String toString();
 

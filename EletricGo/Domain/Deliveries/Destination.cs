@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class Destiantion : ValueObject
+    public class Destiantion : IValueObject<Destiantion>
     {
 
         private String destination;

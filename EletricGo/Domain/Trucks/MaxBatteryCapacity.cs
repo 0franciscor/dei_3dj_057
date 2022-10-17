@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class MaxBatteryCapacity : ValueObject
+    public class MaxBatteryCapacity : IValueObject<MaxBatteryCapacity>
     {
 
         private float maxBatteryCapacity;

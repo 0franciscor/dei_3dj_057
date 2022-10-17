@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class DeliveryDate : ValueObject
+    public class DeliveryDate : IValueObject<DeliveryDate>
     {
 
         private DateTime dateTime;
