@@ -10,11 +10,11 @@ namespace EletricGo.Domain.Warehouse
 {
     public class Warehouse : Entity<WarehouseID> {
         
-        public WarehouseID warehouseID { get; private set; }
+        private WarehouseID warehouseID { get; private set; }
 
-        public WarehouseAddress warehouseAddress { get; private set;}
+        private WarehouseAddress warehouseAddress { get; private set;}
         
-        public WarehouseDesignation warehouseDesignation { get; private set; }
+        private WarehouseDesignation warehouseDesignation { get; private set; }
         
         public Warehouse(WarehouseID warehouseID,WarehouseAddress warehouseAddress, WarehouseDesignation warehouseDesignation)
         {
@@ -32,7 +32,15 @@ namespace EletricGo.Domain.Warehouse
         
         public WarehouseDTO toWarehouseDTO()
         {
-            return new WarehouseDTO(this.warehouseID.AsGuid(), this.warehouseAddress.address,this.warehouseDesignation.designation);
+            return new WarehouseDTO(this.warehouseID.AsGuid(), this.warehouseAddress.ToString,this.warehouseDesignation.ToString);
+        }
+        
+        public void Update(WarehouseDTO dto)
+        {
+            warehouseId = new WarehouseID(dto.warehouseID);
+            warehouseAdress = new WarehouseAddress(dto.address);
+            warehouseDesignation = new WarehouseDesignation(dto.designation);
+            
         }
     }
 }

@@ -7,18 +7,19 @@ namespace EletricGo.Domain.Warehouse
     public class WarehouseAddress : ValueObject
     {
         private string Street { get; }
-        private string Number { get; }
+        private int Number { get; }
         private string City { get; }
         private string Country { get; }
         private string ZipCode { get; }
 
-        public WarehouseAddress(string street, string number, string city, string country, string zipCode)
+        public WarehouseAddress(string address)
         {
-            Street = street;
-            Number = number;
-            City = city;
-            Country = country;
-            ZipCode = zipCode;
+            String[] aux = address.Split(',');
+            Street = aux[0];
+            Number = aux[1];
+            City = aux[2];
+            Country = aux[3];
+            ZipCode = aux[4];
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
