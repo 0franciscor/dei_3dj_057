@@ -3,35 +3,18 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class Tare : IValueObject<Tare>
+    public class Tare : ValueObject
     {
+        private float TareValue { get; }
 
-        private float tare;
-
-        public Tare(float tare)
+        public Tare(float tareValue)
         {
-            this.tare = tare;
+            TareValue = tareValue;
         }
 
-        public String toString()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return tare.ToString();
+            yield return TareValue;
         }
-        
-        public Boolean equals(Object obj)
-        {
-            return true;
-        }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
-
-        public float AsFloat()
-        {
-            return tare;
-        }
-
     }    
 }

@@ -3,35 +3,20 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class LoadTime : IValueObject<LoadTime>
+    public class LoadTime : ValueObject
     {
-
-        private float time;
+        private float Time { get; }
 
         public LoadTime(float time)
         {
-            this.time = time;
+            Time = time;
         }
 
-        public String toString()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return time.ToString();
+            yield return Time;
         }
-        
-        public Boolean equals(Object obj)
-        {
-            return true;
-        }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
-
-        public float AsFloat()
-        {
-            return time;
-        }
-
-    }    
+    }
+   
+  
 }

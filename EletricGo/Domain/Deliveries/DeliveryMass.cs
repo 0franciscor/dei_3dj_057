@@ -3,35 +3,19 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class DeliveryMass : IValueObject<DeliveryMass>
+    public class DeliveryMass : ValueObject
     {
+        private double Mass { get; }
 
-        private float mass;
-
-        public DeliveryMass(float mass)
+        public DeliveryMass(double mass)
         {
-            this.mass = mass;
+            Mass = mass;
         }
 
-        public String toString()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return mass.ToString();
+            yield return Mass;
         }
-        
-        public Boolean equals(Object obj)
-        {
-            return true;
-        }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
-
-        public float AsFloat()
-        {
-            return mass;
-        }
-
-    }    
+    }
+  
 }

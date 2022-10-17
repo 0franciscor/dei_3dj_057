@@ -4,29 +4,19 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouse
 {
-    public class WarehouseDesignation : IValueObject<WarehouseDesignation>
+    public class WarehouseDesignation : ValueObject
     {
-        public string designation { get; }
+        private string Designation { get; }
 
         public WarehouseDesignation(string designation)
         {
-            if (string.IsNullOrEmpty(designation))
-                throw new ArgumentNullException("value");
-            this.designation = designation;
+            Designation = designation;
         }
-public String toString()
+
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return designation.ToString();
+            yield return Designation;
         }
-        
-        public Boolean equals(Object obj)
-        {
-            return true;
-        }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
+       
     }
 }

@@ -3,34 +3,19 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class DeliveryDate : IValueObject<DeliveryDate>
+    public class DeliveryDate : ValueObject
     {
-
-        private DateTime dateTime;
-
-        public DeliveryDate(DateTime dateTime)
+        private DateTime Date { get; }
+        
+        public DeliveryDate(DateTime date)
         {
-            this.dateTime = dateTime;
-        }
-
-        public String toString()
-        {
-            return dateTime.ToString();
+            Date = date;
         }
         
-        public Boolean equals(Object obj)
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return true;
+            yield return Date;
         }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
-
-        public DateTime AsDateTime()
-        {
-            return dateTime;
-        }
-    }    
+    }
+   
 }
