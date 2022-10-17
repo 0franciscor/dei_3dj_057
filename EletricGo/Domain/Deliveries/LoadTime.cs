@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class LoadTime : ValueObject
+    public class LoadTime : IValueObject<LoadTime>
     {
 
         private float time;

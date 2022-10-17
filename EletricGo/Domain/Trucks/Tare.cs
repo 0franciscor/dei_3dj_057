@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class Tare : ValueObject
+    public class Tare : IValueObject<Tare>
     {
 
         private float tare;

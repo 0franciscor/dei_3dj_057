@@ -4,7 +4,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouse
 {
-    public class WarehouseDesignation : ValueObject
+    public class WarehouseDesignation : IValueObject<WarehouseDesignation>
     {
         public string Value { get; private set; }
 

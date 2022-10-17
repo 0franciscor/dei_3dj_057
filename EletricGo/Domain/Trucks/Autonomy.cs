@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class Autonomy : ValueObject
+    public class Autonomy : IValueObject<Autonomy>
     {
 
         private float autonomy;

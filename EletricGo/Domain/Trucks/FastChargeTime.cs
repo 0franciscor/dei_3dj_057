@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class FastChargeTime : ValueObject
+    public class FastChargeTime : IValueObject<FastChargeTime>
     {
         private float fastChargeTime;
 

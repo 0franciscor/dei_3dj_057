@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouse;
 
-namespace EletricGo.Domain.Products
+namespace EletricGo.Domain.Warehouse
 {
     public class Warehouse : Entity<WarehouseID>, IAggregate {
         public WarehouseID warehouseID { get; private set; }

@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class DeliveryMass : ValueObject
+    public class DeliveryMass : IValueObject<DeliveryMass>
     {
 
         private float mass;
