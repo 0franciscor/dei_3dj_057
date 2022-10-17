@@ -4,28 +4,30 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouse
 {
-    public class WarehouseAddress : ValueObject<WarehouseAddress>
+    public class WarehouseAddress : IValueObject<WarehouseAddress>
     {
-        public string Value { get; private set; }
+        public string address { get; }
 
-        public WarehouseAddress(string value)
+        public WarehouseAddress(string address)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(address))
                 throw new ArgumentNullException("value");
-            this.Value = value;
+            this.address = address;
         }
 
-        protected override bool EqualsCore(WarehouseAddress other)
-        {
-            return this.Value == other.Value;
+        public String toString(){
+            return address.ToString();
         }
 
-        protected override int GetHashCodeCore()
+        public Boolean equals(Object obj)
         {
-            return this.Value.GetHashCode();
+            return true;
         }
-    }
-    {
+        
+        public int hashCode()
+        {
+            return 0;
+        }
         
     }
 }

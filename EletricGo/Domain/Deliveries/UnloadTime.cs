@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class UnloadTime : iValueObject<UnloadTime>
+    public class UnloadTime : IValueObject<UnloadTime>
     {
 
         private float time;

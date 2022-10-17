@@ -6,23 +6,27 @@ namespace EletricGo.Domain.Warehouse
 {
     public class WarehouseDesignation : IValueObject<WarehouseDesignation>
     {
-        public string Value { get; private set; }
+        public string designation { get; }
 
-        public WarehouseDesignation(string value)
+        public WarehouseDesignation(string designation)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(designation))
                 throw new ArgumentNullException("value");
-            this.Value = value;
+            this.designation = designation;
         }
-
-        protected override bool EqualsCore(WarehouseDesignation other)
+public String toString()
         {
-            return this.Value == other.Value;
+            return designation.ToString();
         }
-
-        protected override int GetHashCodeCore()
+        
+        public Boolean equals(Object obj)
         {
-            return this.Value.GetHashCode();
+            return true;
+        }
+        
+        public int hashCode()
+        {
+            return 0;
         }
     }
 }

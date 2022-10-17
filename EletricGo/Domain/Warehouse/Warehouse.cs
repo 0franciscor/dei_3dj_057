@@ -31,7 +31,7 @@ namespace EletricGo.Domain.Warehouse
         
         public WarehouseDTO toWarehouseDTO()
         {
-            return new WarehouseDTO(this.warehouseID.AsGuid(), this.warehouseAddress.Value,this.warehouseDesignation.Value);
+            return new WarehouseDTO(this.warehouseID.AsGuid(), this.warehouseAddress.address,this.warehouseDesignation.designation);
         }
     }
 }
