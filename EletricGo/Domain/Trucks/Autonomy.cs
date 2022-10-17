@@ -3,35 +3,18 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class Autonomy : IValueObject<Autonomy>
+    public class Autonomy : ValueObject
     {
+        private float AutonomyValue { get; }
 
-        private float autonomy;
-
-        public Autonomy(float autonomy)
+        public Autonomy(float autonomyValue)
         {
-            this.autonomy = autonomy;
+            AutonomyValue = autonomyValue;
         }
 
-        public String toString()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return autonomy.ToString();
+            yield return AutonomyValue;
         }
-        
-        public Boolean equals(Object obj)
-        {
-            return true;
-        }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
-
-        public float AsFloat()
-        {
-            return autonomy;
-        }
-
     }    
 }

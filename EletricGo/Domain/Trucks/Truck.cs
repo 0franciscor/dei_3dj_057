@@ -5,7 +5,7 @@ namespace EletricGo.Domain.Trucks
     public class Truck : Entity<TruckID>
     {
 
-        private TruckID truckID { get; set; }
+        private TruckID truckID { get; set;}
         private Tare tare { get; set; }
         private Capacity capacity { get; set; }
         private MaxBatteryCapacity maxBatteryCapacity { get; set; }

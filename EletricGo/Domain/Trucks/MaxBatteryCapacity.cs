@@ -3,35 +3,18 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class MaxBatteryCapacity : IValueObject<MaxBatteryCapacity>
+    public class MaxBatteryCapacity : ValueObject
     {
+        private float MaxBatteryCapacityValue { get; }
 
-        private float maxBatteryCapacity;
-
-        public MaxBatteryCapacity(float maxBatteryCapacity)
+        public MaxBatteryCapacity(float maxBatteryCapacityValue)
         {
-            this.maxBatteryCapacity = maxBatteryCapacity;
+            MaxBatteryCapacityValue = maxBatteryCapacityValue;
         }
 
-        public String toString()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return maxBatteryCapacity.ToString();
+            yield return MaxBatteryCapacityValue;
         }
-        
-        public Boolean equals(Object obj)
-        {
-            return true;
-        }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
-
-        public float AsFloat()
-        {
-            return maxBatteryCapacity;
-        }
-
     }    
 }

@@ -4,30 +4,30 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouse
 {
-    public class WarehouseAddress : IValueObject<WarehouseAddress>
+    public class WarehouseAddress : ValueObject
     {
-        public string address { get; }
+        private string Street { get; }
+        private string Number { get; }
+        private string City { get; }
+        private string Country { get; }
+        private string ZipCode { get; }
 
-        public WarehouseAddress(string address)
+        public WarehouseAddress(string street, string number, string city, string country, string zipCode)
         {
-            if (string.IsNullOrEmpty(address))
-                throw new ArgumentNullException("value");
-            this.address = address;
+            Street = street;
+            Number = number;
+            City = city;
+            Country = country;
+            ZipCode = zipCode;
         }
 
-        public String toString(){
-            return address.ToString();
-        }
-
-        public Boolean equals(Object obj)
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return true;
+            yield return Street;
+            yield return Number;
+            yield return City;
+            yield return Country;
+            yield return ZipCode;
         }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
-        
     }
 }

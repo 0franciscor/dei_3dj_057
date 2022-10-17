@@ -9,6 +9,7 @@ using EletricGo.Domain.Warehouse;
 namespace EletricGo.Domain.Warehouse
 {
     public class Warehouse : Entity<WarehouseID> {
+        
         public WarehouseID warehouseID { get; private set; }
 
         public WarehouseAddress warehouseAddress { get; private set;}

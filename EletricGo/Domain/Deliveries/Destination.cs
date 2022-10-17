@@ -3,35 +3,20 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {
-    public class Destiantion : IValueObject<Destiantion>
+    public class Destination : ValueObject
     {
+        private string Destination { get; }
+        
 
-        private String destination;
-
-        public Destiantion(String destination)
+        public Destination(string destination)
         {
-            this.destination = destination;
+            Destination = destination;
         }
 
-        public String toString()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return destination;
+            yield return Destination;
         }
         
-        public Boolean equals(Object obj)
-        {
-            return true;
-        }
-        
-        public int hashCode()
-        {
-            return 0;
-        }
-
-        public String AsString()
-        {
-            return destination;
-        }
-
     }    
 }

@@ -3,33 +3,18 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Trucks
 {
-    public class Capacity : IValueObject<Capacity>
+    public class Capacity : ValueObject
     {
-        private float capacity;
+        private float CapacityValue { get; }
 
-        public Capacity(float capacity)
+        public Capacity(float capacityValue)
         {
-            this.capacity = capacity;
-        }
-
-        public String toString()
-        {
-            return capacity.ToString();
-        }
-        
-        public Boolean equals(Object obj)
-        {
-            return true;
-        }
-        
-        public int hashCode()
-        {
-            return 0;
+            CapacityValue = capacityValue;
         }
 
-        public float AsFloat()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return capacity;
+            yield return CapacityValue;
         }
 
     }   
