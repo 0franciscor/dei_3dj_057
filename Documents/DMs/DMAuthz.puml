@@ -1,5 +1,4 @@
-
-@startuml
+@startuml DMAuthz
 'https://plantuml.com/class-diagram
 
 skinparam classAttributeIconSize 0

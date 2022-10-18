@@ -4,5 +4,5 @@
 ### Developed Functionality Index ###
 
 | Sprint | Functionality |
-|--------|-----------------------------|
-| **A** | Domain Model |
+|--------|---------------|
+| **A**  | Domain Model  |
