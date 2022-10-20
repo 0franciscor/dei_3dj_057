@@ -1,4 +1,4 @@
-namespace EletricGo.Domain.Trucks
+namespace EletricGo.Domain.Trucks.DTO
 {
     public class TruckDTO
     {

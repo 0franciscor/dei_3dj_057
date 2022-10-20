@@ -1,20 +1,25 @@
 using EletricGo.Domain.Shared;
 
 
-namespace EletricGo.Domain.Trucks
+namespace EletricGo.Domain.Trucks.ValueObjects
 {
     public class FastChargeTime : ValueObject
     {
-        private float FastChargeTimeValue { get; }
+        private float fastChargeTimeValue;
 
         public FastChargeTime(float fastChargeTimeValue)
         {
-            FastChargeTimeValue = fastChargeTimeValue;
+            this.fastChargeTimeValue = fastChargeTimeValue;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return FastChargeTimeValue;
+            yield return this.fastChargeTimeValue;
+        }
+
+        public float asFloat()
+        {
+            return this.fastChargeTimeValue;
         }
     }
 }

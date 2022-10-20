@@ -1,20 +1,27 @@
 using EletricGo.Domain.Shared;
 
 
-namespace EletricGo.Domain.Trucks
+namespace EletricGo.Domain.Trucks.ValueObjects
 {
     public class Autonomy : ValueObject
     {
-        private float AutonomyValue { get; }
+        private float autonomyValue;
 
         public Autonomy(float autonomyValue)
         {
-            AutonomyValue = autonomyValue;
+            this.autonomyValue = autonomyValue;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return AutonomyValue;
+            yield return this.autonomyValue;
         }
+
+        public float asFloat()
+        {
+            return this.autonomyValue;
+        }
+
+
     }    
 }

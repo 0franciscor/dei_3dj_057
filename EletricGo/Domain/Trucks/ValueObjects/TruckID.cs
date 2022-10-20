@@ -1,6 +1,6 @@
 using EletricGo.Domain.Shared;
 
-namespace EletricGo.Domain.Trucks 
+namespace EletricGo.Domain.Trucks.ValueObjects
 {
     public class TruckID : EntityID
     {

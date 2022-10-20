@@ -1,6 +1,9 @@
 using EletricGo.Domain.Shared;
-
-namespace EletricGo.Domain.Trucks
+using EletricGo.Domain.Trucks;
+using EletricGo.Domain.Trucks.ValueObjects;
+using EletricGo.Domain.Trucks.DTO;
+using EletricGo.Domain.Trucks.Repository;
+namespace EletricGo.Services
 {
     public class TruckService
     {

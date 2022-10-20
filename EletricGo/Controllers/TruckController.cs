@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using EletricGo.Domain.Shared;
-using EletricGo.Domain.Trucks;
-
+using EletricGo.Domain.Trucks.ValueObjects;
+using EletricGo.Domain.Trucks.DTO;
+using EletricGo.Services;
 namespace EletricGo.Controllers
 {
     [Route("api/[controller]")]

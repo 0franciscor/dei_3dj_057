@@ -1,20 +1,26 @@
 using EletricGo.Domain.Shared;
 
 
-namespace EletricGo.Domain.Trucks
+namespace EletricGo.Domain.Trucks.ValueObjects
 {
     public class Tare : ValueObject
     {
-        private float TareValue { get; }
+        private float tareValue;
 
         public Tare(float tareValue)
         {
-            TareValue = tareValue;
+            this.tareValue = tareValue;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return TareValue;
+            yield return this.tareValue;
         }
+
+        public float asFloat()
+        {
+            return this.tareValue;
+        }
+
     }    
 }
