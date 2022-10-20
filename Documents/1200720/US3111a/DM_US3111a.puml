@@ -1,0 +1,53 @@
+@startuml DMWarehouseManagement
+
+skinparam classAttributeIconSize 0
+hide empty attributes
+skinparam classBackgroundColor beige
+skinparam ArrowColor #222222
+
+package "<<aggregate>> WarehouseManagement"{
+  entity Warehouse
+  entity Store
+  entity ChargingStation
+  class WarehouseIndentifier
+  class WarehouseDesignation
+  class WarehouseAddress
+  class WarehouseCoordinates
+  class StoreName
+  class StoreIndentifier
+  class CurrentOccupation
+  class TotalOccupation
+
+}
+
+
+entity Warehouse <<entity>> <<Root>>
+class WarehouseIndentifier <<(V,#FF8B40) value object>>
+class WarehouseDesignation <<(V,#FF8B40) value object>>
+class WarehouseAddress <<(V,#FF8B40) value object>>
+class WarehouseCoordinates <<(V,#FF8B40) value object>>
+
+entity Store <<entity>>
+class StoreName <<(V,#FF8B40) value object>>
+class StoreIndentifier <<(V,#FF8B40) value object>>
+
+entity ChargingStation <<entity>>
+class CurrentOccupation <<(V,#FF8B40) value object>>
+class TotalOccupation <<(V,#FF8B40) value object>>
+
+
+Warehouse "1" <- "1" Store : associated with
+Warehouse "1" --> "1" ChargingStation: has
+
+Warehouse "1" --> "1" WarehouseIndentifier
+Warehouse "1" --> "1" WarehouseDesignation
+Warehouse "1" --> "1" WarehouseAddress
+Warehouse "1" --> "1" WarehouseCoordinates
+
+Store "1" --> "1" StoreName
+Store "1" --> "1" StoreIndentifier
+
+ChargingStation "1" --> "1" CurrentOccupation
+ChargingStation "1" --> "1" TotalOccupation
+
+@enduml
