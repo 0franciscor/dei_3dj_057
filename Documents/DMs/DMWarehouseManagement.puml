@@ -52,8 +52,6 @@ class Autonomy <<(V,#FF8B40) value object>>
 class FastChargeTime <<(V,#FF8B40) value object>>
 
 
-
-
 Warehouse "1" <- "1" Store : associated with
 Warehouse "1" --> "1" ChargingStation: has
 ChargingStation "1" <---  "*" Truck : parks at
