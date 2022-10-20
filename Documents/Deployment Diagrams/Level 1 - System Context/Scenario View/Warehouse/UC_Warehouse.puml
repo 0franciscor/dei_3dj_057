@@ -1,22 +1,17 @@
 @startuml
-'https://plantuml.com/use-case-diagram
 
-:Main Admin: as Admin
-(Use the application) as (Use)
+skinparam actorStyle awesome
+"Warehouse Manager" as Admin
 
-User -> (Start)
-User --> (Use)
+"Create Warehouses" as (US1)
+"Update Warehouses" as (US2)
+"Read Warehouses" as (US3)
+"Delete Warehouses" as (US4)
+"List Warehouses" as (US5)
 
-Admin ---> (Use)
-
-note right of Admin : This is an example.
-
-note right of (Use)
-A note can also
-be on several lines
-end note
-
-note "This note is connected\nto several objects." as N2
-(Start) .. N2
-N2 .. (Use)
+Admin --> (US1)
+Admin --> (US2)
+Admin --> (US3)
+Admin --> (US4)
+Admin --> (US5)
 @enduml
