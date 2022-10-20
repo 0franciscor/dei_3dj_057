@@ -1,4 +1,4 @@
-@startuml createDeliverySSD
+@startuml createWarehouseSSD
 autonumber
 
 skinparam sequence {
@@ -10,16 +10,16 @@ actor "Warehouse Manager" as admin
 participant EletricGO as system <<System(C4)>>
 
 
-admin -> system: I want to consult the details on a warehouse
+admin -> system: I want to create a new warehouse
 activate system
 
-system --> admin: asks for the ID of the warehouse
+system -> admin: asks for the details on the new warehouse
 deactivate system
 
-admin -> system: inserts the ID of the warehouse
+admin -> system: inserts the information about the new warehouse
 activate system
 
-system --> admin: displays the details of the requested warehouse
+system -> admin: informs about the success of the operation
 deactivate system
 
 deactivate system
