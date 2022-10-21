@@ -1,13 +1,15 @@
-let express = require('express');
-let app = express();
+import express, { Express, Request, Response } from 'express';
+import dotenv from 'dotenv';
 
-app.get('/', function (req, res) {
-   res.send('Hello World');
-})
+dotenv.config();
 
-let server = app.listen(8081, function () {
-   let host = server.address().address
-   let port = server.address().port
-   
-   console.log("Example app listening at http://%s:%s", host, port)
-})
+const app: Express = express();
+const port = process.env.PORT;
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Express + TypeScript Server');
+});
+
+app.listen(port, () => {
+  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+});
