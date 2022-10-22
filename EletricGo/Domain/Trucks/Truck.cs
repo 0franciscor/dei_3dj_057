@@ -1,4 +1,6 @@
 using EletricGo.Domain.Shared;
+using EletricGo.Domain.Trucks.ValueObjects;
+using EletricGo.Domain.Trucks.DTO;
 
 namespace EletricGo.Domain.Trucks 
 {
@@ -35,7 +37,7 @@ namespace EletricGo.Domain.Trucks
 
         public TruckDTO toTruckDTO()
         {
-            return new TruckDTO(this.truckID.AsGuid(), this.tare.AsFloat(), this.capacity.AsFloat(), this.maxBatteryCapacity.AsFloat(), this.autonomy.AsFloat(), this.fastChargeTime.AsFloat());
+            return new TruckDTO(this.truckID.AsGuid(), this.tare.asFloat(), this.capacity.asFloat(), this.maxBatteryCapacity.asFloat(), this.autonomy.asFloat(), this.fastChargeTime.asFloat());
         }
 
         public void Update(TruckDTO truckDTO)

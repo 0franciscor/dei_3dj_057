@@ -1,4 +1,4 @@
-namespace Domain.Shared.ValueObject
+namespace EletricGo.Domain.Shared
 {
     public abstract class ValueObject
     {

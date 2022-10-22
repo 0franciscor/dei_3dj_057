@@ -5,15 +5,66 @@ hide empty attributes
 skinparam classBackgroundColor beige
 skinparam ArrowColor #222222
 
-package "<<aggregate>> WarehouseManagement"{
-}
-
 package "<<aggregate>> Logistics"{
+    entity DeliveryPlan
+    entity Delivery
+    entity Truck
 
 }
 
-package "<<aggregate>> Authz" {
+entity DeliveryPlan <<entity>> <<Root>>{
+
 }
+
+entity Delivery <<entity>>{
+
+}
+
+entity Truck <<entity>>{
+
+}
+
+package "<<aggregate>> Planning"{
+    entity Route
+    entity Trail
+}
+
+entity Route <<entity>> <<root>>{
+
+}
+
+entity Trail <<entity>> {
+
+}
+
+package "<<aggregate>> WarehouseManagement"{
+  entity Warehouse
+  entity Store
+  entity ChargingStation
+
+}
+
+entity Warehouse <<entity>> <<root>>{
+
+}
+
+entity Store <<entity>>{
+
+}
+
+entity ChargingStation <<entity>> {
+
+}
+
+DeliveryPlan --> "1..*" Delivery : composed by
+DeliveryPlan "0..1"--> "1" Truck : associated with
+
+Route "1..*" -> "1..*" Trail : is composed
+Route "1" <-- "1" DeliveryPlan : follows
+
+Warehouse "1" <- "1" Store : associated with
+Warehouse "1" --> "1" ChargingStation: has
+ChargingStation "1" <---  "*" Truck : parks at
 
 
 

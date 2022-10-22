@@ -1,0 +1,75 @@
+@startuml
+
+left to right direction
+actor "Administrator" as ADM
+actor "Warehouse Manager" as MNG
+actor "Fleet Manager" as FMNG
+actor "Logistics Manager" as LMNG
+rectangle EletricGo {
+
+    usecase "Create a Warehouse" as UC1
+    usecase "Reade information about a Warehouse" as UC2
+    usecase "Update information about a Warehouse " as UC3
+    usecase "Delete a Warehouse" as UC4
+    usecase "List the Warehouses" as UC5
+
+    usecase "Create a Delivery" as UC6
+    usecase "Reade information about a Delivery" as UC7
+    usecase "Update information about Delivery " as UC8
+    usecase "Delete a Delivery" as UC9
+    usecase "List the Deliveries" as UC10
+
+    usecase "Create a Truck" as UC11
+    usecase "Reade information about a Truck" as UC12
+    usecase "Update information about Truck" as UC13
+    usecase "Delete a Truck" as UC14
+    usecase "List the Trucks" as UC15
+
+    usecase "Create a Route" as UC16
+    usecase "Reade information about a Route" as UC17
+    usecase "Update information about Route" as UC18
+    usecase "Delete a Route" as UC19
+    usecase "List the Routes" as UC20
+
+    usecase "Create a Client" as UC21
+    usecase "Reade information about a Client" as UC22
+    usecase "Update information about Client" as UC23
+    usecase "Delete a Client" as UC24
+    usecase "List the Clients" as UC25
+
+
+}
+
+
+MNG --> UC1
+MNG --> UC2
+MNG --> UC3
+MNG --> UC4
+MNG --> UC5
+
+MNG --> UC6
+MNG --> UC7
+MNG --> UC8
+MNG --> UC9
+MNG --> UC10
+
+FMNG --> UC11
+FMNG --> UC12
+FMNG --> UC13
+FMNG --> UC14
+FMNG --> UC15
+
+LMNG --> UC16
+LMNG --> UC17
+LMNG --> UC18
+LMNG --> UC19
+LMNG --> UC20
+
+ADM --> UC21
+ADM --> UC22
+ADM --> UC23
+ADM --> UC24
+ADM --> UC25
+
+
+@enduml

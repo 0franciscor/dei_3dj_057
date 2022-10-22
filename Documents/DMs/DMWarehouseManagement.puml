@@ -17,6 +17,7 @@ package "<<aggregate>> WarehouseManagement"{
   class StoreIndentifier 
   class CurrentOccupation
   class TotalOccupation
+  class WarehouseAltitude
 
 }
 
@@ -35,6 +36,7 @@ class WarehouseIndentifier <<(V,#FF8B40) value object>>
 class WarehouseDesignation <<(V,#FF8B40) value object>>
 class WarehouseAddress <<(V,#FF8B40) value object>>
 class WarehouseCoordinates <<(V,#FF8B40) value object>>
+class WarehouseAltitude <<(V,#FF8B40) value object>>
 
 entity Store <<entity>>
 class StoreName <<(V,#FF8B40) value object>> 
@@ -52,8 +54,7 @@ class Autonomy <<(V,#FF8B40) value object>>
 class FastChargeTime <<(V,#FF8B40) value object>>
 
 
-
-
+Warehouse "1" --> WarehouseAltitude
 Warehouse "1" <- "1" Store : associated with
 Warehouse "1" --> "1" ChargingStation: has
 ChargingStation "1" <---  "*" Truck : parks at
