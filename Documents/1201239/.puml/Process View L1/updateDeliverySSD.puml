@@ -1,0 +1,44 @@
+@startuml createDeliverySSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor Admin as admin
+participant EletricGO as system <<System(C4)>>
+
+
+admin -> system: I want to update the details of a delivery
+activate system
+
+system --> admin: asks for the ID of the delivery
+deactivate system
+
+admin -> system: inserts the ID of the delivery
+activate system
+
+loop until the desired details are updated
+
+system --> admin: displays a list of information available to update
+deactivate system
+
+admin -> system: selects the information to update
+activate system
+
+system --> admin: asks for the information to update
+deactivate system
+
+admin -> system: inserts the information to update
+activate system
+
+system --> admin: displays the updated information and \ninforms about the operation success
+deactivate system
+
+end loop
+
+deactivate system
+deactivate admin
+
+@enduml

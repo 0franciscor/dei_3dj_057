@@ -1,0 +1,29 @@
+@startuml createDeliverySSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor Admin as admin
+participant EletricGO as system <<System(C4)>>
+
+
+admin -> system: I want to create a new delivery
+activate system
+
+system --> admin: asks for the details on the new delivery
+deactivate system
+
+admin -> system: inserts the information about the new delivery
+activate system
+
+system --> admin: informs about the success of the operation
+deactivate system
+
+
+deactivate system
+deactivate admin
+
+@enduml
