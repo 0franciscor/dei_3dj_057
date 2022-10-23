@@ -1,4 +1,5 @@
 import { ValueObject } from "../../core/domain/ValueObject";
+import { Result } from "../../core/logic/Result";
 
 interface TareProps {
   tare: number;
@@ -13,5 +14,13 @@ export class Tare extends ValueObject<TareProps> {
     super(props);
   }
 
+  public static create (tare: number): Result<Tare> {
+    if (tare < 0) {
+      return Result.fail<Tare>('Tare must be greater than 0');
+    }
+
+    return Result.ok<Tare>(new Tare({ tare }));
+  }
   
+
 }
