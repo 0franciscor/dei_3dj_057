@@ -17,7 +17,7 @@ import { TruckID } from '../domain/truck/TruckID';
 
 
 @Service()
-export class TruckService implements ITruckService {
+export default class TruckService implements ITruckService {
     constructor(
         @Inject(config.repos.truck.name) private truckRepo: ITruckRepo,
     ) { }

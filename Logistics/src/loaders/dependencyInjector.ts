@@ -23,7 +23,6 @@ export default ({ mongoConnection, schemas, controllers, repos, services}: {
   
     repos.forEach(m => {
       let repoClass = require(m.path).default;
-      console.log(repoClass);
       let repoInstance = Container.get(repoClass);
       Container.set(m.name, repoInstance);
     });

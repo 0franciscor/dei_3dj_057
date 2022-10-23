@@ -10,7 +10,7 @@ import { TruckID } from '../domain/truck/TruckID';
 
 
 @Service()
-export class TruckRepo implements ITruckRepo {
+export default class TruckRepo implements ITruckRepo {
     
     constructor(
         @Inject('truckSchema') private truckSchema : Model<ITruckPersistence & Document>,
