@@ -21,16 +21,14 @@ export default class TruckRepo implements ITruckRepo {
         const idX = truck.id instanceof TruckID ? (<TruckID>truck.id) : truck.id;
 
         const query = { domainId: idX}; 
-        const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
+        const truckDocument = await this.truckSchema.findById( query as FilterQuery<ITruckPersistence & Document>);
 
         return !!truckDocument === true;
     }
 
     public async save(truck: Truck): Promise<Truck> {
         const query = { truckID: truck.truckID.id};
-        console.log(query)
-        const truckDocument = await this.truckSchema.findOne( query );
-        console.log(truckDocument)
+        const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document> );
         try {
             
             if(truckDocument === null) {
@@ -56,14 +54,14 @@ export default class TruckRepo implements ITruckRepo {
     }
 
     public async delete(truck: Truck): Promise<Truck> {
-        const query = { domainId: truck.id.toString()};
-        const truckDocument = await this.truckSchema.findOne( query );
+        const query = { truckID: truck.truckID.id};
+        const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document> );
         try {
             if(truckDocument === null) {
                 return truck;
             }
             else{
-                await truckDocument.remove();
+                await this.truckSchema.deleteOne( query as FilterQuery<ITruckPersistence & Document> );
                 return truck;
             }
 
@@ -73,8 +71,8 @@ export default class TruckRepo implements ITruckRepo {
     }
 
     public async getTruckById(id: string): Promise<Truck> {
-        const query = { TruckID: id};
-        const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
+        const query = { truckID: id};
+        const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document> );
 
         if(truckDocument === null) {
             return null;
@@ -90,7 +88,6 @@ export default class TruckRepo implements ITruckRepo {
         trucksDocument.forEach(truck => {
             trucks.push(TruckMap.toDomain(truck));
         });
-        console.log(trucks)
         return trucks;
     }
 

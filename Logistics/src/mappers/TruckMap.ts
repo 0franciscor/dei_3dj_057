@@ -27,7 +27,6 @@ export class TruckMap extends Mapper<Truck> {
     }
 
     public static toDomain(truck: any | Model<ITruckPersistence & Document>): Truck {
-        console.log(truck)
         const truckOrError = Truck.create(
                 truck,
                 new UniqueEntityID(truck._id),

@@ -87,7 +87,7 @@ export class Truck extends AggregateRoot<TruckProps> {
         autonomy:Autonomy.create(truckDTO.autonomy).getValue(),
         fastChargeTime:FastChargeTime.create(truckDTO.fastChargeTime).getValue()
       }, id);
-      console.log(truck);
+  
       return Result.ok<Truck>(truck);
 
 

@@ -26,13 +26,15 @@ export default class TruckService implements ITruckService {
     public async createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
         try {
 
+            const truck = await this.truckRepo.getTruckById(truckDTO.truckID);
+            if(truck !== null)
+                return Result.fail<ITruckDTO>("Truck already exists");
             const truckOrError = Truck.create(truckDTO);
 
             if (truckOrError.isFailure) {
                 return Result.fail<ITruckDTO>(truckOrError.error);
             }
             const truckResult = truckOrError.getValue();
-            console.log(truckResult);
             await this.truckRepo.save(truckResult);
             
             const truckDTOResult = TruckMap.toDTO(truckResult) as ITruckDTO;
@@ -48,6 +50,7 @@ export default class TruckService implements ITruckService {
 
     public async getTruck(truckID: string): Promise<Result<ITruckDTO>> {
         try { 
+
             const truck = await this.truckRepo.getTruckById(truckID);
             if(truck === null)
                 return Result.fail<ITruckDTO>("Truck not found");
@@ -73,15 +76,19 @@ export default class TruckService implements ITruckService {
 
     public async updateTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
         try {
-            const truck = await this.truckRepo.getTruckById(truckDTO.id);
+            const truck = await this.truckRepo.getTruckById(truckDTO.truckID);
             if(truck === null)
                 return Result.fail<ITruckDTO>("Truck not found");
-
-            truck.autonomy = Autonomy.create(truckDTO.autonomy).getValue();
-            truck.tare = Tare.create(truckDTO.tare).getValue();
-            truck.capacity = Capacity.create(truckDTO.capacity).getValue();
-            truck.maxBatteryCapacity = MaxBatteryCapacity.create(truckDTO.maxBatteryCapacity).getValue();
-            truck.fastChargeTime = FastChargeTime.create(truckDTO.fastChargeTime).getValue();
+            if(truckDTO.autonomy != truck.autonomy.autonomy && truckDTO.autonomy != null)
+                truck.autonomy = Autonomy.create(truckDTO.autonomy).getValue();
+            if(truckDTO.tare != truck.tare.tare && truckDTO.tare != null)
+                truck.tare = Tare.create(truckDTO.tare).getValue();
+            if(truckDTO.capacity != truck.capacity.capacity && truckDTO.capacity != null)
+                truck.capacity = Capacity.create(truckDTO.capacity).getValue();
+            if(truckDTO.maxBatteryCapacity != truck.maxBatteryCapacity.capacity && truckDTO.maxBatteryCapacity != null)
+                truck.maxBatteryCapacity = MaxBatteryCapacity.create(truckDTO.maxBatteryCapacity).getValue();
+            if(truckDTO.fastChargeTime != truck.fastChargeTime.time && truckDTO.fastChargeTime != null)
+                truck.fastChargeTime = FastChargeTime.create(truckDTO.fastChargeTime).getValue();
 
             await this.truckRepo.save(truck);
 
@@ -95,6 +102,7 @@ export default class TruckService implements ITruckService {
 
     public async deleteTruck(truckID: string): Promise<Result<ITruckDTO>> {
         try {
+
             const truck = await this.truckRepo.getTruckById(truckID);
             if(truck === null)
                 return Result.fail<ITruckDTO>("Truck not found");

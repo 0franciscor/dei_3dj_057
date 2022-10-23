@@ -17,7 +17,8 @@ export default class TruckController implements ITruckController {
 
     public async getTruck(req: Request, res: Response, next: NextFunction){
         try {
-            const truck = await this.truckService.getTruck(req.params.id);
+
+            const truck = await this.truckService.getTruck(req.body.truckID);
             res.status(200).json(truck);
         } catch (e) {
             next(e);
@@ -28,7 +29,6 @@ export default class TruckController implements ITruckController {
         try {
             
             const trucks = await this.truckService.getAllTrucks();
-            console.log(trucks);
             res.status(200).json(trucks);
         } catch (e) {
             next(e);
@@ -38,9 +38,8 @@ export default class TruckController implements ITruckController {
     public async createTruck(req: Request, res: Response, next: NextFunction) {
         try {
             const truckOrError = await this.truckService.createTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
-            console.log("truckDTO");
             if (truckOrError.isFailure) {
-                return res.status(402).send();
+                return res.status(401).send("Truck already exists");
             }
 
             const truckDTO = truckOrError.getValue();
@@ -68,7 +67,7 @@ export default class TruckController implements ITruckController {
 
     public async deleteTruck(req: Request, res: Response, next: NextFunction){
         try {
-            const truckResult = await this.truckService.deleteTruck(req.params.id);
+            const truckResult = await this.truckService.deleteTruck(req.body.truckID);
             res.status(200).json(truckResult);
         } catch (e) {
             next(e);
