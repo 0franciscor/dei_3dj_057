@@ -25,7 +25,7 @@ export class Truck extends AggregateRoot<TruckProps> {
   }
 
   get truckID (): TruckID {
-    return TruckID.caller(this.id)
+    return new TruckID(this.truckID.toValue());
   }
 
   get capacity (): Capacity {
@@ -97,7 +97,7 @@ export class Truck extends AggregateRoot<TruckProps> {
         fastChargeTime: fastChargeTime.getValue(),
       };
 
-      return Result.ok<Truck>(new Truck(truckProps));
+      return Result.ok<Truck>(new Truck(truckProps, id));
     }
 
   }

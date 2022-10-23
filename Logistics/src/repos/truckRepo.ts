@@ -8,20 +8,16 @@ import { TruckMap } from '../mappers/TruckMap';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { TruckID } from '../domain/truck/TruckID';
 
-import { Autonomy } from '../domain/truck/Autonomy';
-import { Tare } from '../domain/truck/Tare';
-import { Capacity } from '../domain/truck/Capacity';
-import { MaxBatteryCapacity } from '../domain/truck/MaxBatteryCapacity';
-import { FastChargeTime } from '../domain/truck/FastChargeTime';
 
 @Service()
 export class TruckRepo implements ITruckRepo {
+    
     constructor(
         @Inject('truckSchema') private truckSchema : Model<ITruckPersistence & Document>,
     ) { }
 
     public async exists(truck: Truck): Promise<boolean> {
-        const idX = truck.id instanceof TruckID ? (<TruckID>truck.id).id : truck.id;
+        const idX = truck.id instanceof TruckID ? (<TruckID>truck.id).toValue : truck.id;
 
         const query = { domainId: idX}; 
         const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
@@ -30,8 +26,8 @@ export class TruckRepo implements ITruckRepo {
     }
 
     public async save(truck: Truck): Promise<Truck> {
-        
         const query = { domainId: truck.id.toString()};
+        
         const truckDocument = await this.truckSchema.findOne( query );
         try {
             

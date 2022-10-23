@@ -9,15 +9,29 @@ if (!envFound) {
 
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
+
 export default {
+  /**
+   * Your favorite port
+   */
+  port: parseInt(process.env.PORT, 10) || 3001,
 
-  port: parseInt(process.env.PORT, 10) || 3000,
+  /**
+   * That long string from mlab
+   */
+  databaseURL: process.env.MONGODB_URI || "mongodb://localhost:27017/test",
 
+  /**
+   * Your secret sauce
+   */
+  jwtSecret: process.env.JWT_SECRET || "my sakdfho2390asjod$%jl)!sdjas0i secret",
+
+  /**
+   * Used by winston logger
+   */
   logs: {
     level: process.env.LOG_LEVEL || 'info',
   },
-  
-  databaseURL: process.env.MONGODB_URI || "mongodb://localhost:27017/test",
 
   /**
    * API configs

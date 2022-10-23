@@ -2,39 +2,51 @@ import { Container } from 'typedi';
 import LoggerInstance from './logger';
 
 export default ({ mongoConnection, schemas, controllers, repos, services}: {
-      mongoConnection: any;
-      schemas: { name: string; schema: any }[];
-      controllers: { name: string; path: string }[];
-      repos: { name: string; path: string }[];
-      services: { name: string; path: string }[]; }) => {
-    
+                    mongoConnection;
+                    schemas: { name: string; schema: any }[],
+                    controllers: {name: string; path: string }[],
+                    repos: {name: string; path: string }[],
+                    services: {name: string; path: string }[] }) => {
   try {
     Container.set('logger', LoggerInstance);
 
-    schemas.forEach((m) => {
+    /**
+     * We are injecting the mongoose models into the DI container.
+     * This is controversial but it will provide a lot of flexibility 
+     * at the time of writing unit tests.
+     */
+    schemas.forEach(m => {
+      // Notice the require syntax and the '.default'
       let schema = require(m.schema).default;
       Container.set(m.name, schema);
     });
-    repos.forEach((r) => {
-      let repoClass = require(r.path).default;
-      console.log(r.path);
+  
+    repos.forEach(m => {
+      let repoClass = require(m.path).default;
       console.log(repoClass);
       let repoInstance = Container.get(repoClass);
-      Container.set(r.name, repoInstance);
+      Container.set(m.name, repoInstance);
     });
-    services.forEach((s) => {
-      let serviceClass = require(s.path).default;
+
+    services.forEach(m => {
+      let serviceClass = require(m.path).default;
       let serviceInstance = Container.get(serviceClass)
-      Container.set(s.name, serviceInstance);
-    });
-    controllers.forEach((c) => {
-      let controllerClass = require(c.path).default;
+      
+      Container.set(m.name, serviceInstance);
+      });
+
+    controllers.forEach(m => {
+      // load the @Service() class by its path
+      let controllerClass = require(m.path).default;
+      // create/get the instance of the @Service() class
       let controllerInstance = Container.get(controllerClass);
-      Container.set(c.name, controllerInstance);
+      // rename the instance inside the container
+      Container.set(m.name, controllerInstance);
     });
-    
+  
+    return;
   } catch (e) {
-    LoggerInstance.error('Error on dependency injector loader: %o', e);
+    LoggerInstance.error('🔥 Error on dependency injector loader: %o', e);
     throw e;
   }
 };

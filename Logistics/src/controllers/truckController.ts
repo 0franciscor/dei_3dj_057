@@ -15,7 +15,7 @@ export default class TruckController implements ITruckController {
         @Inject(config.services.truck.name) private truckService: ITruckService,
     ) { }
 
-    public async getTruck(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public async getTruck(req: Request, res: Response, next: NextFunction){
         try {
             const truck = await this.truckService.getTruck(req.params.id);
             res.status(200).json(truck);
@@ -24,27 +24,38 @@ export default class TruckController implements ITruckController {
         }
     }
 
-    public async createTruck(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public async createTruck(req: Request, res: Response, next: NextFunction) {
         try {
-            const truckDTO: ITruckDTO = req.body;
-            const truckResult = await this.truckService.createTruck(truckDTO);
-            res.status(200).json(truckResult);
+
+            const truckOrError = await this.truckService.createTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
+              
+            if (truckOrError.isFailure) {
+                return res.status(402).send();
+            }
+
+            const truckDTO = truckOrError.getValue();
+            return res.json( truckDTO ).status(201);
+
+
+            } catch (e) {
+            next(e);
+        }
+    }
+
+    public async updateTruck(req: Request, res: Response, next: NextFunction) {
+        try {
+            const truckOrError = await this.truckService.updateTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
+            if (truckOrError.isFailure) {
+                return res.status(402).send();
+            }
+            const truckDTO = truckOrError.getValue();
+            return res.json( truckDTO ).status(201);
         } catch (e) {
             next(e);
         }
     }
 
-    public async updateTruck(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const truckDTO: ITruckDTO = req.body;
-            const truckResult = await this.truckService.updateTruck(truckDTO);
-            res.status(200).json(truckResult);
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    public async deleteTruck(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public async deleteTruck(req: Request, res: Response, next: NextFunction){
         try {
             const truckResult = await this.truckService.deleteTruck(req.params.id);
             res.status(200).json(truckResult);
