@@ -24,6 +24,17 @@ export default class TruckController implements ITruckController {
         }
     }
 
+    public async getAllTrucks(req: Request, res: Response, next: NextFunction){
+        try {
+            
+            const trucks = await this.truckService.getAllTrucks();
+            console.log(trucks);
+            res.status(200).json(trucks);
+        } catch (e) {
+            next(e);
+        }
+    }
+
     public async createTruck(req: Request, res: Response, next: NextFunction) {
         try {
             const truckOrError = await this.truckService.createTruck(req.body as ITruckDTO) as Result<ITruckDTO>;

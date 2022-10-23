@@ -8,6 +8,11 @@ const TruckSchema = new mongoose.Schema (
             type: String,
             unique: true
         },
+        truckID: {
+            type: String,
+            unique: true,
+            required: true
+        },
         tare: {
             type: Number,
             required: true

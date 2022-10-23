@@ -7,5 +7,6 @@ export default interface ITruckRepo extends Repo<Truck> {
     save(truck: Truck): Promise<Truck>;
     delete(truck: Truck): Promise<Truck>;
     getTruckById(truckID: TruckID|string): Promise<Truck>;
+    getAllTrucks(): Promise<Truck[]>;
     
 }   

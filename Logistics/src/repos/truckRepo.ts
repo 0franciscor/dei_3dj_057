@@ -18,7 +18,7 @@ export default class TruckRepo implements ITruckRepo {
     ) { }
 
     public async exists(truck: Truck): Promise<boolean> {
-        const idX = truck.id instanceof TruckID ? (<TruckID>truck.id).toValue : truck.id;
+        const idX = truck.id instanceof TruckID ? (<TruckID>truck.id) : truck.id;
 
         const query = { domainId: idX}; 
         const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
@@ -27,20 +27,19 @@ export default class TruckRepo implements ITruckRepo {
     }
 
     public async save(truck: Truck): Promise<Truck> {
-        const query = { domainId: truck.id.toString()};
-        
+        const query = { truckID: truck.truckID.id};
+        console.log(query)
         const truckDocument = await this.truckSchema.findOne( query );
+        console.log(truckDocument)
         try {
             
             if(truckDocument === null) {
-                console.log("Truck not found, creating new one");
                 const rawTruck: any = TruckMap.toPersistence(truck);
-                console.log(rawTruck)
                 const truckCreated = await this.truckSchema.create(rawTruck);
-                console.log(truckCreated);
                 return TruckMap.toDomain(truckCreated);
             }
             else{
+                truckDocument.truckID = truck.truckID.id;
                 truckDocument.autonomy = truck.autonomy.autonomy;
                 truckDocument.tare = truck.tare.tare;
                 truckDocument.capacity = truck.capacity.capacity;
@@ -74,7 +73,7 @@ export default class TruckRepo implements ITruckRepo {
     }
 
     public async getTruckById(id: string): Promise<Truck> {
-        const query = { domainId: id};
+        const query = { TruckID: id};
         const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document>);
 
         if(truckDocument === null) {
@@ -83,6 +82,16 @@ export default class TruckRepo implements ITruckRepo {
         else{
             return TruckMap.toDomain(truckDocument);
         }
+    }
+    public async getAllTrucks(): Promise<Truck[]> {
+        const trucksDocument = await this.truckSchema.find();
+
+        let trucks: Truck[] = [];
+        trucksDocument.forEach(truck => {
+            trucks.push(TruckMap.toDomain(truck));
+        });
+        console.log(trucks)
+        return trucks;
     }
 
 

@@ -11,6 +11,7 @@ import { TruckID } from "./TruckID";
 
 
 interface TruckProps {
+  truckID: TruckID;
   tare: Tare;
   capacity: Capacity;
   maxBatteryCapacity: MaxBatteryCapacity;
@@ -25,7 +26,7 @@ export class Truck extends AggregateRoot<TruckProps> {
   }
 
   get truckID (): TruckID {
-    return new TruckID(this.truckID.toValue());
+    return this.props.truckID;
   }
 
   get capacity (): Capacity {
@@ -79,6 +80,7 @@ export class Truck extends AggregateRoot<TruckProps> {
   public static create (truckDTO:ITruckDTO , id?: UniqueEntityID): Result<Truck> {
 
       const truck = new Truck({
+        truckID: TruckID.create(truckDTO.truckID).getValue(),
         tare:Tare.create(truckDTO.tare).getValue(),
         capacity:Capacity.create(truckDTO.capacity).getValue(),
         maxBatteryCapacity:MaxBatteryCapacity.create(truckDTO.maxBatteryCapacity).getValue(),

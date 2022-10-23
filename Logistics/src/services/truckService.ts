@@ -59,6 +59,18 @@ export default class TruckService implements ITruckService {
         }
     }
 
+    public async getAllTrucks(): Promise<Result<ITruckDTO[]>> {
+
+        try {
+            const trucks = await this.truckRepo.getAllTrucks();
+            const truckDTOResult = TruckMap.toDTOList(trucks) as ITruckDTO[];
+            return Result.ok<ITruckDTO[]>(truckDTOResult);
+        } catch (e) {
+            throw e;
+        }
+
+    }
+
     public async updateTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
         try {
             const truck = await this.truckRepo.getTruckById(truckDTO.id);
