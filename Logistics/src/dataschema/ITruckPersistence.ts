@@ -1,5 +1,5 @@
 export interface ITruckPersistence {
-    id: string;
+    domainId: string;
     tare: number;
     capacity: number;
     maxBatteryCapacity: number;

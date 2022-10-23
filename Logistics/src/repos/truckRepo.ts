@@ -7,6 +7,7 @@ import { TruckMap } from '../mappers/TruckMap';
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { TruckID } from '../domain/truck/TruckID';
+import { raw } from 'body-parser';
 
 
 @Service()
@@ -32,10 +33,11 @@ export default class TruckRepo implements ITruckRepo {
         try {
             
             if(truckDocument === null) {
+                console.log("Truck not found, creating new one");
                 const rawTruck: any = TruckMap.toPersistence(truck);
-                
+                console.log(rawTruck)
                 const truckCreated = await this.truckSchema.create(rawTruck);
-                
+                console.log(truckCreated);
                 return TruckMap.toDomain(truckCreated);
             }
             else{

@@ -6,7 +6,6 @@ const TruckSchema = new mongoose.Schema (
         
         domainId: {
             type: String,
-            required: true,
             unique: true
         },
         tare: {

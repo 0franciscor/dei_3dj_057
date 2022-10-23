@@ -25,14 +25,16 @@ export default class TruckService implements ITruckService {
     
     public async createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
         try {
-            
+
             const truckOrError = Truck.create(truckDTO);
+
             if (truckOrError.isFailure) {
                 return Result.fail<ITruckDTO>(truckOrError.error);
             }
             const truckResult = truckOrError.getValue();
+            console.log(truckResult);
             await this.truckRepo.save(truckResult);
-
+            
             const truckDTOResult = TruckMap.toDTO(truckResult) as ITruckDTO;
             return Result.ok<ITruckDTO>(truckDTOResult);
 

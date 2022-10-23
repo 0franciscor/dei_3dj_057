@@ -33,7 +33,7 @@ export class TruckMap extends Mapper<Truck> {
 
     public static toPersistence(truck: Truck): any {
         return {
-            _id: truck.id.toString(),
+            domainId: truck.id.toString(),
             tare: truck.tare.tare,
             capacity: truck.capacity.capacity,
             maxBatteryCapacity: truck.maxBatteryCapacity.capacity,

@@ -78,27 +78,16 @@ export class Truck extends AggregateRoot<TruckProps> {
 
   public static create (truckDTO:ITruckDTO , id?: UniqueEntityID): Result<Truck> {
 
-    const tare = Tare.create(truckDTO.tare);
-    const capacity = Capacity.create(truckDTO.capacity);
-    const maxBatteryCapacity = MaxBatteryCapacity.create(truckDTO.maxBatteryCapacity);
-    const autonomy = Autonomy.create(truckDTO.autonomy);
-    const fastChargeTime = FastChargeTime.create(truckDTO.fastChargeTime);
+      const truck = new Truck({
+        tare:Tare.create(truckDTO.tare).getValue(),
+        capacity:Capacity.create(truckDTO.capacity).getValue(),
+        maxBatteryCapacity:MaxBatteryCapacity.create(truckDTO.maxBatteryCapacity).getValue(),
+        autonomy:Autonomy.create(truckDTO.autonomy).getValue(),
+        fastChargeTime:FastChargeTime.create(truckDTO.fastChargeTime).getValue()
+      }, id);
+      console.log(truck);
+      return Result.ok<Truck>(truck);
 
-    const truckPropsResult = Result.combine([tare, capacity, maxBatteryCapacity, autonomy, fastChargeTime]);
-
-    if (truckPropsResult.isFailure) {
-      return Result.fail<Truck>(truckPropsResult.error);
-    } else {
-      const truckProps: TruckProps = {
-        tare: tare.getValue(),
-        capacity: capacity.getValue(),
-        maxBatteryCapacity: maxBatteryCapacity.getValue(),
-        autonomy: autonomy.getValue(),
-        fastChargeTime: fastChargeTime.getValue(),
-      };
-
-      return Result.ok<Truck>(new Truck(truckProps, id));
-    }
 
   }
 
