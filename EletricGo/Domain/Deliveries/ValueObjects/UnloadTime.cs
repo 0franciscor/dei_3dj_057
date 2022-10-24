@@ -12,6 +12,11 @@ namespace EletricGo.Domain.Deliveries
             Time = time;
         }
 
+        public float AsFloat()
+        {
+            return Time;
+        }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Time;
