@@ -4,7 +4,7 @@ component "<<component>>\n<<Context(C4)>>\nEletricGo" as c2 {
   component "<<component>>\n<<Container(C4)>>\n User Interface" as UI{
         portin 3
   }
-  component "<<component>>\n<<Container(C4)>>\n WarehouseManager" as WMNG
+  component "<<component>>\n<<Container(C4)>>\n WarehouseManagement" as WMNG
   component "<<component>>\n<<Container(C4)>>\n Logistics" as LG
   component "<<component>>\n<<Container(C4)>>\n Planning" as PL
   portin 1
