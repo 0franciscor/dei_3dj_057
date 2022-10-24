@@ -1,0 +1,34 @@
+@startuml deleteWarehouseSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+participant EletricGO as system <<System(C4)>>
+
+
+admin -> system: I want to delete a warehouse
+activate system
+
+system --> admin: asks for the ID of the warehouse
+deactivate system
+
+admin -> system: inserts the ID of the warehouse
+activate system
+
+system --> admin: asks for the confirmation of the deletion
+deactivate system
+
+admin -> system: confirms the deletion
+activate system
+
+system --> admin: informs about the successful deletion
+
+
+deactivate system
+deactivate admin
+
+@enduml
