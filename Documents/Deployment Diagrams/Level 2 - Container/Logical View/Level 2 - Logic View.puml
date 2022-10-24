@@ -1,0 +1,22 @@
+
+@startuml
+component "<<component>>\n<<Context(C4)>>\nEletricGo" as c2 {
+  port 1
+  portout 2
+
+}
+
+interface UICliente as CL
+interface UIAdministrator as ADM
+interface UIWarehouseManager as MNG
+interface UIFleetManager as FMNG
+interface UILogisticsManager as LMNG
+
+CL --- 1
+ADM --- 1
+MNG --- 1
+FMNG --- 1
+LMNG --- 1
+
+2 -(0- SSOAPI
+@enduml
