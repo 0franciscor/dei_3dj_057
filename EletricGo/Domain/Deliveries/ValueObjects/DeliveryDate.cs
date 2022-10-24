@@ -5,16 +5,21 @@ namespace EletricGo.Domain.Deliveries
 {
     public class DeliveryDate : ValueObject
     {
-        private DateTime Date { get; }
+        private DateTime date { get; }
         
         public DeliveryDate(DateTime date)
         {
-            Date = date;
+            this.date = date;
         }
-        
+
+        public DateTime AsDateTime()
+        {
+            return date;
+        }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Date;
+            yield return date;
         }
     }
    
