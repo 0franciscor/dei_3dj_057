@@ -5,16 +5,21 @@ namespace EletricGo.Domain.Deliveries
 {
     public class LoadTime : ValueObject
     {
-        private float Time { get; }
-
+        private float time { get; }
+        
         public LoadTime(float time)
         {
-            Time = time;
+            this.time = time;
+        }
+
+        public float AsFloat()
+        {
+            return time;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Time;
+            yield return time;
         }
     }
    
