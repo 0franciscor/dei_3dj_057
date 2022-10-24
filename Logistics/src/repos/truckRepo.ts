@@ -1,6 +1,6 @@
 import { Service, Inject } from 'typedi';
 
-import ITruckRepo from '../services/IRepos/ITruckRepo';
+import ITruckRepo from './IRepos/ITruckRepo';
 import { Truck } from '../domain/truck/Truck';
 import { ITruckPersistence } from '../dataschema/ITruckPersistence';
 import { TruckMap } from '../mappers/TruckMap';
