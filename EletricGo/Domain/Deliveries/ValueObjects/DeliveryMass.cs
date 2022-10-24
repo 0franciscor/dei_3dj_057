@@ -5,16 +5,21 @@ namespace EletricGo.Domain.Deliveries
 {
     public class DeliveryMass : ValueObject
     {
-        private double Mass { get; }
+        private float mass { get; }
 
-        public DeliveryMass(double mass)
+        public DeliveryMass(float mass)
         {
-            Mass = mass;
+            this.mass = mass;
+        }
+
+        public float AsFloat()
+        {
+            return mass;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Mass;
+            yield return mass;
         }
     }
   
