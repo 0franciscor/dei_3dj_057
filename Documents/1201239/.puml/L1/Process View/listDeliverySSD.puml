@@ -19,7 +19,7 @@ deactivate system
 admin -> system: inserts the ID of the delivery
 activate system
 
-system --> admin: displays the details of the requested delivery
+system --> admin: displays a list of details about the requested delivery
 deactivate system
 
 deactivate system
