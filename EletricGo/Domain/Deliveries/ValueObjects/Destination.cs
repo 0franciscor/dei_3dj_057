@@ -5,17 +5,23 @@ namespace EletricGo.Domain.Deliveries
 {
     public class Destination : ValueObject
     {
-        private string Destination { get; }
+        private string destination { get; }
         
 
         public Destination(string destination)
         {
-            Destination = destination;
+            this.destination = destination;
         }
+
+        public string AsString()
+        {
+            return destination;
+        }
+
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Destination;
+            yield return destination;
         }
         
     }    
