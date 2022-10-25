@@ -11,6 +11,8 @@ The working group is made up of the students identified in the following table.
 | **[1210802](/Documents/1210802/functionalities.md)** | Ana Cruz |
 | **[1210822](/Documents/1210822/functionalities.md)** | Nuno Barbosa |
 | **[1210824](/Documents/1210824/functionalities.md)** | Paulo Norton |
+| **[1200621](/Documents/1200621/functionalities.md)** | Miguel Alecrim |
+
 
 **NOTE:** Clicking on the **Number** of a Student will redirect you to the **Functions List** developed by the same.
 
