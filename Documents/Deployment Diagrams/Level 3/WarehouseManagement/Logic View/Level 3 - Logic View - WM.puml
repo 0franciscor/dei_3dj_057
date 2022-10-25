@@ -6,8 +6,8 @@ component "<<component>> <<container (C4)>>\nWarehouse Management\n"{
 
     portin 1
     package "Frameworks and Drivers Layers" {
-        component "<<component>>\nWarehouseUI" as UI
-        component "<<component>>\nPersistenceWarehouse" as PRT
+        component "<<component>>\nWarehouseRoute" as UI
+        component "<<component>>\nPersistence" as PRT
 
     }
 
@@ -18,12 +18,14 @@ component "<<component>> <<container (C4)>>\nWarehouse Management\n"{
     }
 
     component "<<component>>\nWarehouseDTO" as DTO
-    interface "WMController API" as API1
-    interface "WMService API" as API2
-    interface "Persistence API" as API3
-    interface "Warehouse API" as API4
-    interface "WM Repository API" as API5
-    interface "WarehouseDTO API" as API6
+    component "<<component>>\nWarehouseSchema" as SCHEMA
+    interface "IWarehouseController" as API1
+    interface "IWarehouseService" as API2
+    interface "IWarehousePersistence" as API3
+    interface "IWarehouse" as API4
+    interface "IWarehouseRepository" as API5
+    interface "IWarehouseDTO" as API6
+    interface "IWarehouseSchema" as API7
 
     package "Application Business Rules" {
         component "<<component>>\nWarehouseService" as SV
@@ -51,9 +53,13 @@ RP -down-API5
 SV -up..> API5 : use
 RP -down..> API4 : use
 
-DTO -right- API6
+DTO -left- API6
 CT -right.> API6 : use
 SV -up..> API6 : use
 
+SCHEMA -left- API7
+RP -up...> API7 : use
+
+PRT ..> API7 : use
 
 @enduml

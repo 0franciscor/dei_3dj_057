@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+ package "Warehouse Management"{
+    package "Infrastructure" as IF{
+        package WarehouseUI as UI
+        package WarehousePersistence as Persistence
+    }
+
+    package "Interface Adapters" as ADP {
+        package WarehouseController as Controller
+        package WarehouseRepository as Repository
+    }
+
+    package "Application Services" as SV {
+        package WarehouseService as Service
+
+    }
+    package "Domain" as DM {
+        package Warehouse
+        package "Value Objects"
+
+
+    }
+ }
+
+@enduml
