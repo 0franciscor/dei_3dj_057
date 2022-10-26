@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using EletricGo.Domain.Shared;
+using System.Threading.Tasks;
 
 namespace EletricGo.Infrastructure
 {

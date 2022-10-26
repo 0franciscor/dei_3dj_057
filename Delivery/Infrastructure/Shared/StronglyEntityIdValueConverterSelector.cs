@@ -1,9 +1,8 @@
+using EletricGo.Domain.Shared;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using EletricGo.Domain.Shared;
-using EletricGo.Infrastructure.Shared;
 
 namespace EletricGo.Infrastructure.Shared
 {

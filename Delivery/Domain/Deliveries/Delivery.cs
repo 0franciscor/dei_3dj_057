@@ -1,5 +1,5 @@
-using System;
 using EletricGo.Domain.Shared;
+using System;
 
 namespace EletricGo.Domain.Deliveries
 {

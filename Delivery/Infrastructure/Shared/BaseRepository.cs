@@ -1,9 +1,9 @@
+using EletricGo.Domain.Shared;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using EletricGo.Domain.Shared;
 
 namespace EletricGo.Infrastructure.Shared
 {
@@ -38,9 +38,8 @@ namespace EletricGo.Infrastructure.Shared
 
         public async Task<TEntity> Update(TEntity obj)
         {
-            //var ret = await _objs.Update(obj);
-            //return ret.Entity;
-            return null;
+            var ret = await _objs.Update(obj);
+            return ret.Entity;
         }
 
         public void Delete(TEntity obj)

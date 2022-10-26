@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EletricGo.Domain.Deliveries;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using EletricGo.Domain.Deliveries;
-    
+
 
 namespace EletricGo.Infrastructure.Deliveries
 {

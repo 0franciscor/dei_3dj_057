@@ -1,7 +1,4 @@
-using EletricGo.Domain.Deliveries;
 using EletricGo.Domain.Shared;
-using Microsoft.AspNetCore.Builder;
-using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;

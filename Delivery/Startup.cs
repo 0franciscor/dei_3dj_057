@@ -1,8 +1,8 @@
-﻿using EletricGo.Infrastructure.Shared;
-using EletricGo.Domain.Deliveries;
+﻿using EletricGo.Domain.Deliveries;
 using EletricGo.Domain.Shared;
 using EletricGo.Infrastructure;
 using EletricGo.Infrastructure.Deliveries;
+using EletricGo.Infrastructure.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using System;
 
 namespace EletricGo
 {
@@ -28,15 +28,16 @@ namespace EletricGo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EletricGoDBContext>(opt =>
-                        opt.UseMySql(Configuration.GetConnectionString("MariaDB"),
+                        opt.UseMySql(Configuration.GetConnectionString("Default"),
                         new MySqlServerVersion(new Version(10, 7, 3)),
                         o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore))
+
                     .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>()
-            );
+            ); ;
 
             var optionsBuilder = new DbContextOptionsBuilder<EletricGoDBContext>();
-            optionsBuilder.UseMySql(Configuration.GetConnectionString("MariaDB"),
-                        new MySqlServerVersion(new Version(10, 7, 3)),
+            optionsBuilder.UseMySql(Configuration.GetConnectionString("Default"),
+                        new MySqlServerVersion(new Version(8, 0, 28)),
                         o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore));
 
 

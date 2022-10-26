@@ -1,6 +1,6 @@
-using System;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using EletricGo.Domain.Shared;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 
 namespace EletricGo.Infrastructure.Shared
 {
