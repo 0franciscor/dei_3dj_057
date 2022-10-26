@@ -28,13 +28,13 @@ export default async ({ expressApp }) => {
 
   const pathController={
     name: config.controllers.path.name,
-    path:config.controllers.path.path,
+    path: config.controllers.path.path,
   };
 
   const truckRepo = {
     name: config.repos.truck.name,
     path: config.repos.truck.path
-  }
+  };
 
   const pathRepo={
     name: config.repos.path.name,

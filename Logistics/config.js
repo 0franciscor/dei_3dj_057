@@ -70,7 +70,7 @@ export default {
     },
     path: {
       name:"PathService",
-      path: "../service/pathService"
+      path: "../services/pathService"
     }
   }
 };

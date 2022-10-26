@@ -8,6 +8,8 @@ import { ITruckDTO } from '../dto/ITruckDTO';
 
 import { Result } from '../core/logic/Result';
 
+
+
 @Service()
 export default class TruckController implements ITruckController {
 
@@ -17,7 +19,7 @@ export default class TruckController implements ITruckController {
 
     public async getTruck(req: Request, res: Response, next: NextFunction){
         try {
-
+            
             const truck = await this.truckService.getTruck(req.body.truckID);
             res.status(200).json(truck);
         } catch (e) {

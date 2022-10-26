@@ -10,7 +10,7 @@ import { PathMap } from "../mappers/PathMap";
 @Service()
 export default class PathRepo implements IPathRepo{
     constructor(
-        @Inject('pathScema') private pathSchema : Model<IPathPersistance & Document>,
+        @Inject('pathSchema') private pathSchema : Model<IPathPersistance & Document>,
     ) {}
       
     public async exists(path: Path): Promise<boolean> {
