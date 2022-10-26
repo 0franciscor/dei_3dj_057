@@ -16,15 +16,30 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/truckSchema',
   };
 
+  const pathSchema={
+    name: 'pathSchema',
+    schema: '../persistence/schemas/pathSchema',
+  };
+
   const truckController = {
     name: config.controllers.truck.name,
     path: config.controllers.truck.path
   }
 
+  const pathController={
+    name: config.controllers.path.name,
+    path:config.controllers.path.path,
+  };
+
   const truckRepo = {
     name: config.repos.truck.name,
     path: config.repos.truck.path
   }
+
+  const pathRepo={
+    name: config.repos.path.name,
+    path: config.repos.path.path
+  };
 
 
   const truckService = {
@@ -32,19 +47,28 @@ export default async ({ expressApp }) => {
     path: config.services.truck.path
   }
 
+  const pathService={
+    name: config.services.path.name,
+    path: config.services.path.path
+  };
+
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
-        truckSchema
+        truckSchema,
+        pathSchema
     ],
     controllers: [
-        truckController
+        truckController,
+        pathController
     ],
     repos: [
-        truckRepo
+        truckRepo,
+        pathRepo
     ],
     services: [
-        truckService
+        truckService,
+        pathService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import path from 'path';
 
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -44,6 +45,10 @@ export default {
     truck: {
       name: "TruckController",
       path: "../controllers/truckController"
+    },
+    path:{
+      name: "PathController",
+      path: "../controllers/pathController"
     }
   },
 
@@ -51,6 +56,10 @@ export default {
     truck: {
       name: "TruckRepo",
       path: "../repos/truckRepo"
+    },
+    path: {
+      name: "PathRepo",
+      path: "../repos/pathRepo"
     }
   },
 
@@ -58,6 +67,10 @@ export default {
     truck: {
       name: "TruckService",
       path: "../services/truckService"
+    },
+    path: {
+      name:"PathService",
+      path: "../service/pathService"
     }
-  },
+  }
 };

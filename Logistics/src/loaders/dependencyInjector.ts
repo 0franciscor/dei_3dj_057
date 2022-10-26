@@ -18,17 +18,20 @@ export default ({ mongoConnection, schemas, controllers, repos, services}: {
     schemas.forEach(m => {
       // Notice the require syntax and the '.default'
       let schema = require(m.schema).default;
+      console.log(schema)
       Container.set(m.name, schema);
     });
   
     repos.forEach(m => {
       let repoClass = require(m.path).default;
+      console.log(repoClass)
       let repoInstance = Container.get(repoClass);
       Container.set(m.name, repoInstance);
     });
 
     services.forEach(m => {
       let serviceClass = require(m.path).default;
+      console.log(serviceClass)
       let serviceInstance = Container.get(serviceClass)
       
       Container.set(m.name, serviceInstance);
@@ -37,6 +40,7 @@ export default ({ mongoConnection, schemas, controllers, repos, services}: {
     controllers.forEach(m => {
       // load the @Service() class by its path
       let controllerClass = require(m.path).default;
+      console.log(controllerClass)
       // create/get the instance of the @Service() class
       let controllerInstance = Container.get(controllerClass);
       // rename the instance inside the container
