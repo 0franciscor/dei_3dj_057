@@ -23,7 +23,7 @@ namespace EletricGo.Domain.Deliveries
 
         public Delivery(DeliveryDTO deliveryDTO)
         { 
-            this.Id = new DeliveryID(Guid.NewGuid()).AsString();
+            this.Id = deliveryDTO.deliveryID.ToString();
             this.deliveryDate = new DeliveryDate(deliveryDTO.deliveryDate);
             this.loadTime = new LoadTime(deliveryDTO.loadTime);
             this.unloadTime = new UnloadTime(deliveryDTO.unloadTime);
@@ -33,7 +33,7 @@ namespace EletricGo.Domain.Deliveries
 
         public DeliveryDTO toDeliveryDTO()
         {
-            return new DeliveryDTO() {deliveryID = new DeliveryID(this.Id), deliveryDate = this.deliveryDate.AsDateTime(), loadTime = this.loadTime.AsFloat(), 
+            return new DeliveryDTO() {deliveryID = this.Id, deliveryDate = this.deliveryDate.AsDateTime(), loadTime = this.loadTime.AsFloat(), 
                 unloadTime = this.unloadTime.AsFloat(), destination = this.destination.AsString(), deliveryMass = this.deliveryMass.AsFloat() };
         }
 
