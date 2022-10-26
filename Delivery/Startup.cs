@@ -1,0 +1,96 @@
+﻿using EletricGo.Infrastructure.Shared;
+using EletricGo.Domain.Deliveries;
+using EletricGo.Domain.Shared;
+using EletricGo.Infrastructure;
+using EletricGo.Infrastructure.Deliveries;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+
+namespace EletricGo
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<EletricGoDBContext>(opt =>
+                        opt.UseMySql(Configuration.GetConnectionString("MariaDB"),
+                        new MySqlServerVersion(new Version(10, 7, 3)),
+                        o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore))
+                    .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>()
+            );
+
+            var optionsBuilder = new DbContextOptionsBuilder<EletricGoDBContext>();
+            optionsBuilder.UseMySql(Configuration.GetConnectionString("MariaDB"),
+                        new MySqlServerVersion(new Version(10, 7, 3)),
+                        o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore));
+
+
+            using (var dbContext = new EletricGoDBContext(optionsBuilder.Options))
+            {
+                dbContext.Database.EnsureCreated();
+            }
+
+
+            ConfigureMyServices(services);
+
+            //initialization of the dbContext
+
+
+            services
+                .AddControllers()
+                .AddNewtonsoftJson();
+                
+
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+
+        public void ConfigureMyServices(IServiceCollection services)
+        { 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddTransient<IDeliveryRepository, DeliveryRepository>();
+            services.AddTransient<DeliveryService>();
+
+        }
+
+    }
+}
