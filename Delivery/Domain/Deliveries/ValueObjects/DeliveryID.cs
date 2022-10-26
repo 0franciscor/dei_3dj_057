@@ -6,16 +6,11 @@ namespace EletricGo.Domain.Deliveries
     public class DeliveryID : EntityID
     {
 
-        private Guid deliveryID;
-
-         public DeliveryID(Guid value) : base(value)
-        {
-            this.deliveryID = value;
-        }
+        public string deliveryID { get; set; }
 
         public DeliveryID(String value) : base(value)
         {
-            this.deliveryID = (Guid)createFromString(value);
+            this.deliveryID = value;
         }
 
         override
