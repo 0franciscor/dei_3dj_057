@@ -1,0 +1,36 @@
+@startuml createTruckSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+participant System as system <<System(C4)>>
+
+
+manager -> system: I want to create a new truck
+activate system
+
+system --> manager: asks for the details on the new truck
+deactivate system
+
+manager -> system: inserts the information about the new truck
+activate system
+
+alt truck doesn't exist
+
+system --> manager: informs about the success of the creation
+
+
+else truck already exists
+
+system --> manager: informs about the failure of the creation
+deactivate system
+end
+
+
+deactivate manager
+
+@enduml

@@ -1,0 +1,85 @@
+@startuml createTruckSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant TruckRoute as Route <<Component(C4)>>
+participant TruckController as Controller <<Component(C4)>>
+participant TruckService as Service <<Component(C4)>>
+participant TruckRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+end box
+
+manager -> SPA: I want to create a new truck
+activate SPA
+
+SPA --> manager: asks for the details on the new truck
+deactivate SPA
+
+manager -> SPA: inserts the information about the new truck
+activate SPA
+
+SPA -> Route: POST createTruck(truckInfo)
+activate Route
+
+Route -> Controller: POST createTruck(truckInfo)
+activate Controller
+
+Controller -> Service: createTruck(truckInfo)
+
+Service -> Repository: getTruckById(truckInfo.id)
+
+Repository -> Persistence: findOne(truckInfo.id)
+
+alt truck doesn't exist
+
+Persistence --> Repository: null
+
+Repository --> Service: null
+
+Service -> Repository: save(truckInfo)
+
+Repository -> Persistence: save(truckInfo)
+
+Persistence --> Repository: true
+
+Repository --> Service: truckInfo
+
+Service --> Controller: truckInfo
+
+Controller --> Route: 201 CREATED + truckInfo
+
+Route --> SPA: 201 CREATED
+SPA --> manager: informs about the success of the creation
+
+
+else truck already exists
+
+Persistence --> Repository: truck
+
+Repository --> Service: truck
+
+Service --> Controller: error, Truck already exists
+
+Controller --> Route: 409 CONFLICT, Truck already exists
+
+Route --> SPA: 409 CONFLICT, Truck already exists
+deactivate Route
+SPA --> manager: informs about the failure of the creation
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml

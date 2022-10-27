@@ -1,0 +1,45 @@
+@startuml updateTruckSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+
+
+manager -> SPA: I want to update a truck
+activate SPA
+
+SPA --> manager: asks for truck ID and new truck info
+deactivate SPA
+
+manager -> SPA: inserts truck ID and new truck info
+activate SPA
+
+SPA -> Logistics: PUT updateTruck(truck)
+activate Logistics
+
+alt truck exists
+
+Logistics --> SPA: 200 OK
+SPA --> manager: shows information about truck with new info
+
+
+else truck doesn't exists
+
+Logistics --> SPA: 404 NOT FOUND
+deactivate Logistics
+SPA --> manager: informs truck doesn't exist
+
+end
+
+deactivate manager
+
+@enduml

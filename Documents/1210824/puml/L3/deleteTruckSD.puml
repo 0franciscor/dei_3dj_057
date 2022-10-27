@@ -1,0 +1,83 @@
+@startuml deleteTruckSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant TruckRoute as Route <<Component(C4)>>
+participant TruckController as Controller <<Component(C4)>>
+participant TruckService as Service <<Component(C4)>>
+participant TruckRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+end box
+
+manager -> SPA: I want to delete a truck
+activate SPA
+
+SPA --> manager: asks for truck ID
+deactivate SPA
+
+manager -> SPA: inserts truck ID
+activate SPA
+
+SPA -> Route: DELETE deleteTruck(truckID)
+activate Route
+
+Route -> Controller: DELETE deleteTruck(truckID)
+activate Controller
+
+Controller -> Service: deleteTruck(truckID)
+
+Service -> Repository: getTruckById(truckID)
+
+Repository -> Persistence: findOne(truckID)
+
+alt truck exists
+Persistence --> Repository: truckInfo
+
+Repository --> Service: truckInfo
+
+Service -> Repository: delete(truckID)
+
+Repository -> Persistence: deleteOne(truckID)
+
+Persistence --> Repository: true
+
+Repository --> Service: truckInfo
+
+Service --> Controller: truckInfo 
+
+Controller --> Route: 200 OK + truckInfo
+
+Route --> SPA: 200 OK + truckInfo
+SPA --> manager: informs about the success of the deletion
+
+
+else truck doesn't exists
+Persistence --> Repository: null
+
+Repository --> Service: null
+
+Service --> Controller: error, Truck doesn't exist
+
+Controller --> Route: 404 NOT FOUND, Truck doesn't exist
+
+Route --> SPA: 404 NOT FOUND, Truck doesn't exist
+deactivate Route
+SPA --> manager: informs about the failure of the deletion
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml

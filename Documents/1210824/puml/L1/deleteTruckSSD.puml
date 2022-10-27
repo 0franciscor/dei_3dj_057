@@ -1,0 +1,36 @@
+@startuml deleteTruckSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+participant System as system <<System(C4)>>
+
+
+manager -> system: I want to delete a truck
+activate system
+
+system --> manager: asks for truck ID
+deactivate system
+
+manager -> system: inserts truck ID
+activate system
+
+alt truck exists
+
+system --> manager: informs about the success of the deletion
+
+
+else truck doesn't exist
+
+system --> manager: informs about the failure of the deletion
+deactivate system
+end
+
+
+deactivate manager
+
+@enduml

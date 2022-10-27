@@ -1,0 +1,47 @@
+@startuml createTruckSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+
+
+manager -> SPA: I want to create a new truck
+activate SPA
+
+SPA --> manager: asks for the details on the new truck
+deactivate SPA
+
+manager -> SPA: inserts the information about the new truck
+activate SPA
+
+SPA -> Logistics: POST createTruck(truckInfo)
+activate Logistics
+
+
+alt truck doesn't exist
+
+Logistics --> SPA: 201 Created
+SPA --> manager: informs about the success of the creation
+
+
+else truck already exists
+
+Logistics --> SPA: 409 Conflict
+deactivate Logistics
+SPA --> manager: informs about the failure of the creation
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml

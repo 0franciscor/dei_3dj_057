@@ -1,0 +1,35 @@
+@startuml updateTruckSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+participant System as system <<System(C4)>>
+
+
+manager -> system: I want to update a truck
+activate system
+
+system --> manager: asks for truck ID and new truck info
+deactivate system
+
+manager -> system: inserts truck ID and new truck info
+activate system
+
+alt truck exists
+
+system --> manager: shows information about truck with new info
+
+
+else truck doesn't exist
+
+system --> manager: informs truck doesn't exist
+deactivate system
+end
+
+deactivate manager
+
+@enduml

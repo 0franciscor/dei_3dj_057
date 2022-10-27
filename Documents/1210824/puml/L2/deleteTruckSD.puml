@@ -1,0 +1,47 @@
+@startuml deleteTruckSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+
+
+manager -> SPA: I want to delete truck
+activate SPA
+
+SPA --> manager: asks for truck ID
+deactivate SPA
+
+manager -> SPA: inserts truck ID
+activate SPA
+
+SPA -> Logistics: DELETE deleteTruck(truckID)
+activate Logistics
+
+
+alt truck exists
+
+Logistics --> SPA: 200 OK
+SPA --> manager: informs about the success of the deletion
+
+
+else truck doesn't exists
+
+Logistics --> SPA: 404 NOT FOUND
+deactivate Logistics
+SPA --> manager: informs about the failure of the deletion
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml
