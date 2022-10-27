@@ -48,7 +48,7 @@ export default class TruckController implements ITruckController {
         try {
             const truckOrError = await this.truckService.createTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
             if (truckOrError.isFailure) {
-                return res.status(403).send("Truck already exists");
+                return res.status(409).send("Truck already exists");
             }
 
             const truckDTO = truckOrError.getValue();
@@ -65,10 +65,10 @@ export default class TruckController implements ITruckController {
         try {
             const truckOrError = await this.truckService.updateTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
             if (truckOrError.isFailure) {
-                return res.status(403).send("Truck not found");
+                return res.status(409).send("Truck not found");
             }
             const truckDTO = truckOrError.getValue();
-            return res.status(201).json( truckDTO );
+            return res.status(200).json( truckDTO );
         } catch (e) {
             next(e);
         }
@@ -79,7 +79,7 @@ export default class TruckController implements ITruckController {
 
             const truckResult = await this.truckService.deleteTruck(req.body.truckID);
             if(truckResult.isFailure)
-                return res.status(403).send("Truck not found");
+                return res.status(404).send("Truck not found");
             res.status(200).json(truckResult);
         } catch (e) {
             next(e);
