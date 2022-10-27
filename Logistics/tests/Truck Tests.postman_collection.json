@@ -1,0 +1,610 @@
+{
+	"info": {
+		"_postman_id": "1243cdb3-fa3e-4556-85c0-743bd9f2c3b2",
+		"name": "Truck Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23547765"
+	},
+	"item": [
+		{
+			"name": "Get Truck Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck not found\", function() {\r",
+							"    pm.response.to.have.body(\"Truck not found\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"truckID\": \"testTruckTesting\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Truck Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":100,\r",
+							"            \"capacity\":200,\r",
+							"            \"maxBatteryCapacity\":300,\r",
+							"            \"autonomy\":400,\r",
+							"            \"fastChargeTime\":500\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"truckID\":\"testTruckTesting\",\r\n    \"tare\":100,\r\n    \"capacity\":200,\r\n    \"maxBatteryCapacity\":300,\r\n    \"autonomy\":400,\r\n    \"fastChargeTime\":500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Truck Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":100,\r",
+							"            \"capacity\":200,\r",
+							"            \"maxBatteryCapacity\":300,\r",
+							"            \"autonomy\":400,\r",
+							"            \"fastChargeTime\":500\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"truckID\": \"testTruckTesting\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Truck Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"UnSuccessful POST request\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck already exists\", function() {\r",
+							"    pm.response.to.have.body(\"Truck already exists\"); \r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"truckID\":\"testTruckTesting\",\r\n    \"tare\":100,\r\n    \"capacity\":200,\r\n    \"maxBatteryCapacity\":300,\r\n    \"autonomy\":400,\r\n    \"fastChargeTime\":500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Truck Tare Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":10,\r",
+							"            \"capacity\":200,\r",
+							"            \"maxBatteryCapacity\":300,\r",
+							"            \"autonomy\":400,\r",
+							"            \"fastChargeTime\":500\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"truckID\":\"testTruckTesting\",\r\n    \"tare\":10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Truck Capacity Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":100,\r",
+							"            \"capacity\":20,\r",
+							"            \"maxBatteryCapacity\":300,\r",
+							"            \"autonomy\":400,\r",
+							"            \"fastChargeTime\":500\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"truckID\":\"testTruckTesting\",\r\n    \"capacity\":20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Truck MaxBatteryCapacityTest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":100,\r",
+							"            \"capacity\":200,\r",
+							"            \"maxBatteryCapacity\":30,\r",
+							"            \"autonomy\":400,\r",
+							"            \"fastChargeTime\":500\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"truckID\":\"testTruckTesting\",\r\n    \"maxBatteryCapacity\":30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Truck Autonomy Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":100,\r",
+							"            \"capacity\":200,\r",
+							"            \"maxBatteryCapacity\":300,\r",
+							"            \"autonomy\":40,\r",
+							"            \"fastChargeTime\":500\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"truckID\":\"testTruckTesting\",\r\n    \"autonomy\":40\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Truck FastChargeTime Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":100,\r",
+							"            \"capacity\":200,\r",
+							"            \"maxBatteryCapacity\":300,\r",
+							"            \"autonomy\":400,\r",
+							"            \"fastChargeTime\":50\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"truckID\":\"testTruckTesting\",\r\n    \"fastChargeTime\":50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Truck Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON after delete\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":100,\r",
+							"            \"capacity\":200,\r",
+							"            \"maxBatteryCapacity\":300,\r",
+							"            \"autonomy\":400,\r",
+							"            \"fastChargeTime\":50\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"truckID\": \"testTruckTesting\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Truck Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck not found\", function() {\r",
+							"    pm.response.to.have.body(\"Truck not found\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"truckID\": \"testTruckTesting\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
