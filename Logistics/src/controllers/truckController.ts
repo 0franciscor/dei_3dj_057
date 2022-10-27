@@ -21,6 +21,10 @@ export default class TruckController implements ITruckController {
         try {
             
             const truck = await this.truckService.getTruck(req.body.truckID);
+            if (truck.isFailure)
+                return res.status(404).send("Truck not found");
+                
+            
             res.status(200).json(truck);
         } catch (e) {
             next(e);
@@ -31,6 +35,9 @@ export default class TruckController implements ITruckController {
         try {
             
             const trucks = await this.truckService.getAllTrucks();
+            if (trucks.isFailure)
+                return res.status(404).send("Trucks not found");
+
             res.status(200).json(trucks);
         } catch (e) {
             next(e);
@@ -46,7 +53,7 @@ export default class TruckController implements ITruckController {
 
             const truckDTO = truckOrError.getValue();
             
-            return res.json( truckDTO ).status(201);
+            return res.status(201).json( truckDTO );
 
 
             } catch (e) {
@@ -61,7 +68,7 @@ export default class TruckController implements ITruckController {
                 return res.status(403).send("Truck not found");
             }
             const truckDTO = truckOrError.getValue();
-            return res.json( truckDTO ).status(200);
+            return res.status(201).json( truckDTO );
         } catch (e) {
             next(e);
         }
