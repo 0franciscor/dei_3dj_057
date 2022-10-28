@@ -12,21 +12,12 @@ namespace EletricGo.Domain.Deliveries
         {
             this.deliveryID = value;
         }
-
-        override
-        protected Object createFromString(String text){
-            return new Guid(text);
-        }
         
         override
         public String AsString(){
-            Guid obj = (Guid) base.ObjValue;
-            return obj.ToString();
+            return deliveryID;
         }
         
-        public Guid AsGuid(){
-            return (Guid) base.ObjValue;
-        }
 
     }    
 }
