@@ -65,7 +65,7 @@ export default class TruckController implements ITruckController {
         try {
             const truckOrError = await this.truckService.updateTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
             if (truckOrError.isFailure) {
-                return res.status(409).send("Truck not found");
+                return res.status(404).send("Truck not found");
             }
             const truckDTO = truckOrError.getValue();
             return res.status(200).json( truckDTO );

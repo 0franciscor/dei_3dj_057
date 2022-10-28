@@ -1,0 +1,34 @@
+@startuml
+
+
+interface UI1 as ui1
+interface UI2 as ui2
+
+rectangle "<<System(C4)>>\n System" as system{
+
+
+    component "<<Component(C4)>>\n              SPA" as ui
+    component "<<Component(C4)>>\n              WM" as wm
+    database WarehouseManagementDB
+    component "<<Component(C4)>>\n              Log" as log
+    database logisticsDB
+    component "<<Component(C4)>>\n              Plano" as plano
+
+
+
+
+}
+
+
+() ui1 )- [ui]
+() ui2 )- [ui]
+
+ui -(0- wm
+wm -(0- WarehouseManagementDB
+
+ui -(0- log
+log -(0- logisticsDB
+
+log -(0- plano
+
+@enduml
