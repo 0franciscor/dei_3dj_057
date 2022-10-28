@@ -17,47 +17,39 @@ namespace EletricGo.Domain.Deliveries
             _deliveryRepository = deliveryRepository;
         }
 
-        public async Task<List<DeliveryDTO>> getDeliveries()
+        public async Task<List<DeliveryDTO>> GetDeliveries()
         {
             var deliveries = await _deliveryRepository.GetAll();
             return deliveries.Select(x => x.toDeliveryDTO()).ToList();
         }
 
-        public async Task<DeliveryDTO> getDelivery(DeliveryID id)
+        public async Task<DeliveryDTO> GetDelivery(DeliveryDTO deliveryDTO)
         {
-            var delivery = await _deliveryRepository.GetByID(id);
+            var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
             return delivery.toDeliveryDTO();
         }
 
-        public async Task<DeliveryDTO> createDelivery(DeliveryDTO deliveryDTO)
+        public async Task<DeliveryDTO> CreateDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = new Delivery(deliveryDTO);
             await _deliveryRepository.Add(delivery);
-            try
-            {
-                await this._unitOfWork.CommitAsync(); // LINHA IMPORTANTE QUE TE ESQUECESTE 
-            }
-            catch (Exception exp)
-            {
-                // Log what you need from here.
-                throw new InvalidOperationException("Data could not be read", exp);
-            }
-            
+            await this._unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
 
-        public async Task<DeliveryDTO> updateDelivery(string id, DeliveryDTO deliveryDTO)
+        public async Task<DeliveryDTO> UpdateDelivery(DeliveryDTO deliveryDTO)
         {
-            var delivery = await _deliveryRepository.GetByID(new DeliveryID(id));
+            var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
             delivery.update(deliveryDTO);
-            await _deliveryRepository.Update(delivery);
+            await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
 
-        public async Task<DeliveryDTO> deleteDelivery(string id)
+        public async Task<DeliveryDTO> DeleteDelivery(DeliveryDTO deliveryDTO)
         {
-            var delivery = await _deliveryRepository.GetByID(new DeliveryID(id));
+            var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
             _deliveryRepository.Delete(delivery);
+            await this._unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
     }
