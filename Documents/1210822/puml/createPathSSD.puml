@@ -1,0 +1,36 @@
+@startuml createPathSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+participant System as system <<System(C4)>>
+
+
+manager -> system: I want to create a new path
+activate system
+
+system --> manager: asks for the details on the new path
+deactivate system
+
+manager -> system: inserts the information about the new path
+activate system
+
+alt path doesn't exist
+
+system --> manager: informs about the success of the creation
+
+
+else path already exists
+
+system --> manager: informs about the failure of the creation
+deactivate system
+end
+
+
+deactivate manager
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml updatePathSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+participant System as system <<System(C4)>>
+
+
+manager -> system: I want to update a path
+activate system
+
+system --> manager: asks for path ID and new path info
+deactivate system
+
+manager -> system: inserts path ID and new path info
+activate system
+
+alt path exists
+
+system --> manager: shows information about path with new info
+
+
+else path doesn't exist
+
+system --> manager: informs path doesn't exist
+deactivate system
+end
+
+deactivate manager
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml getPathSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+participant System as system <<System(C4)>>
+
+
+manager -> system: I want to get a path
+activate system
+
+system --> manager: asks for path ID
+deactivate system
+
+manager -> system: inserts path ID
+activate system
+
+alt path exists
+
+system --> manager: shows information about path
+
+else path doesn't exist
+
+system --> manager: informs path doesn't exist
+deactivate system
+
+end
+
+deactivate manager
+
+@enduml

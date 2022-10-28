@@ -1,0 +1,36 @@
+@startuml deletePathSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+participant System as system <<System(C4)>>
+
+
+manager -> system: I want to delete a path
+activate system
+
+system --> manager: asks for path ID
+deactivate system
+
+manager -> system: inserts path ID
+activate system
+
+alt path exists
+
+system --> manager: informs about the success of the deletion
+
+
+else path doesn't exist
+
+system --> manager: informs about the failure of the deletion
+deactivate system
+end
+
+
+deactivate manager
+
+@enduml
