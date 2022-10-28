@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EletricGo.Domain.Shared
+namespace WarehouseManagement.Domain.Shared
 {
     public abstract class IValueObject
     {
