@@ -18,35 +18,42 @@ namespace EletricGo.Controllers
             _deliveryService = service;
         }
 
-        [HttpGet("list")]
-        public async Task<ActionResult<List<DeliveryDTO>>> Get()
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<DeliveryDTO>>> GetAll()
         {
-            return await _deliveryService.getDeliveries();
+            return await _deliveryService.GetDeliveries();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DeliveryDTO>> GetByID(DeliveryID id)
+        public async Task<ActionResult<DeliveryDTO>> GetByID([FromBody] DeliveryDTO dto)
         {
-            return await _deliveryService.getDelivery(id);
+
+            var obj = await _deliveryService.GetDelivery(dto);
+
+            if (obj == null)
+                return NotFound();
+
+            return obj;
         }
 
         [HttpPost("createDelivery")]
         public async Task<ActionResult<DeliveryDTO>> Post([FromBody] DeliveryDTO dto)
         {   
-            var delivery = await _deliveryService.createDelivery(dto);
+            var delivery = await _deliveryService.CreateDelivery(dto);
             return CreatedAtAction(nameof(GetByID), new { id = delivery.deliveryID}, delivery);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<DeliveryDTO>> Put(string id, [FromBody] DeliveryDTO dto)
+        [HttpPut("updateDelivery")]
+        public async Task<ActionResult<DeliveryDTO>> Put([FromBody] DeliveryDTO dto)
         {
-            return await _deliveryService.updateDelivery(id, dto);
+            return await _deliveryService.UpdateDelivery(dto);
         }
+
         
         [HttpDelete("{id}")]
-        public async Task<ActionResult<DeliveryDTO>> Delete(string id)
+        public async Task<ActionResult<DeliveryDTO>> Delete([FromBody] DeliveryDTO dto)
         {
-            return await _deliveryService.deleteDelivery(id);
+            return await _deliveryService.DeleteDelivery(dto);
         }
     }
     
