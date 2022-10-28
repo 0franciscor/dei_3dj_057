@@ -19,14 +19,8 @@ namespace EletricGo.Domain.Shared
 
         protected EntityID(Object value)
         {
-            if (value.GetType() == typeof(String))
-                this.ObjValue = createFromString((String)value);
-            else
-                this.ObjValue = value;
+            this.ObjValue = value;    
         }
-
-       
-        protected abstract Object createFromString(String text);
         
         public abstract String AsString();
 
