@@ -39,11 +39,20 @@ namespace EletricGo.Domain.Deliveries
 
         public void update(DeliveryDTO deliveryDTO)
         {
-            this.deliveryDate = new DeliveryDate(deliveryDTO.deliveryDate);
-            this.loadTime = new LoadTime(deliveryDTO.loadTime);
-            this.unloadTime = new UnloadTime(deliveryDTO.unloadTime);
-            this.destination = new Destination(deliveryDTO.destination);
-            this.deliveryMass = new DeliveryMass(deliveryDTO.deliveryMass);
+            if (deliveryDTO.deliveryDate != default(DateTime))
+                this.deliveryDate = new DeliveryDate(deliveryDTO.deliveryDate);
+
+            if (deliveryDTO.loadTime != default(float))
+                this.loadTime = new LoadTime(deliveryDTO.loadTime);
+
+            if (deliveryDTO.unloadTime != default(float))
+                this.unloadTime = new UnloadTime(deliveryDTO.unloadTime);
+
+            if (deliveryDTO.destination != null)
+                this.destination = new Destination(deliveryDTO.destination);
+
+            if (deliveryDTO.deliveryMass != default(float))
+                this.deliveryMass = new DeliveryMass(deliveryDTO.deliveryMass);
         }
 
     }    
