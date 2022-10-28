@@ -25,11 +25,11 @@ rectangle EletricGo {
     usecase "Delete a Truck" as UC14
     usecase "List the Trucks" as UC15
 
-    usecase "Create a Route" as UC16
-    usecase "Reade information about a Route" as UC17
-    usecase "Update information about Route" as UC18
-    usecase "Delete a Route" as UC19
-    usecase "List the Routes" as UC20
+    usecase "Create a Path" as UC16
+    usecase "Reade information about a Path" as UC17
+    usecase "Update information about Path" as UC18
+    usecase "Delete a Path" as UC19
+    usecase "List the Paths" as UC20
 
     usecase "Create a Client" as UC21
     usecase "Reade information about a Client" as UC22
