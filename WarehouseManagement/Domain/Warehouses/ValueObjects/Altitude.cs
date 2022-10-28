@@ -1,12 +1,13 @@
-using WarehouseManagement.Shared;
 using System;
+using System.Collections.Generic;
+using WarehouseManagement.Domain.Shared;
 
-namespace WarehouseManagement.Warehouses.ValueObjects
+namespace EletricGo.Domain.Warehouses.ValueObjects
 {
     public class Altitude : IValueObject
     {
 
-        private int altitude { get; }
+        public int altitude { get; }
        
 
         public Altitude()
@@ -19,8 +20,14 @@ namespace WarehouseManagement.Warehouses.ValueObjects
             this.altitude = altitude;
         }
 
-
-
+        public int AsInt()
+        {
+            return altitude;
+        }
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return altitude;
+        }
     }
 
 

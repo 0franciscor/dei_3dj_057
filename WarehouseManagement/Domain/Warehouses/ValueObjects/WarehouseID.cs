@@ -1,12 +1,12 @@
-using WarehouseManagement.Shared;
 using System;
+using EletricGo.Domain.Shared;
 
-namespace WarehouseManagement.Warehouses.ValueObjects
+namespace EletricGo.Domain.Warehouses.ValueObjects
 {
 	public class WarehouseID : EntityID
 	{
 		
-		private string deliveryID { get; set; }
+		public string deliveryID { get;}
 
 		public WarehouseID(String value) : base(value)
 		{

@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System;
+using EletricGo.Domain.Warehouses;
+using EletricGo.Infrastructure.Warehouses;
 
 namespace EletricGo
 {
@@ -90,6 +92,10 @@ namespace EletricGo
 
             services.AddTransient<IDeliveryRepository, DeliveryRepository>();
             services.AddTransient<DeliveryService>();
+            
+            
+            services.AddTransient<IWarehouseRepository, WarehouseRepository>();
+            services.AddTransient<WarehouseService>();
 
         }
 

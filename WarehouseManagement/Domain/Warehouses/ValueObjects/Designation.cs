@@ -1,12 +1,13 @@
-using WarehouseManagement.Shared;
 using System;
+using System.Collections.Generic;
+using WarehouseManagement.Domain.Shared;
 
-namespace WarehouseManagement.Warehouses.ValueObjects
+namespace EletricGo.Domain.Warehouses.ValueObjects
 {
     public class Designation : IValueObject
     {
 
-        private string designation { get; }
+        public string designation { get; }
 
         public Designation()
         {
@@ -18,8 +19,15 @@ namespace WarehouseManagement.Warehouses.ValueObjects
             this.designation = designation;
         }
 
+        public string AsString()
+        {
+            return designation;
+        }
 
-
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return designation;
+        }
     }
 
 

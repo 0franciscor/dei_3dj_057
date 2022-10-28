@@ -1,6 +1,6 @@
 namespace EletricGo.Domain.Shared {
 
-    public abstract class Entity<TEntityId> where TEntityId : EntityID
+    public abstract class Entity<TEntityId>
     {
         public string Id { get; protected set; }
     }
