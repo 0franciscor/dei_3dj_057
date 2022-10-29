@@ -10,8 +10,6 @@ namespace EletricGo.Domain.Shared
         Task<List<TEntity>> GetAll();
         
         Task<TEntity> Add(TEntity entity);
-
-        Task<TEntity> Update(TEntity entity);
        
         void Delete(TEntity entity);
     }
