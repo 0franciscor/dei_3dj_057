@@ -39,7 +39,7 @@ namespace EletricGo
 
             var optionsBuilder = new DbContextOptionsBuilder<EletricGoDBContext>();
             optionsBuilder.UseMySql(Configuration.GetConnectionString("Default"),
-                        new MySqlServerVersion(new Version(8, 0, 28)),
+                        new MySqlServerVersion(new Version(10, 7, 3)),
                         o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore));
 
 
