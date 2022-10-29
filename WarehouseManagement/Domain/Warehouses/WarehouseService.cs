@@ -53,7 +53,7 @@ namespace EletricGo.Domain.Warehouses
         {
             var warehouse = await _warehouseRepository.GetByID(new WarehouseID(id));
             warehouse.Update(dto);
-            await _warehouseRepository.Update(warehouse);
+            await this._unitOfWork.CommitAsync();
             return warehouse.ToWarehouseDto();
         }
 
