@@ -13,11 +13,6 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 			this.deliveryID = value;
 		}
 
-		override
-		protected Object createFromString(String text)
-		{
-			return new Guid(text);
-		}
 
 		override
 		public String AsString()
