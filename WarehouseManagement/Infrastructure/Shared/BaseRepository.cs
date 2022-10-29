@@ -2,7 +2,6 @@ using EletricGo.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EletricGo.Infrastructure.Shared
@@ -20,9 +19,9 @@ namespace EletricGo.Infrastructure.Shared
         }
         public async Task<TEntity> GetByID(TEntityId id)
         {
-            //return await this._context.Categories.FindAsync(id);
-            return await this._objs
-                .Where(x => id.Equals(x.Id)).FirstOrDefaultAsync();
+            return await this._objs.FindAsync(id.Value);
+            /*return await this._objs.
+                Where(x => id.Equals(x.Id)).FirstOrDefaultAsync();*/
         }
         
         public async Task<List<TEntity>> GetAll()
@@ -34,13 +33,6 @@ namespace EletricGo.Infrastructure.Shared
         {
             var ret = await this._objs.AddAsync(obj);
             return ret.Entity;
-        }
-
-        public async Task<TEntity> Update(TEntity obj)
-        {
-            //var ret = await _objs.Update(obj);
-            //return ret.Entity;
-            return null;
         }
 
         public void Delete(TEntity obj)
