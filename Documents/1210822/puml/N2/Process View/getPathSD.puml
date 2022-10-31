@@ -1,0 +1,45 @@
+@startuml getPathSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+
+
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+
+
+manager -> SPA: I  want to get a path
+activate SPA
+
+SPA --> manager: asks for path ID
+deactivate SPA
+
+manager -> SPA: inserts path ID
+activate SPA
+
+SPA -> Logistics: GET getPath(pathID)
+activate Logistics
+
+alt path exists
+
+Logistics --> SPA: 200 OK
+SPA --> manager: shows information about path
+
+
+else path doesn't exist
+
+Logistics --> SPA: 404 NOT FOUND
+deactivate Logistics
+SPA --> manager: informs path doesn't exist
+
+end
+
+deactivate manager
+
+@enduml
