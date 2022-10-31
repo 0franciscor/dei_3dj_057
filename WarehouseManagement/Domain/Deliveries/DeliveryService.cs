@@ -48,6 +48,10 @@ namespace EletricGo.Domain.Deliveries
         public async Task<DeliveryDTO> UpdateDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
+            
+            if (delivery == null)
+                return null;
+
             delivery.update(deliveryDTO);
             await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
