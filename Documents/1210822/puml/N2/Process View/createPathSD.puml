@@ -1,0 +1,63 @@
+@startuml createPathSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+
+
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+participant WarehouseManagement as WarehouseManagement << Container(C4)>>
+
+
+
+manager -> SPA: I want to create a new path
+activate SPA
+
+SPA --> manager: asks for the details on the new path
+deactivate SPA
+
+manager -> SPA: inserts the information about the new path
+activate SPA
+
+SPA -> Logistics: POST createPath(pathInfo)
+activate Logistics
+
+
+Logistics -> WarehouseManagement: Confirms warehouses existence(warehouseInfo)
+activate WarehouseManagement
+
+
+
+alt path doesn't exist and warehouse does
+WarehouseManagement --> Logistics: 200 OK
+Logistics --> SPA: 201 Created
+SPA --> manager: informs about the success of the creation
+
+
+else path already exists and warehouse does 
+WarehouseManagement --> Logistics: 200 OK
+Logistics --> SPA: 409 Conflict
+SPA --> manager: informs about the failure of the creation
+
+else path already exists and warehouse doesn't
+WarehouseManagement --> Logistics: 404 Not found
+Logistics -> SPA : 404 Not found 
+
+else path doesn't exist nor warehouse
+WarehouseManagement --> Logistics: 404 Not found
+Logistics -> SPA : 404 Not found 
+deactivate Logistics
+SPA-> manager: Informs warehouse doesn't exist.
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml
