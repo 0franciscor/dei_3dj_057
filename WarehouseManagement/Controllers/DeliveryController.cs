@@ -25,7 +25,7 @@ namespace EletricGo.Controllers
             return await _deliveryService.GetDeliveries();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetByID")]
         public async Task<ActionResult<DeliveryDTO>> GetByID([FromBody] DeliveryDTO dto)
         {
             try
@@ -102,6 +102,18 @@ namespace EletricGo.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+
+        [HttpGet("Exists")]
+        public async Task<ActionResult<bool>> Exists([FromBody] DeliveryDTO dto)
+        {
+            var condition = await _deliveryService.FindDelivery(dto);
+
+            if (condition)
+                return Ok();
+            
+            return NotFound("The requested Delivery does not exist.");
+        }
+
     }
     
 }

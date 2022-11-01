@@ -39,5 +39,10 @@ namespace EletricGo.Infrastructure.Shared
         {
             this._objs.Remove(obj);
         }
+
+        public async Task<bool> Find(TEntityId obj)
+        {
+            return await this._objs.AnyAsync(x => x.Id == obj.Value);
+        }
     }
 }
