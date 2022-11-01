@@ -1,0 +1,33 @@
+@startuml updatePackagingSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as admin
+participant EletricGO as system <<System(C4)>>
+
+
+admin -> system: I want to update the details of a Packaging
+activate system
+
+system --> admin: asks for the ID of the Packaging
+deactivate system
+
+admin -> system: inserts the ID of the Packaging and new details
+activate system
+
+alt The ID is valid
+system --> admin: shows information about the Packaging with new details
+
+else The ID is invalid
+system --> admin: informs that Packaging does not exist
+
+end
+
+deactivate system
+deactivate admin
+
+@enduml

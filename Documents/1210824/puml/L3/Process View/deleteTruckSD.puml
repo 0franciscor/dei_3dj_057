@@ -74,10 +74,11 @@ Controller --> Route: 404 NOT FOUND, Truck doesn't exist
 Route --> SPA: 404 NOT FOUND, Truck doesn't exist
 deactivate Route
 SPA --> manager: informs about the failure of the deletion
-
-end
-
 deactivate SPA
 deactivate manager
+end
+
+
+
 
 @enduml

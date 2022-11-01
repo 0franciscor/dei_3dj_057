@@ -1,0 +1,22 @@
+@startuml getAllPackagingSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as admin
+participant EletricGO as system <<System(C4)>>
+
+
+admin -> system: I want to get all the Packagings in the system
+activate system
+
+system --> admin: show all Packaging in the system
+deactivate system
+
+deactivate system
+deactivate admin
+
+@enduml

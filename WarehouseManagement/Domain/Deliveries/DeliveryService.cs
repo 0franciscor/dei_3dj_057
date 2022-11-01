@@ -26,12 +26,20 @@ namespace EletricGo.Domain.Deliveries
         public async Task<DeliveryDTO> GetDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
+
+            if (delivery == null)
+                return null;
+
             return delivery.toDeliveryDTO();
         }
 
         public async Task<DeliveryDTO> CreateDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = new Delivery(deliveryDTO);
+
+            if (delivery == null)
+                return null;
+            
             await _deliveryRepository.Add(delivery);
             await this._unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
@@ -40,6 +48,10 @@ namespace EletricGo.Domain.Deliveries
         public async Task<DeliveryDTO> UpdateDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
+            
+            if (delivery == null)
+                return null;
+
             delivery.update(deliveryDTO);
             await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
@@ -48,9 +60,19 @@ namespace EletricGo.Domain.Deliveries
         public async Task<DeliveryDTO> DeleteDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
+
+            if (delivery == null)
+                return null;
+            
             _deliveryRepository.Delete(delivery);
             await this._unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
+        }
+
+        public async Task<bool> FindDelivery(DeliveryDTO deliveryDTO)
+        {
+            return await _deliveryRepository.Find(new DeliveryID(deliveryDTO.deliveryID));
+
         }
     }
 

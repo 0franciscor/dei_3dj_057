@@ -1,0 +1,64 @@
+@startuml updatePackagingSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+participant WarehouseManagement as  WarehouseManagement <<Container(C4)>>
+
+
+manager -> SPA: I want to update a Packaging
+activate SPA
+
+SPA -> manager: asks for packaging ID and new info
+deactivate SPA
+
+manager -> SPA: inserts the information about the Packaging
+activate SPA
+
+
+SPA -> Logistics: PATCH updatePackaging(PackagingInfo)
+activate Logistics
+Logistics -> WarehouseManagement: GET ExistsDelivery(DeliveryID)
+activate WarehouseManagement
+
+
+
+alt Packaging exists and Delivery exists
+
+WarehouseManagement -> Logistics: 200 OK
+
+Logistics --> SPA: 200 OK
+SPA --> manager: shows information about packaging with new info
+
+
+else Packaging doesn't exist and Delivery exists
+
+WarehouseManagement -> Logistics: 200 OK
+
+Logistics --> SPA: 409 Conflict
+
+SPA --> manager: informs packaging doesn't exist
+
+else DeliveryID doesn't exist
+
+WarehouseManagement -> Logistics: 404 Not Found
+deactivate WarehouseManagement
+Logistics --> SPA: 404 Not Found
+deactivate Logistics
+SPA --> manager: informs about the incorrect Delivery ID
+
+
+end
+
+deactivate SPA
+deactivate manager
+
+
+@enduml

@@ -1,0 +1,64 @@
+@startuml createPackagingSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+participant WarehouseManagement as  WarehouseManagement <<Container(C4)>>
+
+
+manager -> SPA: I want to create a new Packaging
+activate SPA
+
+SPA -> manager: asks for the details on the new Packaging
+deactivate SPA
+
+manager -> SPA: inserts the information about the new Packaging
+activate SPA
+
+
+SPA -> Logistics: POST createPackaging(PackagingInfo)
+activate Logistics
+Logistics -> WarehouseManagement: GET ExistsDelivery(DeliveryID)
+activate WarehouseManagement
+
+
+
+alt Packaging doesn't exist and Delivery exists
+
+WarehouseManagement -> Logistics: 200 OK
+
+Logistics --> SPA: 201 Created
+SPA --> manager:  shows information about new Packaging
+
+
+else Packaging already exists and Delivery exists
+
+WarehouseManagement -> Logistics: 200 OK
+
+Logistics --> SPA: 409 Conflict
+
+SPA --> manager: informs about the failure of the creation
+
+else DeliveryID doesn't exist
+
+WarehouseManagement -> Logistics: 404 Not Found
+deactivate WarehouseManagement
+Logistics --> SPA: 404 Not Found
+deactivate Logistics
+SPA --> manager: informs about the incorrect Delivery ID
+
+
+end
+
+deactivate SPA
+deactivate manager
+
+
+@enduml

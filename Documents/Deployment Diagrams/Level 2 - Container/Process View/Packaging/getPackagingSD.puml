@@ -1,0 +1,52 @@
+@startuml getPackagingSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+
+actor "Logistics Manager" as manager
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+end box
+
+
+manager -> SPA: I want to get a Packaging
+activate SPA
+
+SPA -> manager: asks for Packaging ID
+deactivate SPA
+
+manager -> SPA: inserts Packaging ID
+activate SPA
+
+
+SPA -> Logistics: GET getPackaging(PackagingID)
+activate Logistics
+
+
+alt Packaging exists
+
+
+Logistics --> SPA: 200 OK
+SPA --> manager: shows information about the Packaging
+
+
+else Packaging doesn't exist
+
+
+
+Logistics --> SPA: 404 NOT FOUND
+
+SPA --> manager: informs that the Packaging doesn't exist
+
+end
+
+deactivate SPA
+deactivate manager
+
+
+@enduml

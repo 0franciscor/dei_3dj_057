@@ -35,7 +35,7 @@ activate Route
 Route -> Controller: GET getTruck(truckID)
 activate Controller
 
-Controller -> Service: deleteTruck(truckID)
+Controller -> Service: getTruck(truckID)
 
 Service -> Repository: getTruckById(truckID)
 

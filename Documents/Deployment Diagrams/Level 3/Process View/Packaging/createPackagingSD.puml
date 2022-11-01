@@ -1,0 +1,111 @@
+@startuml createPackagingSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+actor "Logistics Manager" as manager
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant PackagingRoute as Route <<Component(C4)>>
+participant PackagingController as Controller <<Component(C4)>>
+participant PackagingService as Service <<Component(C4)>>
+participant PackagingRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+participant WarehouseManagement as WarehouseManagement <<Container(C4)>>
+end box
+
+
+manager -> SPA: I want to create a new Packaging
+activate SPA
+
+SPA -> manager: asks for the details on the new Packaging
+deactivate SPA
+
+manager -> SPA: inserts the information about the new Packaging
+activate SPA
+
+
+SPA -> Route: POST createPackaging(PackagingInfo)
+activate Route
+Route -> Controller: POST createPackaging(PackagingInfo)
+activate Controller
+
+Controller -> WarehouseManagement: GET exiestsDelivery(DeliveryID)
+activate WarehouseManagement
+alt Packaging doesn't exist and Delivery exists
+
+WarehouseManagement -> Controller: 200 OK
+
+Controller -> Service: createPackaging(PackagingInfo)
+activate Service
+Service -> Repository: getPackagingById(PackagingInfo.id)
+activate Repository
+Repository -> Persistence: findOne(PackagingInfo.id)
+activate Persistence
+Persistence --> Repository: null
+
+Repository --> Service: null
+
+Service -> Repository: save(PackagingInfo)
+
+Repository -> Persistence: save(PackagingInfo)
+
+Persistence --> Repository: true
+
+Repository --> Service: PackagingInfo
+
+Service --> Controller: PackagingInfo
+
+Controller --> Route: 201 CREATED + PackagingInfo
+
+Route --> SPA: 201 CREATED
+
+SPA --> manager: informs about the success of the creation
+
+else Packaging already exists and Delivery exists
+
+WarehouseManagement -> Controller: 200 OK
+
+Controller -> Service: createPackaging(PackagingInfo)
+
+Service -> Repository: getPackagingById(PackagingInfo.id)
+
+Repository -> Persistence: findOne(PackagingInfo.id)
+
+Persistence --> Repository: Packaging
+deactivate Persistence
+Repository --> Service: Packaging
+deactivate Repository
+Service --> Controller: error, Packaging already exists
+deactivate Service
+Controller --> Route: 409 CONFLICT, Packaging already exists
+
+Route --> SPA: 409 CONFLICT, Packaging already exists
+
+SPA --> manager: informs about the failure of the creation
+
+
+else Delivery doesn't exist
+
+WarehouseManagement -> Controller: 404 NOT FOUND
+deactivate WarehouseManagement
+Controller -> Route: 404 NOT FOUND
+deactivate Controller
+Route --> SPA: 404 NOT FOUND
+deactivate Route
+
+SPA --> manager: informs delivery doesn't exist
+
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml
