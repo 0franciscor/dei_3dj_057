@@ -68,6 +68,12 @@ namespace EletricGo.Domain.Deliveries
             await this._unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
+
+        public async Task<bool> FindDelivery(DeliveryDTO deliveryDTO)
+        {
+            return await _deliveryRepository.Find(new DeliveryID(deliveryDTO.deliveryID));
+
+        }
     }
 
 }
