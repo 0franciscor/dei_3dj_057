@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System;
 namespace EletricGo.Controllers
 {
 
@@ -103,10 +103,12 @@ namespace EletricGo.Controllers
             }
         }
 
-        [HttpGet("Exists")]
-        public async Task<ActionResult<bool>> Exists([FromBody] DeliveryDTO dto)
+        [HttpGet("Exists/{id}")]
+        public async Task<ActionResult<bool>> Exists(string id)
         {
-            var condition = await _deliveryService.FindDelivery(dto);
+            Console.WriteLine(id);
+
+            var condition = await _deliveryService.FindDelivery(id);
 
             if (condition)
                 return Ok();
