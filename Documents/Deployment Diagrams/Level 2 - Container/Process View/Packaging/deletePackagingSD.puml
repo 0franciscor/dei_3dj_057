@@ -1,0 +1,52 @@
+@startuml deletePackagingSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+
+actor "Logistics Manager" as manager
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+end box
+
+
+manager -> SPA: I want to delete a Packaging
+activate SPA
+
+SPA -> manager: asks for Packaging ID
+deactivate SPA
+
+manager -> SPA: inserts Packaging ID
+activate SPA
+
+
+SPA -> Logistics: DELETE deletePackaging(PackagingID)
+activate Logistics
+
+
+alt Packaging already exists
+
+
+Logistics --> SPA: 200 OK
+SPA --> manager: informs about the success of the deletion
+
+
+else Packaging doesn't exist
+
+
+
+Logistics --> SPA: 404 NOT FOUND
+
+SPA --> manager: informs about the failure of the deletion
+
+end
+
+deactivate SPA
+deactivate manager
+
+
+@enduml
