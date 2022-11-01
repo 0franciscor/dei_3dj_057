@@ -13,12 +13,16 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.truck.name) as ITruckController;
 
-    route.get('/:id', (req, res, next) =>  {
+    route.get('/id/:id', (req, res, next) =>  {
         req.body.truckID = req.params.id;
         ctrl.getTruck(req, res, next)
     });
 
-    route.get('/all', (req, res, next) =>  ctrl.getAllTrucks(req, res, next));
+    route.get('/all', (req, res, next) => {
+        ctrl.getAllTrucks(req, res, next)
+
+
+    });
 
     route.post('/',
         celebrate({

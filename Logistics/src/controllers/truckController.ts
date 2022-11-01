@@ -33,7 +33,6 @@ export default class TruckController implements ITruckController {
 
     public async getAllTrucks(req: Request, res: Response, next: NextFunction){
         try {
-            
             const trucks = await this.truckService.getAllTrucks();
             if (trucks.isFailure)
                 return res.status(404).send("Trucks not found");

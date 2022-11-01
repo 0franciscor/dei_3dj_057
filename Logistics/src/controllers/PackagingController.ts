@@ -59,8 +59,9 @@ export default class PackagingController implements IPackagingController {
 
             
             const httpreq = http.request(options, function(response) {
-                if(response.statusCode == 404)
-                    return res.status(404).send("Delivery not found");
+                if(response.statusCode == 404){
+                    res.status(404).send("Delivery not found");
+                }
             });
            
             httpreq.on("error", function (e) {
@@ -69,11 +70,12 @@ export default class PackagingController implements IPackagingController {
 
             httpreq.end();
             
-   
+
             const truckOrError = await this.truckService.exist(req.body.truckID);
-            if (truckOrError.isFailure) {
+            if (truckOrError.getValue() == false) {
                 return res.status(404).send("Truck not found");
             }
+
             const packagingOrError = await this.packagingService.createPackaging(req.body as IPackagingDTO) as Result<IPackagingDTO>;
             if (packagingOrError.isFailure) {
                 return res.status(409).send("Packaging already exists");
