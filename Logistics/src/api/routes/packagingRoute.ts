@@ -13,7 +13,10 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.packaging.name) as IPackagingController;
 
-    route.get('/', (req, res, next) =>  ctrl.getPackaging(req, res, next));
+    route.get('/:id', (req, res, next) =>  {
+        req.body.packagingID = req.params.id;
+        ctrl.getPackaging(req, res, next)
+    });
 
     route.get('/all', (req, res, next) =>  ctrl.getAllPackagings(req, res, next));
 
@@ -46,7 +49,10 @@ export default (app: Router) => {
         (req, res, next) => ctrl.updatePackaging(req, res, next)
     );
 
-    route.delete('/', (req, res, next) => {ctrl.deletePackaging(req, res, next)});
+    route.delete('/:id', (req, res, next) => {
+        req.body.packagingID = req.params.id;
+        ctrl.deletePackaging(req, res, next)
+    });
 
 
 }
