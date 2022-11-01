@@ -1,0 +1,87 @@
+@startuml deletePackagingSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+actor "Logistics Manager" as manager
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant PackagingRoute as Route <<Component(C4)>>
+participant PackagingController as Controller <<Component(C4)>>
+participant PackagingService as Service <<Component(C4)>>
+participant PackagingRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+
+
+manager -> SPA: I want to delete a Packaging
+activate SPA
+
+SPA -> manager: asks for Packaging ID
+deactivate SPA
+
+manager -> SPA: inserts Packaging ID
+activate SPA
+
+
+SPA -> Route: DELETE deletePackaging(packagingID)
+activate Route
+Route -> Controller: DELETE deletePackaging(packagingID)
+activate Controller
+
+Controller -> Service: deletePackaging(PackagingInfo)
+activate Service
+Service -> Repository: getPackagingById(PackagingInfo.id)
+activate Repository
+Repository -> Persistence: findOne(PackagingInfo.id)
+activate Persistence
+
+
+alt Packaging exists
+
+Persistence --> Repository: packagingInfo
+
+Repository --> Service: packagingInfo
+
+Service -> Repository: delete(packagingID)
+
+Repository -> Persistence: deleteOne(packagingID)
+
+Persistence --> Repository: true
+
+Repository --> Service: PackagingInfo
+
+Service --> Controller: PackagingInfo
+
+Controller --> Route: 200 OK + PackagingInfo
+
+Route --> SPA: 200 OK + PackagingInfo
+
+SPA --> manager: informs about the success of the deletion
+
+else Packaging doesn't exist
+
+Persistence --> Repository: null
+deactivate Persistence
+Repository --> Service: null
+deactivate Repository
+Service --> Controller: error, Packaging doesn't exist
+deactivate Service
+Controller --> Route: 404 NOT FOUND, Packaging doesn't exist
+deactivate Controller
+Route --> SPA: 404 NOT FOUND, Packaging doesn't exist
+deactivate Route
+SPA --> manager: informs about the failure of the deletion
+deactivate SPA
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml

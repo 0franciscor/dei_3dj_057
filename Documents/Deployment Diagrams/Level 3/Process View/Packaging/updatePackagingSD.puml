@@ -1,0 +1,117 @@
+@startuml updatePackagingSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant PackagingRoute as Route <<Component(C4)>>
+participant PackagingController as Controller <<Component(C4)>>
+participant PackagingService as Service <<Component(C4)>>
+participant PackagingRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+participant WarehouseManagement as WarehouseManagement <<Container(C4)>>
+end box
+
+activate manager
+manager -> SPA: I want to update a Packaging
+activate SPA
+
+
+
+SPA -> manager: asks for packaging ID and new info
+deactivate SPA
+
+manager -> SPA: inserts the information about the Packaging
+activate SPA
+
+
+SPA -> Route: PATCH updatePackaging(packaging)
+activate Route
+Route -> Controller: PATCH updatePackaging(packaging)
+activate Controller
+
+Controller -> WarehouseManagement: GET exiestsDelivery(DeliveryID)
+activate WarehouseManagement
+
+alt Packaging exists and Delivery exists
+
+WarehouseManagement -> Controller: 200 OK
+
+Controller -> Service: updatePackaging(packaging)
+activate Service
+Service -> Repository: getPackagingById(packagingInfo.id)
+activate Repository
+Repository -> Persistence: findOne(packagingInfo.id)
+activate Persistence
+Persistence --> Repository: Packaging
+
+
+Repository --> Service: Packaging
+
+Service -> Repository: update(packagingInfo)
+
+Repository -> Persistence: save(packagingInfo)
+
+Persistence --> Repository: true
+
+Repository --> Service: packagingInfo
+
+Service --> Controller: packagingInfo
+
+Controller --> Route: 200 OK + packagingInfo
+
+Route --> SPA: 200 OK + packagingInfo
+
+SPA --> manager: shows updated information
+
+
+else Packaging doesn't exist and Delivery exists
+
+WarehouseManagement -> Controller: 200 OK
+
+Controller -> Service: updatePackaging(PackagingInfo)
+
+Service -> Repository: getPackagingById(PackagingInfo.id)
+
+Repository -> Persistence: findOne(PackagingInfo.id)
+
+Persistence --> Repository: null
+deactivate Persistence
+Repository --> Service: null
+deactivate Repository
+Service -> Controller: error, Packaging doesn't exist
+deactivate Service
+Controller --> Route: 404 NOT FOUND, Packaging doesn't exist
+
+Route --> SPA: 404 NOT FOUND, Packaging doesn't exist
+
+SPA --> manager: informs about the failure of the creation
+
+
+else Delivery doesn't exist
+
+WarehouseManagement -> Controller: 404 NOT FOUND
+deactivate WarehouseManagement
+Controller -> Route: 404 NOT FOUND
+deactivate Controller
+Route --> SPA: 404 NOT FOUND
+deactivate Route
+
+SPA --> manager: informs about the incorrect Delivery ID
+deactivate SPA
+deactivate manager
+end
+
+
+
+
+@enduml
