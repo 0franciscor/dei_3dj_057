@@ -25,7 +25,7 @@ namespace EletricGo.Controllers
             return await _deliveryService.GetDeliveries();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetByID")]
         public async Task<ActionResult<DeliveryDTO>> GetByID([FromBody] DeliveryDTO dto)
         {
             try
