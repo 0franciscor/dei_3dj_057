@@ -13,7 +13,7 @@ import { Tare } from '../domain/truck/Tare';
 import { Capacity } from '../domain/truck/Capacity';
 import { MaxBatteryCapacity } from '../domain/truck/MaxBatteryCapacity';
 import { FastChargeTime } from '../domain/truck/FastChargeTime';
-import { TruckID } from '../domain/truck/TruckID';
+
 
 
 @Service()

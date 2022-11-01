@@ -49,6 +49,10 @@ export default {
     path:{
       name: "PathController",
       path: "../controllers/pathController"
+    },
+    packaging:{
+      name: "PackagingController",
+      path: "../controllers/packagingController"
     }
   },
 
@@ -60,6 +64,10 @@ export default {
     path: {
       name: "PathRepo",
       path: "../repos/pathRepo"
+    },
+    packaging: {
+      name: "PackagingRepo",
+      path: "../repos/packagingRepo"
     }
   },
 
@@ -71,6 +79,10 @@ export default {
     path: {
       name:"PathService",
       path: "../services/pathService"
+    },
+    packaging: {
+      name:"PackagingService",
+      path: "../services/packagingService"
     }
   }
 };
