@@ -26,10 +26,10 @@ namespace EletricGo.Controllers
             return await _warehouseService.getWarehouses();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<WarehouseDto>> GetByID(WarehouseID id)
+        [HttpGet("GetByID/{id}")]
+        public async Task<ActionResult<WarehouseDto>> GetByID(string id)
         {
-            return await _warehouseService.getWarehouse(id);
+            return await _warehouseService.getWarehouse(new WarehouseID(id));
         }
 
         [HttpPost("createWarehouse")]
