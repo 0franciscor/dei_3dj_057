@@ -1,9 +1,6 @@
 using EletricGo.Domain.Deliveries;
 using EletricGo.Domain.Shared;
 using Moq;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace WarehouseManagementTest.Domain.Deliveries
 {
