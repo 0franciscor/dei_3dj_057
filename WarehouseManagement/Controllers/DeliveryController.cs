@@ -44,7 +44,7 @@ namespace EletricGo.Controllers
             }
         }
 
-        [HttpPost("createDelivery")]
+        [HttpPost("CreateDelivery")]
         public async Task<ActionResult<DeliveryDTO>> Post([FromBody] DeliveryDTO dto)
         {
             try
