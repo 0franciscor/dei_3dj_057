@@ -1,0 +1,87 @@
+@startuml deletePathSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+actor "Logistics Manager" as manager
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant PathRoute as Route <<Component(C4)>>
+participant PathController as Controller <<Component(C4)>>
+participant PathService as Service <<Component(C4)>>
+participant PathRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+
+
+manager -> SPA: I want to delete a Path
+activate SPA
+
+SPA -> manager: asks for PathID
+deactivate SPA
+
+manager -> SPA: inserts PathID
+activate SPA
+
+
+SPA -> Route: DELETE deletePath(pathID)
+activate Route
+Route -> Controller: DELETE deletePath(pathID)
+activate Controller
+
+Controller -> Service: deletePath(pathInfo)
+activate Service
+Service -> Repository: getPathById(pathInfo.id)
+activate Repository
+Repository -> Persistence: findOne(pathInfo.id)
+activate Persistence
+
+
+alt path exists
+
+Persistence --> Repository: PathInfo
+
+Repository --> Service: PathInfo
+
+Service -> Repository: delete(pathID)
+
+Repository -> Persistence: deleteOne(pathID)
+
+Persistence --> Repository: true
+
+Repository --> Service: PathInfo
+
+Service --> Controller: PathInfo
+
+Controller --> Route: 200 OK + PathInfo
+
+Route --> SPA: 200 OK + PathInfo
+
+SPA --> manager: informs about the success of the deletion
+
+else path doesn't exist
+
+Persistence --> Repository: null
+deactivate Persistence
+Repository --> Service: null
+deactivate Repository
+Service --> Controller: error, path doesn't exist
+deactivate Service
+Controller --> Route: 404 NOT FOUND, path doesn't exist
+deactivate Controller
+Route --> SPA: 404 NOT FOUND, path doesn't exist
+deactivate Route
+SPA --> manager: informs about the failure of the deletion
+deactivate SPA
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml

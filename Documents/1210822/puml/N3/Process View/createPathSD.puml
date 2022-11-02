@@ -1,0 +1,113 @@
+@startuml createPathSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+actor "Logistics Manager" as manager
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant PathRoute as Route <<Component(C4)>>
+participant PathController as Controller <<Component(C4)>>
+participant PathService as Service <<Component(C4)>>
+participant PathRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+participant WarehouseManagement as WarehouseManagement <<Container(C4)>>
+end box
+
+
+manager -> SPA: I want to create a new Path
+activate SPA
+
+SPA -> manager: asks for the details on the new Path
+deactivate SPA
+
+manager -> SPA: inserts the information about the new Path
+activate SPA
+
+
+SPA -> Route: POST createPath(pathInfo)
+activate Route
+Route -> Controller: POST createPath(pathInfo)
+activate Controller
+
+Controller -> WarehouseManagement: GET existsPath(startWhID)
+activate WarehouseManagement
+Controller -> WarehouseManagement: GET existsPath(destinationWhID)
+
+alt Path doesn't exist and Warehouse exists
+
+WarehouseManagement -> Controller: 200 OK
+
+Controller -> Service: createPath(pathInfo)
+activate Service
+Service -> Repository: getPathById(pathInfo.id)
+activate Repository
+Repository -> Persistence: findOne(pathInfo.id)
+activate Persistence
+Persistence --> Repository: null
+
+Repository --> Service: null
+
+Service -> Repository: save(pathInfo)
+
+Repository -> Persistence: save(pathInfo)
+
+Persistence --> Repository: true
+
+Repository --> Service: pathInfo
+
+Service --> Controller: pathInfo
+
+Controller --> Route: 201 CREATED + pathInfo
+
+Route --> SPA: 201 CREATED
+
+SPA --> manager: informs about the success of the creation
+
+else Path already exists and Warehouse exists
+
+WarehouseManagement -> Controller: 200 OK
+
+Controller -> Service: createPath(pathInfo)
+
+Service -> Repository: getPathById(pathInfo.id)
+
+Repository -> Persistence: findOne(pathInfo.id)
+
+Persistence --> Repository: Path
+deactivate Persistence
+Repository --> Service: Path
+deactivate Repository
+Service --> Controller: error, Path already exists
+deactivate Service
+Controller --> Route: 409 CONFLICT, Path already exists
+
+Route --> SPA: 409 CONFLICT, Path already exists
+
+SPA --> manager: informs about the failure of the creation
+
+
+else warehouse doesn't exist
+
+WarehouseManagement -> Controller: 404 NOT FOUND
+deactivate WarehouseManagement
+Controller -> Route: 404 NOT FOUND
+deactivate Controller
+Route --> SPA: 404 NOT FOUND
+deactivate Route
+
+SPA --> manager: informs warehouse doesn't exist
+
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml

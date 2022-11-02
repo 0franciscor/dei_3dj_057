@@ -9,6 +9,13 @@ import Logger from './loaders/logger';
 async function startServer() {
   const app = express();
 
+  const cors = require('cors');
+  app.use(cors({
+    origin: ['https://localhost:5001','http://localhost:5000']
+  }));
+
+  
+
   await require('./loaders').default({ expressApp: app });
 
   app.listen(config.port, () => {
@@ -27,5 +34,7 @@ async function startServer() {
       return;
   });
 }
+
+
 
 startServer();

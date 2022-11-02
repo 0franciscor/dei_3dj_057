@@ -1,0 +1,65 @@
+@startuml getAllPathSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+
+actor "Logistics Manager" as manager
+
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant PathRoute as Route <<Component(C4)>>
+participant PathController as Controller <<Component(C4)>>
+participant PathService as Service <<Component(C4)>>
+participant PathRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+
+
+
+manager -> SPA: I want to get all paths
+activate SPA
+
+SPA -> Route: GET getAllPaths()
+activate Route
+
+
+Route -> Controller: getAllPaths()
+activate Controller
+
+Controller -> Service: getAllPaths()
+activate Service
+
+Service -> Repository: getAllPaths()
+activate Repository
+
+Repository -> Persistence: findall()
+activate Persistence
+
+Persistence --> Repository: allPaths
+deactivate Persistence
+
+Repository --> Service: allPaths
+deactivate Repository
+
+Service --> Controller: allPaths
+deactivate Service
+
+Controller --> Route: 200 OK + allPaths
+deactivate Controller
+
+Route -> SPA: 200 OK + allPaths
+deactivate Route
+
+SPA -> manager: all allPaths
+deactivate SPA
+deactivate manager
+
+
+@enduml

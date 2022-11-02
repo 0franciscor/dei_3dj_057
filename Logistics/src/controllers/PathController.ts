@@ -3,11 +3,13 @@ import { Inject, Service } from "typedi";
 import  IPathController  from "../controllers/IControllers/IPathController"
 import IPathService from "../services/IServices/IPathService";
 import { Request, Response, NextFunction } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import { IPathDTO } from "../dto/IPathDTO";
 import { Result } from "../core/logic/Result";
-import { throws } from "assert";
+import { http } from "winston";
+
+
+
+
 
 @Service()
 export default class PathController implements IPathController{
@@ -32,9 +34,13 @@ export default class PathController implements IPathController{
     }
 
     public async createPath(req: Request, res: Response, next: NextFunction) {
+        const https = require("https");1
         try{
-            //TODO
-            //const Wh1OrError = await this.pathService.existsWarehouse()
+            
+            https.get("https://localhost:5001/api/warehouses/"+req.body.startWHId, res =>{
+                console.log(res.statusCode);
+            })
+
             const pathOrError = await this.pathService.createPath(req.body as IPathDTO) as Result<IPathDTO>;
         
             if(pathOrError.isFailure){

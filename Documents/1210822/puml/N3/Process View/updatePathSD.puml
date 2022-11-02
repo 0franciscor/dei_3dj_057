@@ -1,0 +1,101 @@
+@startuml updatePathSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+
+
+
+
+box "<<System(C4)>>\n       System" #Gold
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightBlue
+participant PathRoute as Route <<Component(C4)>>
+participant PathController as Controller <<Component(C4)>>
+participant PathService as Service <<Component(C4)>>
+participant PathRepository as Repository <<Component(C4)>>
+participant Persistence as Persistence <<Component(C4)>>
+end box
+
+
+activate manager
+manager -> SPA: I want to update a path
+activate SPA
+
+
+
+SPA -> manager: asks for path ID and new info
+deactivate SPA
+
+manager -> SPA: inserts the information about the path
+activate SPA
+
+
+SPA -> Route: PATCH updatePath(path)
+activate Route
+Route -> Controller: PATCH updatePath(path)
+activate Controller
+
+alt path exists 
+
+
+Controller -> Service: updatePath(path)
+activate Service
+Service -> Repository: getPathById(pathInfo.id)
+activate Repository
+Repository -> Persistence: findOne(pathInfo.id)
+activate Persistence
+Persistence --> Repository: path
+
+
+Repository --> Service: path
+
+Service -> Repository: update(pathInfo)
+
+Repository -> Persistence: save(pathInfo)
+
+Persistence --> Repository: true
+
+Repository --> Service: pathInfo
+
+Service --> Controller: pathInfo
+
+Controller --> Route: 200 OK + pathInfo
+
+Route --> SPA: 200 OK + pathInfo
+
+SPA --> manager: shows updated information
+
+
+else path doesn't exist 
+
+
+
+Controller -> Service: updatePath(path)
+
+Service -> Repository: getPathById(pathInfo.id)
+
+Repository -> Persistence: findOne(pathInfo.id)
+
+Persistence --> Repository: null
+deactivate Persistence
+Repository --> Service: null
+deactivate Repository
+Service -> Controller: error, path doesn't exist
+deactivate Service
+Controller --> Route: 404 NOT FOUND, path doesn't exist
+
+Route --> SPA: 404 NOT FOUND, path doesn't exist
+
+SPA --> manager: informs about the failure of the creation
+
+end
+
+
+
+
+@enduml
