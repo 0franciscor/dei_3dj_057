@@ -17,13 +17,13 @@ namespace EletricGo.Domain.Deliveries
             _deliveryRepository = deliveryRepository;
         }
 
-        public async Task<List<DeliveryDTO>> GetDeliveries()
+        public virtual async Task<List<DeliveryDTO>> GetDeliveries()
         {
             var deliveries = await _deliveryRepository.GetAll();
             return deliveries.Select(x => x.toDeliveryDTO()).ToList();
         }
 
-        public async Task<DeliveryDTO> GetDelivery(DeliveryDTO deliveryDTO)
+        public virtual async Task<DeliveryDTO> GetDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
 
@@ -33,7 +33,7 @@ namespace EletricGo.Domain.Deliveries
             return delivery.toDeliveryDTO();
         }
 
-        public async Task<DeliveryDTO> CreateDelivery(DeliveryDTO deliveryDTO)
+        public virtual async Task<DeliveryDTO> CreateDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = new Delivery(deliveryDTO);
 
@@ -45,7 +45,7 @@ namespace EletricGo.Domain.Deliveries
             return delivery.toDeliveryDTO();
         }
 
-        public async Task<DeliveryDTO> UpdateDelivery(DeliveryDTO deliveryDTO)
+        public virtual async Task<DeliveryDTO> UpdateDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
             
@@ -57,7 +57,7 @@ namespace EletricGo.Domain.Deliveries
             return delivery.toDeliveryDTO();
         }
 
-        public async Task<DeliveryDTO> DeleteDelivery(DeliveryDTO deliveryDTO)
+        public virtual async Task<DeliveryDTO> DeleteDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
 
