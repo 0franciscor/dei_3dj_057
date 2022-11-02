@@ -4,152 +4,80 @@ using Moq;
 
 namespace WarehouseManagementTest.Domain.Deliveries
 {
-    public class Tests
+    public class DeliveryTest
     {
-        public string Id;
-        public int weight;
-        public string limitDate;
-        public int loadTime;
-        public int unloadTime;
+        private string? id;
+
+        private DateTime deliveryDate;
+
+        private float loadTime;
+
+        private float unloadTime;
+
+        private string? destination;
+
+        private float deliveryMass;
 
         [SetUp]
         public void Setup()
         {
-            Id = "Id";
-            weight = 10;
-            limitDate = "12/12/2012";
-            loadTime = 50;
-            unloadTime = 70;
+            id = "testID";
+            deliveryDate = new DateTime(2020, 12, 12);
+            loadTime = 10;
+            unloadTime = 20;
+            destination = "testDestination";
+            deliveryMass = 30;
 
         }
+
         [Test]
         public void DefineDriverServiceConstrutor()
         {
+            var mockDeliveryRepo = new Mock<IDeliveryRepository>();
+            var mockUnitWork = new Mock<IUnitOfWork>();
 
-            var mockBlocoRepo = new Mock<IDeliveryRepository>();
-            var mockUnitRepo = new Mock<IUnitOfWork>();
+            var service = new DeliveryService(mockUnitWork.Object, mockDeliveryRepo.Object);
 
-            var service = new DeliveryService(mockUnitRepo.Object, mockBlocoRepo.Object);
-
-            Assert.NotNull(service);
+            Assert.That(service, Is.Not.Null);
         }
         [Test]
-        public async Task AddTest()
+        public async Task CreateTest()
         {
-            var del1 = new Delivery(Id, this.weight, this.limitDate, this.unloadTime, this.loadTime);
+            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+
+            var mockUnit = new Mock<IUnitOfWork>();
+            mockUnit.Setup(repo => repo.CommitAsync());
+
+            var mockDelivery = new Mock<IDeliveryRepository>();
+            mockDelivery.Setup(repo => repo.Add(deliveryExpected));
+
+            var service = new DeliveryService(mockUnit.Object, mockDelivery.Object);
 
 
-            var mockRepo = new Mock<IDeliveryRepository>();
-            mockRepo.Setup(repo => repo.Add(del1));
-            var mockUnitRepo = new Mock<IUnitOfWork>();
-            mockUnitRepo.Setup(repo => repo.CommitAsync());
+            var deliveryDto = new DeliveryDTO
+            {
+                deliveryID = this.id,
+                deliveryDate = this.deliveryDate,
+                loadTime = this.loadTime,
+                unloadTime = this.unloadTime,
+                destination = this.destination,
+                deliveryMass = this.deliveryMass
+            };
 
-            var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
+            var deliveryResult = await service.CreateDelivery(deliveryDto);
+            Assert.Multiple(() =>
+                {
+                    Assert.That(deliveryResult.deliveryID, Is.EqualTo(deliveryExpected.Id));
+                    Assert.That(deliveryResult.deliveryDate, Is.EqualTo(deliveryExpected.deliveryDate.date));
+                    Assert.That(deliveryResult.loadTime, Is.EqualTo(deliveryExpected.loadTime.time));
+                    Assert.That(deliveryResult.unloadTime, Is.EqualTo(deliveryExpected.unloadTime.time));
+                    Assert.That(deliveryResult.destination, Is.EqualTo(deliveryExpected.destination.destination));
+                    Assert.That(deliveryResult.deliveryMass, Is.EqualTo(deliveryExpected.deliveryMass.mass));
 
-
-            var dto = new CreatingDeliveryDto(this.Id, this.weight, this.limitDate, this.unloadTime, this.loadTime);
-            var del = await service.AddAsync(dto);
-
-            Assert.AreEqual(del.id.value, del1.Id.value);
-
-        }
-        
-        [Test]
-        public async Task GetByIDTest()
-        {
-            string IdValue = "Id";
-
-            var idDel = new DeliveryId(IdValue);
-            var del = new Delivery(IdValue, this.weight, this.limitDate, this.unloadTime, this.loadTime);
-
-            var mockRepo = new Mock<IDeliveryRepository>();
-            mockRepo.Setup(repo => repo.GetByIdAsync(idDel)).ReturnsAsync(del);
-            var mockUnitRepo = new Mock<IUnitOfWork>();
-
-            var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
-
-            var getDel = await service.GetByIdAsync(idDel);
-
-            Assert.AreEqual(IdValue, getDel.id.value);
+                });
         }
 
         
-        [Test]
-        public async Task getDeliveriesTest()
-        {
-            var mockRepo = new Mock<IDeliveryRepository>();
-            mockRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(createdDeliveries());
-            var mockUnitRepo = new Mock<IUnitOfWork>();
-
-            var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
-
-            var getDels = await service.GetAllAsync();
-
-            var dels = createdDeliveries();
-
-            Assert.AreEqual(getDels.Count(), dels.Count());
-
-        }
-
-        private List<Delivery> createdDeliveries()
-        {
-            var dels = new List<Delivery>();
-            dels.Add(new Delivery(this.Id, this.weight, this.limitDate, this.unloadTime, this.loadTime));
-            dels.Add(new Delivery("Id2", 50, "1/2/2013", 10,30));
-            dels.Add(new Delivery("Id3", 100, "15/2/2016", 20,50));
-            return dels;
-        }
-
-
-        [Test]
-        public async Task UpdateAsyncTest()
-        {
-            int newWeight = 1000;
-            
-            string IdValue = "Id";
-
-            var idDel = new DeliveryId(IdValue);
-            
-            var delDto = new CreatingDeliveryDto(IdValue, newWeight, this.limitDate, this.unloadTime, this.loadTime);
-            
-            var del = new Delivery(IdValue, this.weight, this.limitDate, this.unloadTime, this.loadTime);
-
-            var mockRepo = new Mock<IDeliveryRepository>();
-            mockRepo.Setup(repo => repo.GetByIdAsync(idDel)).ReturnsAsync(del);
-            
-            var mockUnitRepo = new Mock<IUnitOfWork>();
-
-            var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
-
-            var getDel = await service.UpdateAsync(delDto);
-
-            Assert.AreEqual(delDto.weight, getDel.weight.weight);
-        }
-
-
-
-        [Test]
-        public async Task DeleteAsyncTest()
-        {
-            string IdValue = "Id";
-
-            var idDel = new DeliveryId(IdValue);
-
-            var del = new Delivery(IdValue, this.weight, this.limitDate, this.unloadTime, this.loadTime);
-
-            var mockRepo = new Mock<IDeliveryRepository>();
-            mockRepo.Setup(repo => repo.GetByIdAsync(idDel)).ReturnsAsync(del);
-            mockRepo.Setup(repo => repo.Remove(del));
-            
-            var mockUnitRepo = new Mock<IUnitOfWork>();
-
-            var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
-
-            var getDel = await service.DeleteAsync(idDel);
-
-            Assert.AreEqual(IdValue, getDel.id.value);
-        }
-
 
 
     }
