@@ -13,7 +13,7 @@ import { Tare } from '../domain/truck/Tare';
 import { Capacity } from '../domain/truck/Capacity';
 import { MaxBatteryCapacity } from '../domain/truck/MaxBatteryCapacity';
 import { FastChargeTime } from '../domain/truck/FastChargeTime';
-import { TruckID } from '../domain/truck/TruckID';
+
 
 
 @Service()
@@ -22,7 +22,20 @@ export default class TruckService implements ITruckService {
         @Inject(config.repos.truck.name) private truckRepo: ITruckRepo,
     ) { }
 
-    
+
+    public async exist(truckID: string): Promise<Result<boolean>> {
+        try {
+            const truckResult = await this.truckRepo.getTruckById(truckID);
+            if(truckResult === null)
+                return Result.ok<boolean>(false);
+            return Result.ok<boolean>(true);
+        } catch (e) {
+            throw e;
+        }
+    }
+
+
+
     public async createTruck(truckDTO: ITruckDTO): Promise<Result<ITruckDTO>> {
         try {
 

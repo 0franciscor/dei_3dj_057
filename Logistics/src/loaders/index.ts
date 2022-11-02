@@ -21,6 +21,11 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/pathSchema',
   };
 
+  const packagingSchema={
+    name: 'packagingSchema',
+    schema: '../persistence/schemas/packagingSchema',
+  };
+
   const truckController = {
     name: config.controllers.truck.name,
     path: config.controllers.truck.path
@@ -31,6 +36,11 @@ export default async ({ expressApp }) => {
     path: config.controllers.path.path,
   };
 
+  const packagingController={
+    name: config.controllers.packaging.name,
+    path: config.controllers.packaging.path,
+  };
+
   const truckRepo = {
     name: config.repos.truck.name,
     path: config.repos.truck.path
@@ -39,6 +49,11 @@ export default async ({ expressApp }) => {
   const pathRepo={
     name: config.repos.path.name,
     path: config.repos.path.path
+  };
+
+  const packagingRepo={
+    name: config.repos.packaging.name,
+    path: config.repos.packaging.path
   };
 
 
@@ -52,23 +67,32 @@ export default async ({ expressApp }) => {
     path: config.services.path.path
   };
 
+  const packagingService={
+    name: config.services.packaging.name,
+    path: config.services.packaging.path
+  };
+
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
         truckSchema,
-        pathSchema
+        pathSchema,
+        packagingSchema
     ],
     controllers: [
         truckController,
-        pathController
+        pathController,
+        packagingController
     ],
     repos: [
         truckRepo,
-        pathRepo
+        pathRepo,
+        packagingRepo
     ],
     services: [
         truckService,
-        pathService
+        pathService,
+        packagingService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

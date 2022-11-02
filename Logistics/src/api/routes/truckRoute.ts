@@ -13,9 +13,16 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.truck.name) as ITruckController;
 
-    route.get('/', (req, res, next) =>  ctrl.getTruck(req, res, next));
+    route.get('/id/:id', (req, res, next) =>  {
+        req.body.truckID = req.params.id;
+        ctrl.getTruck(req, res, next)
+    });
 
-    route.get('/all', (req, res, next) =>  ctrl.getAllTrucks(req, res, next));
+    route.get('/all', (req, res, next) => {
+        ctrl.getAllTrucks(req, res, next)
+
+
+    });
 
     route.post('/',
         celebrate({
@@ -48,7 +55,10 @@ export default (app: Router) => {
         (req, res, next) => ctrl.updateTruck(req, res, next)
     );
 
-    route.delete('/', (req, res, next) => {ctrl.deleteTruck(req, res, next)});
+    route.delete('/:id', (req, res, next) => {
+        req.body.truckID = req.params.id;
+        ctrl.deleteTruck(req, res, next)
+    });
 
 
 }

@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System;
 namespace EletricGo.Controllers
 {
 
@@ -25,12 +25,12 @@ namespace EletricGo.Controllers
             return await _deliveryService.GetDeliveries();
         }
 
-        [HttpGet("GetByID")]
-        public async Task<ActionResult<DeliveryDTO>> GetByID([FromBody] DeliveryDTO dto)
+        [HttpGet("GetByID/{id}")]
+        public async Task<ActionResult<DeliveryDTO>> GetByID(string id)
         {
             try
             {
-                var obj = await _deliveryService.GetDelivery(dto);
+                var obj = await _deliveryService.GetDelivery(new DeliveryDTO{deliveryID = id});
 
                 if (obj == null)
                 {
@@ -44,7 +44,7 @@ namespace EletricGo.Controllers
             }
         }
 
-        [HttpPost("createDelivery")]
+        [HttpPost("CreateDelivery")]
         public async Task<ActionResult<DeliveryDTO>> Post([FromBody] DeliveryDTO dto)
         {
             try
@@ -63,7 +63,7 @@ namespace EletricGo.Controllers
             }            
         }
 
-        [HttpPut("updateDelivery")]
+        [HttpPut("Update")]
         public async Task<ActionResult<DeliveryDTO>> Put([FromBody] DeliveryDTO dto)
         {
             try
@@ -83,12 +83,12 @@ namespace EletricGo.Controllers
         }
 
         
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<DeliveryDTO>> Delete([FromBody] DeliveryDTO dto)
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult<DeliveryDTO>> Delete(string id)
         {
             try
             {
-                var deletedObj = await _deliveryService.DeleteDelivery(dto);
+                var deletedObj = await _deliveryService.DeleteDelivery(new DeliveryDTO{deliveryID = id});
 
                 if (deletedObj == null)
                 {
@@ -103,12 +103,10 @@ namespace EletricGo.Controllers
             }
         }
 
-        [HttpGet("Exists")]
-        public async Task<ActionResult<bool>> Exists([FromBody] DeliveryDTO dto)
+        [HttpGet("Exists/{id}")]
+        public async Task<ActionResult<bool>> Exists(string id)
         {
-            var condition = await _deliveryService.FindDelivery(dto);
-
-            if (condition)
+            if (await _deliveryService.FindDelivery(new DeliveryDTO{deliveryID = id}))
                 return Ok();
             
             return NotFound("The requested Delivery does not exist.");
