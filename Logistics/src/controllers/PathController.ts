@@ -34,7 +34,7 @@ export default class PathController implements IPathController{
     }
 
     public async createPath(req: Request, res: Response, next: NextFunction) {
-        const https = require("https");1
+        const https = require("https");
         try{
             
             https.get("https://localhost:5001/api/warehouses/"+req.body.startWHId, res =>{
