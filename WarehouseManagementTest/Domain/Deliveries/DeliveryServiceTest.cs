@@ -48,15 +48,15 @@ namespace WarehouseManagementTest.Domain.Deliveries
             var mockRepository = new Mock<IDeliveryRepository>();
             mockRepository.Setup(repo => repo.GetAll()).ReturnsAsync(createdDeliveries());
             
-            var mockUnitRepo = new Mock<IUnitOfWork>();
+            var mockUnit = new Mock<IUnitOfWork>();
 
-            var service = new DeliveryService(mockUnitRepo.Object, mockRepository.Object);
+            var service = new DeliveryService(mockUnit.Object, mockRepository.Object);
 
-            var getDels = await service.GetDeliveries();
+            var expectedList = await service.GetDeliveries();
 
-            var dels = createdDeliveries();
+            var resultList = createdDeliveries();
 
-            Assert.That(dels.Count(), Is.EqualTo(getDels.Count()));
+            Assert.That(resultList, Has.Count.EqualTo(expectedList.Count));
         }
 
         private List<Delivery> createdDeliveries()
