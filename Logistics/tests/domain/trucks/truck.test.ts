@@ -37,7 +37,8 @@ describe ("Create an invalid truck", () => {
                 truckID: '',
                 fastChargeTime: NaN
             });
-            expect(truck.errorValue).to.equal(true);
+            
+            expect(truck.isFailure).to.equal(true);
 
         });
     

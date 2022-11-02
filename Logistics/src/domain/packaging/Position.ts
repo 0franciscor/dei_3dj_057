@@ -15,7 +15,7 @@ export class Position extends ValueObject<PositionProps> {
   }
 
     public static create (position: number): Result<Position> {
-    if (position < 0) {
+    if (position <= 0 || isNaN(position)) {
       return Result.fail<Position>('Position must be greater than 0');
     }
 

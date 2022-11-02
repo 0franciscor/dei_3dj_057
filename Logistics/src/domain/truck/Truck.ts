@@ -79,6 +79,7 @@ export class Truck extends AggregateRoot<TruckProps> {
 
   public static create (truckDTO:ITruckDTO , id?: UniqueEntityID): Result<Truck> {
 
+    try {
       const truck = new Truck({
         truckID: TruckID.create(truckDTO.truckID).getValue(),
         tare:Tare.create(truckDTO.tare).getValue(),
@@ -90,8 +91,13 @@ export class Truck extends AggregateRoot<TruckProps> {
   
       return Result.ok<Truck>(truck);
 
-
-  }
+    } catch (error) {
+      return Result.fail<Truck>(error);
+    }
+      
+}
+      
+  
 
 
 

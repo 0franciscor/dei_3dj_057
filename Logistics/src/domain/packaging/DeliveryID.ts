@@ -16,8 +16,8 @@ export class DeliveryID extends ValueObject<DeliveryIDProps>{
     }
 
     public static create (id: string): Result<DeliveryID> {
-        if (id.length < 0) {
-            return Result.fail<DeliveryID>('DeliveryID must be greater than 0');
+        if (id.length <= 0 || id==null) {
+            return Result.fail<DeliveryID>('DeliveryID length must be greater than 0');
         }
 
         return Result.ok<DeliveryID>(new DeliveryID({ id }));

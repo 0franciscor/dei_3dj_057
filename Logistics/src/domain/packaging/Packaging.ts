@@ -73,16 +73,30 @@ export class Packaging extends AggregateRoot<PackagingProps> {
 
   public static create (PackagingDTO:IPackagingDTO , id?: UniqueEntityID): Result<Packaging> {
 
-      const packaging = new Packaging({
-        packagingID: PackagingID.create(PackagingDTO.packagingID).getValue(),
-        truckID: TruckID.create(PackagingDTO.truckID).getValue(),
-        deliveryID: DeliveryID.create(PackagingDTO.deliveryID).getValue(),
-        xPosition: Position.create(PackagingDTO.xPosition).getValue(),
-        yPosition: Position.create(PackagingDTO.yPosition).getValue(),
-        zPosition: Position.create(PackagingDTO.zPosition).getValue(),
-      }, id);
-  
-      return Result.ok<Packaging>(packaging);
+      if(PackagingDTO.xPosition>=10)
+        return Result.fail<Packaging>('X position must be less than 10');
+      if(PackagingDTO.yPosition>=20)
+        return Result.fail<Packaging>('Y position must be less than 20');
+      if(PackagingDTO.zPosition>=8)
+        return Result.fail<Packaging>('Z position must be less than 8');
+
+      try {
+        const packaging = new Packaging({
+          packagingID: PackagingID.create(PackagingDTO.packagingID).getValue(),
+          truckID: TruckID.create(PackagingDTO.truckID).getValue(),
+          deliveryID: DeliveryID.create(PackagingDTO.deliveryID).getValue(),
+          xPosition: Position.create(PackagingDTO.xPosition).getValue(),
+          yPosition: Position.create(PackagingDTO.yPosition).getValue(),
+          zPosition: Position.create(PackagingDTO.zPosition).getValue(),
+        }, id);
+    
+        return Result.ok<Packaging>(packaging);
+      } catch (error) {
+        return Result.fail<Packaging>(error);
+      }
+        
+    
+     
 
 
   }

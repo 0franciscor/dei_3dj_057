@@ -16,8 +16,8 @@ export class PackagingID extends ValueObject<PackagingIDProps>{
     }
 
     public static create (id: string): Result<PackagingID> {
-        if (id.length < 0) {
-            return Result.fail<PackagingID>('PackagingID must be greater than 0');
+        if (id.length <= 0 || id==null) {
+            return Result.fail<PackagingID>('PackagingID length must be greater than 0');
         }
 
         return Result.ok<PackagingID>(new PackagingID({ id }));
