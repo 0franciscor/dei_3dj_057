@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EletricGo.Domain.Warehouses;
@@ -23,26 +24,56 @@ namespace EletricGo.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<List<WarehouseDto>>> Get()
         {
-            return await _warehouseService.GetWarehouses();
+            List<WarehouseDto> dto = await _warehouseService.GetWarehouses();
+            if (dto == null) return NotFound("Warehouses not found");
+
+            return dto;
         }
 
         [HttpGet("GetByID/{id}")]
         public async Task<ActionResult<WarehouseDto>> GetByID(string id)
         {
-            return await _warehouseService.GetWarehouse(new WarehouseID(id));
+            var warehouse = await _warehouseService.GetWarehouse(new WarehouseId(id));
+            if (warehouse == null) return NotFound("There is no warehouse with this id");
+
+            return warehouse;
         }
+        
+        /*[HttpGet("GetByDescription/{id}")]
+        public async Task<List<WarehouseDto>> GetByDescription(string id)
+        {
+            return await _warehouseService.GetByDescription(id);
+        }*/
 
         [HttpPost("CreateWarehouse")]
         public async Task<ActionResult<WarehouseDto>> Post([FromBody] WarehouseDto dto)
         {
-            var warehouse = await _warehouseService.CreateWarehouse(dto);
-            return CreatedAtAction(nameof(GetByID), new { id = warehouse.Id}, warehouse);
+            try
+            {
+                var warehouse = await _warehouseService.CreateWarehouse(dto);
+                return CreatedAtAction(nameof(GetByID), new { id = warehouse.Id }, warehouse);
+            }
+            catch(Exception e)
+            {
+                return Conflict(e.Message);
+            }
+            
+            
         }
 
         [HttpPut("Update")]
         public async Task<ActionResult<WarehouseDto>> Put([FromBody] WarehouseDto dto)
         {
-            var updatedObj = await _warehouseService.UpdateWarehouse(dto);
+            WarehouseDto updatedObj;
+            try
+            {
+                updatedObj = await _warehouseService.UpdateWarehouse(dto);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
 
             if (updatedObj == null)
             {

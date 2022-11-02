@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using EletricGo.Domain.Shared;
-using WarehouseManagement.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
 {
@@ -41,17 +40,17 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
             }
             this.number = int.Parse(aux[1]);
             
-            if (aux[2].Length != 7)
+            if (aux[2].Length != 8)
             {
                 throw new BusinessRuleValidationException("The zip code isn't in the right format");
             }
             
-            if (!int.TryParse(aux[2][..4], out _) || !int.TryParse(aux[2].AsSpan(4,3), out _))
+            if (!int.TryParse(aux[2][..4], out _) && !int.TryParse(aux[2].AsSpan(4,3), out _))
             {
                 throw new BusinessRuleValidationException("The zip code isn't in the right format");
             }
 
-            if (!aux[2].Substring(3,1).Equals("-"))
+            if (!aux[2].Substring(4,1).Equals("-"))
             {
                 throw new BusinessRuleValidationException("The zip code isn't in the right format");
             }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using WarehouseManagement.Domain.Shared;
+using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {

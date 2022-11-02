@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using EletricGo.Domain.Shared;
-using WarehouseManagement.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
 {

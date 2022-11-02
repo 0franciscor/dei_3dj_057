@@ -3,7 +3,7 @@ using EletricGo.Domain.Warehouses.ValueObjects;
 
 namespace EletricGo.Domain.Warehouses;
 
-public interface IWarehouseRepository : IRepository<Warehouse, WarehouseID>
+public interface IWarehouseRepository : IRepository<Warehouse, WarehouseId>
 {
     
 }

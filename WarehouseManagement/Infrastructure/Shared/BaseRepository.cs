@@ -2,7 +2,9 @@ using EletricGo.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using EletricGo.Domain.Warehouses.ValueObjects;
 
 namespace EletricGo.Infrastructure.Shared
 {
@@ -28,7 +30,7 @@ namespace EletricGo.Infrastructure.Shared
         {
             return await this._objs.ToListAsync();
         }
-
+        
         public async Task<TEntity> Add(TEntity obj)
         {
             var ret = await this._objs.AddAsync(obj);
@@ -42,7 +44,7 @@ namespace EletricGo.Infrastructure.Shared
 
         public async Task<bool> Find(TEntityId obj)
         {
-            return await this._objs.AnyAsync(x => x.Id == obj.Value);
+            return await this._objs.AnyAsync(x => x.Id.ToString() == obj.Value);
         }
     }
 }

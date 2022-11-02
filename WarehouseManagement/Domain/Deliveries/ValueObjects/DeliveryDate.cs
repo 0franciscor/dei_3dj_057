@@ -1,7 +1,6 @@
 using EletricGo.Domain.Shared;
 using System;
 using System.Collections.Generic;
-using WarehouseManagement.Domain.Shared;
 
 namespace EletricGo.Domain.Deliveries
 {

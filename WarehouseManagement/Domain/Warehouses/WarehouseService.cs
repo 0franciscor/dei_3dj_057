@@ -26,24 +26,51 @@ namespace EletricGo.Domain.Warehouses
             return warehouses.Select(x => x.ToWarehouseDto()).ToList();
         }
 
-        public async Task<WarehouseDto> GetWarehouse(WarehouseID id)
+        public async Task<WarehouseDto> GetWarehouse(WarehouseId id)
         {
             var warehouse = await _warehouseRepository.GetByID(id);
             return warehouse?.ToWarehouseDto();
         }
+        
+        /*public async Task<List<WarehouseDto>> GetByDescription(string designation)
+        {
+            var warehouse = await _warehouseRepository.GetByDescription(designation);
+
+            if (warehouse == null) return null;
+            
+            List<WarehouseDto> list = null;
+            foreach (var wh in warehouse)
+            {
+                list.Add(wh.ToWarehouseDto());
+            }
+                
+            return list;
+
+        }*/
 
         public async Task<WarehouseDto> CreateWarehouse(WarehouseDto warehouseDto)
         {
-            var warehouse = new Warehouse(warehouseDto);
-            await _warehouseRepository.Add(warehouse);
+            Warehouse warehouse;
             try
             {
+                warehouse = new Warehouse(warehouseDto);
+            }
+            catch (Exception e)
+            {
+                
+                throw new InvalidOperationException(e.Message);
+            }
+            
+            
+            try
+            {
+                await _warehouseRepository.Add(warehouse);
                 await this._unitOfWork.CommitAsync();
             }
             catch (Exception exp)
             {
                 // Log what you need from here.
-                throw new InvalidOperationException("Data could not be read", exp);
+                throw new InvalidOperationException("There is already a warehouse with this id in the system", exp);
             }
 
             return warehouse.ToWarehouseDto();
@@ -51,20 +78,29 @@ namespace EletricGo.Domain.Warehouses
 
         public async Task<WarehouseDto> UpdateWarehouse(WarehouseDto dto)
         {
-            var warehouse = await _warehouseRepository.GetByID(new WarehouseID(dto.Id));
+            var warehouse = await _warehouseRepository.GetByID(new WarehouseId(dto.Id));
 
             if (warehouse == null)
             {
                 return null;
             }
-            warehouse.Update(dto);
+
+            try
+            {
+                warehouse.Update(dto);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException(e.Message);
+            }
+            
             await this._unitOfWork.CommitAsync();
             return warehouse.ToWarehouseDto();
         }
 
         public async Task<WarehouseDto> DeleteWarehouse(string id)
         {
-            var warehouse = await _warehouseRepository.GetByID(new WarehouseID(id));
+            var warehouse = await _warehouseRepository.GetByID(new WarehouseId(id));
 
             if (warehouse == null)
             {

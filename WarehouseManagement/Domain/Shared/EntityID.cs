@@ -7,9 +7,9 @@ namespace EletricGo.Domain.Shared
     /// </summary>
     public abstract class EntityID: IEquatable<EntityID>, IComparable<EntityID>
     {
-        protected Object ObjValue {get;}
+        protected object ObjValue { get; }
 
-        public String Value { 
+        public string Value { 
             get { 
                     if (this.ObjValue.GetType() == typeof(String))
                         return (String) this.ObjValue;

@@ -4,7 +4,7 @@ using EletricGo.Infrastructure.Shared;
 
 namespace EletricGo.Infrastructure.Warehouses;
 
-public class WarehouseRepository : BaseRepository<Warehouse, WarehouseID>, IWarehouseRepository
+public class WarehouseRepository : BaseRepository<Warehouse, WarehouseId>, IWarehouseRepository
 {
     public WarehouseRepository(EletricGoDBContext context) : base(context.Warehouse)
     {

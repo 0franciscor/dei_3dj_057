@@ -8,6 +8,8 @@ namespace EletricGo.Domain.Shared
         Task<TEntity> GetByID(TEntityId id);
 
         Task<List<TEntity>> GetAll();
+        
+        //Task<List<TEntity>> GetByDescription(string description);
 
         Task<TEntity> Add(TEntity entity);
 

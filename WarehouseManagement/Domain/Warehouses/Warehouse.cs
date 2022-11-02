@@ -1,20 +1,22 @@
-using System;
+using System.Linq;
 using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
 
 namespace EletricGo.Domain.Warehouses 
 {
-    public class Warehouse : Entity<WarehouseID>, IAggregateRoot
+    public class Warehouse : Entity<WarehouseId>, IAggregateRoot
     {
+        
         public Address Address { get; set; }
         public Altitude Altitude { get; set; }
         public Coordinates Coordinates{ get; set; }
         public Designation Designation { get; set; }  
 
         public Warehouse() { }
-        public Warehouse(Address address, Altitude altitude, Coordinates coordinates, Designation designation)
+        public Warehouse(EntityID id, Address address, Altitude altitude, Coordinates coordinates, Designation designation)
         {
+            this.Id = id.Value;
             this.Address = address;
             this.Altitude = altitude;
             this.Coordinates = coordinates;
@@ -24,6 +26,15 @@ namespace EletricGo.Domain.Warehouses
         public Warehouse(WarehouseDto dto)
         {
             this.Address = new Address(dto.Address);
+            if (dto.Id.Length != 3)
+            {
+                throw new BusinessRuleValidationException("The Id must have only three characters");
+            }
+
+            if (!dto.Id.All(char.IsLetterOrDigit))
+            {
+                throw new BusinessRuleValidationException("The Id must be alphanumeric");
+            }
             this.Id = dto.Id;
             this.Altitude = new Altitude(dto.Altitude);
             this.Coordinates = new Coordinates(dto.Latitude, dto.Longitude);
@@ -32,7 +43,7 @@ namespace EletricGo.Domain.Warehouses
 
         public WarehouseDto ToWarehouseDto()
         {
-            return new WarehouseDto(){Id = this.Id, Address = this.Address.AsString(), Altitude = this.Altitude.AsInt(), Latitude = this.Coordinates.AsStringLatitude(), Longitude = this.Coordinates.AsStringLongitude(), Designation = this.Designation.AsString()};
+            return new WarehouseDto(){Id = this.Id.ToString(), Address = this.Address.fullAddress, Altitude = this.Altitude.AsInt(), Latitude = this.Coordinates.AsStringLatitude(), Longitude = this.Coordinates.AsStringLongitude(), Designation = this.Designation.AsString()};
         }
 
         public void Update(WarehouseDto dto)
@@ -47,14 +58,9 @@ namespace EletricGo.Domain.Warehouses
                 this.Altitude = new Altitude(dto.Altitude);                    
             }
 
-            if (dto.Latitude != null)
+            if (dto.Latitude != null && dto.Longitude != null)
             {
-                this.Coordinates = new Coordinates(dto.Latitude, this.Coordinates.longitude);
-            }
-
-            if (dto.Longitude != null)
-            {
-                this.Coordinates = new Coordinates(this.Coordinates.latitude, dto.Longitude);
+                this.Coordinates = new Coordinates(dto.Latitude, dto.Longitude);
             }
 
             if (dto.Designation != null)

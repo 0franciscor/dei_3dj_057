@@ -4,7 +4,7 @@ using System;
 
 namespace EletricGo.Infrastructure.Shared
 {
-    public class EntityIdValueConverter<TTypedIdValue> : ValueConverter<TTypedIdValue, String>
+    public class EntityIdValueConverter<TTypedIdValue> : ValueConverter<TTypedIdValue, string>
         where TTypedIdValue : EntityID
     {
         public EntityIdValueConverter(ConverterMappingHints mappingHints = null) 

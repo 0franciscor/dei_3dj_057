@@ -4,22 +4,14 @@ using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
 {
-	public class WarehouseID : EntityID
+	public class WarehouseId : EntityID
 	{
 		
 		public string warehouseID { get;}
 
-		public WarehouseID(string value) : base(value)
+		public WarehouseId(string value) : base(value)
 		{
-			if (value.Length != 3)
-			{
-				throw new BusinessRuleValidationException("The Id must have only three characters");
-			}
-
-			if (!Regex.IsMatch(value, "^[a-zA-Z0-9]*$"))
-			{
-				throw new BusinessRuleValidationException("The Id must be alphanumeric");
-			}
+			
 			this.warehouseID = value;
 		}
 
