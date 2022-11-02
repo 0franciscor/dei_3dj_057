@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
@@ -6,16 +7,25 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 	public class WarehouseID : EntityID
 	{
 		
-		public string deliveryID { get;}
+		public string warehouseID { get;}
 
-		public WarehouseID(String value) : base(value)
+		public WarehouseID(string value) : base(value)
 		{
-			this.deliveryID = value;
+			if (value.Length != 3)
+			{
+				throw new BusinessRuleValidationException("The Id must have only three characters");
+			}
+
+			if (!Regex.IsMatch(value, "^[a-zA-Z0-9]*$"))
+			{
+				throw new BusinessRuleValidationException("The Id must be alphanumeric");
+			}
+			this.warehouseID = value;
 		}
 
 
 		override
-		public String AsString()
+		public string AsString()
 		{
 			Guid obj = (Guid)base.ObjValue;
 			return obj.ToString();

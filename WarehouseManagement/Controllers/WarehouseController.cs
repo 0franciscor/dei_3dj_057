@@ -20,35 +20,50 @@ namespace EletricGo.Controllers
             _warehouseService = warehouseService;
         }
 
-        [HttpGet("list")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<WarehouseDto>>> Get()
         {
-            return await _warehouseService.getWarehouses();
+            return await _warehouseService.GetWarehouses();
         }
 
         [HttpGet("GetByID/{id}")]
         public async Task<ActionResult<WarehouseDto>> GetByID(string id)
         {
-            return await _warehouseService.getWarehouse(new WarehouseID(id));
+            return await _warehouseService.GetWarehouse(new WarehouseID(id));
         }
 
-        [HttpPost("createWarehouse")]
+        [HttpPost("CreateWarehouse")]
         public async Task<ActionResult<WarehouseDto>> Post([FromBody] WarehouseDto dto)
         {
-            var warehouse = await _warehouseService.createWarehouse(dto);
+            var warehouse = await _warehouseService.CreateWarehouse(dto);
             return CreatedAtAction(nameof(GetByID), new { id = warehouse.Id}, warehouse);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<WarehouseDto>> Put(string id, [FromBody] WarehouseDto dto)
+        [HttpPut("Update")]
+        public async Task<ActionResult<WarehouseDto>> Put([FromBody] WarehouseDto dto)
         {
-            return await _warehouseService.updateWarehouse(id,dto);
+            var updatedObj = await _warehouseService.UpdateWarehouse(dto);
+
+            if (updatedObj == null)
+            {
+                return NotFound("The Warehouse was not updated.");
+            }
+            return Ok(updatedObj);
         }
         
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<WarehouseDto>> Delete(string id)
         {
-            return await _warehouseService.deleteWarehouse(id);
+            var deletedObject = await _warehouseService.DeleteWarehouse(id);
+            
+            if (deletedObject == null)
+            {
+                return NotFound("The requested delete was not performed.");
+            }
+
+            return Ok(deletedObject);
+            
+            
         }
     
     

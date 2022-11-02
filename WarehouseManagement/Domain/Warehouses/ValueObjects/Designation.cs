@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EletricGo.Domain.Shared;
 using WarehouseManagement.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
@@ -16,6 +17,10 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 
         public Designation(string designation)
         {
+            if (designation.Length > 50)
+            {
+                throw new BusinessRuleValidationException("The maximum length for description is 50 characters");
+            }
             this.designation = designation;
         }
 

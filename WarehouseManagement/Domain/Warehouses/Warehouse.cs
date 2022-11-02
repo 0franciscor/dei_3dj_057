@@ -1,3 +1,4 @@
+using System;
 using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
@@ -36,10 +37,31 @@ namespace EletricGo.Domain.Warehouses
 
         public void Update(WarehouseDto dto)
         {
-            this.Address = new Address(dto.Address);
-            this.Altitude = new Altitude(dto.Altitude);
-            this.Coordinates = new Coordinates(dto.Latitude, dto.Longitude);
-            this.Designation = new Designation(dto.Designation);
+            if (dto.Address != null)
+            {
+                this.Address = new Address(dto.Address);
+            }
+
+            if (dto.Altitude != default(int))
+            {
+                this.Altitude = new Altitude(dto.Altitude);                    
+            }
+
+            if (dto.Latitude != null)
+            {
+                this.Coordinates = new Coordinates(dto.Latitude, this.Coordinates.longitude);
+            }
+
+            if (dto.Longitude != null)
+            {
+                this.Coordinates = new Coordinates(this.Coordinates.latitude, dto.Longitude);
+            }
+
+            if (dto.Designation != null)
+            {
+                this.Designation = new Designation(dto.Designation);    
+            }
+            
             
         }
 

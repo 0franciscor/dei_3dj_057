@@ -20,19 +20,19 @@ namespace EletricGo.Domain.Warehouses
             _warehouseRepository = warehouseRepository;
         }
 
-        public async Task<List<WarehouseDto>> getWarehouses()
+        public async Task<List<WarehouseDto>> GetWarehouses()
         {
             var warehouses = await _warehouseRepository.GetAll();
             return warehouses.Select(x => x.ToWarehouseDto()).ToList();
         }
 
-        public async Task<WarehouseDto> getWarehouse(WarehouseID id)
+        public async Task<WarehouseDto> GetWarehouse(WarehouseID id)
         {
-            var delivery = await _warehouseRepository.GetByID(id);
-            return delivery.ToWarehouseDto();
+            var warehouse = await _warehouseRepository.GetByID(id);
+            return warehouse?.ToWarehouseDto();
         }
 
-        public async Task<WarehouseDto> createWarehouse(WarehouseDto warehouseDto)
+        public async Task<WarehouseDto> CreateWarehouse(WarehouseDto warehouseDto)
         {
             var warehouse = new Warehouse(warehouseDto);
             await _warehouseRepository.Add(warehouse);
@@ -49,18 +49,29 @@ namespace EletricGo.Domain.Warehouses
             return warehouse.ToWarehouseDto();
         }
 
-        public async Task<WarehouseDto> updateWarehouse(string id, WarehouseDto dto)
+        public async Task<WarehouseDto> UpdateWarehouse(WarehouseDto dto)
         {
-            var warehouse = await _warehouseRepository.GetByID(new WarehouseID(id));
+            var warehouse = await _warehouseRepository.GetByID(new WarehouseID(dto.Id));
+
+            if (warehouse == null)
+            {
+                return null;
+            }
             warehouse.Update(dto);
             await this._unitOfWork.CommitAsync();
             return warehouse.ToWarehouseDto();
         }
 
-        public async Task<WarehouseDto> deleteWarehouse(string id)
+        public async Task<WarehouseDto> DeleteWarehouse(string id)
         {
             var warehouse = await _warehouseRepository.GetByID(new WarehouseID(id));
+
+            if (warehouse == null)
+            {
+                return null;
+            }
             _warehouseRepository.Delete(warehouse);
+            await this._unitOfWork.CommitAsync();
             return warehouse.ToWarehouseDto();
         }
     }    

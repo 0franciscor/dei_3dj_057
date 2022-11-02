@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EletricGo.Domain.Shared;
 using WarehouseManagement.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
@@ -17,6 +18,11 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 
         public Altitude(int altitude)
         {
+            if (altitude is < 0 or > 13000)
+            {
+                throw new BusinessRuleValidationException("The altitude can't be a negative number");
+            }
+            
             this.altitude = altitude;
         }
 
