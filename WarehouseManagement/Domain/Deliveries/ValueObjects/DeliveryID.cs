@@ -5,8 +5,7 @@ namespace EletricGo.Domain.Deliveries
 {
     public class DeliveryID : EntityID
     {
-
-        public string deliveryID { get; set; }
+        private string deliveryID { get;}
 
         public DeliveryID(String value) : base(value)
         {

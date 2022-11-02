@@ -12,8 +12,9 @@ namespace EletricGo.Domain.Deliveries
         public DeliveryMass deliveryMass { get; private set;}
 
         public Delivery() { }
-        public Delivery(DeliveryDate deliveryDate, LoadTime loadTime, UnloadTime unloadTime, Destination destination, DeliveryMass deliveryMass)
+        public Delivery(string Id, DeliveryDate deliveryDate, LoadTime loadTime, UnloadTime unloadTime, Destination destination, DeliveryMass deliveryMass)
         { 
+            this.Id = Id;
             this.deliveryDate = deliveryDate;
             this.loadTime = loadTime;
             this.unloadTime = unloadTime;
@@ -23,7 +24,7 @@ namespace EletricGo.Domain.Deliveries
 
         public Delivery(DeliveryDTO deliveryDTO)
         { 
-            this.Id = deliveryDTO.deliveryID.ToString();
+            this.Id = deliveryDTO.deliveryID;
             this.deliveryDate = new DeliveryDate(deliveryDTO.deliveryDate);
             this.loadTime = new LoadTime(deliveryDTO.loadTime);
             this.unloadTime = new UnloadTime(deliveryDTO.unloadTime);
