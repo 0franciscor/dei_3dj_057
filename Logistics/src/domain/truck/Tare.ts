@@ -15,7 +15,7 @@ export class Tare extends ValueObject<TareProps> {
   }
 
   public static create (tare: number): Result<Tare> {
-    if (tare < 0) {
+    if (tare <= 0 || isNaN(tare)) {
       return Result.fail<Tare>('Tare must be greater than 0');
     }
 

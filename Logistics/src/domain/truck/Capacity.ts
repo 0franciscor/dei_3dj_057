@@ -15,7 +15,7 @@ export class Capacity extends ValueObject<CapacityProps> {
   }
 
   public static create (capacity: number): Result<Capacity> {
-    if (capacity < 0) {
+    if (capacity <= 0 || isNaN(capacity)) {
       return Result.fail<Capacity>('Capacity must be greater than 0');
     }
 
