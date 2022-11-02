@@ -31,6 +31,43 @@ namespace DDDNetCoreTests.Controllers.Deliveries
 
         }
 
+        //SETUP LISTS FOR GETALL()
+        private List<DeliveryDTO> GetDeliveriesList()
+        {
+            var deliveryList = new List<DeliveryDTO>
+            {
+                new DeliveryDTO(){deliveryID = id, deliveryDate = this.deliveryDate, loadTime = this.loadTime, unloadTime = this.unloadTime, destination = this.destination, deliveryMass = this.deliveryMass},
+                new DeliveryDTO(){deliveryID = "testID2", deliveryDate = this.deliveryDate, loadTime = this.loadTime, unloadTime = this.unloadTime, destination = this.destination, deliveryMass = this.deliveryMass},
+                new DeliveryDTO(){deliveryID = "testID3", deliveryDate = this.deliveryDate, loadTime = this.loadTime, unloadTime = this.unloadTime, destination = this.destination, deliveryMass = this.deliveryMass},
+                new DeliveryDTO(){deliveryID = "testID4", deliveryDate = this.deliveryDate, loadTime = this.loadTime, unloadTime = this.unloadTime, destination = this.destination, deliveryMass = this.deliveryMass},
+                new DeliveryDTO(){deliveryID = "testID5", deliveryDate = this.deliveryDate, loadTime = this.loadTime, unloadTime = this.unloadTime, destination = this.destination, deliveryMass = this.deliveryMass},
+            };
+
+            return deliveryList;
+        }
+
+        [Test]
+        public async Task GetAllTest()
+        {
+            var expectedList = GetDeliveriesList();
+
+            var mockUnit = new Mock<IUnitOfWork>();
+            var mockRepository = new Mock<IDeliveryRepository>();
+            
+            var serviceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
+            serviceMock.Setup(repo => repo.GetDeliveries()).ReturnsAsync(expectedList);
+
+            var deliveryController = new DeliveryController(serviceMock.Object);
+            var resultList = await deliveryController.GetAll();
+
+            for(int i = 0; i < expectedList.Count; i++)
+            {
+                Assert.That(resultList.Value[i].deliveryID, Is.EqualTo(expectedList[i].deliveryID));
+            }
+
+        }
+                
+                
         
 
     }
