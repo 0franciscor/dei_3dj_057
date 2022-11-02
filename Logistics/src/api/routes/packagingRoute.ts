@@ -13,7 +13,7 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.packaging.name) as IPackagingController;
 
-    route.get('/:id', (req, res, next) =>  {
+    route.get('/id/:id', (req, res, next) =>  {
         req.body.packagingID = req.params.id;
         ctrl.getPackaging(req, res, next)
     });

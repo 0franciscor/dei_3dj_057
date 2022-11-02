@@ -26,7 +26,6 @@ export default class TruckService implements ITruckService {
     public async exist(truckID: string): Promise<Result<boolean>> {
         try {
             const truckResult = await this.truckRepo.getTruckById(truckID);
-            console.log(truckResult);
             if(truckResult === null)
                 return Result.ok<boolean>(false);
             return Result.ok<boolean>(true);

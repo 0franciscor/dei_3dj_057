@@ -9,7 +9,7 @@ import ITruckService from '../services/IServices/ITruckService';
 import { IPackagingDTO } from '../dto/IPackagingDTO';
 
 import { Result } from '../core/logic/Result';
-
+import fetch from 'node-fetch';
 const http = require('https');
 
 @Service()
@@ -46,35 +46,30 @@ export default class PackagingController implements IPackagingController {
         }
     }
 
+
+    
     public async createPackaging(req: Request, res: Response, next: NextFunction) {
         try {
 
-            const options = {
-                host: "localhost",
-                port: 5001,
-                path: '/api/deliveries/Exists/' + req.body.deliveryID,
-                rejectUnauthorized: false,
-                method: 'GET'
-            };
+            const httpAgent = new http.Agent({ rejectUnauthorized: false });
+            const address = 'https://localhost:5001/api/deliveries/Exists/' + req.body.deliveryID;
 
             
-            const httpreq = http.request(options, function(response) {
-                if(response.statusCode == 404){
-                    res.status(404).send("Delivery not found");
-                }
-            });
-           
-            httpreq.on("error", function (e) {
-                console.log(e)
+            const response = await fetch(address, {
+                method: 'GET',
+                agent: httpAgent
             });
 
-            httpreq.end();
-            
+
+            if (response.status == 404)
+                return res.status(404).send("Delivery not found");
+
 
             const truckOrError = await this.truckService.exist(req.body.truckID);
             if (truckOrError.getValue() == false) {
                 return res.status(404).send("Truck not found");
             }
+
 
             const packagingOrError = await this.packagingService.createPackaging(req.body as IPackagingDTO) as Result<IPackagingDTO>;
             if (packagingOrError.isFailure) {
