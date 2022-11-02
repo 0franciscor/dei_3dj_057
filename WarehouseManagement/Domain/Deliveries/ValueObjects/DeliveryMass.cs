@@ -1,4 +1,3 @@
-using EletricGo.Domain.Shared;
 using System.Collections.Generic;
 using WarehouseManagement.Domain.Shared;
 
