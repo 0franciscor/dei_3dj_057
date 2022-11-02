@@ -75,11 +75,6 @@ namespace EletricGo.Domain.Deliveries
 
         }
         
-        public async Task<bool> FindDelivery(string id)
-        {
-            return await _deliveryRepository.Find(new DeliveryID(id));
-
-        }
     }
 
 }
