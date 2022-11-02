@@ -15,7 +15,7 @@ export class MaxBatteryCapacity extends ValueObject<MaxBatteryCapacityProps> {
   }
 
   public static create (capacity: number): Result<MaxBatteryCapacity> {
-    if (capacity < 0) {
+    if (capacity <= 0 || isNaN(capacity)) {
       return Result.fail<MaxBatteryCapacity>('Max battery capacity must be greater than 0');
     }
 

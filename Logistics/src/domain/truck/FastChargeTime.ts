@@ -15,7 +15,7 @@ export class FastChargeTime extends ValueObject<FastChargeTimeProps> {
   }
 
   public static create (time: number): Result<FastChargeTime> {
-    if (time < 0) {
+    if (time <= 0 || isNaN(time)) {
       return Result.fail<FastChargeTime>('Fast charge time must be greater than 0');
     }
 

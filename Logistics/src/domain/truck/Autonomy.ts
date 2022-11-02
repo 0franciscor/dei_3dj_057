@@ -15,7 +15,7 @@ export class Autonomy extends ValueObject<AutonomyProps> {
   }
 
   public static create (autonomy: number): Result<Autonomy> {
-    if (autonomy < 0) {
+    if (autonomy <= 0|| isNaN(autonomy)) {
       return Result.fail<Autonomy>('Autonomy must be greater than 0');
     }
 

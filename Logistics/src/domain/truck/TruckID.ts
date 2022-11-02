@@ -16,7 +16,7 @@ export class TruckID extends ValueObject<TruckIDProps>{
     }
 
     public static create (id: string): Result<TruckID> {
-        if (id.length < 0) {
+        if (id.length <= 0) {
             return Result.fail<TruckID>('TruckID must be greater than 0');
         }
 
