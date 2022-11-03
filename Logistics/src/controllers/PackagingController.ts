@@ -50,7 +50,8 @@ export default class PackagingController implements IPackagingController {
     
     public async createPackaging(req: Request, res: Response, next: NextFunction) {
         try {
-
+            if(req.body.packagingID == null)
+                return res.status(400).send("PackagingID is required");
             const httpAgent = new http.Agent({ rejectUnauthorized: false });
             const address = 'https://localhost:5001/api/deliveries/Exists/' + req.body.deliveryID;
 
@@ -88,11 +89,20 @@ export default class PackagingController implements IPackagingController {
 
     public async updatePackaging(req: Request, res: Response, next: NextFunction) {
         try {
-            const packagingOrError = await this.packagingService.updatePackaging(req.body as IPackagingDTO) as Result<IPackagingDTO>;
+            if(req.body.packagingID == null)
+                return res.status(400).send("PackagingID is required");
+            const packagingOrError = await this.packagingService.updatePackaging(req.body as IPackagingDTO);
             if (packagingOrError.isFailure) {
-                return res.status(404).send("Packaging not found");
+                if (packagingOrError.error == "TruckID cannot be changed")
+                    return res.status(400).send(packagingOrError.error);
+                if (packagingOrError.error == "DeliveryID cannot be changed")
+                    return res.status(400).send(packagingOrError.error);
+                if (packagingOrError.error == "Packaging not found")
+                    return res.status(404).send(packagingOrError.error);
+                return res.status(400).send(packagingOrError.error);
             }
             const packagingDTO = packagingOrError.getValue();
+            
             return res.status(200).json( packagingDTO );
         } catch (e) {
             next(e);

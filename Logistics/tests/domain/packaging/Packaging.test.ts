@@ -17,9 +17,9 @@ describe("Create Packaging", () => {
         expect(packaging.getValue().deliveryID.id).to.equal('gandaDelivery');
         expect(packaging.getValue().packagingID.id).to.equal('gandaPackaging');
         expect(packaging.getValue().truckID.id).to.equal('gandaTruck');
-        expect(packaging.getValue().xPosition.Position).to.equal(1);
-        expect(packaging.getValue().yPosition.Position).to.equal(1);
-        expect(packaging.getValue().zPosition.Position).to.equal(1);
+        expect(packaging.getValue().xPosition.XPosition).to.equal(1);
+        expect(packaging.getValue().yPosition.YPosition).to.equal(1);
+        expect(packaging.getValue().zPosition.ZPosition).to.equal(1);
 
     });
     
@@ -93,7 +93,7 @@ describe ("Create an invalid Packaging", () => {
             yPosition: 1,
             zPosition: 1
         });
-        expect(packaging.error).to.equal("X position must be less than 10");
+        expect(packaging.isFailure).to.equal(true);
 
     });
 
@@ -122,7 +122,7 @@ describe ("Create an invalid Packaging", () => {
             yPosition: 20,
             zPosition: 1
         });
-        expect(packaging.error).to.equal("Y position must be less than 20");
+        expect(packaging.isFailure).to.equal(true);
 
     });
 
@@ -150,7 +150,7 @@ describe ("Create an invalid Packaging", () => {
             yPosition: 1,
             zPosition: 8
         });
-        expect(packaging.error).to.equal("Z position must be less than 8");
+        expect(packaging.isFailure).to.equal(true);
 
     });
     

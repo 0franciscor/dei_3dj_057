@@ -16,7 +16,6 @@ namespace EletricGo.Domain.Deliveries
         public String AsString(){
             return deliveryID;
         }
-        
 
     }    
 }

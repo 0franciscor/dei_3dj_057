@@ -16,9 +16,9 @@ export class PackagingMap extends Mapper<Packaging> {
             packagingID: Packaging.packagingID.id,
             truckID: Packaging.truckID.id,
             deliveryID: Packaging.deliveryID.id,
-            xPosition: Packaging.xPosition.Position,
-            yPosition: Packaging.yPosition.Position,
-            zPosition: Packaging.zPosition.Position
+            xPosition: Packaging.xPosition.XPosition,
+            yPosition: Packaging.yPosition.YPosition,
+            zPosition: Packaging.zPosition.ZPosition
         } as IPackagingDTO;
     }
 
@@ -42,9 +42,9 @@ export class PackagingMap extends Mapper<Packaging> {
             packagingID: Packaging.packagingID.id,
             deliveryID: Packaging.deliveryID.id,
             truckID: Packaging.truckID.id,
-            xPosition: Packaging.xPosition.Position,
-            yPosition: Packaging.yPosition.Position,
-            zPosition: Packaging.zPosition.Position
+            xPosition: Packaging.xPosition.XPosition,
+            yPosition: Packaging.yPosition.YPosition,
+            zPosition: Packaging.zPosition.ZPosition
         };
     }
 }

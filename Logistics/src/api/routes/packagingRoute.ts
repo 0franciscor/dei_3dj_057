@@ -37,19 +37,23 @@ export default (app: Router) => {
     );
 
 
-    route.put('/',
+    route.patch('/',
         celebrate({
             body: Joi.object({
-                xPosition: Joi.number().required(),
-                yPosition: Joi.number().required(),
-                zPosition: Joi.number().required()
+                packagingID: Joi.string(),
+                truckID: Joi.string(),
+                deliveryID: Joi.string(),
+                xPosition: Joi.number(),
+                yPosition: Joi.number(),
+                zPosition: Joi.number()
             })
         }),
+
         
         (req, res, next) => ctrl.updatePackaging(req, res, next)
     );
 
-    route.delete('/:id', (req, res, next) => {
+    route.delete('/id/:id', (req, res, next) => {
         req.body.packagingID = req.params.id;
         ctrl.deletePackaging(req, res, next)
     });
