@@ -23,7 +23,7 @@ export default(app: Router)=>{
       body: Joi.object({
           pathID:Joi.string().required(),
           startWHId: Joi.string().required(),
-          destinatioWHId: Joi.string().required(),
+          destinationWHId: Joi.string().required(),
           pathDistance: Joi.number().required(),
           pathTravelTime: Joi.number().required(),
           wastedEnergy: Joi.number().required(),

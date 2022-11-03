@@ -7,7 +7,7 @@ import { IPathDTO } from "../dto/IPathDTO";
 import { Result } from "../core/logic/Result";
 import fetch from 'node-fetch'
 import { rmSync } from "fs";
-const http = require ('http');
+const http = require ('https');
 
 
 
@@ -38,7 +38,7 @@ export default class PathController implements IPathController{
 
     public async createPath(req: Request, res: Response, next: NextFunction) {
         try{
-            
+            console.log(req.body)
             const httpAgent = new http.Agent({rejectUnauthorized: false});
             const address_start = 'https://localhost:5001/api/warehouses/Exists/' + req.body.startWHId;
 

@@ -97,7 +97,7 @@ namespace EletricGo.Controllers
             
         }
 
-        [HttpGet("Exists /{id}")]
+        [HttpGet("Exists/{id}")]
         public async Task<ActionResult<bool>> Exists (string id)
         {
             if(await _warehouseService.FindWarehouse(new WarehouseDto{Id = id}))
