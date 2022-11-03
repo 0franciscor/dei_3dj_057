@@ -1,0 +1,1100 @@
+{
+	"info": {
+		"_postman_id": "9e30ebdc-7ef2-43d3-9589-c97b36b8542a",
+		"name": "Packaging Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23547765"
+	},
+	"item": [
+		{
+			"name": "Get Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Packaging not found\", function() {\r",
+							"    pm.response.to.have.body(\"Packaging not found\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/id/testPackagingTesting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						"id",
+						"testPackagingTesting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery not found\", function() {\r",
+							"    pm.response.to.have.body(\"Delivery not found\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"truckID\": \"testTruckTesting\",\r\n    \"deliveryID\": \"testDeliveryTesting\",\r\n    \"xPosition\": 1,\r\n    \"yPosition\": 1,\r\n    \"zPosition\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "- Create Delivery for Test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deliveryID\":\"testDeliveryTesting\",\r\n    \"deliveryDate\":\"2022-10-26T08:46:29Z\",\r\n    \"loadTime\":30.0,\r\n    \"unloadTime\":40.0,\r\n    \"destination\":\"unknown\",\r\n    \"deliveryMass\":1000.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/deliveries/createDelivery",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"deliveries",
+						"createDelivery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck not found\", function() {\r",
+							"    pm.response.to.have.body(\"Truck not found\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"truckID\": \"testTruckTesting\",\r\n    \"deliveryID\": \"testDeliveryTesting\",\r\n    \"xPosition\": 1,\r\n    \"yPosition\": 1,\r\n    \"zPosition\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "- Create Truck for Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"truckID\":\"testTruckTesting\",\r\n    \"tare\":100,\r\n    \"capacity\":200,\r\n    \"maxBatteryCapacity\":300,\r\n    \"autonomy\":400,\r\n    \"fastChargeTime\":500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/truck/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Packaging not found\", function() {\r",
+							"    pm.response.to.have.body(\"Packaging not found\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"truckID\": \"testTruckTesting\",\r\n    \"deliveryID\": \"testDeliveryTesting\",\r\n    \"xPosition\": 1,\r\n    \"yPosition\": 1,\r\n    \"zPosition\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"packagingID\": \"testPackagingTesting\",\r",
+							"            \"truckID\": \"testTruckTesting\",\r",
+							"            \"deliveryID\": \"testDeliveryTesting\",\r",
+							"            \"xPosition\": 1,\r",
+							"            \"yPosition\": 1,\r",
+							"            \"zPosition\": 1\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"truckID\": \"testTruckTesting\",\r\n    \"deliveryID\": \"testDeliveryTesting\",\r\n    \"xPosition\": 1,\r\n    \"yPosition\": 1,\r\n    \"zPosition\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"packagingID\": \"testPackagingTesting\",\r",
+							"            \"truckID\": \"testTruckTesting\",\r",
+							"            \"deliveryID\": \"testDeliveryTesting\",\r",
+							"            \"xPosition\": 1,\r",
+							"            \"yPosition\": 1,\r",
+							"            \"zPosition\": 1\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/id/testPackagingTesting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						"id",
+						"testPackagingTesting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"UnSuccessful POST request\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Packaging already exists\", function() {\r",
+							"    pm.response.to.have.body(\"Packaging already exists\"); \r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"truckID\": \"testTruckTesting\",\r\n    \"deliveryID\": \"testDeliveryTesting\",\r\n    \"xPosition\": 1,\r\n    \"yPosition\": 1,\r\n    \"zPosition\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging TruckID Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"TruckID cannot be changed\", function() {\r",
+							"    pm.response.to.have.body(\"TruckID cannot be changed\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"truckID\": \"testTruckTestings\",\r\n    \"deliveryID\": \"testDeliveryTesting\",\r\n    \"xPosition\": 1,\r\n    \"yPosition\": 1,\r\n    \"zPosition\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging DeliveryID Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"DeliveryID cannot be changed\", function() {\r",
+							"    pm.response.to.have.body(\"DeliveryID cannot be changed\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"truckID\": \"testTruckTesting\",\r\n    \"deliveryID\": \"testDeliveryTestings\",\r\n    \"xPosition\": 1,\r\n    \"yPosition\": 1,\r\n    \"zPosition\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging xPosition Test 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"X Position must be greater than 0\", function() {\r",
+							"    pm.response.to.have.body(\"X Position must be greater than 0\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"xPosition\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging xPosition Test 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"X Position must be less than 10\", function() {\r",
+							"    pm.response.to.have.body(\"X Position must be less than 10\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"xPosition\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging xPosition Test 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PATCH request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Packaging JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"packagingID\": \"testPackagingTesting\",\r",
+							"            \"truckID\": \"testTruckTesting\",\r",
+							"            \"deliveryID\": \"testDeliveryTesting\",\r",
+							"            \"xPosition\": 2,\r",
+							"            \"yPosition\": 1,\r",
+							"            \"zPosition\": 1\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"xPosition\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging yPosition Test 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Y Position must be greater than 0\", function() {\r",
+							"    pm.response.to.have.body(\"Y Position must be greater than 0\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"yPosition\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging yPosition Test 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Y Position must be less than 20\", function() {\r",
+							"    pm.response.to.have.body(\"Y Position must be less than 20\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"yPosition\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging yPosition Test 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PATCH request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Packaging JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"packagingID\": \"testPackagingTesting\",\r",
+							"            \"truckID\": \"testTruckTesting\",\r",
+							"            \"deliveryID\": \"testDeliveryTesting\",\r",
+							"            \"xPosition\": 2,\r",
+							"            \"yPosition\": 2,\r",
+							"            \"zPosition\": 1\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"yPosition\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging zPosition Test 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Z Position must be greater than 0\", function() {\r",
+							"    pm.response.to.have.body(\"Z Position must be greater than 0\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"zPosition\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging zPosition Test 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Z Position must be less than 8\", function() {\r",
+							"    pm.response.to.have.body(\"Z Position must be less than 8\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"zPosition\": 8\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Packaging zPosition Test 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PATCH request\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Packaging JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"packagingID\": \"testPackagingTesting\",\r",
+							"            \"truckID\": \"testTruckTesting\",\r",
+							"            \"deliveryID\": \"testDeliveryTesting\",\r",
+							"            \"xPosition\": 2,\r",
+							"            \"yPosition\": 2,\r",
+							"            \"zPosition\": 2\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"packagingID\": \"testPackagingTesting\",\r\n    \"zPosition\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Packaging JSON after delete\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"packagingID\": \"testPackagingTesting\",\r",
+							"            \"truckID\": \"testTruckTesting\",\r",
+							"            \"deliveryID\": \"testDeliveryTesting\",\r",
+							"            \"xPosition\": 2,\r",
+							"            \"yPosition\": 2,\r",
+							"            \"zPosition\": 2\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/id/testPackagingTesting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						"id",
+						"testPackagingTesting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Packaging Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Packaging not found\", function() {\r",
+							"    pm.response.to.have.body(\"Packaging not found\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/packaging/id/testPackagingTesting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"packaging",
+						"id",
+						"testPackagingTesting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "- Delete Delivery for Test",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/deliveries/Delete/testDeliveryTesting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"deliveries",
+						"Delete",
+						"testDeliveryTesting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "- Delete Truck for Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/truck/testTruckTesting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						"testTruckTesting"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

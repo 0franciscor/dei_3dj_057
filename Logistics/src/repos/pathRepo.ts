@@ -24,7 +24,7 @@ export default class PathRepo implements IPathRepo{
     }
 
     public async save(path:Path): Promise<Path>{
-        const query= {pathID: path.pathID};
+        const query= {pathID: path.pathID.id};
         const PathDocument = await this.pathSchema.findOne(query as FilterQuery<IPathPersistance & Document>);
         try{
             if (PathDocument === null){

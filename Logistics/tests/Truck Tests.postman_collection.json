@@ -25,23 +25,11 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"truckID\": \"testTruckTesting\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:3000/api/truck/",
+					"raw": "http://localhost:3000/api/truck/id/testTruckTesting",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -50,7 +38,8 @@
 					"path": [
 						"api",
 						"truck",
-						""
+						"id",
+						"testTruckTesting"
 					]
 				}
 			},
@@ -76,7 +65,7 @@
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -187,23 +176,11 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"truckID\": \"testTruckTesting\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:3000/api/truck/",
+					"raw": "http://localhost:3000/api/truck/id/testTruckTesting",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -212,7 +189,8 @@
 					"path": [
 						"api",
 						"truck",
-						""
+						"id",
+						"testTruckTesting"
 					]
 				}
 			},
@@ -296,7 +274,7 @@
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -352,7 +330,7 @@
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -408,7 +386,7 @@
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -464,7 +442,7 @@
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -520,7 +498,7 @@
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -579,17 +557,8 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"truckID\": \"testTruckTesting\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:3000/api/truck",
+					"raw": "http://localhost:3000/api/truck/testTruckTesting",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -597,7 +566,8 @@
 					"port": "3000",
 					"path": [
 						"api",
-						"truck"
+						"truck",
+						"testTruckTesting"
 					]
 				}
 			},
@@ -622,23 +592,11 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"truckID\": \"testTruckTesting\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:3000/api/truck/",
+					"raw": "http://localhost:3000/api/truck/id/testTruckTesting",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -647,7 +605,8 @@
 					"path": [
 						"api",
 						"truck",
-						""
+						"id",
+						"testTruckTesting"
 					]
 				}
 			},

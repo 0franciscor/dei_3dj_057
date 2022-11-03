@@ -5,16 +5,18 @@ import { IPackagingDTO } from "../../dto/IPackagingDTO";
 import { PackagingID } from "./PackagingID";
 import { TruckID } from "../truck/TruckID";
 import { DeliveryID } from "./DeliveryID";
-import { Position } from "./Position";
+import { XPosition } from "./XPosition";
+import { YPosition } from "./YPosition";
+import { ZPosition } from "./ZPosition";
 
 
 interface PackagingProps {
   packagingID: PackagingID;
   truckID: TruckID;
   deliveryID: DeliveryID;
-  xPosition: Position;
-  yPosition: Position;
-  zPosition: Position;
+  xPosition: XPosition;
+  yPosition: YPosition;
+  zPosition: ZPosition;
 }
 
 export class Packaging extends AggregateRoot<PackagingProps> {
@@ -34,13 +36,13 @@ export class Packaging extends AggregateRoot<PackagingProps> {
     return this.props.deliveryID;
   }
 
-  get xPosition(): Position {
+  get xPosition(): XPosition {
     return this.props.xPosition;
   }
-  get yPosition(): Position {
+  get yPosition(): YPosition {
     return this.props.yPosition;
   }
-  get zPosition(): Position {
+  get zPosition(): ZPosition {
     return this.props.zPosition;
   }
 
@@ -53,15 +55,15 @@ export class Packaging extends AggregateRoot<PackagingProps> {
     this.props.deliveryID = deliveryID;
   }
 
-  set xPosition(xPosition: Position) {
+  set xPosition(xPosition: XPosition) {
     this.props.xPosition = xPosition;
   }
   
-  set yPosition(yPosition: Position) {
+  set yPosition(yPosition: YPosition) {
     this.props.yPosition = yPosition;
   }
 
-  set zPosition(zPosition: Position) {
+  set zPosition(zPosition: ZPosition) {
     this.props.zPosition = zPosition;
   }
   
@@ -73,21 +75,16 @@ export class Packaging extends AggregateRoot<PackagingProps> {
 
   public static create (PackagingDTO:IPackagingDTO , id?: UniqueEntityID): Result<Packaging> {
 
-      if(PackagingDTO.xPosition>=10)
-        return Result.fail<Packaging>('X position must be less than 10');
-      if(PackagingDTO.yPosition>=20)
-        return Result.fail<Packaging>('Y position must be less than 20');
-      if(PackagingDTO.zPosition>=8)
-        return Result.fail<Packaging>('Z position must be less than 8');
+      
 
       try {
         const packaging = new Packaging({
           packagingID: PackagingID.create(PackagingDTO.packagingID).getValue(),
           truckID: TruckID.create(PackagingDTO.truckID).getValue(),
           deliveryID: DeliveryID.create(PackagingDTO.deliveryID).getValue(),
-          xPosition: Position.create(PackagingDTO.xPosition).getValue(),
-          yPosition: Position.create(PackagingDTO.yPosition).getValue(),
-          zPosition: Position.create(PackagingDTO.zPosition).getValue(),
+          xPosition: XPosition.create(PackagingDTO.xPosition).getValue(),
+          yPosition: YPosition.create(PackagingDTO.yPosition).getValue(),
+          zPosition: ZPosition.create(PackagingDTO.zPosition).getValue(),
         }, id);
     
         return Result.ok<Packaging>(packaging);

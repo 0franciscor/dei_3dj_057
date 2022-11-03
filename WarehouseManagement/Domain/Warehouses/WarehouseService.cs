@@ -87,7 +87,7 @@ namespace EletricGo.Domain.Warehouses
 
             try
             {
-                warehouse.Update(dto);
+            warehouse.Update(dto);
             }
             catch (Exception e)
             {
@@ -109,6 +109,10 @@ namespace EletricGo.Domain.Warehouses
             _warehouseRepository.Delete(warehouse);
             await this._unitOfWork.CommitAsync();
             return warehouse.ToWarehouseDto();
+        }
+
+        public async Task<bool> FindWarehouse(WarehouseDto warehouseDto){
+            return await _warehouseRepository.Find(new WarehouseId(warehouseDto.Id));
         }
     }    
     
