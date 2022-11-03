@@ -40,7 +40,7 @@ export default (app: Router) => {
     );
 
 
-    route.put('/',
+    route.patch('/',
         celebrate({
             body: Joi.object({
                 truckID: Joi.string().required(),
