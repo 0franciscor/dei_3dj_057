@@ -26,14 +26,16 @@ export default class PathService implements IPathService{
             if(path !== null)
                 return Result.fail<IPathDTO>("Path already exists");
             const pathOrError = Path.create(pathDTO);
-
+            
             if(pathOrError.isFailure){
                 return Result.fail<IPathDTO>(pathOrError.error);
             }
             const pathResult = pathOrError.getValue();
+            
             await this.pathRepo.save(pathResult);
-
+            console.log(pathResult);
             const pathDTOResult = PathMap.toDTO(pathResult) as IPathDTO;
+            console.log(pathDTOResult);
             return Result.ok<IPathDTO>(pathDTOResult)
         }catch(e){
             throw e;

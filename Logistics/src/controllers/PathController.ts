@@ -38,7 +38,7 @@ export default class PathController implements IPathController{
 
     public async createPath(req: Request, res: Response, next: NextFunction) {
         try{
-            console.log(req.body)
+        
             const httpAgent = new http.Agent({rejectUnauthorized: false});
             const address_start = 'https://localhost:5001/api/warehouses/Exists/' + req.body.startWHId;
 
@@ -63,7 +63,8 @@ export default class PathController implements IPathController{
             if(pathOrError.isFailure){
                 return res.status(409).send("Path already exists");
             }
-
+            console.log(req.body);
+            
             const pathDTO = pathOrError.getValue();
 
             return res.status(201).json(pathDTO);
