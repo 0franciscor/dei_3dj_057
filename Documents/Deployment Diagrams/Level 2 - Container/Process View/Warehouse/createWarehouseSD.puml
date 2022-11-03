@@ -1,0 +1,59 @@
+@startuml 
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<EletricGo(C4)>>\n       System"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+admin -> system: I want to create a new warehouse
+activate system
+
+system -> admin: asks for the details on the new warehouse
+deactivate system
+
+admin -> system: inserts the information about the new warehouse
+
+activate system
+system -> WM: POST CreateWarehouse(warehouseDto)
+activate WM
+
+alt If warehouse don´t exist in the system  
+WM --> system: 200 OK
+deactivate WM
+
+system -> admin: informs about the success of the operation
+deactivate system
+
+else If a warehouse already exists with the id entered
+
+activate WM
+WM --> system: 409 CONFLICT
+deactivate WM
+
+activate system
+system -> admin: informs about the fail of the operation
+deactivate system 
+
+else If the attributes do not respect the business rules
+
+activate WM
+WM --> system: 409 CONFLICT
+deactivate WM
+
+activate system
+system -> admin: informs about the fail of the operation
+deactivate system 
+end 
+deactivate system
+deactivate admin
+
+@enduml

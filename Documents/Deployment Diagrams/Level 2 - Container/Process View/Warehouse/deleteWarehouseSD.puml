@@ -1,4 +1,4 @@
-@startuml deleteWarehouseSSD
+@startuml 
 autonumber
 
 skinparam sequence {
@@ -7,9 +7,10 @@ ParticipantBackgroundColor white
 }
 
 actor "Warehouse Manager" as admin
-participant EletricGO as system <<System(C4)>>
-
-
+box "<<EletricGo(C4)>>\n       System"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
 admin -> system: I want to delete a warehouse
 activate system
 
@@ -22,13 +23,32 @@ activate system
 system --> admin: asks for the confirmation of the deletion
 deactivate system
 
+alt If there is a warehouse in the system with the id entered
 admin -> system: confirms the deletion
 activate system
 
-system --> admin: informs about the successful deletion
+system -> WM : DELETE DeleteWarehouse(id)
+activate WM
 
+WM --> system : 200 OK 
+deactivate WM
+system --> admin: informs about the successful deletion
+deactivate system
+
+else If there is no warehouse in the system with the id entered
+
+activate WM
+WM --> system : 404 NOT FOUND 
+deactivate WM
+activate system
+
+system --> admin : informs about the fail of the operation
 
 deactivate system
+
+
+end 
+
 deactivate admin
 
 @enduml

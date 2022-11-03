@@ -1,0 +1,56 @@
+@startuml 
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+box "<<EletricGo(C4)>>\n       System"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+admin -> system: I want to update the details of a warehouse
+activate system
+
+system --> admin: asks for the ID of the warehouse
+deactivate system
+
+admin -> system: inserts the ID of the warehouse
+activate system
+
+system --> admin: asks for the information to update
+deactivate system
+
+admin -> system: inserts the information to update
+activate system
+
+alt If the Id entered matches the Id of a warehouse\n  in the system and the business rules for the\n  new attributes are respected
+system -> WM : Update()
+activate WM
+
+WM --> system : 200 OK 
+deactivate WM
+
+system --> admin: displays the updated information and \ninforms about the operation success
+deactivate system
+
+else If the Id entered does not match the Id of a warehouse in the\n system or the business rules for the new attributes are not\n respected
+
+activate WM
+WM --> system : 409 CONFLICT
+deactivate WM
+
+activate system
+system --> admin : display a message error
+deactivate system
+end 
+
+
+deactivate system
+deactivate admin
+
+@enduml
+@enduml

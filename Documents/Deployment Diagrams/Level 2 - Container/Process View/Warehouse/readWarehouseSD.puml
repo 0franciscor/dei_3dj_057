@@ -1,0 +1,42 @@
+@startuml 
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+box "<<EletricGo(C4)>>\n       System"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+admin -> system: I want to consult the details on a warehouse
+activate system
+
+system --> admin: asks for the ID of the warehouse
+deactivate system
+
+admin -> system: inserts the ID of the warehouse
+activate system
+
+alt If the Id entered matches the Id of a warehouse in the system
+system -> WM : GetById(id)
+activate WM
+WM --> system : 200 OK 
+deactivate WM 
+system --> admin: displays the details of the requested warehouse
+deactivate system
+
+else If the Id entered does not match the Id of a warehouse in the system
+activate WM
+WM --> system : 404 NOT FOUND
+deactivate WM 
+activate system
+system --> admin : display a message of error   
+deactivate system
+end
+deactivate admin
+
+@enduml

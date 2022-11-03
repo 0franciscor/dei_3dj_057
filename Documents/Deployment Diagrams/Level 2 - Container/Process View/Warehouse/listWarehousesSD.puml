@@ -1,0 +1,44 @@
+@startuml 
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+box "<<EletricGo(C4)>>\n       System"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+
+admin -> system: I want to consult the warehouses in the system
+activate system
+
+alt if there are warehouses in the system
+system -> WM : GetAll()
+activate WM
+WM --> system : 200 OK 
+deactivate WM
+
+
+system --> admin: show all warehouses in the system
+deactivate system
+
+else If there are no warehouses in the system
+
+activate WM
+WM --> system : 404 NOT FOUND
+deactivate WM
+activate system
+ 
+system --> admin: show message error "Warehouses not found"
+deactivate system 
+
+
+end
+
+deactivate admin
+
+@enduml
