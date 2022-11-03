@@ -5,6 +5,7 @@ import "mocha";
 describe("Create Packaging", () => {
         
     it("packaging should be created", async () => {
+        
         const packaging = Packaging.create({
             id: '',
             deliveryID: 'gandaDelivery',
@@ -14,6 +15,7 @@ describe("Create Packaging", () => {
             yPosition: 1,
             zPosition: 1
         });
+        expect(packaging.getValue()).to.equal(packaging.getValue());
         expect(packaging.getValue().deliveryID.id).to.equal('gandaDelivery');
         expect(packaging.getValue().packagingID.id).to.equal('gandaPackaging');
         expect(packaging.getValue().truckID.id).to.equal('gandaTruck');
