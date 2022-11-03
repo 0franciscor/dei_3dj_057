@@ -5,8 +5,9 @@ import IPathService from "../services/IServices/IPathService";
 import { Request, Response, NextFunction } from "express";
 import { IPathDTO } from "../dto/IPathDTO";
 import { Result } from "../core/logic/Result";
-import { http } from "winston";
-
+import fetch from 'node-fetch'
+import { rmSync } from "fs";
+const http = require ('http');
 
 
 
@@ -19,6 +20,8 @@ export default class PathController implements IPathController{
     public async getPath(req: Request, res: Response, next: NextFunction) {
         try {
             const path = await this.pathService.getPath(req.body.pathID);
+            if (path.isFailure)
+                return res.status(404).send("Path not found")
             res.status(200).json(path);
         } catch (e) {
             next(e);
@@ -34,21 +37,37 @@ export default class PathController implements IPathController{
     }
 
     public async createPath(req: Request, res: Response, next: NextFunction) {
-        const https = require("https");
         try{
             
-            https.get("https://localhost:5001/api/warehouses/"+req.body.startWHId, res =>{
-                console.log(res.statusCode);
-            })
+            const httpAgent = new http.Agent({rejectUnauthorized: false});
+            const address_start = 'https://localhost:5001/api/warehouses/Exists/' + req.body.startWHId;
 
+            const response_start = await fetch(address_start,{
+                method: 'GET',
+                agent : httpAgent
+            });
+
+            if(response_start.status==404)
+                return res.status(404).send("Start Warehouse not found");
+            
+            const address_destination ='https://localhost:5001/api/warehouses/Exists/' + req.body.destinationWHId;
+           const response_destination = await fetch(address_destination,{
+                method : 'GET',
+                agent: httpAgent
+           });
+
+           if (response_destination.status == 404)
+                return res.status(404).send("Destination warehouse not found");
+            
             const pathOrError = await this.pathService.createPath(req.body as IPathDTO) as Result<IPathDTO>;
-        
             if(pathOrError.isFailure){
-                return res.status(403).send("Path already exists");
+                return res.status(409).send("Path already exists");
             }
 
             const pathDTO = pathOrError.getValue();
-            return res.json(pathDTO).status(201);
+
+            return res.status(201).json(pathDTO);
+            
         }catch(e){
             next(e);
         }
@@ -58,7 +77,7 @@ export default class PathController implements IPathController{
         try {
             const pathOrError= await this.pathService.updatePath(req.body as IPathDTO) as Result<IPathDTO>;
             if(pathOrError.isFailure){
-                return res.status(403).send("Path not found");
+                return res.status(404).send("Path not found");
             }
             const pathDTO= pathOrError.getValue();
             return res.json(pathDTO).status(200);
@@ -71,7 +90,7 @@ export default class PathController implements IPathController{
         try {
             const pathResult = await this.pathService.deletePath(req.body.pathID);
             if(pathResult.isFailure)
-                return res.status(403).send("Path not found");
+                return res.status(404).send("Path not found");
             res.status(200).json(pathResult)
         } catch (e) {
             next(e);
