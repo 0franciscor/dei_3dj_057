@@ -5,6 +5,7 @@ actor "Administrator" as ADM
 actor "Warehouse Manager" as MNG
 actor "Fleet Manager" as FMNG
 actor "Logistics Manager" as LMNG
+
 rectangle EletricGo {
 
     usecase "Create a Warehouse" as UC1
@@ -36,6 +37,18 @@ rectangle EletricGo {
     usecase "Update information about Client" as UC23
     usecase "Delete a Client" as UC24
     usecase "List the Clients" as UC25
+    
+    usecase "Create a packaging" as UC26
+    usecase "Reade information about a packaging" as UC27
+    usecase "Update information about packaging" as UC28
+    usecase "Delete a packaging" as UC29
+    usecase "List the packaging" as UC30
+    
+    usecase "Create a trip" as UC31
+    usecase "Reade information about a trip" as UC32
+    usecase "Update information about a trip" as UC33
+    usecase "Delete a trip" as UC34
+    usecase "List the trips" as UC35
 
 
 }
@@ -64,6 +77,18 @@ LMNG --> UC17
 LMNG --> UC18
 LMNG --> UC19
 LMNG --> UC20
+
+LMNG --> UC26
+LMNG --> UC27
+LMNG --> UC28
+LMNG --> UC29
+LMNG --> UC30
+
+LMNG --> UC31
+LMNG --> UC32
+LMNG --> UC33
+LMNG --> UC34
+LMNG --> UC35
 
 ADM --> UC21
 ADM --> UC22
