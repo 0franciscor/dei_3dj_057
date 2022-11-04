@@ -9,29 +9,18 @@ namespace WarehouseManagementTest.Controllers.Deliveries
     [TestFixture]
     internal class DeliveriesIntegration
     {
-        private string? id;
+        private readonly string? id = "testID";
 
-        private DateTime deliveryDate;
+        private readonly DateTime deliveryDate = new DateTime(2020, 12, 12);
 
-        private float loadTime;
+        private readonly float loadTime = 10;
 
-        private float unloadTime;
+        private readonly float unloadTime = 20;
 
-        private string? destination;
+        private readonly string? destination = "testDestination";
 
-        private float deliveryMass;
-
-        [SetUp]
-        public void Setup()
-        {
-            id = "testID";
-            deliveryDate = new DateTime(2020, 12, 12);
-            loadTime = 10;
-            unloadTime = 20;
-            destination = "testDestination";
-            deliveryMass = 30;
-
-        }
+        private readonly float deliveryMass = 30;
+        
 
         //SETUP LISTS FOR GETALL()
         private List<Delivery> GetDeliveriesList()
@@ -78,6 +67,5 @@ namespace WarehouseManagementTest.Controllers.Deliveries
                 Assert.AreEqual(expectedList[i].Id, resultList.Value[i].deliveryID);
             }
         }
-        
     }
 }
