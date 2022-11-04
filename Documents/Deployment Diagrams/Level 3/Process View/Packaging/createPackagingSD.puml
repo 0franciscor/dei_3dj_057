@@ -8,7 +8,7 @@ ParticipantBackgroundColor white
 actor "Logistics Manager" as manager
 
 
-box "<<System(C4)>>\n       System" #Gold
+box "<<System(C4)>>\n       System" #LightYellow
 participant SPA as  SPA <<Container(C4)>>
 box "<<Container(C4)>>\n       Logistics" #LightBlue
 participant PackagingRoute as Route <<Component(C4)>>

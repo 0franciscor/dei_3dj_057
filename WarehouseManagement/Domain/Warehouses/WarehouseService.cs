@@ -87,7 +87,7 @@ namespace EletricGo.Domain.Warehouses
 
             try
             {
-            warehouse.Update(dto);
+                warehouse.Update(dto);
             }
             catch (Exception e)
             {
