@@ -74,7 +74,6 @@ export default class PathRepo implements IPathRepo{
             const query ={pathID: pathID}
             const pathDocument = await this.pathSchema.findOne(query as 
             FilterQuery<IPathPersistance & Document>);
-            console.log(pathDocument);
 
             if(pathDocument === null){
                 return null;
