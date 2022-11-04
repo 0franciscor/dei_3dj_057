@@ -33,9 +33,9 @@ export default class PathService implements IPathService{
             const pathResult = pathOrError.getValue();
             
             await this.pathRepo.save(pathResult);
-            console.log(pathResult);
+            
             const pathDTOResult = PathMap.toDTO(pathResult) as IPathDTO;
-            console.log(pathDTOResult);
+            
             return Result.ok<IPathDTO>(pathDTOResult)
         }catch(e){
             throw e;
@@ -55,9 +55,10 @@ export default class PathService implements IPathService{
         }
     }
 
-    public async getAllPath(): Promise<Result<IPathDTO[]>> {
+    public async getAllPath(pathDTO: IPathDTO): Promise<Result<IPathDTO[]>> {
         try{
-            const paths = await this.pathRepo.getAllPaths();
+
+            const paths = await this.pathRepo.getAllPaths(pathDTO.startWHId, pathDTO.destinationWHId);
             const pathDTOResult = PathMap.toDTOList(paths) as IPathDTO[];
             return Result.ok<IPathDTO[]>(pathDTOResult);
         }catch(e){
@@ -94,9 +95,10 @@ export default class PathService implements IPathService{
     public async deletePath(pathID: string): Promise<Result<IPathDTO>> {
         try{
             const path = await this.pathRepo.getPathById(pathID);
+            console.log(path); 
             if(path === null)
                 return Result.fail<IPathDTO>("Path not found");
-            await this.pathRepo.delete(path);
+            await this.pathRepo.delete(path.pathID);
 
             const pathDTOResult = PathMap.toDTO(path) as IPathDTO;
             return Result.ok<IPathDTO>(pathDTOResult);
