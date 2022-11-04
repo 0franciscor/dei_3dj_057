@@ -1,0 +1,83 @@
+@startuml
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin 
+box "<<EletricGo(C4)>>\n       System" #LightYellow
+participant SPA as ui <<Container(C4)>>
+box "<<Container(C4)>>\n    Warehouse Management" #LightGreen
+participant WarehouseRoute as  WM <<Component(C4)>>
+participant WarehouseController as  CTL <<Component(C4)>>
+participant WarehouseService as  SV <<Component(C4)>>
+participant "warehouse : Warehouse" as  W <<Component(C4)>>
+participant "warehouseDto : WarehouseDTO" as  DTO <<Component(C4)>>
+participant WarehouseRepository as  WR <<Component(C4)>>
+end box
+end box
+
+
+admin -> ui: I want to consult the warehouses in the system
+activate ui
+
+ui -> WM : GET GetAll()
+activate WM
+alt if there are warehouses in the system
+
+WM -> CTL : GetAll()
+activate CTL
+CTL -> SV : GetWarehouses()
+activate SV 
+SV -> WR : GetAll()
+activate WR
+WR --> SV : listOfWarehouses
+deactivate WR
+SV -> W : toWarehouseDto(listOfWarehouse)
+activate W
+
+W --> SV : listOfWarehousesDto
+deactivate W
+SV --> CTL : listOfWarehousesDto
+deactivate SV
+CTL --> WM : listOfWarehousesDto
+deactivate CTL
+WM --> ui : 200 OK 
+deactivate WM
+
+
+ui --> admin: show all warehouses in the system
+deactivate ui
+
+else If there are no warehouses in the system
+
+
+
+WM -> CTL : GetAll()
+activate WM
+activate CTL
+CTL -> SV : GetWarehouses()
+activate SV 
+SV -> WR : GetAll()
+activate WR
+WR --> SV : null
+
+SV --> CTL : null
+deactivate SV
+CTL --> WM : null
+deactivate CTL
+
+WM --> ui : 404 NOT FOUND
+deactivate WM
+activate ui
+ 
+ui --> admin: show message error "Warehouses not found"
+deactivate ui 
+
+
+end
+
+deactivate admin
+@enduml
