@@ -5,7 +5,7 @@ using Moq;
 namespace WarehouseManagementTest.Domain.Deliveries
 {
     [TestFixture]
-    public class DeliveryServiceTest
+    internal class DeliveryServiceTest
     {
         private readonly string? id = "testID";
 
