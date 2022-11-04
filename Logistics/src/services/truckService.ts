@@ -48,11 +48,9 @@ export default class TruckService implements ITruckService {
                 return Result.fail<ITruckDTO>(truckOrError.error);
             }
             const truckResult = truckOrError.getValue();
-            console.log(truckResult);
             await this.truckRepo.save(truckResult);
             
             const truckDTOResult = TruckMap.toDTO(truckResult) as ITruckDTO;
-            console.log(truckDTOResult);
             return Result.ok<ITruckDTO>(truckDTOResult);
 
 
@@ -71,7 +69,6 @@ export default class TruckService implements ITruckService {
                 return Result.fail<ITruckDTO>("Truck not found");
             
             const truckDTOResult = TruckMap.toDTO(truck) as ITruckDTO;
-            console.log(truckDTOResult)
             return Result.ok<ITruckDTO>(truckDTOResult);
         } catch (e) {
             throw e;
