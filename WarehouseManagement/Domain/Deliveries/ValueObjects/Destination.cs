@@ -1,4 +1,5 @@
 using EletricGo.Domain.Shared;
+using System;
 using System.Collections.Generic;
 
 namespace EletricGo.Domain.Deliveries
@@ -17,6 +18,24 @@ namespace EletricGo.Domain.Deliveries
         public string AsString()
         {
             return destination;
+        }
+
+        override
+        public int GetHashCode()
+        {
+            return destination.GetHashCode();
+        }
+
+        override
+        public bool Equals(Object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Destination destination = (Destination)obj;
+            return this.destination == destination.destination;
         }
 
 

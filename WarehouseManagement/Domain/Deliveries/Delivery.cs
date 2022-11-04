@@ -56,6 +56,23 @@ namespace EletricGo.Domain.Deliveries
                 this.deliveryMass = new DeliveryMass(deliveryDTO.deliveryMass);
         }
 
+        override
+        public int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        override
+        public bool Equals(Object obj)
+        { 
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Delivery delivery = (Delivery)obj;
+            return this.Id.Equals(delivery.Id) && this.deliveryDate.Equals(delivery.deliveryDate) && this.loadTime.Equals(delivery.loadTime) && this.unloadTime.Equals(delivery.unloadTime) && this.destination.Equals(delivery.destination) && this.deliveryMass.Equals(delivery.deliveryMass);
+
+        }
+
     }    
 }
 
