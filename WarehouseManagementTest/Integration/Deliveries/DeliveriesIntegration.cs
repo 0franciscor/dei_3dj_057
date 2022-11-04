@@ -157,5 +157,30 @@ namespace WarehouseManagementTest.Controllers.Deliveries
             }
         }
 
+        [Test]
+        public async Task DeleteTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = delivery.toDeliveryDTO();
+
+            var mockRepository = new Mock<IDeliveryRepository>();
+            mockRepository.Setup(repo => repo.GetByID(new DeliveryID(id))).ReturnsAsync(delivery);
+            mockRepository.Setup(repo => repo.Delete(delivery));
+            var mockUnit = new Mock<IUnitOfWork>();
+
+            var deliveryService = new DeliveryService(mockUnit.Object, mockRepository.Object);
+            var deliveryController = new DeliveryController(deliveryService);
+            var aux = await deliveryController.Delete(id);
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+
+                Assert.AreEqual(deliveryResult.deliveryID, id);
+            }
+        }
+
     }
 }
