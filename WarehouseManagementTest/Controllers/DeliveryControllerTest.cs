@@ -50,6 +50,17 @@ namespace WarehouseManagementTest.Controllers.Deliveries
         }
 
         [Test]
+        public void DefineDriverServiceConstrutor()
+        {
+            var mockRepository = new Mock<IDeliveryRepository>();
+            var mockUnit = new Mock<IUnitOfWork>();
+
+            var service = new DeliveryService(mockUnit.Object, mockRepository.Object);
+
+            Assert.That(service, Is.Not.Null);
+        }
+
+        [Test]
         public async Task GetAllTest()
         {
             var expectedList = GetDeliveriesList();
