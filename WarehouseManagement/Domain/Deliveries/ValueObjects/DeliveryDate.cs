@@ -20,6 +20,22 @@ namespace EletricGo.Domain.Deliveries
             return date;
         }
 
+        override
+        public bool Equals(Object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            DeliveryDate deliveryDate = (DeliveryDate)obj;
+            return (date == deliveryDate.date);
+        }
+
+        override
+        public int GetHashCode()
+        {
+            return date.GetHashCode();
+        }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return date;
