@@ -5,6 +5,9 @@ import { IPathPersistance } from "../dataschema/IPathPersistance";
 import { Path } from "../domain/path/Path";
 import { PathID } from '../domain/path/PathID';
 import { PathMap } from "../mappers/PathMap";
+import { start } from "repl";
+import { DestinationWHId } from "../domain/path/DestinationWHId";
+import { StartWHId } from "../domain/path/StartWHId";
 
 
 @Service()
@@ -77,10 +80,28 @@ export default class PathRepo implements IPathRepo{
             }
         }
         
-        public async getAllPaths(): Promise<Path[]> {
-            const pathDocument = await this.pathSchema.find();
-
-            let paths: Path[]= [];
+        public async getAllPaths(startWH:string ,destinationWH:string): Promise<Path[]> {
+            let query;
+            let pathDocument;
+            console.log(startWH, destinationWH);
+            if(startWH==undefined){
+                 query ={destinationWHId: destinationWH}
+            }else if(destinationWH==undefined){
+                 query ={startWHId: startWH}
+            }
+            else{
+                query = {startWIdH:startWH,destinationWHId:destinationWH}
+           
+            } 
+            
+            if(startWH==undefined && destinationWH==undefined){
+                pathDocument = await this.pathSchema.find();
+            }  else{
+                console.log(query);
+                pathDocument= await this.pathSchema.find(query as FilterQuery<IPathPersistance & Document>)}
+                
+            
+             let paths: Path[]= [];
             pathDocument.forEach(path=>{
                 paths.push(PathMap.toDomain(path));
             });

@@ -15,7 +15,11 @@ export default(app: Router)=>{
 
   const ctrl= Container.get(config.controllers.path.name) as IPathController;
 
-  route.get('/',(req,res,next)=> ctrl.getPath(req,res,next));
+  route.get('/id/:id',(req,res,next)=> {
+    req.body.pathID = req.params.id
+    ctrl.getPath(req,res,next);
+  });
+  
   route.get('/all',(req,res,next)=> ctrl.getAllPaths(req,res,next));
     
   route.post('/',
@@ -47,7 +51,10 @@ export default(app: Router)=>{
     }),(req,res,next)=> ctrl.updatePath(req,res,next));
   
   
-    route.delete('/',(req,res,next)=> ctrl.deletePath(req,res,next));
+    route.delete('/id/:id',(req,res,next)=>{ 
+      req.body.id = req.params.id;
+      ctrl.deletePath(req,res,next);
+    });
     
 
 }

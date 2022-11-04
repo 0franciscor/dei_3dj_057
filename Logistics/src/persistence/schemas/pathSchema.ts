@@ -15,12 +15,10 @@ const PathSchema = new mongoose.Schema (
         },
         startWHId: {
             type: String,
-            unique:true,
             required: true
         },
         destinationWHId: {
             type: String,
-            unique:true,
             required: true
         },
         pathDistance:{
