@@ -67,5 +67,33 @@ namespace WarehouseManagementTest.Controllers.Deliveries
                 Assert.AreEqual(expectedList[i].Id, resultList.Value[i].deliveryID);
             }
         }
+
+        [Test]
+        public async Task GetByIDTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = delivery.toDeliveryDTO();
+            var deliveryID = new DeliveryID(id);
+
+            var mockUnit = new Mock<IUnitOfWork>();
+            var mockRepository = new Mock<IDeliveryRepository>();
+            mockRepository.Setup(repo => repo.GetByID(deliveryID)).ReturnsAsync(delivery);
+
+            var deliveryService = new DeliveryService(mockUnit.Object, mockRepository.Object);
+
+            var deliveryController = new DeliveryController(deliveryService);
+            var aux = await deliveryController.GetByID(id);
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+
+                Assert.AreEqual(deliveryExpected.deliveryID, deliveryResult.deliveryID);
+            }
+        }
+
+
     }
 }
