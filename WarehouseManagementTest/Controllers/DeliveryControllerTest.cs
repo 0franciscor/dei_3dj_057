@@ -9,30 +9,19 @@ namespace WarehouseManagementTest.Controllers.Deliveries
     [TestFixture]
     internal class DeliveryControllerTest
     {
-        private string? id;
+        private readonly string? id = "testID";
 
-        private DateTime deliveryDate;
+        private readonly DateTime deliveryDate = new DateTime(2020, 12, 12);
 
-        private float loadTime;
+        private readonly float loadTime = 10;
 
-        private float unloadTime;
+        private readonly float unloadTime = 20;
 
-        private string? destination;
+        private readonly string? destination = "testDestination";
 
-        private float deliveryMass;
+        private readonly float deliveryMass = 30;
 
-        [SetUp]
-        public void Setup()
-        {
-            id = "testID";
-            deliveryDate = new DateTime(2020, 12, 12);
-            loadTime = 10;
-            unloadTime = 20;
-            destination = "testDestination";
-            deliveryMass = 30;
-
-        }
-
+        
         //SETUP LISTS FOR GETALL()
         private List<DeliveryDTO> GetDeliveriesList()
         {
@@ -106,7 +95,7 @@ namespace WarehouseManagementTest.Controllers.Deliveries
         }
 
         [Test]
-        public async Task CreateTest()
+        public async Task PostTest()
         {
             var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
             var deliveryExpected = delivery.toDeliveryDTO();
@@ -131,7 +120,7 @@ namespace WarehouseManagementTest.Controllers.Deliveries
         
         
         [Test]
-        public async Task UpdateTest()
+        public async Task PutTest()
         {
             var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
             
@@ -141,10 +130,10 @@ namespace WarehouseManagementTest.Controllers.Deliveries
             float newUnloadTime = 3005;
             postChangeDto.unloadTime = newUnloadTime; 
 
-            var mockRepo = new Mock<IDeliveryRepository>();
-            var mockUnitRepo = new Mock<IUnitOfWork>();
+            var mockRepository = new Mock<IDeliveryRepository>();
+            var mockUnit = new Mock<IUnitOfWork>();
 
-            var deliveryServiceMock = new Mock<DeliveryService>(mockUnitRepo.Object, mockRepo.Object);
+            var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
             deliveryServiceMock.Setup(repo => repo.UpdateDelivery(preChangeDto)).ReturnsAsync(postChangeDto);
 
             var deliveryController = new DeliveryController(deliveryServiceMock.Object);
