@@ -19,13 +19,15 @@ export default class TruckController implements ITruckController {
 
     public async getTruck(req: Request, res: Response, next: NextFunction){
         try {
-            
             const truck = await this.truckService.getTruck(req.body.truckID);
-            if (truck.isFailure)
-                return res.status(404).send("Truck not found");
+            if (truck.isFailure){
+                res.status(404);
+                return res.send("Truck not found");
+            }
                 
-            
-            res.status(200).json(truck);
+                
+            res.status(200);
+            return res.json(truck.getValue());
         } catch (e) {
             next(e);
         }
@@ -34,10 +36,8 @@ export default class TruckController implements ITruckController {
     public async getAllTrucks(req: Request, res: Response, next: NextFunction){
         try {
             const trucks = await this.truckService.getAllTrucks();
-            if (trucks.isFailure)
-                return res.status(404).send("Trucks not found");
-
-            res.status(200).json(trucks);
+            res.status(200);
+            return res.json(trucks.getValue());
         } catch (e) {
             next(e);
         }
@@ -52,8 +52,8 @@ export default class TruckController implements ITruckController {
             }
 
             const truckDTO = truckOrError.getValue();
-            
-            return res.status(201).json( truckDTO );
+            res.status(201);
+            return res.json( truckDTO );
 
 
             } catch (e) {
@@ -65,10 +65,12 @@ export default class TruckController implements ITruckController {
         try {
             const truckOrError = await this.truckService.updateTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
             if (truckOrError.isFailure) {
-                return res.status(404).send("Truck not found");
+                res.status(404);
+                return res.send("Truck not found");
             }
             const truckDTO = truckOrError.getValue();
-            return res.status(200).json( truckDTO );
+            res.status(200);
+            return res.json( truckDTO );
         } catch (e) {
             next(e);
         }
@@ -78,9 +80,12 @@ export default class TruckController implements ITruckController {
         try {
 
             const truckResult = await this.truckService.deleteTruck(req.body.truckID);
-            if(truckResult.isFailure)
-                return res.status(404).send("Truck not found");
-            res.status(200).json(truckResult);
+            if(truckResult.isFailure){
+                res.status(404);
+                return res.send("Truck not found");
+            }
+            res.status(200);
+            return res.json(truckResult.getValue());
         } catch (e) {
             next(e);
         }
