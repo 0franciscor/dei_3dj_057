@@ -71,7 +71,6 @@ namespace WarehouseManagementTest.Controllers.Deliveries
             var serviceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
             serviceMock.Setup(repo => repo.GetDeliveries()).ReturnsAsync(expectedList);
 
-
             var deliveryController = new DeliveryController(serviceMock.Object);
             var resultList = await deliveryController.GetAll();
 
@@ -90,12 +89,11 @@ namespace WarehouseManagementTest.Controllers.Deliveries
 
             var mockUnit = new Mock<IUnitOfWork>();
             var mockRepository = new Mock<IDeliveryRepository>();
+            
             var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
-
             deliveryServiceMock.Setup(repo => repo.GetDelivery(deliveryID)).ReturnsAsync(deliveryExpected);
 
             var deliveryController = new DeliveryController(deliveryServiceMock.Object);
-
             var aux = await deliveryController.GetByID(id);
 
             if (aux == null)
@@ -118,10 +116,9 @@ namespace WarehouseManagementTest.Controllers.Deliveries
             var mockUnit = new Mock<IUnitOfWork>();
             
             var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
-            
             deliveryServiceMock.Setup(repo => repo.CreateDelivery(deliveryExpected)).ReturnsAsync(deliveryExpected);
-            var deliveryController = new DeliveryController(deliveryServiceMock.Object);
 
+            var deliveryController = new DeliveryController(deliveryServiceMock.Object);
             var aux = await deliveryController.Post(deliveryExpected);
 
             if (aux == null)
@@ -134,7 +131,35 @@ namespace WarehouseManagementTest.Controllers.Deliveries
         }
         
         
-        
+        [Test]
+        public async Task UpdateTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            
+            var preChangeDto = delivery.toDeliveryDTO();
+            var postChangeDto = delivery.toDeliveryDTO();
+
+            float newUnloadTime = 3005;
+            postChangeDto.unloadTime = newUnloadTime; 
+
+            var mockRepo = new Mock<IDeliveryRepository>();
+            var mockUnitRepo = new Mock<IUnitOfWork>();
+
+            var deliveryServiceMock = new Mock<DeliveryService>(mockUnitRepo.Object, mockRepo.Object);
+            deliveryServiceMock.Setup(repo => repo.UpdateDelivery(preChangeDto)).ReturnsAsync(postChangeDto);
+
+            var deliveryController = new DeliveryController(deliveryServiceMock.Object);
+            var aux = await deliveryController.Put(preChangeDto);
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+                
+                Assert.AreEqual(deliveryResult.unloadTime, newUnloadTime);
+            }
+        }
 
     }
 }
