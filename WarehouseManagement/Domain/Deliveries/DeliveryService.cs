@@ -52,7 +52,7 @@ namespace EletricGo.Domain.Deliveries
             if (delivery == null)
                 return null;
 
-            delivery.update(deliveryDTO);
+            delivery.Update(deliveryDTO);
             await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
