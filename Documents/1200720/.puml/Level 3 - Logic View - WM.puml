@@ -18,14 +18,14 @@ component "<<component>> <<container (C4)>>\nWarehouse Management\n"{
     }
 
     component "<<component>>\nWarehouseDTO" as DTO
-    component "<<component>>\nWarehouseSchema" as SCHEMA
-    interface "IWarehouseController" as API1
+    component "<<component>>\nWarehouseEntityTypeConfiguration" as SCHEMA
+    interface "IControllerBase" as API1
     interface "IWarehouseService" as API2
     interface "IWarehousePersistence" as API3
-    interface "IWarehouse" as API4
+    interface "IEntity" as API4
     interface "IWarehouseRepository" as API5
     interface "IWarehouseDTO" as API6
-    interface "IWarehouseSchema" as API7
+    interface "IEntityTypeConfiguration" as API7
 
     package "Application Business Rules" {
         component "<<component>>\nWarehouseService" as SV
@@ -57,7 +57,7 @@ DTO -left- API6
 CT -right.> API6 : use
 SV -up..> API6 : use
 
-SCHEMA -left- API7
+SCHEMA -- API7
 RP -up...> API7 : use
 
 PRT ..> API7 : use
