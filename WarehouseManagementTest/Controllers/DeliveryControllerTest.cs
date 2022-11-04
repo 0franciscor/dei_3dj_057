@@ -2,6 +2,7 @@
 using EletricGo.Domain.Deliveries;
 using Moq;
 using EletricGo.Domain.Shared;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WarehouseManagementTest.Controllers.Deliveries
 {
@@ -84,10 +85,36 @@ namespace WarehouseManagementTest.Controllers.Deliveries
 
             var deliveryResult = await deliveryController.GetByID(id);
 
-            Assert.AreEqual(deliveryResult.Value.deliveryID, deliveryExpected.deliveryID);
+            if (deliveryResult.Value == null)
+                Assert.Fail();
+            else
+                Assert.That(deliveryExpected.deliveryID, Is.EqualTo(deliveryResult.Value.deliveryID));
         }
 
-        
+        [Test]
+        public async Task CreateTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = delivery.toDeliveryDTO();
+
+            var idDto = new DeliveryDTO() { deliveryID = id };
+
+            var mockRepository = new Mock<IDeliveryRepository>();
+            var mockUnit = new Mock<IUnitOfWork>();
+
+            var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
+
+            deliveryServiceMock.Setup(repo => repo.CreateDelivery(idDto)).ReturnsAsync(deliveryExpected);
+
+            var deliveryController = new DeliveryController(deliveryServiceMock.Object);
+
+            var deliveryResult = await deliveryController.Post(idDto);
+
+            if (deliveryResult.Result == null)
+                Assert.Fail();
+            else
+                Assert.That((deliveryResult.Result as CreatedAtActionResult).Value, Is.EqualTo(deliveryExpected));
+        }
 
     }
 }
