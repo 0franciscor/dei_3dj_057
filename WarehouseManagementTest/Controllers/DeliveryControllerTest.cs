@@ -108,13 +108,18 @@ namespace WarehouseManagementTest.Controllers.Deliveries
 
             var deliveryController = new DeliveryController(deliveryServiceMock.Object);
 
-            var deliveryResult = await deliveryController.Post(idDto);
+            var aux = await deliveryController.Post(idDto);
 
-            if (deliveryResult.Result == null)
+            if (aux == null)
                 Assert.Fail();
-            else
-                Assert.That((deliveryResult.Result as CreatedAtActionResult).Value, Is.EqualTo(deliveryExpected));
+            else {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as CreatedAtActionResult).Value);
+
+                Assert.AreEqual(deliveryExpected.deliveryID, deliveryResult.deliveryID);
+            }
         }
+        
+        
 
     }
 }
