@@ -71,7 +71,7 @@ export default class PathRepo implements IPathRepo{
     }
         
         public async getPathById(pathID: string): Promise<Path> {
-            const query ={pathId: pathID};
+            const query ={pathID: pathID}
             const pathDocument = await this.pathSchema.findOne(query as 
             FilterQuery<IPathPersistance & Document>);
 

@@ -23,11 +23,12 @@ activate system
 system --> admin: asks for the confirmation of the deletion
 deactivate system
 
-alt If there is a warehouse in the system with the id entered
 admin -> system: confirms the deletion
 activate system
 
 system -> WM : DELETE DeleteWarehouse(id)
+alt If there is a warehouse in the system with the id entered
+
 activate WM
 
 WM --> system : 200 OK 
