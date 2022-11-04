@@ -63,7 +63,7 @@ export default class PathController implements IPathController{
             if(pathOrError.isFailure){
                 return res.status(409).send("Path already exists");
             }
-            console.log(req.body);
+            
             
             const pathDTO = pathOrError.getValue();
 
