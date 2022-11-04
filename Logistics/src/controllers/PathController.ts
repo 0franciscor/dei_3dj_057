@@ -31,6 +31,9 @@ export default class PathController implements IPathController{
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
         try {
             const paths= await this.pathService.getAllPath();
+            if(paths.isFailure)
+                return res.status(404).send("No paths found");
+            res.status(200).json(paths);
         } catch (e) {
             next(e);
         }
