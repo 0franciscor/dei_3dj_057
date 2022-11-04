@@ -25,6 +25,10 @@ end box
 
 manager -> SPA: I want to get all paths
 activate SPA
+SPA -> manager: Asks if wants to apply any filter
+
+alt no filters apllied
+
 
 SPA -> Route: GET getAllPaths()
 activate Route
@@ -61,5 +65,151 @@ SPA -> manager: all allPaths
 deactivate SPA
 deactivate manager
 
+else filters applied 
+alt startwh given and exists 
+
+SPA -> Route: GET getAllPaths(startWHId)
+activate Route
+
+
+Route -> Controller: getAllPaths(startWHId)
+activate Controller
+
+Controller -> Service: getAllPaths(startWHId)
+activate Service
+
+Service -> Repository: getAllPaths(startWHId)
+activate Repository
+
+Repository -> Persistence: findall(startWHId)
+activate Persistence
+
+Persistence --> Repository: allPaths
+deactivate Persistence
+
+Repository --> Service: allPaths
+deactivate Repository
+
+Service --> Controller: allPaths
+deactivate Service
+
+Controller --> Route: 200 OK + allPaths
+deactivate Controller
+
+Route -> SPA: 200 OK + allPaths
+deactivate Route
+
+SPA -> manager: all allPaths
+deactivate SPA
+deactivate manager
+
+else destinationWH given and exists
+SPA -> Route: GET getAllPaths(destinationWH)
+activate Route
+
+
+Route -> Controller: getAllPaths(destinationWH)
+activate Controller
+
+Controller -> Service: getAllPaths(destinationWH)
+activate Service
+
+Service -> Repository: getAllPaths(destinationWH)
+activate Repository
+
+Repository -> Persistence: findall(destinationWH)
+activate Persistence
+
+Persistence --> Repository: allPaths
+deactivate Persistence
+
+Repository --> Service: allPaths
+deactivate Repository
+
+Service --> Controller: allPaths
+deactivate Service
+
+Controller --> Route: 200 OK + allPaths
+deactivate Controller
+
+Route -> SPA: 200 OK + allPaths
+deactivate Route
+
+SPA -> manager: all allPaths
+deactivate SPA
+deactivate manager
+
+else startWHId and destinationWHId given exists
+
+SPA -> Route: GET getAllPaths(startWHId,destinationWH)
+activate Route
+
+
+Route -> Controller: getAllPaths(startWHId,destinationWH)
+activate Controller
+
+Controller -> Service: getAllPaths(startWHId,destinationWH)
+activate Service
+
+Service -> Repository: getAllPaths(startWHId,destinationWH)
+activate Repository
+
+Repository -> Persistence: findall(startWHId,destinationWH)
+activate Persistence
+
+Persistence --> Repository: allPaths
+deactivate Persistence
+
+Repository --> Service: allPaths
+deactivate Repository
+
+Service --> Controller: allPaths
+deactivate Service
+
+Controller --> Route: 200 OK + allPaths
+deactivate Controller
+
+Route -> SPA: 200 OK + allPaths
+deactivate Route
+
+SPA -> manager: all allPaths
+deactivate SPA
+deactivate manager
+
+else if any of these given Id's dont exist
+SPA -> Route: GET getAllPaths(startWHId,destinationWH)
+activate Route
+
+
+Route -> Controller: getAllPaths(startWHId,destinationWH)
+activate Controller
+
+Controller -> Service: getAllPaths(startWHId,destinationWH)
+activate Service
+
+Service -> Repository: getAllPaths(startWHId,destinationWH)
+activate Repository
+
+Repository -> Persistence: findall(startWHId,destinationWH)
+activate Persistence
+
+Persistence --> Repository: Not found
+deactivate Persistence
+
+Repository --> Service: Not found
+deactivate Repository
+
+Service --> Controller: Not found
+deactivate Service
+
+Controller --> Route: 404 + Not found
+deactivate Controller
+
+Route -> SPA: 404 + Not found
+deactivate Route
+
+SPA -> manager: 404 + Not found, possible wrong id
+deactivate SPA
+deactivate manager
 
 @enduml

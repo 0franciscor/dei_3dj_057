@@ -6,7 +6,6 @@ import { Request, Response, NextFunction } from "express";
 import { IPathDTO } from "../dto/IPathDTO";
 import { Result } from "../core/logic/Result";
 import fetch from 'node-fetch'
-import { rmSync } from "fs";
 const http = require ('https');
 
 
@@ -30,7 +29,10 @@ export default class PathController implements IPathController{
 
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
         try {
-            const paths= await this.pathService.getAllPath();
+            const paths= await this.pathService.getAllPath(req.body);
+            if(paths.isFailure)
+                return res.status(404).send("No paths found");
+            res.status(200).json(paths);
         } catch (e) {
             next(e);
         }
@@ -63,7 +65,7 @@ export default class PathController implements IPathController{
             if(pathOrError.isFailure){
                 return res.status(409).send("Path already exists");
             }
-            console.log(req.body);
+            
             
             const pathDTO = pathOrError.getValue();
 

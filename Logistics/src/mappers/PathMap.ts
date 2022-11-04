@@ -8,7 +8,7 @@ import { Document , Model  } from "mongoose";
 
 export class PathMap extends Mapper<Path>{
     public static toDTO(path: Path): IPathDTO{
-        console.log(path)
+        
         return{
             id: path.id.toString(),
             pathID: path.pathID.id,

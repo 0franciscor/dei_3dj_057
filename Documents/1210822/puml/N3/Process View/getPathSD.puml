@@ -6,7 +6,7 @@ ParticipantBorderColor black
 ParticipantBackgroundColor white
 }
 
-
+actor "Logistics Manager" as manager
 
 box "<<System(C4)>>\n       System" #Gold
 participant SPA as  SPA <<Container(C4)>>

@@ -15,7 +15,11 @@ export default(app: Router)=>{
 
   const ctrl= Container.get(config.controllers.path.name) as IPathController;
 
-  route.get('/',(req,res,next)=> ctrl.getPath(req,res,next));
+  route.get('/id/:id',(req,res,next)=> {
+    req.body.pathID = req.params.id
+    ctrl.getPath(req,res,next);
+  });
+  
   route.get('/all',(req,res,next)=> ctrl.getAllPaths(req,res,next));
     
   route.post('/',
@@ -33,21 +37,24 @@ export default(app: Router)=>{
       (req,res,next)=> ctrl.createPath(req,res,next)
     );
     
-  route.put('/',
+  route.patch('/',
     celebrate({
       body: Joi.object({
-        pathID:Joi.string().required(),
-        startWHId: Joi.string().required(),
-        destinatioWHId: Joi.string().required(),
-        pathDistance: Joi.number().required(),
-        pathTravelTime: Joi.number().required(),
-        wastedEnergy: Joi.number().required(),
-        extraTravelTime: Joi.number().required()
+        pathID:Joi.string(),
+        startWHId: Joi.string(),
+        destinatioWHId: Joi.string(),
+        pathDistance: Joi.number(),
+        pathTravelTime: Joi.number(),
+        wastedEnergy: Joi.number(),
+        extraTravelTime: Joi.number()
       })
     }),(req,res,next)=> ctrl.updatePath(req,res,next));
   
   
-    route.delete('/',(req,res,next)=> ctrl.deletePath(req,res,next));
+    route.delete('/id/:id',(req,res,next)=>{ 
+      req.body.id = req.params.id;
+      ctrl.deletePath(req,res,next);
+    });
     
 
 }

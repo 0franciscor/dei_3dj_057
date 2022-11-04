@@ -56,6 +56,7 @@ export default class TruckRepo implements ITruckRepo {
     public async delete(truck: Truck): Promise<Truck> {
         const query = { truckID: truck.truckID.id};
         const truckDocument = await this.truckSchema.findOne( query as FilterQuery<ITruckPersistence & Document> );
+        
         try {
             if(truckDocument === null) {
                 return truck;

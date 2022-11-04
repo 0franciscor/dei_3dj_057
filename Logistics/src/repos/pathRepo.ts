@@ -5,6 +5,11 @@ import { IPathPersistance } from "../dataschema/IPathPersistance";
 import { Path } from "../domain/path/Path";
 import { PathID } from '../domain/path/PathID';
 import { PathMap } from "../mappers/PathMap";
+import { start } from "repl";
+import { DestinationWHId } from "../domain/path/DestinationWHId";
+import { StartWHId } from "../domain/path/StartWHId";
+import { Result } from "../core/logic/Result";
+import path from "path";
 
 
 @Service()
@@ -46,26 +51,27 @@ export default class PathRepo implements IPathRepo{
             throw error;
         }
     }
-    public async delete (path: Path): Promise<Path>{
-        const query = {pathId:path.pathID.id};
+    public async delete (pathID: PathID): Promise<Path>{
+        const query = {pathId:pathID.id};
+        console.log(query);
         const pathDocument = await this.pathSchema.findOne(query as 
         FilterQuery<IPathPersistance & Document>); 
         try {
             if(pathDocument === null){
-                return path;
+                return null;
             }
             else{
                 await this.pathSchema.deleteOne(query as 
                 FilterQuery<IPathPersistance & Document>);
-                return path;
+                return null;
             }
         }catch(error){
             throw error;
         }
     }
         
-        public async getPathById(pathID: string | PathID): Promise<Path> {
-            const query ={pathID: pathID};
+        public async getPathById(pathID: string): Promise<Path> {
+            const query ={pathId: pathID};
             const pathDocument = await this.pathSchema.findOne(query as 
             FilterQuery<IPathPersistance & Document>);
 
@@ -77,10 +83,28 @@ export default class PathRepo implements IPathRepo{
             }
         }
         
-        public async getAllPaths(): Promise<Path[]> {
-            const pathDocument = await this.pathSchema.find();
-
-            let paths: Path[]= [];
+        public async getAllPaths(startWH:string ,destinationWH:string): Promise<Path[]> {
+            let query;
+            let pathDocument;
+           
+            if(startWH==undefined){
+                 query ={destinationWHId: destinationWH}
+            }else if(destinationWH==undefined){
+                 query ={startWHId: startWH}
+            }
+            else{
+                query = {startWIdH:startWH,destinationWHId:destinationWH}
+           
+            } 
+            
+            if(startWH==undefined && destinationWH==undefined){
+                pathDocument = await this.pathSchema.find();
+            }  else{
+                
+                pathDocument= await this.pathSchema.find(query as FilterQuery<IPathPersistance & Document>)}
+                
+            
+             let paths: Path[]= [];
             pathDocument.forEach(path=>{
                 paths.push(PathMap.toDomain(path));
             });
