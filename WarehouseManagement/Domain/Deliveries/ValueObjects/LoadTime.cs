@@ -1,5 +1,6 @@
 using EletricGo.Domain.Shared;
 using System.Collections.Generic;
+using System;
 
 namespace EletricGo.Domain.Deliveries
 {
@@ -17,6 +18,24 @@ namespace EletricGo.Domain.Deliveries
         public float AsFloat()
         {
             return time;
+        }
+
+        override
+        public int GetHashCode()
+        {
+            return time.GetHashCode();
+        }
+
+        override
+        public bool Equals(Object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            LoadTime loadTime = (LoadTime)obj;
+            return time == loadTime.time;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
