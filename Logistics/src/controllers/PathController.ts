@@ -6,7 +6,6 @@ import { Request, Response, NextFunction } from "express";
 import { IPathDTO } from "../dto/IPathDTO";
 import { Result } from "../core/logic/Result";
 import fetch from 'node-fetch'
-import { rmSync } from "fs";
 const http = require ('https');
 
 
