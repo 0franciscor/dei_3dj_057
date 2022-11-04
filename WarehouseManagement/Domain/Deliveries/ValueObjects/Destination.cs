@@ -12,6 +12,10 @@ namespace EletricGo.Domain.Deliveries
 
         public Destination(string destination)
         {
+            if (destination == null)
+                throw new BusinessRuleValidationException("Destination Cannot be Null");
+            if (destination == "")
+                throw new BusinessRuleValidationException("Destination Cannot be Empty");
             this.destination = destination;
         }
 
