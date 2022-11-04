@@ -1,0 +1,64 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+ package "Warehouse Management"{
+    package "Infrastructure" as IF{
+        package WarehouseRoute
+        package Persistence
+    }
+
+    package "Interface Adapters" as ADP {
+        package WarehouseController
+        package BaseController
+        package WarehouseRepository
+    }
+
+    package "Application Services" as SV {
+        package WarehouseService
+        package IService
+        package IRepository
+
+
+    }
+    package "Domain" as DM {
+
+        package Shared{
+            package IAggregateRoot
+            package IEntity
+            package IEntityId
+        }
+        package Warehouse
+        package WarehouseId
+        package Address
+        package Altitude
+        package Coordinates
+        package Designation
+    }
+ }
+
+Warehouse --* WarehouseId
+Warehouse --* Coordinates
+Warehouse --* Altitude
+Warehouse --* Designation
+Warehouse --* Address
+
+Warehouse ....|> IAggregateRoot
+Warehouse ....|> IEntity
+WarehouseId ..|> IEntityId
+
+WarehouseService ..|> IService
+WarehouseService ..> IRepository
+
+WarehouseService -down.> Warehouse
+
+WarehouseRepository ..|> IRepository
+
+WarehouseController -up..> IService
+WarehouseController ..|> BaseController
+
+WarehouseRepository -up..> Persistence
+
+WarehouseRoute ..> BaseController
+
+
+@enduml
