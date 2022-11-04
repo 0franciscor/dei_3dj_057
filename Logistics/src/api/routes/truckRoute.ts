@@ -55,7 +55,7 @@ export default (app: Router) => {
         (req, res, next) => ctrl.updateTruck(req, res, next)
     );
 
-    route.delete('/:id', (req, res, next) => {
+    route.delete('/id/:id', (req, res, next) => {
         req.body.truckID = req.params.id;
         ctrl.deleteTruck(req, res, next)
     });

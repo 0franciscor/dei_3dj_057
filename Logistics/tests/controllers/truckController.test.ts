@@ -9,8 +9,8 @@ import ITruckService from '../../src/services/IServices/ITruckService';
 import { ITruckDTO } from '../../src/dto/ITruckDTO';
 import { describe } from 'node:test';
 import 'mocha';
-const chai = require('chai');
-chai.should();
+import {expect} from "chai";
+
 describe('TruckController Unit Tests', () => {
     const sandbox = sinon.createSandbox();
     beforeEach(() => {
