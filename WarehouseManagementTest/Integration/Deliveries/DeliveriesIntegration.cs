@@ -125,5 +125,37 @@ namespace WarehouseManagementTest.Controllers.Deliveries
             }
         }
 
+        [Test]
+        public async Task PutTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+
+            var preChangeDto = delivery.toDeliveryDTO();
+            var postChangeDto = delivery.toDeliveryDTO();
+
+            float newLoadTime = 3005;
+            postChangeDto.loadTime = newLoadTime;
+
+            var mockRepository = new Mock<IDeliveryRepository>();
+            mockRepository.Setup(repo => repo.GetByID(new DeliveryID(id))).ReturnsAsync(delivery);
+            
+            var mockUnit = new Mock<IUnitOfWork>();
+            mockUnit.Setup(repo => repo.CommitAsync()); //does not return, but the service method updates the object
+
+            var deliveryService = new DeliveryService(mockUnit.Object, mockRepository.Object);
+
+            var deliveryController = new DeliveryController(deliveryService);
+            var aux = await deliveryController.Put(postChangeDto);
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+
+                Assert.AreEqual(newLoadTime, deliveryResult.loadTime);
+            }
+        }
+
     }
 }
