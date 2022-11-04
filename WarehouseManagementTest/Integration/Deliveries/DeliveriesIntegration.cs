@@ -95,5 +95,35 @@ namespace WarehouseManagementTest.Controllers.Deliveries
         }
 
 
+        [Test]
+        public async Task PostTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = delivery.toDeliveryDTO();
+
+            var mockUnit = new Mock<IUnitOfWork>();
+            var mockRepository = new Mock<IDeliveryRepository>();
+
+
+            var mockRepo = new Mock<IDeliveryRepository>();
+            mockRepo.Setup(repo => repo.Add(delivery)).ReturnsAsync(delivery);
+            var mockUnitRepo = new Mock<IUnitOfWork>();
+            mockUnitRepo.Setup(repo => repo.CommitAsync());
+
+            var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
+            var deliveryController = new DeliveryController(service);
+
+            var aux = await deliveryController.Post(deliveryExpected);
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as CreatedAtActionResult).Value);
+
+                Assert.AreEqual(deliveryExpected.deliveryID, deliveryResult.deliveryID);
+            }
+        }
+
     }
 }
