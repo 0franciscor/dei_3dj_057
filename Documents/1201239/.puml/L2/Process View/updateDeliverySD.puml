@@ -1,0 +1,57 @@
+@startuml updateDeliverySD
+autonumber
+
+skinparam sequence {
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+admin -> system: I want to update an existing delivery
+activate system
+
+system --> admin: asks for the id and details which are going to be updated
+deactivate system
+
+admin -> system: inserts the information about the delivery
+
+activate system
+system -> WM: PATCH UpdateDelivery(deliveryDTO)
+activate WM
+
+alt If the delivery ID matches and the information\n respects business rules 
+WM --> system: 200 OK(updatedObj)
+deactivate WM
+
+system --> admin: informs about the success of the operation \n and the delivery details
+
+
+else If the inserted info does not respect business rules
+
+activate WM
+WM --> system: 400 Bad Request
+deactivate WM
+
+system --> admin: informs that the delivery was not updated
+
+else If the ID does not match any delivery
+
+activate WM
+WM --> system: 400 Bad Request
+deactivate WM
+
+system --> admin: infroams that the delivery was not updated
+
+end
+
+deactivate system
+deactivate admin
+
+@enduml
