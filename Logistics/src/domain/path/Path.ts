@@ -96,7 +96,7 @@ export class Path extends AggregateRoot<PathProps>{
             },id);
             return Result.ok<Path>(path);
         } catch (error) {
-            Result.fail<Path>(error);
+            return Result.fail<Path>(error);
         }
        
     }

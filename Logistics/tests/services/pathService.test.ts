@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 import Container from 'typedi';
 import IPathRepo from '../../src/repos/IRepos/IPathRepo';
 import { expect } from 'chai';
+import { PathMap } from '../../src/mappers/PathMap';
 
 describe('PathService Unit Tests', () =>{
     const sandbox = sinon.createSandbox();
@@ -26,8 +27,8 @@ describe('PathService Unit Tests', () =>{
 
     it ('getPath returns path + success', async () => {
         let body={
-            id: '',
-            pathID : 'pathID',
+            id: 'id',
+            pathID : 'path1',
             startWHId : 'WH5',
             destinationWHId: 'WH6',
             pathDistance: 200,
@@ -38,10 +39,9 @@ describe('PathService Unit Tests', () =>{
 
         let pathRepoInstance = Container.get("PathRepo");
 
-        sinon.stub(pathRepoInstance,"getPathById").returns(body);
+        sinon.stub(pathRepoInstance,"getPathById").returns(PathMap.toDomain(body));
         const pathService = new PathService(pathRepoInstance as IPathRepo);
         const answer = await pathService.getPath(body.pathID);
-        console.log(answer);
         expect(answer.getValue().pathID).to.equal(body.pathID);
         expect(answer.getValue().startWHId).to.equal(body.startWHId);
         expect(answer.getValue().destinationWHId).to.equal(body.destinationWHId);

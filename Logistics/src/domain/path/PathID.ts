@@ -16,7 +16,7 @@ export class PathID extends ValueObject<PathIDProps>{
     }
 
     public static create (id:string): Result<PathID>{
-        if(id.length<=0 || id==null){
+        if(id.length<=0){
             return Result.fail<PathID>('PathID must be greater than 0');
         }
         return Result.ok<PathID>(new PathID({id}));
