@@ -1,11 +1,6 @@
 @startuml deleteWarehouseSSD
 autonumber
 
-skinparam sequence {
-ParticipantBorderColor black
-ParticipantBackgroundColor white
-}
-
 actor "Warehouse Manager" as admin
 participant EletricGO as system <<System(C4)>>
 

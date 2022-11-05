@@ -16,6 +16,10 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 
         public Designation(string designation)
         {
+            if (string.IsNullOrEmpty(designation))
+            {
+                throw new BusinessRuleValidationException("The designation can't be null or empty");
+            }
             if (designation.Length > 50)
             {
                 throw new BusinessRuleValidationException("The maximum length for description is 50 characters");

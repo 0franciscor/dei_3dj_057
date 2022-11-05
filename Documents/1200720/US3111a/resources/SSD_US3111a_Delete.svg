@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="351px" preserveAspectRatio="none" style="width:399px;height:351px;background:#FFFFFF;" version="1.1" viewBox="0 0 399 351" width="399px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="28.5234" style="stroke:#181818;stroke-width:1.0;" width="10" x="336.5" y="111.1641"/><rect fill="#FFFFFF" height="28.5234" style="stroke:#181818;stroke-width:1.0;" width="10" x="336.5" y="168.2109"/><rect fill="#FFFFFF" height="28.5234" style="stroke:#181818;stroke-width:1.0;" width="10" x="336.5" y="225.2578"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="74" x2="74" y1="80.6406" y2="271.7813"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="341.5" x2="341.5" y1="80.6406" y2="271.7813"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="133" x="5" y="77.6738">Warehouse Manager</text><ellipse cx="74.5" cy="13.5" fill="#E2E2F0" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M74.5,21.5 L74.5,48.5 M61.5,29.5 L87.5,29.5 M74.5,48.5 L61.5,63.5 M74.5,48.5 L87.5,63.5 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="133" x="5" y="283.4551">Warehouse Manager</text><ellipse cx="74.5" cy="294.9219" fill="#E2E2F0" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M74.5,302.9219 L74.5,329.9219 M61.5,310.9219 L87.5,310.9219 M74.5,329.9219 L61.5,344.9219 M74.5,329.9219 L87.5,344.9219 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><rect fill="#E2E2F0" height="45.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="104" x="289.5" y="34.3594"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="90" x="296.5" y="54.0332">«System(C4)»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="311" y="69.6738">EletricGO</text><rect fill="#E2E2F0" height="45.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="104" x="289.5" y="270.7813"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="90" x="296.5" y="290.4551">«System(C4)»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="311" y="306.0957">EletricGO</text><rect fill="#FFFFFF" height="28.5234" style="stroke:#181818;stroke-width:1.0;" width="10" x="336.5" y="111.1641"/><rect fill="#FFFFFF" height="28.5234" style="stroke:#181818;stroke-width:1.0;" width="10" x="336.5" y="168.2109"/><rect fill="#FFFFFF" height="28.5234" style="stroke:#181818;stroke-width:1.0;" width="10" x="336.5" y="225.2578"/><polygon fill="#181818" points="324.5,107.1641,334.5,111.1641,324.5,115.1641,328.5,111.1641" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="74.5" x2="330.5" y1="111.1641" y2="111.1641"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="81.5" y="106.4092">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="165" x="92.5" y="106.4092">I want to delete a warehouse</text><polygon fill="#181818" points="85.5,135.6875,75.5,139.6875,85.5,143.6875,81.5,139.6875" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="79.5" x2="340.5" y1="139.6875" y2="139.6875"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="91.5" y="134.9326">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="186" x="102.5" y="134.9326">asks for the ID of the warehouse</text><polygon fill="#181818" points="324.5,164.2109,334.5,168.2109,324.5,172.2109,328.5,168.2109" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="74.5" x2="330.5" y1="168.2109" y2="168.2109"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="81.5" y="163.4561">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="179" x="92.5" y="163.4561">inserts the ID of the warehouse</text><polygon fill="#181818" points="85.5,192.7344,75.5,196.7344,85.5,200.7344,81.5,196.7344" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="79.5" x2="340.5" y1="196.7344" y2="196.7344"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="91.5" y="191.9795">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="227" x="102.5" y="191.9795">asks for the confirmation of the deletion</text><polygon fill="#181818" points="324.5,221.2578,334.5,225.2578,324.5,229.2578,328.5,225.2578" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="74.5" x2="330.5" y1="225.2578" y2="225.2578"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="81.5" y="220.5029">5</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="120" x="92.5" y="220.5029">confirms the deletion</text><polygon fill="#181818" points="85.5,249.7813,75.5,253.7813,85.5,257.7813,81.5,253.7813" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="79.5" x2="340.5" y1="253.7813" y2="253.7813"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="91.5" y="249.0264">6</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="215" x="102.5" y="249.0264">informs about the successful deletion</text><!--MD5=[da4a5ebc99a0fbe47bb1d78195befc91]
+@startuml deleteWarehouseSSD
+autonumber
+
+actor "Warehouse Manager" as admin
+participant EletricGO as system <<System(C4)>>
+
+
+admin -> system: I want to delete a warehouse
+activate system
+
+system - -> admin: asks for the ID of the warehouse
+deactivate system
+
+admin -> system: inserts the ID of the warehouse
+activate system
+
+system - -> admin: asks for the confirmation of the deletion
+deactivate system
+
+admin -> system: confirms the deletion
+activate system
+
+system - -> admin: informs about the successful deletion
+
+
+deactivate system
+deactivate admin
+
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 19:12:26 WEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: pt
+Country: BR
+--></g></svg>

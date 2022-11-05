@@ -2,11 +2,6 @@
 @startuml 
 autonumber
 
-skinparam sequence {
-ParticipantBorderColor black
-ParticipantBackgroundColor white
-}
-
 actor "Warehouse Manager" as admin
 
 

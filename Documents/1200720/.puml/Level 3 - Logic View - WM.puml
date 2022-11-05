@@ -1,7 +1,6 @@
 @startuml
 'https://plantuml.com/component-diagram
 interface "WM API" as api
-
 component "<<component>> <<container (C4)>>\nWarehouse Management\n"{
 
     portin 1
