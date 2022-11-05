@@ -1,4 +1,4 @@
-@startuml createDeliverySSD
+@startuml updateDeliverySSD
 autonumber
 
 skinparam sequence {
