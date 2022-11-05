@@ -7,7 +7,7 @@ export default interface IRoutesService {
    exist(routeID: string): Promise<Result<boolean>>;
    createRoute(route: IRoutesDTO): Promise<Result<IRoutesDTO>>;
    getRoutes(routeID: string): Promise<Result<IRoutesDTO>>;
-   getAllRoute(): Promise<Result<IRoutesDTO[]>>;
+   getAllRoutes(): Promise<Result<IRoutesDTO[]>>;
    updateRoute(route: IRoutesDTO): Promise<Result<IRoutesDTO>>;
    deleteRoute(routeID: string): Promise<Result<IRoutesDTO>>;
 }
