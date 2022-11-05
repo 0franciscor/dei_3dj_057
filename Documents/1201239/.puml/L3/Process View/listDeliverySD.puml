@@ -1,0 +1,79 @@
+@startuml listDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+participant SPA as ui <<Container(C4)>>
+box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+participant DeliveryController as  CTL <<Component(C4)>>
+participant DeliveryService as  SV <<Component(C4)>>
+participant "Delivery : Delivery" as  W <<Component(C4)>>
+participant "DeliveryDTO : DeliveryDTO" as  DTO <<Component(C4)>>
+participant DeliveryRepository as  WR <<Component(C4)>>
+end box
+end box
+
+admin -> ui: I want to see all available deliveries on the system
+activate ui
+
+
+alt If there are deliveries on the system
+
+ui -> CTL: GET GetAll()
+activate CTL
+CTL -> SV : GetDeliveries()
+activate SV
+
+SV -> WR : GetAll()
+activate WR
+
+WR --> SV : deliveryList
+deactivate WR
+
+
+SV --> CTL : deliveryList.toDTO()
+deactivate WR
+
+deactivate SV
+
+CTL --> ui: 200 OK
+deactivate CTL
+
+
+ui --> admin: informs about the success of the operation
+
+
+else If there are no derliveries on the system
+
+CTL -> SV : GetAll()
+activate CTL
+activate SV
+
+
+
+SV -> WR : GetAll()
+activate WR
+
+
+
+CTL --> ui: 404 NOT FOUND
+deactivate WR
+deactivate SV
+
+
+ui --> admin: informs about the fail of the operation
+deactivate CTL
+
+end 
+deactivate ui
+
+deactivate admin
+
+@enduml

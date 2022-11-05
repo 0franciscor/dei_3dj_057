@@ -114,7 +114,7 @@ namespace WarehouseManagementTest.Controllers.Deliveries
             var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
             var deliveryController = new DeliveryController(service);
 
-            var aux = await deliveryController.Post(deliveryExpected);
+            var aux = await deliveryController.Patch(deliveryExpected);
 
             if (aux == null)
                 Assert.Fail();

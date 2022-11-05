@@ -1,0 +1,85 @@
+@startuml getDeliveryByIDSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+participant SPA as ui <<Container(C4)>>
+box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+participant DeliveryController as  CTL <<Component(C4)>>
+participant DeliveryService as  SV <<Component(C4)>>
+participant "Delivery : Delivery" as  W <<Component(C4)>>
+participant "DeliveryDTO : DeliveryDTO" as  DTO <<Component(C4)>>
+participant DeliveryRepository as  WR <<Component(C4)>>
+end box
+end box
+
+admin -> ui: I want to list the details of a delivery
+activate ui
+
+ui --> admin: asks for the ID of the delivery
+deactivate ui
+
+admin -> ui: inserts the delivery's ID
+
+activate ui
+
+alt If the Delivery exists in the system
+
+ui -> CTL: GET GetByID(id)
+activate CTL
+CTL -> SV : GetDelivery(DeliveryID)
+activate SV
+
+SV -> WR : GetByID(DeliveryID)
+activate WR
+
+WR --> SV : delivery
+deactivate WR
+
+
+SV --> CTL : delivery.toDTO()
+deactivate WR
+
+deactivate SV
+
+CTL --> ui: 200 OK
+deactivate CTL
+
+
+ui --> admin: informs about the success of the operation
+
+
+else If a Delivery does not exist in the system
+
+CTL -> SV : GetDelivery(DeliveryID)
+activate CTL
+activate SV
+
+
+
+SV -> WR : GetByID(DeliveryID)
+activate WR
+
+
+SV --> CTL : null
+deactivate WR
+deactivate SV
+
+CTL --> ui: 404 NOT FOUND
+deactivate CTL
+
+ui --> admin: informs about the fail of the operation
+deactivate ui
+
+end 
+
+deactivate admin
+
+@enduml

@@ -1,0 +1,119 @@
+@startuml updateDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+participant SPA as ui <<Container(C4)>>
+box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+participant DeliveryController as  CTL <<Component(C4)>>
+participant DeliveryService as  SV <<Component(C4)>>
+participant "Delivery : Delivery" as  delivery <<Component(C4)>>
+participant "DeliveryDTO : DeliveryDTO" as  DTO <<Component(C4)>>
+participant DeliveryRepository as  DR <<Component(C4)>>
+end box
+end box
+
+admin -> ui: I want to update a Delivery
+activate ui
+
+ui --> admin: asks for the details of the Delivery which is to be updated
+deactivate ui
+
+admin -> ui: inserts the information about the new Delivery
+
+activate ui
+
+alt If the Delivery exists in the system
+ui -> CTL: PATCH Patch(DeliveryDTO)
+activate CTL
+CTL -> SV : UpdatingDelivery(DeliveryDto)
+activate SV
+
+SV -> DR: GetByID(DeliveryId)
+activate DR
+DR --> SV: Delivery
+deactivate DR
+
+SV -> delivery : Update(DeliveryDTO)
+activate delivery
+delivery --> SV : delivery 
+deactivate delivery
+
+SV -> DR : commit()
+activate DR
+
+SV --> CTL : toDeliveryDTO()
+deactivate DR
+deactivate SV
+CTL --> ui : DeliveryDto
+
+CTL --> ui: 200 OK
+deactivate CTL
+
+ui --> admin: informs about the success of the operation
+
+
+else If the delivery doesn't exist
+
+
+CTL -> SV : UpdateDelivery(DeliveryDto)
+activate CTL
+activate SV
+
+SV -> DR : GetByID(DeliveryID)
+activate DR
+DR --> SV : null
+deactivate DR
+
+
+SV --> CTL : NotFoundException
+deactivate SV
+CTL --> ui : NotFoundException
+
+
+CTL --> ui: 404 Not Found
+deactivate CTL
+
+
+ui --> admin: informs about the fail of the operation
+
+
+else If the attributes do not respect the business rules
+
+
+CTL -> SV : UpdateDelivery(DeliveryDto)
+activate CTL
+activate SV
+
+SV -> DR : GetByID(DeliveryID)
+activate DR
+DR --> SV : delivery
+deactivate DR
+
+SV -> delivery : Update(DeliveryDto)
+
+
+activate delivery
+delivery --> SV : BusinessRuleValidationException
+deactivate delivery
+
+SV --> CTL : BusinessRuleValidationException
+deactivate SV
+CTL --> ui : BusinessRuleValidationException
+
+CTL --> ui: 400 BAD REQUEST
+deactivate CTL
+ui --> admin: informs about the fail of the operation
+
+deactivate ui
+end 
+deactivate admin
+
+@enduml

@@ -1,0 +1,750 @@
+{
+	"info": {
+		"_postman_id": "ee07f1f0-2dcf-40ed-975d-496886d0e570",
+		"name": "Test_Delivery",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23548287"
+	},
+	"item": [
+		{
+			"name": "getAllSuccess",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Returns an Array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"DeliveryList\", function () {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        [\r",
+							"            {\r",
+							"                \"deliveryID\": \"Delivery1\",\r",
+							"                \"deliveryDate\": \"2022-11-03T10:30:00\",\r",
+							"                \"loadTime\": 10.0,\r",
+							"                \"unloadTime\": 1.0,\r",
+							"                \"destination\": \"Rua da Maia Central\",\r",
+							"                \"deliveryMass\": 30.0\r",
+							"            },\r",
+							"            {\r",
+							"                \"deliveryID\": \"Delivery2\",\r",
+							"                \"deliveryDate\": \"2022-11-09T15:30:00\",\r",
+							"                \"loadTime\": 15.0,\r",
+							"                \"unloadTime\": 2.0,\r",
+							"                \"destination\": \"Rua de Matosinhos\",\r",
+							"                \"deliveryMass\": 0.5\r",
+							"            },\r",
+							"            {\r",
+							"                \"deliveryID\": \"Delivery3\",\r",
+							"                \"deliveryDate\": \"2023-01-10T20:30:00\",\r",
+							"                \"loadTime\": 20.0,\r",
+							"                \"unloadTime\": 3.0,\r",
+							"                \"destination\": \"Rua de Pão Doce\",\r",
+							"                \"deliveryMass\": 0.9\r",
+							"            }\r",
+							"        ]\r",
+							"    );\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/GetAll",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"GetAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getByIDFail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delivery not found status code\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery not found\", function() {\r",
+							"    pm.response.to.have.body(\"The searched Delivery was not found.\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"GetByID",
+						"Delivery5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getByIDSuccess - Delivery1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delivery Found Code 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Check if it returns all variables correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery1\");\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-03T10:30:00\");\r",
+							"    pm.expect(jsonData.loadTime).to.eql(10);\r",
+							"    pm.expect(jsonData.unloadTime).to.eql(1);\r",
+							"    pm.expect(jsonData.destination).to.eql(\"Rua da Maia Central\");\r",
+							"    pm.expect(jsonData.deliveryMass).to.eql(30);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"GetByID",
+						"Delivery1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getByIDSuccess - Delivery2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delivery Found Code 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Check if it returns all variables correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery2\");\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-09T15:30:00\");\r",
+							"    pm.expect(jsonData.loadTime).to.eql(15);\r",
+							"    pm.expect(jsonData.unloadTime).to.eql(2);\r",
+							"    pm.expect(jsonData.destination).to.eql(\"Rua de Matosinhos\");\r",
+							"    pm.expect(jsonData.deliveryMass).to.eql(0.5);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"GetByID",
+						"Delivery2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createDelivery - Delivery4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery JSON\", function () {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"deliveryID\": \"Delivery4\",\r",
+							"            \"deliveryDate\": \"2022-11-30T23:30:00Z\",\r",
+							"            \"loadTime\": 30,\r",
+							"            \"unloadTime\": 15,\r",
+							"            \"destination\": \"Rua de Linhares\",\r",
+							"            \"deliveryMass\": 3\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing DeliveryID value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Delivery Date value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-30T23:30:00Z\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Load Time value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.loadTime).to.eql(30);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Unload Time value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.unloadTime).to.eql(15);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Destination value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.destination).to.eql(\"Rua de Linhares\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Delivery Mass value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryMass).to.eql(3);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deliveryID\": \"Delivery4\",\r\n    \"deliveryDate\": \"2022-11-30T23:30:00Z\",\r\n    \"loadTime\": 30,\r\n    \"unloadTime\": 15,\r\n    \"destination\": \"Rua de Linhares\",\r\n    \"deliveryMass\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/CreateDelivery",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"CreateDelivery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateDate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-29T23:30:00Z\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Dates\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-29T23:30:00Z\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"deliveryDate\":\"2022-11-29T23:30:00Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/Update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"Update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateLoadTime",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.loadTime).to.eql(35);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Load Times\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.loadTime).to.eql(35);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"loadTime\":35\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/Update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"Update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUnloadTime",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.unloadTime).to.eql(20);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Unload Times\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.unloadTime).to.eql(20);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"unloadTime\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/Update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"Update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateDestination",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.destination).to.eql(\"Rua do ISEP\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Destinations\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.destination).to.eql(\"Rua do ISEP\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"destination\":\"Rua do ISEP\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/Update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"Update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateDeliveryMass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.deliveryMass).to.eql(3);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Masses\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryMass).to.eql(3);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"deliveryMass\":3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/Update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"Update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkUpdatesMade",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delivery Found Code 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Check if all Variables were correctly Patched\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-29T23:30:00\");\r",
+							"    pm.expect(jsonData.loadTime).to.eql(35);\r",
+							"    pm.expect(jsonData.unloadTime).to.eql(20);\r",
+							"    pm.expect(jsonData.destination).to.eql(\"Rua do ISEP\");\r",
+							"    pm.expect(jsonData.deliveryMass).to.eql(3);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"GetByID",
+						"Delivery4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteDelivery - Delivery4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/delete/Delivery4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"delete",
+						"Delivery4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUnexistentDelivery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery not found\", function() {\r",
+							"    pm.response.to.have.body(\"The requested delete was not performed.\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/delete/Delivery4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"delete",
+						"Delivery4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkDeliveryErased",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delivery not found status code\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delivery not found\", function() {\r",
+							"    pm.response.to.have.body(\"The searched Delivery was not found.\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"GetByID",
+						"Delivery4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

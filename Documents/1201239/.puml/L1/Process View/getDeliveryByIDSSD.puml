@@ -1,4 +1,4 @@
-@startuml deleteDeliverySSD
+@startuml getDeliveryByIDSSD
 autonumber
 
 skinparam sequence {
@@ -10,7 +10,7 @@ actor Admin as admin
 participant EletricGO as system <<System(C4)>>
 
 
-admin -> system: I want to delete a delivery
+admin -> system: I want to consult the details on a delivery
 activate system
 
 system --> admin: asks for the ID of the delivery
@@ -19,14 +19,8 @@ deactivate system
 admin -> system: inserts the ID of the delivery
 activate system
 
-system --> admin: asks for the confirmation of the deletion
+system --> admin: displays a list of details about the requested delivery
 deactivate system
-
-admin -> system: confirms the deletion
-activate system
-
-system --> admin: informs about the successful deletion
-
 
 deactivate system
 deactivate admin

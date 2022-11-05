@@ -1,0 +1,43 @@
+@startuml listDeliverySSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant SPA as system <<Container(C4)>>
+participant deliveryManagement as  WM <<Container(C4)>>
+end box
+
+admin -> system: I want to see all the deliveries in the system
+activate system
+
+activate system
+system -> WM: GET GetAll()
+activate WM
+
+alt If there are available deliveries  
+WM --> system: 200 OK
+deactivate WM
+
+system --> admin: displays a list of deliveres in the system
+
+else If there are no deliveries in the system
+
+activate WM
+WM --> system: 404 NOT FOUND
+deactivate WM
+
+system --> admin: displays a message that there are no deliveries in the system
+
+end
+
+deactivate system
+deactivate admin
+
+@enduml
