@@ -16,7 +16,7 @@ export class PathTravelTime extends ValueObject<PathTravelTimeProps>{
     }
 
     public static create (pathTravelTime: number): Result<PathTravelTime>{
-        if (pathTravelTime<0){
+        if (pathTravelTime<=0){
             return Result.fail<PathTravelTime>('This travel time is not acceptable')
         }
         return Result.ok<PathTravelTime>(new PathTravelTime({ pathTravelTime }));
