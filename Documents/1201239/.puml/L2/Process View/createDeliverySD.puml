@@ -1,0 +1,57 @@
+@startuml createDeliverySD
+autonumber
+
+skinparam sequence {
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+admin -> system: I want to create a new delivery
+activate system
+
+system --> admin: asks for the details on the new delivery
+deactivate system
+
+admin -> system: inserts the information about the new delivery
+
+activate system
+system -> WM: POST CreateDelivery(deliveryDTO)
+activate WM
+
+alt If the delivery doesn't exist in the system  
+WM --> system: 200 OK(createdObj)
+deactivate WM
+
+system --> admin: informs about the success of the operation \n and the delivery details
+
+
+else If a delivery already exists with the typed id
+
+activate WM
+WM --> system: 400 Bad Request
+deactivate WM
+
+system --> admin: informs that the delivery was not created
+
+else If the attributes do not respect the business rules
+
+activate WM
+WM --> system: 400 Bad Request
+deactivate WM
+
+system --> admin: informs which business rule failed
+
+end
+
+deactivate system
+deactivate admin
+
+@enduml

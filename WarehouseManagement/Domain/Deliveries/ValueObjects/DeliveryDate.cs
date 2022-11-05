@@ -12,6 +12,9 @@ namespace EletricGo.Domain.Deliveries
         
         public DeliveryDate(DateTime date)
         {
+            if (date < DateTime.Now)
+                throw new BusinessRuleValidationException("Date cannot be in the past.");
+
             this.date = date;
         }
 

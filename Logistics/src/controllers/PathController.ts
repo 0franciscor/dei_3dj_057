@@ -30,7 +30,7 @@ export default class PathController implements IPathController{
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
         try {
             const paths= await this.pathService.getAllPath(req.body);
-            if(paths.isFailure)
+            if(paths.getValue().length==0)
                 return res.status(404).send("No paths found");
             res.status(200).json(paths);
         } catch (e) {
@@ -78,9 +78,15 @@ export default class PathController implements IPathController{
 
     public async updatePath(req: Request, res: Response, next: NextFunction) {
         try {
+            if(req.body.pathID == null)
+                return res.status(400).send("Path ID is required")
             const pathOrError= await this.pathService.updatePath(req.body as IPathDTO) as Result<IPathDTO>;
             if(pathOrError.isFailure){
-                return res.status(404).send("Path not found");
+                if(pathOrError.error == "Starting Warehouse ID cannot be changed")
+                    return res.status(400).send(pathOrError.error);
+                if(pathOrError.error == "Destination Warehouse ID cannot be changed")
+                    return res.status(400).send(pathOrError.error);
+                return res.status(400).send(pathOrError.error);
             }
             const pathDTO= pathOrError.getValue();
             return res.json(pathDTO).status(200);
@@ -91,7 +97,7 @@ export default class PathController implements IPathController{
 
     public async deletePath(req: Request, res: Response, next: NextFunction) {
         try {
-            const pathResult = await this.pathService.deletePath(req.body.pathID);
+            const pathResult = await this.pathService.deletePath(req.body.id);
             if(pathResult.isFailure)
                 return res.status(404).send("Path not found");
             res.status(200).json(pathResult)

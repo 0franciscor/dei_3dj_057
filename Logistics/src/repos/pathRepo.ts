@@ -51,19 +51,19 @@ export default class PathRepo implements IPathRepo{
             throw error;
         }
     }
-    public async delete (pathID: PathID): Promise<Path>{
-        const query = {pathId:pathID.id};
-        console.log(query);
+    public async delete (Path: Path): Promise<Path>{
+        const query = {PathID: Path.pathID.id};
+
         const pathDocument = await this.pathSchema.findOne(query as 
         FilterQuery<IPathPersistance & Document>); 
         try {
             if(pathDocument === null){
-                return null;
+                return Path;
             }
             else{
                 await this.pathSchema.deleteOne(query as 
                 FilterQuery<IPathPersistance & Document>);
-                return null;
+                return Path;
             }
         }catch(error){
             throw error;
@@ -74,7 +74,6 @@ export default class PathRepo implements IPathRepo{
             const query ={pathID: pathID}
             const pathDocument = await this.pathSchema.findOne(query as 
             FilterQuery<IPathPersistance & Document>);
-
             if(pathDocument === null){
                 return null;
             }

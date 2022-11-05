@@ -9,30 +9,19 @@ namespace WarehouseManagementTest.Controllers.Deliveries
     [TestFixture]
     internal class DeliveryControllerTest
     {
-        private string? id;
+        private readonly string? id = "testID";
 
-        private DateTime deliveryDate;
+        private readonly DateTime deliveryDate = new DateTime(2023, 12, 12);
 
-        private float loadTime;
+        private readonly float loadTime = 10;
 
-        private float unloadTime;
+        private readonly float unloadTime = 20;
 
-        private string? destination;
+        private readonly string? destination = "testDestination";
 
-        private float deliveryMass;
+        private readonly float deliveryMass = 30;
 
-        [SetUp]
-        public void Setup()
-        {
-            id = "testID";
-            deliveryDate = new DateTime(2020, 12, 12);
-            loadTime = 10;
-            unloadTime = 20;
-            destination = "testDestination";
-            deliveryMass = 30;
-
-        }
-
+        
         //SETUP LISTS FOR GETALL()
         private List<DeliveryDTO> GetDeliveriesList()
         {
@@ -46,6 +35,17 @@ namespace WarehouseManagementTest.Controllers.Deliveries
             };
 
             return deliveryList;
+        }
+
+        [Test]
+        public void DefineDriverServiceConstrutor()
+        {
+            var mockRepository = new Mock<IDeliveryRepository>();
+            var mockUnit = new Mock<IUnitOfWork>();
+
+            var service = new DeliveryService(mockUnit.Object, mockRepository.Object);
+
+            Assert.That(service, Is.Not.Null);
         }
 
         [Test]
@@ -77,38 +77,37 @@ namespace WarehouseManagementTest.Controllers.Deliveries
 
             var mockUnit = new Mock<IUnitOfWork>();
             var mockRepository = new Mock<IDeliveryRepository>();
+            
             var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
-
             deliveryServiceMock.Setup(repo => repo.GetDelivery(deliveryID)).ReturnsAsync(deliveryExpected);
 
             var deliveryController = new DeliveryController(deliveryServiceMock.Object);
+            var aux = await deliveryController.GetByID(id);
 
-            var deliveryResult = await deliveryController.GetByID(id);
-
-            if (deliveryResult.Value == null)
+            if (aux == null)
                 Assert.Fail();
             else
-                Assert.That(deliveryExpected.deliveryID, Is.EqualTo(deliveryResult.Value.deliveryID));
+            {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+                
+                Assert.AreEqual(deliveryExpected.deliveryID, deliveryResult.deliveryID);
+            }
         }
 
         [Test]
-        public async Task CreateTest()
+        public async Task PostTest()
         {
             var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
             var deliveryExpected = delivery.toDeliveryDTO();
 
-            var idDto = new DeliveryDTO() { deliveryID = id };
-
             var mockRepository = new Mock<IDeliveryRepository>();
             var mockUnit = new Mock<IUnitOfWork>();
-
+            
             var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
-
-            deliveryServiceMock.Setup(repo => repo.CreateDelivery(idDto)).ReturnsAsync(deliveryExpected);
+            deliveryServiceMock.Setup(repo => repo.CreateDelivery(deliveryExpected)).ReturnsAsync(deliveryExpected);
 
             var deliveryController = new DeliveryController(deliveryServiceMock.Object);
-
-            var aux = await deliveryController.Post(idDto);
+            var aux = await deliveryController.Patch(deliveryExpected);
 
             if (aux == null)
                 Assert.Fail();
@@ -120,6 +119,60 @@ namespace WarehouseManagementTest.Controllers.Deliveries
         }
         
         
+        [Test]
+        public async Task PutTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            
+            var preChangeDto = delivery.toDeliveryDTO();
+            var postChangeDto = delivery.toDeliveryDTO();
 
+            float newUnloadTime = 3005;
+            postChangeDto.unloadTime = newUnloadTime; 
+
+            var mockRepository = new Mock<IDeliveryRepository>();
+            var mockUnit = new Mock<IUnitOfWork>();
+
+            var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
+            deliveryServiceMock.Setup(repo => repo.UpdateDelivery(preChangeDto)).ReturnsAsync(postChangeDto);
+
+            var deliveryController = new DeliveryController(deliveryServiceMock.Object);
+            var aux = await deliveryController.Put(preChangeDto);
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+                
+                Assert.AreEqual(deliveryResult.unloadTime, newUnloadTime);
+            }
+        }
+
+        [Test]
+        public async Task DeleteTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = delivery.toDeliveryDTO();
+
+            var mockRepository = new Mock<IDeliveryRepository>();
+            var mockUnit = new Mock<IUnitOfWork>();
+
+            var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
+            deliveryServiceMock.Setup(repo => repo.DeleteDelivery(new DeliveryID(id))).ReturnsAsync(deliveryExpected);
+            
+            var deliveryController = new DeliveryController(deliveryServiceMock.Object);
+            var aux = await deliveryController.Delete(id);
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+
+                Assert.AreEqual(deliveryResult.deliveryID, id);
+            }
+        }
+        
     }
 }

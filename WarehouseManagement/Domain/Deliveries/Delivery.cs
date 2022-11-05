@@ -38,7 +38,7 @@ namespace EletricGo.Domain.Deliveries
                 unloadTime = this.unloadTime.AsFloat(), destination = this.destination.AsString(), deliveryMass = this.deliveryMass.AsFloat() };
         }
 
-        public void update(DeliveryDTO deliveryDTO)
+        public void Update(DeliveryDTO deliveryDTO)
         {
             if (deliveryDTO.deliveryDate != default(DateTime))
                 this.deliveryDate = new DeliveryDate(deliveryDTO.deliveryDate);

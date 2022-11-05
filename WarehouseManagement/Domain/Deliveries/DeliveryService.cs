@@ -35,6 +35,9 @@ namespace EletricGo.Domain.Deliveries
 
         public virtual async Task<DeliveryDTO> CreateDelivery(DeliveryDTO deliveryDTO)
         {
+            if (await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID)) != null)
+                return null;
+
             var delivery = new Delivery(deliveryDTO);
 
             if (delivery == null)
@@ -52,7 +55,7 @@ namespace EletricGo.Domain.Deliveries
             if (delivery == null)
                 return null;
 
-            delivery.update(deliveryDTO);
+            delivery.Update(deliveryDTO);
             await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }

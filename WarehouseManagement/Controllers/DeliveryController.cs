@@ -36,16 +36,16 @@ namespace EletricGo.Controllers
                 {
                     return NotFound("The searched Delivery was not found.");
                 }
-                return obj;
+                return Ok(obj);
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
 
         [HttpPost("CreateDelivery")]
-        public async Task<ActionResult<DeliveryDTO>> Post([FromBody] DeliveryDTO dto)
+        public async Task<ActionResult<DeliveryDTO>> Patch([FromBody] DeliveryDTO dto)
         {
             try
             {
@@ -53,17 +53,17 @@ namespace EletricGo.Controllers
 
                 if (delivery == null)
                 {
-                    return NotFound("The Delivery was not created.");
+                    return BadRequest("The Delivery was not created.");
                 }
                 return CreatedAtAction(nameof(GetByID), new { id = delivery.deliveryID }, delivery);
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }            
         }
 
-        [HttpPut("Update")]
+        [HttpPatch("Update")]
         public async Task<ActionResult<DeliveryDTO>> Put([FromBody] DeliveryDTO dto)
         {
             try
@@ -72,13 +72,13 @@ namespace EletricGo.Controllers
 
                 if (updatedObj == null)
                 {
-                    return NotFound("The Delivery was not updated.");
+                    return BadRequest("The Delivery was not updated.");
                 }
                 return Ok(updatedObj);
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
         
@@ -98,7 +98,7 @@ namespace EletricGo.Controllers
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
 
