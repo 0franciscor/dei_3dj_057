@@ -36,7 +36,7 @@ namespace EletricGo.Controllers
             var warehouse = await _warehouseService.GetWarehouse(new WarehouseId(id));
             if (warehouse == null) return NotFound("There is no warehouse with this id");
 
-            return warehouse;
+            return Ok(warehouse);
         }
         
         /*[HttpGet("GetByDescription/{id}")]
