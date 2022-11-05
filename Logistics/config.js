@@ -83,6 +83,10 @@ export default {
     packaging: {
       name:"PackagingService",
       path: "../services/packagingService"
+    },
+    routes: {
+      name: "RoutesService",
+      path: "../services/routes"
     }
   }
 };

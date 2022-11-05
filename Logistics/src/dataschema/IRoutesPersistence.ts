@@ -1,5 +1,5 @@
 export interface IRoutesPersistence{
     id: string;
-    carPlate: string;
+    truckPlate: string;
     warehouses: string[];
 }
