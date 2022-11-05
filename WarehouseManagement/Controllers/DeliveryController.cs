@@ -63,7 +63,7 @@ namespace EletricGo.Controllers
             }            
         }
 
-        [HttpPut("Update")]
+        [HttpPatch("Update")]
         public async Task<ActionResult<DeliveryDTO>> Put([FromBody] DeliveryDTO dto)
         {
             try
