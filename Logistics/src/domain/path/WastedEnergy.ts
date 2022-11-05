@@ -16,8 +16,8 @@ export class WastedEnergy extends ValueObject<WastedEnergyProps>{
     }
 
     public static create (wastedEnergy: number): Result<WastedEnergy>{
-        if (wastedEnergy<0){
-            return Result.fail<WastedEnergy>('This travel time is not acceptable')
+        if (wastedEnergy<=0){
+            return Result.fail<WastedEnergy>('This wasted energy is not acceptable')
         }
         return Result.ok<WastedEnergy>(new WastedEnergy({ wastedEnergy }));
     }
