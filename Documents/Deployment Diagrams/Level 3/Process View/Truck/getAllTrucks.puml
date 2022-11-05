@@ -1,0 +1,62 @@
+@startuml getAllTrucksSD
+
+autonumber
+!pragma teoz true
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+box "<<System(C4)>>\n       System" #LightGray
+participant SPA as  SPA <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightCyan
+participant TruckRoute as Route <<Component(C4)>>
+participant TruckController as Controller <<Component(C4)>>
+participant TruckService as Service <<Component(C4)>>
+participant TruckRepository as Repository <<Component(C4)>>
+participant Persistance as Persistance <<Component(C4)>>
+end box
+
+
+
+activate manager
+activate SPA
+manager -> SPA: Asks to get all Trucks
+
+
+
+SPA -> Route: GET getAllTrucks(truckID)
+activate Route
+Route -> Controller: GET getTruck(truckID)
+activate Controller
+
+
+
+Controller -> Service: getAllTrucks(truckID)
+activate Service
+
+Service -> Repository: getAllTrucks(truckID)
+activate Repository
+Repository -> Persistance: find(truckID)
+activate Persistance
+
+
+
+Persistance -> Repository: AllTrucks
+Repository->Service: AllTrucks
+Service -> Controller: AllTrucks
+
+Controller->Route: 200 OK + AllTrucks
+Route->SPA: 200 OK + AllTrucks
+
+SPA->manager: Shows all Trucks
+deactivate Repository
+
+
+
+
+
+@enduml
