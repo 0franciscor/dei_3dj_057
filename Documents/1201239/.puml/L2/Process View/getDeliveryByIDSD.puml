@@ -1,0 +1,48 @@
+@startuml getDeliveryByIDSD
+autonumber
+
+skinparam sequence {
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+admin -> system: I want to list the details of a delivery
+activate system
+
+system --> admin: asks for the delivery's ID
+deactivate system
+
+admin -> system: inserts the delivery's ID
+
+activate system
+system -> WM: GET GetDelivery(deliveryID)
+activate WM
+
+alt If the delivery exists in the system  
+WM --> system: 200 OK(obj)
+deactivate WM
+
+system --> admin: lists the delivery's details
+
+
+else If the ID does not match any delivery
+
+activate WM
+WM --> system: 404 NOT FOUND
+deactivate WM
+
+system --> admin: informs that the delivery was not found
+end
+
+deactivate system
+deactivate admin
+
+@enduml

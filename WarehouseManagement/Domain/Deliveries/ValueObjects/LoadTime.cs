@@ -13,7 +13,7 @@ namespace EletricGo.Domain.Deliveries
         public LoadTime(float time)
         {
             if(time < 0)
-                throw new BusinessRuleValidationException("Load time cannot be negative");
+                throw new BusinessRuleValidationException("Load time cannot be negative.");
             this.time = time;
         }
 

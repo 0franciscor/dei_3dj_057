@@ -1,0 +1,50 @@
+@startuml deleteDeliverySD
+autonumber
+
+skinparam sequence {
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant SPA as system <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+admin -> system: I want to delete a delivery
+activate system
+
+system --> admin: asks for the delivery's ID
+deactivate system
+
+admin -> system: inserts the delivery's ID
+
+activate system
+system -> WM: DELETE DeleteDelivery(deliveryID)
+activate WM
+
+alt If the delivery exists in the system  
+WM --> system: 200 OK(deletedObject)
+deactivate WM
+
+system --> admin: informs about the success of the operation
+
+
+else If the delivery does not exist in the system
+
+activate WM
+WM --> system: 404 NOT FOUND
+deactivate WM
+
+system --> admin: informs that the delivery was not deleted
+
+
+end
+
+deactivate system
+deactivate admin
+
+@enduml

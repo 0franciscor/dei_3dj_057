@@ -5,11 +5,11 @@ using Moq;
 namespace WarehouseManagementTest.Domain.Deliveries
 {
     [TestFixture]
-    public class DeliveryServiceTest
+    internal class DeliveryServiceTest
     {
         private readonly string? id = "testID";
 
-        private readonly DateTime deliveryDate = new DateTime(2020, 12, 12);
+        private readonly DateTime deliveryDate = new DateTime(2024, 12, 12);
 
         private readonly float loadTime = 10;
 
@@ -51,7 +51,7 @@ namespace WarehouseManagementTest.Domain.Deliveries
         private List<Delivery> createdDeliveries()
         {
             var deliveryList = new List<Delivery>();
-            deliveryList.Add(new Delivery(id, new DeliveryDate(new DateTime(2020, 12, 13)), new LoadTime(1), new UnloadTime(2), new Destination("entregaTeste2"), new DeliveryMass(3)));
+            deliveryList.Add(new Delivery(id, new DeliveryDate(new DateTime(2025, 12, 13)), new LoadTime(1), new UnloadTime(2), new Destination("entregaTeste2"), new DeliveryMass(3)));
 
             return deliveryList;
         }
@@ -98,10 +98,11 @@ namespace WarehouseManagementTest.Domain.Deliveries
             };
 
             var mockRepository = new Mock<IDeliveryRepository>();
-            mockRepository.Setup(repo => repo.Add(deliveryExpected));
-
             var mockUnit = new Mock<IUnitOfWork>();
+            mockRepository.Setup(repo => repo.Add(deliveryExpected));
             mockUnit.Setup(repo => repo.CommitAsync());
+            
+            mockRepository.Setup(repo => repo.GetByID(new DeliveryID(id))).ReturnsAsync(null as Delivery);
 
             var service = new DeliveryService(mockUnit.Object, mockRepository.Object);
 

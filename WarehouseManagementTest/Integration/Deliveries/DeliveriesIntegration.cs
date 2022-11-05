@@ -11,7 +11,7 @@ namespace WarehouseManagementTest.Controllers.Deliveries
     {
         private readonly string? id = "testID";
 
-        private readonly DateTime deliveryDate = new DateTime(2020, 12, 12);
+        private readonly DateTime deliveryDate = new DateTime(2024, 12, 12);
 
         private readonly float loadTime = 10;
 
@@ -107,13 +107,14 @@ namespace WarehouseManagementTest.Controllers.Deliveries
 
             var mockRepo = new Mock<IDeliveryRepository>();
             mockRepo.Setup(repo => repo.Add(delivery)).ReturnsAsync(delivery);
+            mockRepository.Setup(repo => repo.GetByID(new DeliveryID(id))).ReturnsAsync(null as Delivery);
             var mockUnitRepo = new Mock<IUnitOfWork>();
             mockUnitRepo.Setup(repo => repo.CommitAsync());
 
             var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
             var deliveryController = new DeliveryController(service);
 
-            var aux = await deliveryController.Post(deliveryExpected);
+            var aux = await deliveryController.Patch(deliveryExpected);
 
             if (aux == null)
                 Assert.Fail();
