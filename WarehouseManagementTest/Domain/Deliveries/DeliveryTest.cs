@@ -27,7 +27,7 @@ namespace WarehouseManagementTest.Domain.Deliveries
         public void CreateDeliveryMassInsuccess()
         {
             var ex = Assert.Throws<BusinessRuleValidationException>(() => new DeliveryMass(-3));
-            Assert.That(ex.Message, Is.EqualTo("Mass must be greater than 0"));
+            Assert.That(ex.Message, Is.EqualTo("Delivery's Mass must be greater than 0."));
         }
 
         [Test]
@@ -38,5 +38,29 @@ namespace WarehouseManagementTest.Domain.Deliveries
 
             Assert.That(mass, Is.EqualTo(deliveryMass.AsFloat()));
         }
+
+        [Test]
+        public void CreateDestinationInsuccessNull()
+        {
+            var ex = Assert.Throws<BusinessRuleValidationException>(() => new Destination(null));
+            Assert.That(ex.Message, Is.EqualTo("Destination cannot be null."));
+        }
+
+        [Test]
+        public void CreateDestinationInsuccessEmpty()
+        {
+            var ex = Assert.Throws<BusinessRuleValidationException>(() => new Destination(""));
+            Assert.That(ex.Message, Is.EqualTo("Destination cannot be empty."));
+        }
+
+        [Test]
+        public void CreateDestinationSuccess()
+        {
+            string destination = "Rua do ISEP";
+            var deliveryDestination = new Destination(destination);
+
+            Assert.That(destination, Is.EqualTo(deliveryDestination.AsString()));
+        }
+
     }
 }
