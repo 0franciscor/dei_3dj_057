@@ -78,5 +78,20 @@ namespace WarehouseManagementTest.Domain.Deliveries
             Assert.That(time, Is.EqualTo(unloadTime.AsFloat()));
         }
 
+        [Test]
+        public void CreateLoadTimeInsuccess()
+        {
+            var ex = Assert.Throws<BusinessRuleValidationException>(() => new LoadTime(-3));
+            Assert.That(ex.Message, Is.EqualTo("Load time cannot be negative."));
+        }
+
+        [Test]
+        public void CreateLoadTimeSuccess()
+        {
+            float time = 15f;
+            var loadTime = new LoadTime(time);
+
+            Assert.That(time, Is.EqualTo(loadTime.AsFloat()));
+        }
     }
 }
