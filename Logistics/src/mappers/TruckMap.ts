@@ -11,6 +11,7 @@ import { ITruckPersistence } from "../dataschema/ITruckPersistence";
 export class TruckMap extends Mapper<Truck> {
     
     public static toDTO(truck: Truck): ITruckDTO {
+        console.log("truck", truck);
         return {
             id: truck.id.toString(),
             truckID: truck.truckID.id,

@@ -36,11 +36,11 @@ namespace EletricGo.Controllers
                 {
                     return NotFound("The searched Delivery was not found.");
                 }
-                return obj;
+                return Ok(obj);
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
 
@@ -59,7 +59,7 @@ namespace EletricGo.Controllers
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }            
         }
 
@@ -78,7 +78,7 @@ namespace EletricGo.Controllers
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
         
@@ -98,7 +98,7 @@ namespace EletricGo.Controllers
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
 

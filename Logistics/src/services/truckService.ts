@@ -69,8 +69,9 @@ export default class TruckService implements ITruckService {
             const truck = await this.truckRepo.getTruckById(truckID);
             if(truck === null)
                 return Result.fail<ITruckDTO>("Truck not found");
-
+            
             const truckDTOResult = TruckMap.toDTO(truck) as ITruckDTO;
+            console.log(truckDTOResult)
             return Result.ok<ITruckDTO>(truckDTOResult);
         } catch (e) {
             throw e;

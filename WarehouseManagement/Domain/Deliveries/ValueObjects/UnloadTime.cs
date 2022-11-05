@@ -11,6 +11,8 @@ namespace EletricGo.Domain.Deliveries
         public UnloadTime(){}
         public UnloadTime(float time)
         {
+            if(time < 0)
+                throw new BusinessRuleValidationException("Unload time cannot be negative");
             this.time = time;
         }
 

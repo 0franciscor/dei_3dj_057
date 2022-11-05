@@ -11,6 +11,8 @@ namespace EletricGo.Domain.Deliveries
 
         public DeliveryMass(float mass)
         {
+            if (mass < 0)
+                throw new BusinessRuleValidationException("Mass must be greater than 0");
             this.mass = mass;
         }
 
