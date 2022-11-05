@@ -4,31 +4,20 @@ using Moq;
 
 namespace WarehouseManagementTest.Domain.Deliveries
 {
-    public class DeliveryServiceTest
+    [TestFixture]
+    internal class DeliveryServiceTest
     {
-        private string? id;
+        private readonly string? id = "testID";
 
-        private DateTime deliveryDate;
+        private readonly DateTime deliveryDate = new DateTime(2024, 12, 12);
 
-        private float loadTime;
+        private readonly float loadTime = 10;
 
-        private float unloadTime;
+        private readonly float unloadTime = 20;
 
-        private string? destination;
+        private readonly string? destination = "testDestination";
 
-        private float deliveryMass;
-
-        [SetUp]
-        public void Setup()
-        {
-            id = "testID";
-            deliveryDate = new DateTime(2020, 12, 12);
-            loadTime = 10;
-            unloadTime = 20;
-            destination = "testDestination";
-            deliveryMass = 30;
-
-        }
+        private readonly float deliveryMass = 30;
 
         [Test]
         public void DefineDriverServiceConstrutor()
@@ -62,7 +51,7 @@ namespace WarehouseManagementTest.Domain.Deliveries
         private List<Delivery> createdDeliveries()
         {
             var deliveryList = new List<Delivery>();
-            deliveryList.Add(new Delivery(id, new DeliveryDate(new DateTime(2020, 12, 13)), new LoadTime(1), new UnloadTime(2), new Destination("entregaTeste2"), new DeliveryMass(3)));
+            deliveryList.Add(new Delivery(id, new DeliveryDate(new DateTime(2025, 12, 13)), new LoadTime(1), new UnloadTime(2), new Destination("entregaTeste2"), new DeliveryMass(3)));
 
             return deliveryList;
         }
@@ -71,16 +60,6 @@ namespace WarehouseManagementTest.Domain.Deliveries
         public async Task GetDeliveryTest()
         {
             var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
-            
-            var deliveryDto = new DeliveryDTO
-            {
-                deliveryID = this.id,
-                deliveryDate = this.deliveryDate,
-                loadTime = this.loadTime,
-                unloadTime = this.unloadTime,
-                destination = this.destination,
-                deliveryMass = this.deliveryMass
-            };
 
             var mockRepository = new Mock<IDeliveryRepository>();
             mockRepository.Setup(repo => repo.GetByID(new DeliveryID(this.id))).ReturnsAsync(deliveryExpected);
@@ -89,7 +68,7 @@ namespace WarehouseManagementTest.Domain.Deliveries
 
             var service = new DeliveryService(mockUnit.Object, mockRepository.Object);
 
-            var deliveryResult = await service.GetDelivery(deliveryDto);
+            var deliveryResult = await service.GetDelivery(new DeliveryID(this.id));
 
             Assert.Multiple(() =>
             {
@@ -119,10 +98,11 @@ namespace WarehouseManagementTest.Domain.Deliveries
             };
 
             var mockRepository = new Mock<IDeliveryRepository>();
-            mockRepository.Setup(repo => repo.Add(deliveryExpected));
-
             var mockUnit = new Mock<IUnitOfWork>();
+            mockRepository.Setup(repo => repo.Add(deliveryExpected));
             mockUnit.Setup(repo => repo.CommitAsync());
+            
+            mockRepository.Setup(repo => repo.GetByID(new DeliveryID(id))).ReturnsAsync(null as Delivery);
 
             var service = new DeliveryService(mockUnit.Object, mockRepository.Object);
 
@@ -143,7 +123,6 @@ namespace WarehouseManagementTest.Domain.Deliveries
         [Test]
         public async Task UpdateDeliveryTest()
         { 
-
             var deliveryID = new DeliveryID(id);
 
             var deliveryDto = new DeliveryDTO
@@ -178,16 +157,6 @@ namespace WarehouseManagementTest.Domain.Deliveries
 
             var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
 
-            var deliveryDto = new DeliveryDTO
-            {
-                deliveryID = this.id,
-                deliveryDate = this.deliveryDate,
-                loadTime = this.loadTime,
-                unloadTime = 50,
-                destination = this.destination,
-                deliveryMass = this.deliveryMass
-            };
-
             var mockRepository = new Mock<IDeliveryRepository>();
             mockRepository.Setup(repo => repo.GetByID(deliveryID)).ReturnsAsync(deliveryExpected);
             mockRepository.Setup(repo => repo.Delete(deliveryExpected));
@@ -196,7 +165,7 @@ namespace WarehouseManagementTest.Domain.Deliveries
 
             var service = new DeliveryService(mockUnit.Object, mockRepository.Object);
 
-            var deliveryResult = await service.DeleteDelivery(deliveryDto);
+            var deliveryResult = await service.DeleteDelivery(new DeliveryID(id));
 
             Assert.Multiple(() =>
             {

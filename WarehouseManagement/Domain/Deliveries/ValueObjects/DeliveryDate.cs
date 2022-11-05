@@ -12,12 +12,31 @@ namespace EletricGo.Domain.Deliveries
         
         public DeliveryDate(DateTime date)
         {
+            if (date < DateTime.Now)
+                throw new BusinessRuleValidationException("Date cannot be in the past.");
+
             this.date = date;
         }
 
         public DateTime AsDateTime()
         {
             return date;
+        }
+
+        override
+        public bool Equals(Object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            DeliveryDate deliveryDate = (DeliveryDate)obj;
+            return (date == deliveryDate.date);
+        }
+
+        override
+        public int GetHashCode()
+        {
+            return date.GetHashCode();
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

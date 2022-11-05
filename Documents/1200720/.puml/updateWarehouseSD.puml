@@ -27,9 +27,10 @@ deactivate system
 admin -> system: inserts the information to update
 activate system
 
-alt If the Id entered matches the Id of a warehouse\n  in the system and the business rules for the\n  new attributes are respected
 system -> WM : Update()
 activate WM
+alt If the Id entered matches the Id of a warehouse\n  in the system and the business rules for the\n  new attributes are respected
+
 
 WM --> system : 200 OK 
 deactivate WM

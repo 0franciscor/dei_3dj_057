@@ -23,9 +23,9 @@ namespace EletricGo.Domain.Deliveries
             return deliveries.Select(x => x.toDeliveryDTO()).ToList();
         }
 
-        public virtual async Task<DeliveryDTO> GetDelivery(DeliveryDTO deliveryDTO)
+        public virtual async Task<DeliveryDTO> GetDelivery(DeliveryID deliveryID)
         {
-            var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
+            var delivery = await _deliveryRepository.GetByID(deliveryID);
 
             if (delivery == null)
                 return null;
@@ -35,6 +35,9 @@ namespace EletricGo.Domain.Deliveries
 
         public virtual async Task<DeliveryDTO> CreateDelivery(DeliveryDTO deliveryDTO)
         {
+            if (await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID)) != null)
+                return null;
+
             var delivery = new Delivery(deliveryDTO);
 
             if (delivery == null)
@@ -52,14 +55,14 @@ namespace EletricGo.Domain.Deliveries
             if (delivery == null)
                 return null;
 
-            delivery.update(deliveryDTO);
+            delivery.Update(deliveryDTO);
             await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
 
-        public virtual async Task<DeliveryDTO> DeleteDelivery(DeliveryDTO deliveryDTO)
+        public virtual async Task<DeliveryDTO> DeleteDelivery(DeliveryID deliveryID)
         {
-            var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
+            var delivery = await _deliveryRepository.GetByID(deliveryID);
 
             if (delivery == null)
                 return null;
@@ -69,10 +72,9 @@ namespace EletricGo.Domain.Deliveries
             return delivery.toDeliveryDTO();
         }
 
-        public async Task<bool> FindDelivery(DeliveryDTO deliveryDTO)
+        public async Task<bool> FindDelivery(DeliveryID deliveryID)
         {
-            return await _deliveryRepository.Find(new DeliveryID(deliveryDTO.deliveryID));
-
+            return await _deliveryRepository.Find(deliveryID);
         }
         
     }

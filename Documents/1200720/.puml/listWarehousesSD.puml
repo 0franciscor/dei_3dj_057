@@ -15,10 +15,10 @@ end box
 
 admin -> system: I want to consult the warehouses in the system
 activate system
-
-alt if there are warehouses in the system
 system -> WM : GetAll()
 activate WM
+alt if there are warehouses in the system
+
 WM --> system : 200 OK 
 deactivate WM
 

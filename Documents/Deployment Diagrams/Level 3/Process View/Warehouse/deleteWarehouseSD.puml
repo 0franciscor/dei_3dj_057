@@ -1,0 +1,97 @@
+@startuml
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+participant SPA as ui <<Container(C4)>>
+box "<<Container(C4)>>\n    Warehouse Management" #LightGreen
+participant WarehouseRoute as  WM <<Component(C4)>>
+participant WarehouseController as  CTL <<Component(C4)>>
+participant WarehouseService as  SV <<Component(C4)>>
+participant "warehouse : Warehouse" as  W <<Component(C4)>>
+participant "warehouseDto : WarehouseDTO" as  DTO <<Component(C4)>>
+participant WarehouseRepository as  WR <<Component(C4)>>
+end box
+end box 
+admin -> ui: I want to delete a warehouse
+activate ui
+
+ui --> admin: asks for the ID of the warehouse
+deactivate ui
+
+admin -> ui: inserts the ID of the warehouse
+activate ui
+
+ui --> admin: asks for the confirmation of the deletion
+deactivate ui
+
+
+admin -> ui: confirms the deletion
+activate ui
+
+ui -> WM : DELETE DeleteWarehouse(id)
+activate WM
+alt If there is a warehouse in the system with the id entered
+
+WM -> CTL : DELETE Delete(id)
+activate CTL
+CTL -> SV : DeleteWarehouse(id)
+activate SV 
+SV -> WR : GetById(id)
+activate WR 
+WR --> SV : warehouse
+deactivate WR
+SV -> WR : Delete(warehouse)
+activate WR
+
+WR --> SV : true 
+deactivate WR
+
+SV -> W : toWarehouseDto()
+activate W
+W--> SV : warehouseDto
+deactivate W
+SV --> CTL : warehouseDto
+deactivate SV
+CTL --> WM : warehouseDto
+deactivate CTL
+WM --> ui : 200 OK 
+deactivate WM
+ui --> admin: informs about the successful deletion
+deactivate ui
+
+else If there is no warehouse in the system with the id entered
+
+WM -> CTL : DELETE Delete(id)
+activate WM
+activate CTL
+CTL -> SV : DeleteWarehouse(id)
+activate SV 
+SV -> WR : GetById(id)
+activate WR 
+WR --> SV : null
+deactivate WR
+
+SV --> CTL : null
+deactivate SV
+CTL --> WM : null
+deactivate CTL
+
+WM --> ui : 404 NOT FOUND 
+deactivate WM
+activate ui
+
+ui --> admin : informs about the fail of the operation
+
+deactivate ui
+
+
+end 
+
+deactivate admin
+@enduml

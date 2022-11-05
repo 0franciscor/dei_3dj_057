@@ -3,7 +3,7 @@ using EletricGo.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
+
 namespace EletricGo.Controllers
 {
 
@@ -30,7 +30,7 @@ namespace EletricGo.Controllers
         {
             try
             {
-                var obj = await _deliveryService.GetDelivery(new DeliveryDTO{deliveryID = id});
+                var obj = await _deliveryService.GetDelivery(new DeliveryID(id));
 
                 if (obj == null)
                 {
@@ -40,7 +40,7 @@ namespace EletricGo.Controllers
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
 
@@ -59,7 +59,7 @@ namespace EletricGo.Controllers
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }            
         }
 
@@ -78,17 +78,16 @@ namespace EletricGo.Controllers
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
-
         
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<DeliveryDTO>> Delete(string id)
         {
             try
             {
-                var deletedObj = await _deliveryService.DeleteDelivery(new DeliveryDTO{deliveryID = id});
+                var deletedObj = await _deliveryService.DeleteDelivery(new DeliveryID(id));
 
                 if (deletedObj == null)
                 {
@@ -99,14 +98,14 @@ namespace EletricGo.Controllers
             }
             catch (BusinessRuleValidationException ex)
             {
-                return BadRequest(new { Message = ex.Message });
+                return BadRequest(new { ex.Message });
             }
         }
 
         [HttpGet("Exists/{id}")]
         public async Task<ActionResult<bool>> Exists(string id)
         {
-            if (await _deliveryService.FindDelivery(new DeliveryDTO{deliveryID = id}))
+            if (await _deliveryService.FindDelivery(new DeliveryID(id)))
                 return Ok();
             
             return NotFound("The requested Delivery does not exist.");

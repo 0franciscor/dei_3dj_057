@@ -17,5 +17,17 @@ namespace EletricGo.Domain.Deliveries
             return deliveryID;
         }
 
+        override
+        public bool Equals(Object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            DeliveryID delivery = (DeliveryID)obj;
+            return deliveryID == delivery.deliveryID;
+        }
+
     }    
 }

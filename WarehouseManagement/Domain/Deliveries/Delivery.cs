@@ -38,7 +38,7 @@ namespace EletricGo.Domain.Deliveries
                 unloadTime = this.unloadTime.AsFloat(), destination = this.destination.AsString(), deliveryMass = this.deliveryMass.AsFloat() };
         }
 
-        public void update(DeliveryDTO deliveryDTO)
+        public void Update(DeliveryDTO deliveryDTO)
         {
             if (deliveryDTO.deliveryDate != default(DateTime))
                 this.deliveryDate = new DeliveryDate(deliveryDTO.deliveryDate);
@@ -54,6 +54,23 @@ namespace EletricGo.Domain.Deliveries
 
             if (deliveryDTO.deliveryMass != default(float))
                 this.deliveryMass = new DeliveryMass(deliveryDTO.deliveryMass);
+        }
+
+        override
+        public int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        override
+        public bool Equals(Object obj)
+        { 
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Delivery delivery = (Delivery)obj;
+            return this.Id.Equals(delivery.Id) && this.deliveryDate.Equals(delivery.deliveryDate) && this.loadTime.Equals(delivery.loadTime) && this.unloadTime.Equals(delivery.unloadTime) && this.destination.Equals(delivery.destination) && this.deliveryMass.Equals(delivery.deliveryMass);
+
         }
 
     }    
