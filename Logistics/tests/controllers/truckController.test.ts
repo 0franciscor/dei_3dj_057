@@ -7,7 +7,6 @@ import * as sinon from 'sinon';
 import TruckController from '../../src/controllers/TruckController';
 import ITruckService from '../../src/services/IServices/ITruckService';
 import { ITruckDTO } from '../../src/dto/ITruckDTO';
-import { describe } from 'node:test';
 import 'mocha';
 import {expect} from "chai";
 

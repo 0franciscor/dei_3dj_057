@@ -1,7 +1,7 @@
 import {Path} from '../../../src/domain/path/Path';
 import { expect } from 'chai';
 import "mocha";
-import { DestinationWHId } from '../../../src/domain/path/DestinationWHId';
+
 
 describe ("Create Path",()=>{
     it("path should be created", async () => {

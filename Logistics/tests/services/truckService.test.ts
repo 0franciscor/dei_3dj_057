@@ -7,7 +7,6 @@ import * as sinon from 'sinon';
 import TruckService from '../../src/services/TruckService';
 import ITruckRepo from "../../src/repos/IRepos/ITruckRepo";
 import { ITruckDTO } from '../../src/dto/ITruckDTO';
-import { describe } from 'node:test';
 import 'mocha';
 import {expect} from "chai";
 import exp from "node:constants";

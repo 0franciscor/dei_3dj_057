@@ -84,15 +84,20 @@ export class Path extends AggregateRoot<PathProps>{
     } 
 
     public static create (pathDTO: IPathDTO, id?: UniqueEntityID): Result<Path>{
-        const path= new Path({
-            pathID: PathID.create(pathDTO.pathID).getValue(),
-            startWHId: StartWHId.create(pathDTO.startWHId).getValue(), 
-            destinationWHId: DestinationWHId.create(pathDTO.destinationWHId).getValue(),
-            pathDistance: PathDistance.create(pathDTO.pathDistance).getValue(),
-            pathTravelTime: PathTravelTime.create(pathDTO.pathTravelTime).getValue(),
-            wastedEnergy: WastedEnergy.create(pathDTO.wastedEnergy).getValue(),
-            extraTravelTime: ExtraTravelTime.create(pathDTO.extraTravelTime).getValue(),
-        },id);
-        return Result.ok<Path>(path);
+        try {
+            const path= new Path({
+                pathID: PathID.create(pathDTO.pathID).getValue(),
+                startWHId: StartWHId.create(pathDTO.startWHId).getValue(), 
+                destinationWHId: DestinationWHId.create(pathDTO.destinationWHId).getValue(),
+                pathDistance: PathDistance.create(pathDTO.pathDistance).getValue(),
+                pathTravelTime: PathTravelTime.create(pathDTO.pathTravelTime).getValue(),
+                wastedEnergy: WastedEnergy.create(pathDTO.wastedEnergy).getValue(),
+                extraTravelTime: ExtraTravelTime.create(pathDTO.extraTravelTime).getValue(),
+            },id);
+            return Result.ok<Path>(path);
+        } catch (error) {
+            Result.fail<Path>(error);
+        }
+       
     }
 }
