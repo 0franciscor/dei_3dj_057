@@ -1,0 +1,136 @@
+@startuml 
+autonumber
+
+actor "Warehouse Manager" as admin
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+participant SPA as ui <<Container(C4)>>
+box "<<Container(C4)>>\n    Warehouse Management" #LightGreen
+participant WarehouseRoute as  WM <<Component(C4)>>
+participant WarehouseController as  CTL <<Component(C4)>>
+participant WarehouseService as  SV <<Component(C4)>>
+participant "warehouse : Warehouse" as  W <<Component(C4)>>
+participant "warehouseDto : WarehouseDTO" as  DTO <<Component(C4)>>
+participant WarehouseRepository as  WR <<Component(C4)>>
+end box
+
+end box
+
+admin -> ui: I want to update the details of a warehouse
+activate ui
+
+ui --> admin: asks for the ID of the warehouse
+deactivate ui
+
+admin -> ui: inserts the ID of the warehouse
+activate ui
+
+ui --> admin: asks for the information to update
+deactivate ui
+
+admin -> ui: inserts the information to update
+activate ui
+
+ui -> WM : PUT Update()
+activate WM
+alt If the Id entered matches the Id of a warehouse\n  in the system and the business rules for the\n  new attributes are respected
+
+WM -> CTL : Update()
+activate CTL
+CTL -> SV : UpdateWarehouse(warehouseDto)
+activate SV
+
+SV -> WR : GetById(warehouseDto.Id)
+activate WR
+
+WR --> SV : warehouse 
+deactivate WR
+
+SV -> W : Update(warehouseDto)
+activate W
+
+deactivate W
+
+SV -> W : toWarehouseDto()
+activate W
+
+W --> SV : warehouseDto
+deactivate W 
+SV --> CTL : warehouseDto
+deactivate SV
+
+CTL --> WM : warehouseDto
+deactivate CTL 
+
+WM --> ui : 200 OK 
+deactivate WM
+
+ui --> admin: displays the updated information and \ninforms about the operation success
+deactivate ui
+
+else If the Id entered does not match the Id of a warehouse in the system
+
+WM -> CTL : Update()
+activate WM
+activate CTL
+CTL -> SV : UpdateWarehouse(warehouseDto)
+activate SV
+
+SV -> WR : GetById(warehouseDto.Id)
+activate WR
+
+WR --> SV : null 
+deactivate WR
+
+
+SV --> CTL : null
+deactivate SV
+
+CTL --> WM : null
+deactivate CTL 
+
+
+WM --> ui : 409 CONFLICT
+deactivate WM
+
+activate ui
+ui --> admin : display a message error
+deactivate ui
+
+else  If the business rules for the new attributes are not respected
+
+WM -> CTL : Update()
+activate WM
+activate CTL
+CTL -> SV : UpdateWarehouse(warehouseDto)
+activate SV
+
+SV -> WR : GetById(warehouseDto.Id)
+activate WR
+
+WR --> SV : warehouse 
+deactivate WR
+
+SV -> W : Update(warehouseDto)
+activate W
+
+W --> SV : BusinessRuleValidationException
+deactivate W 
+SV --> CTL : InvalidOperationException
+deactivate SV
+
+CTL --> WM : InvalidOperationException
+deactivate CTL 
+
+WM --> ui : 409 CONFLICT
+deactivate WM
+
+activate ui
+ui --> admin : display a message error
+deactivate ui
+end 
+
+
+deactivate ui
+deactivate admin
+
+@enduml

@@ -1,0 +1,950 @@
+{
+	"info": {
+		"_postman_id": "cca50bd9-acbd-49f4-9cf6-a340940fc7c4",
+		"name": "Warehouse Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23548648"
+	},
+	"item": [
+		{
+			"name": "GetAllWarehouses_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check that it returns an array\", function () {\r",
+							"  var jsonData = pm.response.json();\r",
+							"  pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"id\":\"TS1\",\r",
+							"            \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r",
+							"            \"altitude\":200,\r",
+							"            \"latitude\":\"45\",\r",
+							"            \"longitude\":\"79\",\r",
+							"            \"designation\":\"this is a test\"\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/GetAll",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"GetAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetWarehouseById_Test1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Warehouse JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"id\":\"TS1\",\r",
+							"            \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r",
+							"            \"altitude\":200,\r",
+							"            \"latitude\":\"45\",\r",
+							"            \"longitude\":\"79\",\r",
+							"            \"designation\":\"this is a test\"\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Address value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address).to.eql(\"Rua Antonio Bernardino,43,4535-334,Porto\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Id value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(\"WH1\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Altitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.altitude).to.eql(145);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Latitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.latitude).to.eql(\"57\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Longitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.longitude).to.eql(\"-80\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing designation value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.designation).to.eql(\"Porto\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/GetById/WH1",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"GetById",
+						"WH1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetWarehouseById_Test2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse not found\", function() {\r",
+							"    pm.response.to.have.body(\"There is no warehouse with this id\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/GetById/W34",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"GetById",
+						"W34"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteWarehouse_Test1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse not found\", function() {\r",
+							"    pm.response.to.have.body(\"The requested delete was not performed.\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/Delete/R53",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"Delete",
+						"R53"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteWarehouse_Test2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"id\":\"TS1\",\r",
+							"            \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r",
+							"            \"altitude\":200,\r",
+							"            \"latitude\":\"45\",\r",
+							"            \"longitude\":\"79\",\r",
+							"            \"designation\":\"this is a test\"\r",
+							"        }\r",
+							"    );\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/Delete/WH1",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"Delete",
+						"WH1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateWarehouse_Test1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"id\":\"TS1\",\r",
+							"            \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r",
+							"            \"altitude\":200,\r",
+							"            \"latitude\":\"45\",\r",
+							"            \"longitude\":\"79\",\r",
+							"            \"designation\":\"this is a test\"\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Address value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address).to.eql(\"Rua Antonio Bernardino,43,4535-334,Porto\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Id value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(\"WH1\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Altitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.altitude).to.eql(145);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Latitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.latitude).to.eql(\"57\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Longitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.longitude).to.eql(\"-80\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing designation value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.designation).to.eql(\"Porto\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"45\",\r\n    \"longitude\":\"79\",\r\n    \"designation\":\"Porto\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}\\CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateWarehouse_Test2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"UnSuccessful POST request\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse already exists\", function() {\r",
+							"    pm.response.to.have.body(\"There is already a warehouse with this id in the system\"); \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"45\",\r\n    \"longitude\":\"79\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateAddress_Test1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validation Of Address\", function() {\r",
+							"    pm.response.to.have.body(\"The address can't be null\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"ML3\",\r\n    \"address\":null,\r\n    \"altitude\":200,\r\n    \"latitude\":\"45\",\r\n    \"longitude\":\"79\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateAddress_Test2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validation Of Address\", function() {\r",
+							"    pm.response.to.have.body(\"The address number can't be negative\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,-47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"45\",\r\n    \"longitude\":\"79\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateAddress_Test3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validation Of Address\", function() {\r",
+							"    pm.response.to.have.body(\"The zip code isn't in the right format\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,47,458935-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"45\",\r\n    \"longitude\":\"79\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateAltitude_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validation Of Altitude\", function() {\r",
+							"    pm.response.to.have.body(\"The altitude can't be a negative number\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,47,4585-334,Porto\",\r\n    \"altitude\":-200,\r\n    \"latitude\":\"45\",\r\n    \"longitude\":\"79\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateLatitude_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validation Of Latitude\", function() {\r",
+							"    pm.response.to.have.body(\"The latitude must be in the range [-90,90]\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"-97\",\r\n    \"longitude\":\"79\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateLongitude_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validation Of Longitude\", function() {\r",
+							"    pm.response.to.have.body(\"The longitude must be in the range [-180,180]\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"78\",\r\n    \"longitude\":\"194\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateDesignation_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validation Of Designation\", function() {\r",
+							"    pm.response.to.have.body(\"The maximum length for description is 50 characters\"); \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"78\",\r\n    \"longitude\":\"145\",\r\n    \"designation\":\"Essa descrição foi feita para falhar visto que possui mais de 50 caracteres\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateId_Test1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WHjsuia1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"78\",\r\n    \"longitude\":\"132\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateWarehouseAddress_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"id\":\"TS1\",\r",
+							"            \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r",
+							"            \"altitude\":200,\r",
+							"            \"latitude\":\"45\",\r",
+							"            \"longitude\":\"79\",\r",
+							"            \"designation\":\"this is a test\"\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Address value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address).to.eql(\"Rua António Bernardino,47,4535-364,Porto\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-364,Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/Update",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"Update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateWarehouseAltitude_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"id\":\"TS1\",\r",
+							"            \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r",
+							"            \"altitude\":200,\r",
+							"            \"latitude\":\"45\",\r",
+							"            \"longitude\":\"79\",\r",
+							"            \"designation\":\"this is a test\"\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Altitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.altitude).to.eql(450);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"altitude\": 450\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/Update",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"Update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateWarehouseLatitude_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"id\":\"TS1\",\r",
+							"            \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r",
+							"            \"altitude\":200,\r",
+							"            \"latitude\":\"45\",\r",
+							"            \"longitude\":\"79\",\r",
+							"            \"designation\":\"this is a test\"\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Latitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.latitude).to.eql(\"70\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Longitude value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.longitude).to.eql(\"175\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"latitude\":\"70\",\r\n    \"longitude\":\"175\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/Update ",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"Update "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateWarehouseDesignation_Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Warehouse JSON\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"id\":\"TS1\",\r",
+							"            \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r",
+							"            \"altitude\":200,\r",
+							"            \"latitude\":\"45\",\r",
+							"            \"longitude\":\"79\",\r",
+							"            \"designation\":\"this is a test\"\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Comparing Designation value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.designation).to.eql(\"Lisboa\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WH1\",\r\n    \"designation\": \"Lisboa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/Update",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"Update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

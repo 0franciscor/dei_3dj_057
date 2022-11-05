@@ -1,15 +1,13 @@
 import "reflect-metadata";
-import {Response, Request, NextFunction} from 'express';
 import { Container } from 'typedi';
-import config from '../../config';
-import { Result }  from '../../src/core/logic/Result';
 import * as sinon from 'sinon';
 import TruckService from '../../src/services/TruckService';
 import ITruckRepo from "../../src/repos/IRepos/ITruckRepo";
 import { ITruckDTO } from '../../src/dto/ITruckDTO';
 import 'mocha';
 import {expect} from "chai";
-import exp from "node:constants";
+import { TruckMap } from "../../src/mappers/TruckMap";
+import { Truck } from "../../src/domain/truck/Truck";
 
 describe('TruckService Unit Tests', () => {
 
@@ -119,7 +117,6 @@ describe('TruckService Unit Tests', () => {
         sinon.stub(truckRepoInstance, "getTruckById").returns(Promise.resolve(body));
         const truckService = new TruckService(truckRepoInstance as ITruckRepo);
         const answer = await truckService.createTruck(body as ITruckDTO);
-        console.log(answer);
         expect(answer.errorValue()).to.equal("Truck already exists");
 
     });
@@ -140,10 +137,9 @@ describe('TruckService Unit Tests', () => {
 
         let truckRepoInstance = Container.get("TruckRepo");
 
-        sinon.stub(truckRepoInstance, "getTruckById").returns(body);
+        sinon.stub(truckRepoInstance, "getTruckById").returns(TruckMap.toDomain(body));
         const truckService = new TruckService(truckRepoInstance as ITruckRepo);
         const answer = await truckService.getTruck(body.truckID);
-        console.log(answer);
         expect(answer.getValue().truckID).to.equal(body.truckID);
         expect(answer.getValue().tare).to.equal(body.tare);
         expect(answer.getValue().capacity).to.equal(body.capacity);
@@ -171,6 +167,135 @@ describe('TruckService Unit Tests', () => {
         sinon.stub(truckRepoInstance, "getTruckById").returns(null);
         const truckService = new TruckService(truckRepoInstance as ITruckRepo);
         const answer = await truckService.getTruck(body.truckID);
+
+        expect(answer.errorValue()).to.equal("Truck not found");
+
+    });
+
+    it('getAllTrucks returns list', async () => {
+        
+        let body = [{
+            truckID: "truckID1",
+            tare: 1,
+            capacity: 1,
+            maxBatteryCapacity: 1,
+            autonomy: 1,
+            fastChargeTime: 1,
+            id: "id"
+        },{
+            truckID: "truckID2",
+            tare: 1,
+            capacity: 1,
+            maxBatteryCapacity: 1,
+            autonomy: 1,
+            fastChargeTime: 1,
+            id: "id"
+        },];
+
+        let truckRepoInstance = Container.get("TruckRepo");
+        let trucks: Truck[] = [];
+        body.forEach(truck => {
+            trucks.push(TruckMap.toDomain(truck));
+        });
+        sinon.stub(truckRepoInstance, "getAllTrucks").returns(trucks);
+        const truckService = new TruckService(truckRepoInstance as ITruckRepo);
+        const answer = await truckService.getAllTrucks();
+        expect(answer.getValue().length).to.equal(2);
+
+    });
+
+    it('updateTruck returns truck', async () => {
+        
+        let body = {
+            truckID: "truckID",
+            tare: 1,
+            capacity: 1,
+            maxBatteryCapacity: 1,
+            autonomy: 1,
+            fastChargeTime: 1,
+            id: "id"
+        };
+
+        let truckRepoInstance = Container.get("TruckRepo");
+
+        sinon.stub(truckRepoInstance, "getTruckById").returns(TruckMap.toDomain(body));
+        sinon.stub(truckRepoInstance, "save").returns(Promise.resolve(body));
+        const truckService = new TruckService(truckRepoInstance as ITruckRepo);
+        const answer = await truckService.updateTruck(body as ITruckDTO);
+        expect(answer.getValue().truckID).to.equal(body.truckID);
+        expect(answer.getValue().tare).to.equal(body.tare);
+        expect(answer.getValue().capacity).to.equal(body.capacity);
+        expect(answer.getValue().maxBatteryCapacity).to.equal(body.maxBatteryCapacity);
+        expect(answer.getValue().autonomy).to.equal(body.autonomy);
+        expect(answer.getValue().fastChargeTime).to.equal(body.fastChargeTime);
+
+    });
+
+
+    it('updateTruck returns "truck not found"', async () => {
+        
+        let body = {
+            truckID: "truckID",
+            tare: 1,
+            capacity: 1,
+            maxBatteryCapacity: 1,
+            autonomy: 1,
+            fastChargeTime: 1
+        };
+
+        let truckRepoInstance = Container.get("TruckRepo");
+
+        sinon.stub(truckRepoInstance, "getTruckById").returns(null);
+        const truckService = new TruckService(truckRepoInstance as ITruckRepo);
+        const answer = await truckService.updateTruck(body as ITruckDTO);
+
+        expect(answer.errorValue()).to.equal("Truck not found");
+
+    });
+    it('deleteTruck returns truck', async () => {
+        
+        let body = {
+            truckID: "truckID",
+            tare: 1,
+            capacity: 1,
+            maxBatteryCapacity: 1,
+            autonomy: 1,
+            fastChargeTime: 1,
+            id: "id"
+        };
+
+        let truckRepoInstance = Container.get("TruckRepo");
+
+        sinon.stub(truckRepoInstance, "getTruckById").returns(TruckMap.toDomain(body));
+        sinon.stub(truckRepoInstance, "delete").returns(TruckMap.toDomain(body));
+        const truckService = new TruckService(truckRepoInstance as ITruckRepo);
+        const answer = await truckService.deleteTruck(body.truckID);
+        expect(answer.getValue().truckID).to.equal(body.truckID);
+        expect(answer.getValue().tare).to.equal(body.tare);
+        expect(answer.getValue().capacity).to.equal(body.capacity);
+        expect(answer.getValue().maxBatteryCapacity).to.equal(body.maxBatteryCapacity);
+        expect(answer.getValue().autonomy).to.equal(body.autonomy);
+        expect(answer.getValue().fastChargeTime).to.equal(body.fastChargeTime);
+
+    });
+
+
+    it('deleteTruck returns "truck not found"', async () => {
+        
+        let body = {
+            truckID: "truckID",
+            tare: 1,
+            capacity: 1,
+            maxBatteryCapacity: 1,
+            autonomy: 1,
+            fastChargeTime: 1
+        };
+
+        let truckRepoInstance = Container.get("TruckRepo");
+
+        sinon.stub(truckRepoInstance, "getTruckById").returns(null);
+        const truckService = new TruckService(truckRepoInstance as ITruckRepo);
+        const answer = await truckService.deleteTruck(body.truckID);
 
         expect(answer.errorValue()).to.equal("Truck not found");
 
