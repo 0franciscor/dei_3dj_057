@@ -23,6 +23,7 @@ export class PathMap extends Mapper<Path>{
     }
 
     public static toDTOList(paths: Path[]): IPathDTO[]{
+        console.log(paths)
         return paths.map((path) => PathMap.toDTO(path));
     }
     

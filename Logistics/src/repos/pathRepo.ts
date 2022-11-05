@@ -85,7 +85,6 @@ export default class PathRepo implements IPathRepo{
         public async getAllPaths(startWH:string ,destinationWH:string): Promise<Path[]> {
             let query;
             let pathDocument;
-           
             if(startWH==undefined){
                  query ={destinationWHId: destinationWH}
             }else if(destinationWH==undefined){
