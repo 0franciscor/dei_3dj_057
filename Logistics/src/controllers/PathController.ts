@@ -19,9 +19,12 @@ export default class PathController implements IPathController{
     public async getPath(req: Request, res: Response, next: NextFunction) {
         try {
             const path = await this.pathService.getPath(req.body.pathID);
-            if (path.isFailure)
-                return res.status(404).send("Path not found")
-            res.status(200).json(path);
+            if (path.isFailure){
+                res.status(404)
+                return res.send("Path not found")
+            }
+            res.status(200)
+            return res.json(path.getValue());
         } catch (e) {
             next(e);
         }
@@ -30,9 +33,12 @@ export default class PathController implements IPathController{
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
         try {
             const paths= await this.pathService.getAllPath(req.body);
-            if(paths.getValue().length==0)
-                return res.status(404).send("No paths found");
-            res.status(200).json(paths);
+            if(paths.getValue().length==0){
+                res.status(404) 
+                return res.send("No paths found");
+            }
+            res.status(200)
+            return res.json(paths.getValue());
         } catch (e) {
             next(e);
         }
@@ -41,35 +47,37 @@ export default class PathController implements IPathController{
     public async createPath(req: Request, res: Response, next: NextFunction) {
         try{
         
-            const httpAgent = new http.Agent({rejectUnauthorized: false});
+           
             const address_start = 'https://localhost:5001/api/warehouses/Exists/' + req.body.startWHId;
 
-            const response_start = await fetch(address_start,{
-                method: 'GET',
-                agent : httpAgent
-            });
+            const response_start = await this.fetch(address_start)
 
-            if(response_start.status==404)
-                return res.status(404).send("Start Warehouse not found");
+            if(response_start.status==404){
+                res.status(404)
+                return res.send("Start Warehouse not found");
+            }
+                
             
             const address_destination ='https://localhost:5001/api/warehouses/Exists/' + req.body.destinationWHId;
-           const response_destination = await fetch(address_destination,{
-                method : 'GET',
-                agent: httpAgent
-           });
+           const response_destination = await this.fetch(address_destination)
 
-           if (response_destination.status == 404)
-                return res.status(404).send("Destination warehouse not found");
+
+           if (response_destination.status == 404){
+            res.status(404)
+            return res.send("Destination warehouse not found");
+           }
+                
             
             const pathOrError = await this.pathService.createPath(req.body as IPathDTO) as Result<IPathDTO>;
             if(pathOrError.isFailure){
-                return res.status(409).send("Path already exists");
+                res.status(409)
+                return res.send("Path already exists");
             }
             
             
             const pathDTO = pathOrError.getValue();
-
-            return res.status(201).json(pathDTO);
+            res.status(201)
+            return res.json(pathDTO);
             
         }catch(e){
             next(e);
@@ -78,18 +86,24 @@ export default class PathController implements IPathController{
 
     public async updatePath(req: Request, res: Response, next: NextFunction) {
         try {
-            if(req.body.pathID == null)
-                return res.status(400).send("Path ID is required")
+            if(req.body.pathID == null){
+                res.status(400);
+                return res.send("Path ID is required")
+            }
+                
             const pathOrError= await this.pathService.updatePath(req.body as IPathDTO) as Result<IPathDTO>;
             if(pathOrError.isFailure){
-                if(pathOrError.error == "Starting Warehouse ID cannot be changed")
-                    return res.status(400).send(pathOrError.error);
-                if(pathOrError.error == "Destination Warehouse ID cannot be changed")
-                    return res.status(400).send(pathOrError.error);
-                return res.status(400).send(pathOrError.error);
+                
+                if(pathOrError.error == "Path not found"){
+                    res.status(404)
+                    return res.send(pathOrError.error);
+                }
+                res.status(400)
+                return res.send(pathOrError.error);
             }
             const pathDTO= pathOrError.getValue();
-            return res.json(pathDTO).status(200);
+            res.status(200)
+            return res.json(pathDTO);
         } catch (e) {
             next(e);
         }
@@ -98,11 +112,22 @@ export default class PathController implements IPathController{
     public async deletePath(req: Request, res: Response, next: NextFunction) {
         try {
             const pathResult = await this.pathService.deletePath(req.body.id);
-            if(pathResult.isFailure)
-                return res.status(404).send("Path not found");
-            res.status(200).json(pathResult)
+            if(pathResult.isFailure){
+                res.status(404);
+                return res.send("Path not found");
+            }
+            res.status(200)
+            return res.json(pathResult.getValue())
         } catch (e) {
             next(e);
         }
+    }
+
+    private async fetch(address : string ){
+        const httpAgent = new http.Agent({rejectUnauthorized: false});
+        return await fetch(address,{
+        method : 'GET',
+        agent: httpAgent
+        });
     }
 }

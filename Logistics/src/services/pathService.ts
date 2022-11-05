@@ -35,7 +35,6 @@ export default class PathService implements IPathService{
             await this.pathRepo.save(pathResult);
             
             const pathDTOResult = PathMap.toDTO(pathResult) as IPathDTO;
-            
             return Result.ok<IPathDTO>(pathDTOResult)
         }catch(e){
             throw e;

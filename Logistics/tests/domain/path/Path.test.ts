@@ -42,7 +42,6 @@ describe ("Create invalid Path",()=>{
             extraTravelTime: 0,
             wastedEnergy: 30
         });
-        console.log(path);
         expect(path.isFailure).to.equal(true)
     });
 
