@@ -30,21 +30,21 @@ export default class PathRepo implements IPathRepo{
 
     public async save(path:Path): Promise<Path>{
         const query= {pathID: path.pathID.id};
-        const PathDocument = await this.pathSchema.findOne(query as FilterQuery<IPathPersistance & Document>);
+        const pathDocument = await this.pathSchema.findOne(query as FilterQuery<IPathPersistance & Document>);
         try{
-            if (PathDocument === null){
+            if (pathDocument === null){
                 const rawPath: any = PathMap.toPersistance(path);
                 const pathCreated = await this.pathSchema.create(rawPath);
                 return PathMap.toDomain(pathCreated);
             }
             else{
-                PathDocument.pathID= path.pathID.id;
-                PathDocument.startWHId= path.startWHId.startWHId;
-                PathDocument.destinationWHId= path.destinationWHId.destinationWHId;
-                PathDocument.pathTravelTime= path.pathTravelTime.pathTravelTime;
-                PathDocument.wastedEnergy= path.wastedEnergy.wastedEnergy;
-                PathDocument.extraTravelTime= path.extraTravelTime.extraTravelTime;
-                await PathDocument.save();
+                pathDocument.pathID= path.pathID.id;
+                pathDocument.startWHId= path.startWHId.startWHId;
+                pathDocument.destinationWHId= path.destinationWHId.destinationWHId;
+                pathDocument.pathTravelTime= path.pathTravelTime.pathTravelTime;
+                pathDocument.wastedEnergy= path.wastedEnergy.wastedEnergy;
+                pathDocument.extraTravelTime= path.extraTravelTime.extraTravelTime;
+                await pathDocument.save();
                 return path;
             }
         }catch(error){
