@@ -10,7 +10,7 @@ namespace EletricGo.Infrastructure.Shared
     where TEntity : Entity<TEntityId>
     where TEntityId : EntityID
     {
-        private readonly DbSet<TEntity> _objs;
+        protected readonly DbSet<TEntity> _objs;
 
         public BaseRepository(DbSet<TEntity> objs)
         {
