@@ -7,6 +7,11 @@ import PathController from '../../src/controllers/PathController'
 import IPathService from "../../src/services/IServices/IPathService";
 import { IPathDTO } from "../../src/dto/IPathDTO";
 import 'mocha'
+import {PathMap} from "../../src/mappers/PathMap"
+import path from "path";
+import {Path} from '../../src/domain/path/Path'
+import { IPathPersistance } from "../../src/dataschema/IPathPersistance";
+import { Document, FilterQuery, Model } from 'mongoose';
 
 describe('PathController Unit Tests', ()=>{
     const sandbox = sinon.createSandbox();
@@ -797,6 +802,584 @@ describe('PathController Unit Tests', ()=>{
 
 
 
+
+
+
+});
+
+describe('PathController + PathService Integration tests ', () =>{
+    const sandbox = sinon.createSandbox();
+    beforeEach(() => {
+        Container.reset();
+
+        let pathSchemaInstance = require('../../src/persistence/schemas/pathSchema').default;
+        Container.set("pathSchema",pathSchemaInstance);
+
+        let pathRepoClass = require('../../src/repos/pathRepo').default;
+        let pathRepoInstance = Container.get(pathRepoClass);
+        Container.set("PathRepo", pathRepoInstance);
+
+        let pathServiceClass = require('../../src/services/pathService').default;
+        let pathServiceInstance = Container.get(pathServiceClass);
+        Container.set("PathService", pathServiceInstance);
+    });
+
+    afterEach(() => {
+        sinon.restore();
+        sandbox.restore();
+    });
+
+    it('createPath returns path', async()=>{
+        //Arrange
+        let body={
+            id:"id",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        };
+
+        let req: Partial<Request> = {};
+            req.body = body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+        };
+
+        let next: Partial<NextFunction>= () => {};
+
+        let pathRepoInstance = Container.get("PathRepo");
+        sinon.stub(pathRepoInstance, 'getPathById').returns(null);
+        sinon.stub(pathRepoInstance,'save').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'createPath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        sinon.stub(pathController,'fetch').returns({
+            status: 200
+        });
+
+        //Act
+        await pathController.createPath(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 201);
+        sinon.assert.calledOnce(pathServiceSpy);
+        sinon.assert.calledWith(pathServiceSpy,body);
+    });
+
+    it('updatePath returns Path', async() => {
+        //Arrange 
+        let body={
+            id:"id",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        };
+
+        let req: Partial<Request> = {};
+            req.body = body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+            json: sinon.spy()
+        };
+
+        let next: Partial<NextFunction>= () => {};
+
+        let pathRepoInstance = Container.get("PathRepo");
+        sinon.stub(pathRepoInstance, 'getPathById').returns(Promise.resolve(PathMap.toDomain(body as IPathDTO)));
+        sinon.stub(pathRepoInstance,'save').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'updatePath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+        
+        //Act
+        await pathController.updatePath(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status,200);
+        sinon.assert.calledOnce(pathServiceSpy);
+        sinon.assert.calledWith(pathServiceSpy,body);
+    });
+
+    it('deletePath returns path', async()=>{
+        //Arrange 
+        let body={
+            id:"id",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        };
+
+        let req: Partial<Request> = {};
+            req.body = body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+            json: sinon.spy()
+        };
+
+        let next: Partial<NextFunction>= () => {};
+
+        let pathRepoInstance = Container.get("PathRepo");
+        sinon.stub(pathRepoInstance, 'getPathById').returns(Promise.resolve(PathMap.toDomain(body as IPathDTO)));
+        sinon.stub(pathRepoInstance,'delete').returns(Promise.resolve(PathMap.toDomain(body as IPathDTO)));
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'deletePath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        //Act
+        await pathController.deletePath(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert 
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 200);
+        sinon.assert.calledOnce(pathServiceSpy);
+        sinon.assert.calledWith(pathServiceSpy,body.id);
+    });
+
+
+    it('getPath returns Path', async()=>{
+         //Arrange 
+         let body={
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        };
+
+        let req: Partial<Request> = {};
+        req.body = {
+            pathID: "pathID"
+        };
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+            json: sinon.spy()
+        };
+
+        let next: Partial<NextFunction>= () => {};
+
+        let pathRepoInstance = Container.get("PathRepo");
+        sinon.stub(pathRepoInstance, 'getPathById').returns(Promise.resolve(PathMap.toDomain(body as IPathDTO)));
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'getPath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        //Act
+        await pathController.getPath(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert 
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 200);
+        sinon.assert.calledOnce(pathServiceSpy);
+        sinon.assert.calledWith(pathServiceSpy,"pathID");
+
+
+    })
+
+    it('getAllPaths returns List', async()=>{
+        //Arrange 
+        let body=[{
+            id: "id1",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        },{
+            id:"id2",
+            pathID : "path2",
+            startWHId : 'WH6',
+            destinationWHId: 'WH5',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        }];
+
+        let req: Partial<Request> = {};
+            req.body = {
+                pathID: "pathID"
+            };
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+            json: sinon.spy()
+        };
+
+        let next: Partial<NextFunction>= () => {};
+
+        let pathRepoInstance = Container.get("PathRepo");
+        let paths: Path[]=[];
+        body.forEach(path=>{
+            paths.push(PathMap.toDomain(path));
+        });
+        sinon.stub(pathRepoInstance,"getAllPaths").returns(Promise.resolve(body));
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'getAllPath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        //Act
+        await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 200);
+        sinon.assert.calledOnce(pathServiceSpy);
+        sinon.assert.calledWith(pathServiceSpy)
+
+    });
+
+
+})
+
+describe("PathController + PathService + PathRepo Integration tests", ()=>{
+
+    const sandbox = sinon.createSandbox();
+    beforeEach(() => {
+        Container.reset();
+
+        let pathSchemaInstance = require('../../src/persistence/schemas/pathSchema').default;
+        Container.set("pathSchema",pathSchemaInstance);
+
+        let pathRepoClass = require('../../src/repos/pathRepo').default;
+        let pathRepoInstance = Container.get(pathRepoClass);
+        Container.set("PathRepo", pathRepoInstance);
+
+        let pathServiceClass = require('../../src/services/pathService').default;
+        let pathServiceInstance = Container.get(pathServiceClass);
+        Container.set("PathService", pathServiceInstance);
+    });
+
+    afterEach(() => {
+        sinon.restore();
+        sandbox.restore();
+    });
+
+    it('createPath returns Path', async() =>{
+
+        //Arrange
+
+        let body={
+            id: "id1",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        };
+
+        let body2={
+            domainId:"id2",
+            pathID : "path2",
+            startWHId : 'WH6',
+            destinationWHId: 'WH5',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        } as IPathPersistance;
+
+        let req: Partial<Request> = {};
+            req.body=body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy(),
+            json: sinon.spy(),
+            send: sinon.spy()
+        };
+
+        let next: Partial<NextFunction> = () => {};
+
+        let pathSchemaInstance= Container.get("pathSchema");
+        sinon.stub(pathSchemaInstance,'findOne').returns(Promise.resolve(null));
+        sinon.stub(pathSchemaInstance,'create').returns(Promise.resolve(body2 as IPathPersistance));
+
+        let pathRepoInstance = Container.get("PathRepo");
+        const pathRepoSpy = sinon.spy(pathRepoInstance,'save');
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'createPath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        sinon.stub(pathController,'fetch').returns({
+            status: 200
+        });
+
+        //Act
+        await pathController.createPath(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 201);
+        sinon.assert.calledOnce(pathRepoSpy);
+        sinon.assert.calledWith(pathServiceSpy);
+    });
+
+    it('updatePath returns Path', async() => {
+        let body={
+            id: "id1",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        };
+
+        const body2={
+            id: "id1",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30,
+            save(){return this;}
+        } as IPathPersistance& Document<any, any, any>;
+
+        let req: Partial<Request> = {};
+        req.body=body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy()
+        };
+
+        let next: Partial<NextFunction> = () => {};
+
+        let pathSchemaInstance= Container.get("pathSchema");
+        sinon.stub(pathSchemaInstance,'findOne').returns(Promise.resolve(body2 as IPathPersistance & Document<any,any,any>));
+
+        let pathRepoInstance = Container.get("PathRepo");
+        const pathRepoSpy = sinon.spy(pathRepoInstance,'save')
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'updatePath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        //Act
+        await pathController.updatePath(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 200);
+        sinon.assert.calledOnce(pathRepoSpy);
+        sinon.assert.calledWith(pathServiceSpy);
+
+    });
+
+    it('deletePath returns Path', async()=>{
+        let body={
+            id: "id1",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        };
+
+        let body2={
+            domainId:"id2",
+            pathID : "path2",
+            startWHId : 'WH6',
+            destinationWHId: 'WH5',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        } as IPathPersistance;
+
+        let req: Partial<Request> = {};
+        req.body=body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy()
+        };
+
+        let next: Partial<NextFunction> = () => {};
+
+        let pathSchemaInstance= Container.get("pathSchema");
+        sinon.stub(pathSchemaInstance,'findOne').returns(Promise.resolve(body2 as IPathPersistance & Document<any,any,any>));
+        sinon.stub(pathSchemaInstance,'deleteOne').returns(Promise.resolve(body2 as IPathPersistance & Document<any,any,any> ));
+
+        let pathRepoInstance = Container.get("PathRepo");
+        const pathRepoSpy = sinon.spy(pathRepoInstance,'delete')
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'deletePath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        //Act
+        await pathController.deletePath(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 200);
+        sinon.assert.calledOnce(pathRepoSpy);
+        sinon.assert.calledWith(pathServiceSpy);
+    });
+
+    it('getPath returns path', async() =>{
+        let body={
+            id: "id1",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        };
+
+        let body2={
+            domainId:"id2",
+            pathID : "path2",
+            startWHId : 'WH6',
+            destinationWHId: 'WH5',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        } as IPathPersistance;
+
+        let req: Partial<Request> = {};
+        req.body=body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy()
+        };
+
+        let next: Partial<NextFunction> = () => {};
+
+        let pathSchemaInstance= Container.get("pathSchema");
+        sinon.stub(pathSchemaInstance,'findOne').returns(Promise.resolve(body2 as IPathPersistance & Document<any,any,any>));
+
+        let pathRepoInstance = Container.get("PathRepo");
+        const pathRepoSpy = sinon.spy(pathRepoInstance,'getPathById')
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'getPath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        //Act
+        await pathController.getPath(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 200);
+        sinon.assert.calledOnce(pathRepoSpy);
+        sinon.assert.calledWith(pathServiceSpy);
+
+    
+    });
+
+    it('getAllPaths returns list', async()=> {
+        let body=[{
+            id: "id1",
+            pathID : "path1",
+            startWHId : 'WH5',
+            destinationWHId: 'WH6',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        },{
+            id:"id2",
+            pathID : "path2",
+            startWHId : 'WH6',
+            destinationWHId: 'WH5',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        } ];
+
+        let paths: Path [] = [];
+        body.forEach(path => {
+            paths.push(PathMap.toDomain(path));
+        });
+
+        let body2={
+            domainId:"id",
+            pathID : "pathID",
+            startWHId : 'WH7',
+            destinationWHId: 'WH5',
+            pathDistance: 200,
+            pathTravelTime: 20,
+            extraTravelTime: 0,
+            wastedEnergy: 30
+        } as IPathPersistance;
+
+        let req: Partial<Request> = {};
+        req.body=body;
+
+        let res: Partial<Response> = {
+            status: sinon.spy()
+        };
+
+        let next: Partial<NextFunction> = () => {};
+
+        let pathSchemaInstance= Container.get("pathSchema");
+        sinon.stub(pathSchemaInstance,'find').returns(Promise.resolve(body));
+
+        let pathRepoInstance = Container.get("PathRepo");
+        const pathRepoSpy = sinon.spy(pathRepoInstance,'getAllPaths')
+
+        let pathServiceInstance = Container.get("PathService");
+        const pathServiceSpy = sinon.spy(pathServiceInstance,'getAllPath');
+
+        const pathController = new PathController(pathServiceInstance as IPathService);
+
+        //Act
+        await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);
+
+        //Assert
+        sinon.assert.calledOnce(res.status);
+        sinon.assert.calledWith(res.status, 200);
+        sinon.assert.calledOnce(pathRepoSpy);
+        sinon.assert.calledWith(pathServiceSpy);
+
+    })
 
 
 
