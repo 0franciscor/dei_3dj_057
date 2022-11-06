@@ -46,13 +46,11 @@ export class Route extends AggregateRoot<RouteProps> {
 
     public static create ( routeDTO: IRouteDTO, id?:UniqueEntityID): Result<Route>{
         try{
-            console.log(routeDTO);
             const route = new Route({
                 routeID: RouteID.create(routeDTO.routeID).getValue(),
                 date: Date.create(routeDTO.date).getValue(),
                 warehouse: Warehouses.create(routeDTO.warehouses).getValue()
             }, id);
-            console.log(route);
             return Result.ok<Route>(route);
         }catch(error) {
             return Result.fail<Route>(error);

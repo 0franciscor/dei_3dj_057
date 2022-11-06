@@ -25,7 +25,7 @@ export class RouteMap extends Mapper<Route> {
     }
 
     public static toDomain(route: any | Model<IRoutePersistence & Document>): Route {
-        const routeOrError = route.create(
+        const routeOrError = Route.create(
             route,
             new UniqueEntityID(route._id),
         );

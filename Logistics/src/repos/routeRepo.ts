@@ -32,7 +32,6 @@ export default class RouteRepo implements IRouteRepo {
         const routeDocument = await this.routeSchema.findOne( query as FilterQuery<IRoutePersistence & Document>);
         try {
 
-            console.log(routeDocument)
             if(routeDocument === null) {
                 const rawRoute: any = RouteMap.toPersistence(route);
                 const routeCreated = await this.routeSchema.create(rawRoute);
