@@ -33,14 +33,11 @@ export default class RouteService implements IRouteService {
             const route = await this.routeRepo.getRouteById(routeDTO.routeID);
             if(route !== null)
                 return Result.fail<IRouteDTO>("Route already exists");
-                console.log(routeDTO);
             const routeOrError = Route.create(routeDTO);
-            console.log(routeOrError);
             if(routeOrError.isFailure) {
                 return Result.fail<IRouteDTO>(routeOrError.error);
             }
             const routeResult = routeOrError.getValue();
-            console.log(routeResult);
             await this.routeRepo.save(routeResult);
 
             const routeDTOResult = RouteMap.toDTO(routeResult) as IRouteDTO;
@@ -68,9 +65,7 @@ export default class RouteService implements IRouteService {
 
     public async getAllRoutes(): Promise<Result<IRouteDTO[]>> {
         try{
-            console.log("get all routes");
             const routes = await this.routeRepo.getAllRoutes();
-            console.log(routes)
             const routeDTOResult = RouteMap.toDTOList(routes) as IRouteDTO[];
             return Result.ok<IRouteDTO[]>(routeDTOResult);
         }catch(e){

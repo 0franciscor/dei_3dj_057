@@ -40,7 +40,7 @@ export default(app: Router) => {
         body: Joi.object({
             routeID: Joi.string().required(),
             date: Joi.string().required(),
-            warehouse: Joi.string().required()
+            warehouses: Joi.string().required()
         })
     }),
 
