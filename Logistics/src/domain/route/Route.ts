@@ -4,14 +4,14 @@ import { Result } from "../../core/logic/Result";
 import { IRouteDTO } from "../../dto/IRouteDTO";
 import { RouteID } from "./RouteID";
 import { Date } from "./Date"
-import { TruckPlate } from "./TruckPlate";
-import { Warehouses } from "./warehouses";
+import { Warehouses } from "./Warehouses";
+
+
 
 
 interface RouteProps {
     routeID: RouteID;
     date: Date;
-    truckPlate: TruckPlate;
     warehouse: Warehouses;
 }
 
@@ -28,12 +28,16 @@ export class Route extends AggregateRoot<RouteProps> {
         return this.props.date;
     }
 
-    get truckPlate(): TruckPlate{
-        return this.props.truckPlate;
-    }
-
     get warehouse(): Warehouses{
         return this.props.warehouse;
+    }
+
+    set date (date: Date){
+        this.props.date = date;
+    }
+
+    set warehouse (warehouse: Warehouses){
+        this.props.warehouse = warehouse;
     }
 
     private constructor(props: RouteProps, id?:UniqueEntityID){
@@ -43,9 +47,8 @@ export class Route extends AggregateRoot<RouteProps> {
     public static create ( routeDTO: IRouteDTO, id?:UniqueEntityID): Result<Route>{
         try{
             const route = new Route({
-                routeID: RouteID.create(routeDTO.id).getValue(),
+                routeID: RouteID.create(routeDTO.routeID).getValue(),
                 date: Date.create(routeDTO.date).getValue(),
-                truckPlate:TruckPlate.create(routeDTO.truckPlate).getValue(),
                 warehouse: Warehouses.create(routeDTO.warehouses).getValue()
             }, id);
             return Result.ok<Route>(route);

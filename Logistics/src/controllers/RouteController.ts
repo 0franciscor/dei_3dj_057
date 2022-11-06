@@ -5,19 +5,19 @@ import { Inject, Service } from 'typedi';
 import config from "../../config";
 import { Result } from '../core/logic/Result';
 import { IRouteDTO } from '../dto/IRouteDTO';
-import IRoutesService from '../services/IServices/IRouteService';
+import IRouteService from '../services/IServices/IRouteService';
 import IRouteController from './IControllers/IRouteController';
 
 @Service()
 export default class RouteController implements IRouteController{
 
     constructor(
-        @Inject(config.services.routes.name) private routeService: IRoutesService,
+        @Inject(config.services.routes.name) private routeService: IRouteService,
     ) { }
 
     public async getRoute(req: Request, res: Response, next: NextFunction ) {
         try{
-            const route = await this.routeService.getRoutes(req.body.routeID);
+            const route = await this.routeService.getRoute(req.body.routeID);
             if(route.isFailure){
                 res.status(404);
                 return res.send("Route not found");
@@ -44,10 +44,11 @@ export default class RouteController implements IRouteController{
 
     public async createRoute(req: Request, res: Response, next: NextFunction) {
         try{
-            const routeOrError = await this.routeService.createRoute(req.body as IRouteDTO) as Result<IRouteDTO>;
+            const routeOrError = await this.routeService.createRoute(req.body as IRouteDTO);
 
             if(routeOrError.isFailure) {
-                return res.status(409).send("Route already exists");
+                res.status(409);
+                return res.send("Route already exists");
             }
 
             const routeDTO = routeOrError.getValue();

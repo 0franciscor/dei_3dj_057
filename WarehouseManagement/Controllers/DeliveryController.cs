@@ -1,6 +1,7 @@
 using EletricGo.Domain.Deliveries;
 using EletricGo.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,6 +37,31 @@ namespace EletricGo.Controllers
                 {
                     return NotFound("The searched Delivery was not found.");
                 }
+                return Ok(obj);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
+
+        [HttpGet("GetByPeriod")]
+        public async Task<ActionResult<List<DeliveryDTO>>> GetByPeriod([FromBody] string receivedDates)
+        {
+            var parsedDates = receivedDates.Split(",");
+
+            var firstDate = DateTime.Parse(parsedDates[0]);
+            var secondDate = DateTime.Parse(parsedDates[1]);
+
+            if (firstDate > secondDate)
+                (secondDate, firstDate) = (firstDate, secondDate);
+
+            try
+            {
+                var obj = await _deliveryService.GetByPeriod(firstDate, secondDate);
+
+                if (obj == null)
+                    return NotFound("No deliveries were found in that period.");
                 return Ok(obj);
             }
             catch (BusinessRuleValidationException ex)

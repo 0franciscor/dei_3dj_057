@@ -33,6 +33,16 @@ namespace EletricGo.Domain.Deliveries
             return delivery.toDeliveryDTO();
         }
 
+        public virtual async Task<List<DeliveryDTO>> GetByPeriod(DateTime date1, DateTime date2)
+        {
+            var deliveries = await _deliveryRepository.GetByPeriod(date1, date2);
+
+            if (deliveries == null)
+                return null;
+
+            return deliveries.Select(x => x.toDeliveryDTO()).ToList();
+        }
+
         public virtual async Task<DeliveryDTO> CreateDelivery(DeliveryDTO deliveryDTO)
         {
             if (await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID)) != null)

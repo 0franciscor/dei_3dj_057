@@ -3,7 +3,7 @@ import mongoose  from "mongoose";
 
 const RouteSchema = new mongoose.Schema(
     {
-        domainID: {
+        domainId: {
             type: String,
             unique: true,
         },
@@ -16,11 +16,6 @@ const RouteSchema = new mongoose.Schema(
         },
 
         date: {
-            type: String,
-            required: true
-        },
-
-        truckPlate: {
             type: String,
             required: true
         },

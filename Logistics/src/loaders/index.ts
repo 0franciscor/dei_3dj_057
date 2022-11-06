@@ -26,10 +26,20 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/packagingSchema',
   };
 
+  const routeSchema={
+    name: 'routeSchema',
+    schema: '../persistence/schemas/routeSchema',
+  };
+
   const truckController = {
     name: config.controllers.truck.name,
     path: config.controllers.truck.path
-  }
+  };
+
+  const routeController = {
+    name: config.controllers.route.name,
+    path: config.controllers.route.path
+  };
 
   const pathController={
     name: config.controllers.path.name,
@@ -46,6 +56,11 @@ export default async ({ expressApp }) => {
     path: config.repos.truck.path
   };
 
+  const routeRepo = {
+    name: config.repos.route.name,
+    path: config.repos.route.path
+  };
+
   const pathRepo={
     name: config.repos.path.name,
     path: config.repos.path.path
@@ -60,7 +75,12 @@ export default async ({ expressApp }) => {
   const truckService = {
     name: config.services.truck.name,
     path: config.services.truck.path
-  }
+  };
+
+  const routeService = {
+    name: config.services.routes.name,
+    path: config.services.routes.path
+  };
 
   const pathService={
     name: config.services.path.name,
@@ -70,29 +90,33 @@ export default async ({ expressApp }) => {
   const packagingService={
     name: config.services.packaging.name,
     path: config.services.packaging.path
-  };
+  }
 
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
         truckSchema,
         pathSchema,
-        packagingSchema
+        packagingSchema,
+        routeSchema
     ],
     controllers: [
         truckController,
         pathController,
-        packagingController
+        packagingController,
+        routeController
     ],
     repos: [
         truckRepo,
         pathRepo,
-        packagingRepo
+        packagingRepo,
+        routeRepo
     ],
     services: [
         truckService,
         pathService,
-        packagingService
+        packagingService,
+        routeService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

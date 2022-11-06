@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 export default interface IRouteController{
 
-    getRoutes(req: Request, res: Response, next: NextFunction);
+    getRoute(req: Request, res: Response, next: NextFunction);
     
     getAllRoutes(req: Request, res: Response, next: NextFunction);
 
