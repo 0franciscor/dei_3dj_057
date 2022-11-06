@@ -1,0 +1,22 @@
+@startuml getAllTruckSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+participant System as system <<System(C4)>>
+
+
+manager -> system: I want to get all the Trucks in the system
+activate system
+
+system --> manager: show all Trucks in the system
+deactivate system
+
+deactivate system
+deactivate manager
+
+@enduml

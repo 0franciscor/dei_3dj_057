@@ -28,19 +28,19 @@ manager -> SPA: Asks to get all Trucks
 
 
 
-SPA -> Route: GET getAllTrucks(truckID)
+SPA -> Route: GET getAllTrucks()
 activate Route
-Route -> Controller: GET getTruck(truckID)
+Route -> Controller: GET getAllTrucks()
 activate Controller
 
 
 
-Controller -> Service: getAllTrucks(truckID)
+Controller -> Service: getAllTrucks()
 activate Service
 
-Service -> Repository: getAllTrucks(truckID)
+Service -> Repository: getAllTrucks()
 activate Repository
-Repository -> Persistance: find(truckID)
+Repository -> Persistance: find()
 activate Persistance
 
 

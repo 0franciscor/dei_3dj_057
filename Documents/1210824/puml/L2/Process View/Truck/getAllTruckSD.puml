@@ -1,0 +1,35 @@
+@startuml getAllTruckSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+
+actor "Fleet Manager" as manager
+
+
+box "<<System(C4)>>\n       System"
+participant SPA as  SPA <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+end box
+
+manager -> SPA: I want to get all Trucks
+activate SPA
+
+SPA -> Logistics: GET getAllTruck()
+activate Logistics
+
+Logistics -> SPA: 200 OK
+
+SPA -> manager: all trucks
+
+
+
+deactivate Logistics
+deactivate SPA
+deactivate manager
+
+
+@enduml
