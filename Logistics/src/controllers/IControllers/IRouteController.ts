@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-export default interface IRoutesController{
+export default interface IRouteController{
 
     getRoutes(req: Request, res: Response, next: NextFunction);
     
