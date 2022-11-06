@@ -15,7 +15,6 @@ export class RouteMap extends Mapper<Route> {
             id: route.id.toString(),
             routeID: route.routeID.id,
             date: route.date.date,
-            truckPlate: route.truckPlate.truckPlate,
             warehouses: route.warehouse.warehouse,
 
         } as IRouteDTO;
@@ -37,10 +36,9 @@ export class RouteMap extends Mapper<Route> {
 
     public static toPersistence(route: Route): any{
         return {
-            domainID: route.id.toString(),
+            domainId: route.id.toString(),
             routeID: route.routeID.id,
             date: route.date.date,
-            truckPlate: route.truckPlate.truckPlate,
             warehouses: route.warehouse.warehouse,
             
         };

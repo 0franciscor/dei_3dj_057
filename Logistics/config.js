@@ -53,7 +53,13 @@ export default {
     packaging:{
       name: "PackagingController",
       path: "../controllers/packagingController"
+    },
+
+    route: {
+      name: "RouteController",
+      path: "../controllers/routeController"
     }
+
   },
 
   repos: {
@@ -68,6 +74,10 @@ export default {
     packaging: {
       name: "PackagingRepo",
       path: "../repos/packagingRepo"
+    },
+    route: {
+      name: "RouteRepo",
+      path: "../repos/routeRepo"
     }
   },
 
@@ -85,8 +95,8 @@ export default {
       path: "../services/packagingService"
     },
     routes: {
-      name: "RoutesService",
-      path: "../services/routes"
+      name: "RouteService",
+      path: "../services/routeService"
     }
   }
 };

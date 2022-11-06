@@ -6,7 +6,7 @@ import { IRoutePersistence } from '../dataschema/IRoutePersistence';
 import { RouteMap } from '../mappers/RouteMap';
 
 import { Document, FilterQuery, Model } from 'mongoose';
-import { TruckPlate } from '../domain/route/TruckPlate';
+
 import { RouteID } from '../domain/route/RouteID';
 import { raw} from 'body-parser'; 
 
@@ -32,6 +32,7 @@ export default class RouteRepo implements IRouteRepo {
         const routeDocument = await this.routeSchema.findOne( query as FilterQuery<IRoutePersistence & Document>);
         try {
 
+            console.log(routeDocument)
             if(routeDocument === null) {
                 const rawRoute: any = RouteMap.toPersistence(route);
                 const routeCreated = await this.routeSchema.create(rawRoute);
@@ -40,7 +41,6 @@ export default class RouteRepo implements IRouteRepo {
             else{
                 routeDocument.routeID = route.routeID.id;
                 routeDocument.date = route.date.date;
-                routeDocument.truckPlate = route.truckPlate.truckPlate;
                 routeDocument.warehouses = route.warehouse.warehouse;
                 await routeDocument.save();
                 return route;
@@ -69,11 +69,11 @@ export default class RouteRepo implements IRouteRepo {
 
     }
 
-    public async getRouteByPlate(id: string): Promise<Route> {
+    public async getRouteById(id: string): Promise<Route> {
 
         const query = { routeID: id  };
         const routeDocument = await this.routeSchema.findOne( query as FilterQuery<IRoutePersistence & Document>);
-
+        
         if(routeDocument === null ){
             return null;
         }
@@ -81,6 +81,7 @@ export default class RouteRepo implements IRouteRepo {
             return RouteMap.toDomain(routeDocument);
         }
     }
+
     public async getAllRoutes(): Promise<Route[]> {
         const routeDocument = await this.routeSchema.find();
         let routes: Route[] = [];
