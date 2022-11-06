@@ -4,18 +4,18 @@ import { ParsedQs } from 'qs';
 import { Inject, Service } from 'typedi';
 import config from "../../config";
 import { Result } from '../core/logic/Result';
-import { IRoutesDTO } from '../dto/IRoutesDTO';
-import IRoutesService from '../services/IServices/IRoutesService';
-import IRoutesController from './IControllers/IRoutesController';
+import { IRouteDTO } from '../dto/IRouteDTO';
+import IRoutesService from '../services/IServices/IRouteService';
+import IRouteController from './IControllers/IRouteController';
 
 @Service()
-export default class RoutesController implements IRoutesController{
+export default class RouteController implements IRouteController{
 
     constructor(
         @Inject(config.services.routes.name) private routeService: IRoutesService,
     ) { }
 
-    public async getRoutes(req: Request, res: Response, next: NextFunction ) {
+    public async getRoute(req: Request, res: Response, next: NextFunction ) {
         try{
             const route = await this.routeService.getRoutes(req.body.routeID);
             if(route.isFailure){
@@ -44,7 +44,7 @@ export default class RoutesController implements IRoutesController{
 
     public async createRoute(req: Request, res: Response, next: NextFunction) {
         try{
-            const routeOrError = await this.routeService.createRoute(req.body as IRoutesDTO) as Result<IRoutesDTO>;
+            const routeOrError = await this.routeService.createRoute(req.body as IRouteDTO) as Result<IRouteDTO>;
 
             if(routeOrError.isFailure) {
                 return res.status(409).send("Route already exists");
@@ -60,7 +60,7 @@ export default class RoutesController implements IRoutesController{
 
     public async updateRoute(req: Request, res: Response, next: NextFunction) {
         try {
-            const routeOrError = await this.routeService.updateRoute(req.body as IRoutesDTO) as Result<IRoutesDTO>;
+            const routeOrError = await this.routeService.updateRoute(req.body as IRouteDTO) as Result<IRouteDTO>;
             if(routeOrError.isFailure) {
                 res.status(404);
                 return res.send("Route not found");

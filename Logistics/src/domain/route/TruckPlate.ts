@@ -26,12 +26,9 @@ export class TruckPlate extends ValueObject<TruckPlateProps>
 
         return null;
     }
-       
-
-       
+              
     }
 
 
 
 
-}
