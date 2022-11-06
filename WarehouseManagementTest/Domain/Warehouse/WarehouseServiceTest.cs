@@ -76,7 +76,7 @@ namespace WarehouseManagementTest.Domain.Warehouse
             Assert.Multiple(() =>
             {
                 Assert.That(warehouseResult.Id, Is.EqualTo(warehouseExpected.Id));
-                Assert.That(warehouseResult.Address, Is.EqualTo(warehouseExpected.Address.address));
+                Assert.That(warehouseResult.Address, Is.EqualTo(warehouseExpected.Address.fullAddress));
                 Assert.That(warehouseResult.Designation, Is.EqualTo(warehouseExpected.Designation.designation));
                 Assert.That(warehouseResult.Altitude, Is.EqualTo(warehouseExpected.Altitude.altitude));
                 Assert.That(warehouseResult.Longitude, Is.EqualTo(warehouseExpected.Coordinates.longitude));
@@ -92,7 +92,7 @@ namespace WarehouseManagementTest.Domain.Warehouse
 
             var warehouseDto = new WarehouseDto()
             {
-                Id = id + "1",
+                Id = "WH1",
                 Address = address,
                 Altitude = altitude,
                 Latitude = latitude,
@@ -114,7 +114,7 @@ namespace WarehouseManagementTest.Domain.Warehouse
             Assert.Multiple(() =>
             {
                 Assert.That(warehouseResult.Id, Is.EqualTo(warehouseExpected.Id));
-                Assert.That(warehouseResult.Address, Is.EqualTo(warehouseExpected.Address.address));
+                Assert.That(warehouseResult.Address, Is.EqualTo(warehouseExpected.Address.fullAddress));
                 Assert.That(warehouseResult.Altitude, Is.EqualTo(warehouseExpected.Altitude.altitude));
                 Assert.That(warehouseResult.Latitude, Is.EqualTo(warehouseExpected.Coordinates.latitude));
                 Assert.That(warehouseResult.Longitude, Is.EqualTo(warehouseExpected.Coordinates.longitude));
@@ -173,7 +173,7 @@ namespace WarehouseManagementTest.Domain.Warehouse
             Assert.Multiple(() =>
             {
                 Assert.That(warehouseResult.Id, Is.EqualTo(warehouseExpected.Id));
-                Assert.That(warehouseResult.Address, Is.EqualTo(warehouseExpected.Address.address));
+                Assert.That(warehouseResult.Address, Is.EqualTo(warehouseExpected.Address.fullAddress));
                 Assert.That(warehouseResult.Altitude, Is.EqualTo(warehouseExpected.Altitude.altitude));
                 Assert.That(warehouseResult.Latitude, Is.EqualTo(warehouseExpected.Coordinates.latitude));
                 Assert.That(warehouseResult.Longitude, Is.EqualTo(warehouseExpected.Coordinates.longitude));

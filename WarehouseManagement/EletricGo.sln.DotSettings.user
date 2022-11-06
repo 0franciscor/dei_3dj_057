@@ -4,13 +4,8 @@
     &lt;TestId&gt;NUnit3x::979B421C-3B67-48BD-A8B6-40796F524ED0::net6.0::WarehouseManagementTest.Domain.Warehouse.WarehouseTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6e8da3b8_002D6cce_002D457d_002D80c8_002Da6f065f8a78c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="WarehouseControllerTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::979B421C-3B67-48BD-A8B6-40796F524ED0::net6.0::WarehouseManagementTest.Controllers.WarehouseControllerTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::979B421C-3B67-48BD-A8B6-40796F524ED0::net6.0::WarehouseManagementTest.Domain.Warehouse.WarehouseTest.CreatingAddressWithAInvalidZipCode&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::979B421C-3B67-48BD-A8B6-40796F524ED0::net6.0::WarehouseManagementTest.Domain.Warehouse.WarehouseTest.CreatingAddressWithAInvalidDoorNumber&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::979B421C-3B67-48BD-A8B6-40796F524ED0::net6.0::WarehouseManagementTest.Domain.Warehouse.WarehouseTest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6e8da3b8_002D6cce_002D457d_002D80c8_002Da6f065f8a78c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="WarehouseControllerTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\manua\OneDrive\Documentos\GitHub\dei_3dj_057\WarehouseManagementTest" Presentation="&amp;lt;WarehouseManagementTest&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8a52a70b_002Dc044_002D4e50_002Db5c2_002D4c327cddeb2a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="WarehouseIntegration" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
@@ -25,7 +20,8 @@
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d46ef6bc_002D67c4_002D4894_002D87f0_002Da1f47850a096/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DefineDriverServiceConstructor" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::979B421C-3B67-48BD-A8B6-40796F524ED0::net6.0::WarehouseManagementTest.Integration.Warehouse.WarehouseIntegration.DefineDriverServiceConstructor&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Project Location="C:\Users\manua\OneDrive\Documentos\GitHub\dei_3dj_057\WarehouseManagementTest" Presentation="&amp;lt;WarehouseManagementTest&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ea70ee9d_002D02c5_002D40dc_002D976a_002Db16f11ae5360/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="WarehouseControllerTest #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\manua\OneDrive\Documentos\GitHub\dei_3dj_057\WarehouseManagementTest" Presentation="&amp;lt;WarehouseManagementTest&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

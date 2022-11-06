@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text.RegularExpressions;
 using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
@@ -26,12 +27,22 @@ namespace EletricGo.Domain.Warehouses
         public Warehouse(WarehouseDto dto)
         {
             this.Address = new Address(dto.Address);
+            if (string.IsNullOrEmpty(dto.Id))
+            {
+                throw new BusinessRuleValidationException("The Id can't be null or empty");
+            }
             if (dto.Id.Length != 3)
             {
                 throw new BusinessRuleValidationException("The Id must have only three characters");
             }
+			
+			
+            if (int.TryParse(dto.Id, out _))
+            {
+                throw new BusinessRuleValidationException("The Id must be alphanumeric");
+            }
 
-            if (!dto.Id.All(char.IsLetterOrDigit))
+            if (Regex.IsMatch(dto.Id, @"^[a-zA-Z]+$"))
             {
                 throw new BusinessRuleValidationException("The Id must be alphanumeric");
             }

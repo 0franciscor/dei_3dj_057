@@ -8,7 +8,7 @@ using EletricGo.Domain.Warehouses.ValueObjects;
 
 namespace EletricGo.Domain.Warehouses
 {
-    public class WarehouseService : IServices
+    public class WarehouseService 
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWarehouseRepository _warehouseRepository;

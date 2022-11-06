@@ -707,6 +707,58 @@
 			"response": []
 		},
 		{
+			"name": "ValidateId_Test2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WHjsuia1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"78\",\r\n    \"longitude\":\"132\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ValidateId_Test3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"WHjsuia1\",\r\n    \"address\":\"Rua António Bernardino,47,4535-334,Porto\",\r\n    \"altitude\":200,\r\n    \"latitude\":\"78\",\r\n    \"longitude\":\"132\",\r\n    \"designation\":\"Porto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/CreateWarehouse",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"CreateWarehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "UpdateWarehouseAddress_Test",
 			"event": [
 				{

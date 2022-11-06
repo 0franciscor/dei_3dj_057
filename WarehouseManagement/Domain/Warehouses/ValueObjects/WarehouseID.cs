@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Text.RegularExpressions;
 using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
@@ -19,11 +19,18 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 			{
 				throw new BusinessRuleValidationException("The Id must have only three characters");
 			}
-
-			if (value.All(char.IsLetterOrDigit))
+			
+			
+			if (int.TryParse(value, out _))
 			{
 				throw new BusinessRuleValidationException("The Id must be alphanumeric");
 			}
+
+			if (Regex.IsMatch(value, @"^[a-zA-Z]+$"))
+			{
+				throw new BusinessRuleValidationException("The Id must be alphanumeric");
+			}
+			
 
 			this.warehouseID = value;
 		}
