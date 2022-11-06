@@ -162,8 +162,7 @@ describe('TruckController Unit Tests', () => {
         //Assert
         sinon.assert.calledOnce(res.json);
         sinon.assert.calledWith(res.json, sinon.match(body));
-        sinon.assert.calledOnce(res.status);
-        sinon.assert.calledWith(res.status, 200);
+
 
     });   
 
