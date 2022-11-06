@@ -4,7 +4,7 @@ using Moq;
 using EletricGo.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WarehouseManagementTest.Controllers.Deliveries
+namespace WarehouseManagementTest.Controllers
 {
     [TestFixture]
     internal class DeliveryControllerTest
@@ -91,6 +91,36 @@ namespace WarehouseManagementTest.Controllers.Deliveries
                 var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
                 
                 Assert.AreEqual(deliveryExpected.deliveryID, deliveryResult.deliveryID);
+            }
+        }
+
+        [Test]
+        public async Task GetByPeriod()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryDTO = delivery.toDeliveryDTO();
+
+            var dateTime1 = new DateTime(2023, 12, 10);
+            var dateTime2 = new DateTime(2023, 12, 14);
+
+            var listExpected = new List<DeliveryDTO>() { deliveryDTO };
+
+            var mockUnit = new Mock<IUnitOfWork>();
+            var mockRepository = new Mock<IDeliveryRepository>();
+
+            var deliveryServiceMock = new Mock<DeliveryService>(mockUnit.Object, mockRepository.Object);
+            deliveryServiceMock.Setup(repo => repo.GetByPeriod(dateTime1, dateTime2)).ReturnsAsync(listExpected);
+
+            var deliveryController = new DeliveryController(deliveryServiceMock.Object);
+            var aux = await deliveryController.GetByPeriod("10/12/2023,14/12/2023");
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var listResult = ((List<DeliveryDTO>)(aux.Result as OkObjectResult).Value);
+
+                Assert.AreEqual(listExpected.First(), listResult.First());
             }
         }
 

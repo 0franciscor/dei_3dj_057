@@ -82,6 +82,85 @@
 			"response": []
 		},
 		{
+			"name": "getByPeriodSuccess",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Returns an Array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"DeliveryList\", function () {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        [\r",
+							"            {\r",
+							"                \"deliveryID\": \"Delivery1\",\r",
+							"                \"deliveryDate\": \"2022-11-03T10:30:00\",\r",
+							"                \"loadTime\": 10.0,\r",
+							"                \"unloadTime\": 1.0,\r",
+							"                \"destination\": \"Rua da Maia Central\",\r",
+							"                \"deliveryMass\": 30.0\r",
+							"            },\r",
+							"            {\r",
+							"                \"deliveryID\": \"Delivery2\",\r",
+							"                \"deliveryDate\": \"2022-11-09T15:30:00\",\r",
+							"                \"loadTime\": 15.0,\r",
+							"                \"unloadTime\": 2.0,\r",
+							"                \"destination\": \"Rua de Matosinhos\",\r",
+							"                \"deliveryMass\": 0.5\r",
+							"            }\r",
+							"        ]\r",
+							"    );\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"01/11/2022, 04/11/2022\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/GetByPeriod",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"GetByPeriod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "getByIDFail",
 			"event": [
 				{

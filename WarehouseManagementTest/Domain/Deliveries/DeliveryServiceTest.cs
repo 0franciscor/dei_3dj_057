@@ -1,6 +1,9 @@
+using EletricGo.Controllers;
 using EletricGo.Domain.Deliveries;
 using EletricGo.Domain.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Runtime.Intrinsics.X86;
 
 namespace WarehouseManagementTest.Domain.Deliveries
 {
@@ -80,6 +83,32 @@ namespace WarehouseManagementTest.Domain.Deliveries
                 Assert.That(deliveryResult.deliveryMass, Is.EqualTo(deliveryExpected.deliveryMass.mass));
 
             });
+        }
+
+        [Test]
+        public async Task GetByPeriodTest()
+        {
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var dateTime1 = new DateTime(2023, 12, 10);
+            var dateTime2 = new DateTime(2023, 12, 14);
+
+            var listExpected = new List<Delivery>() { delivery };
+
+            var mockUnit = new Mock<IUnitOfWork>();
+            var mockRepository = new Mock<IDeliveryRepository>();
+            mockRepository.Setup(repo => repo.GetByPeriod(dateTime1, dateTime2)).ReturnsAsync(listExpected);
+
+            var service = new DeliveryService(mockUnit.Object, mockRepository.Object);
+
+            var aux = service.GetByPeriod(dateTime1, dateTime2);
+
+            if (aux == null)
+                Assert.Fail();
+            else
+            {
+                var listResult = (aux.Result).ToList();
+                Assert.AreEqual(listExpected.First().toDeliveryDTO().deliveryID, listResult.First().deliveryID);
+            }   
         }
 
         [Test]
