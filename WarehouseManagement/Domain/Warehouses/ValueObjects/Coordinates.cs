@@ -18,7 +18,12 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
         public Coordinates(string latitude, string longitude)
         {
             double aux;
-            
+
+            if (string.IsNullOrEmpty(latitude) || string.IsNullOrEmpty(longitude))
+            {
+                throw new BusinessRuleValidationException("The latitude or longitude can't be null or empty");
+            }
+
             if (!double.TryParse(latitude, out aux) || aux is > 90 or < -90)
             {
                 throw new BusinessRuleValidationException("The latitude must be in the range [-90,90]");

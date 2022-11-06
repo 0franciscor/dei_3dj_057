@@ -17,9 +17,10 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 
         public Altitude(int altitude)
         {
+            
             if (altitude is < 0 or > 13000)
             {
-                throw new BusinessRuleValidationException("The altitude can't be a negative number");
+                throw new BusinessRuleValidationException("The altitude can't be a negative number or bigger than 13000");
             }
             
             this.altitude = altitude;

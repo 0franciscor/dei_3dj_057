@@ -1,5 +1,5 @@
 using System;
-using System.Text.RegularExpressions;
+using System.Linq;
 using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
@@ -11,7 +11,20 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 
 		public WarehouseId(string value) : base(value)
 		{
-			
+			if (string.IsNullOrEmpty(value))
+			{
+				throw new BusinessRuleValidationException("The Id can't be null or empty");
+			}
+			if (value.Length != 3)
+			{
+				throw new BusinessRuleValidationException("The Id must have only three characters");
+			}
+
+			if (value.All(char.IsLetterOrDigit))
+			{
+				throw new BusinessRuleValidationException("The Id must be alphanumeric");
+			}
+
 			this.warehouseID = value;
 		}
 
