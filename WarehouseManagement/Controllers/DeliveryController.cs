@@ -4,6 +4,7 @@ using EletricGo.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace EletricGo.Controllers
@@ -51,7 +52,7 @@ namespace EletricGo.Controllers
         {
             var parsedDates = receivedDates.Split(",");
 
-            var firstDate = DateTime.Parse(parsedDates[0]);
+            var firstDate = DateTime.ParseExact(parsedDates[0], "dd/MM/yyyy", new CultureInfo("pt-PT"));
             var secondDate = DateTime.Parse(parsedDates[1]);
 
             if (firstDate > secondDate)
@@ -64,7 +65,9 @@ namespace EletricGo.Controllers
                 var obj = await _deliveryService.GetByPeriod(firstDate, secondDate);
 
                 if (obj == null)
+                {
                     return NotFound("No deliveries were found in that period.");
+                }
                 return Ok(obj);
             }
             catch (BusinessRuleValidationException ex)
