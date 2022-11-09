@@ -87,7 +87,7 @@ namespace WarehouseManagementTest.Unit.Services
         }
 
         [Test]
-        public async Task GetByPeriodTest()
+        public void GetByPeriodTest()
         {
             var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
             var dateTime1 = new DateTime(2023, 12, 10);

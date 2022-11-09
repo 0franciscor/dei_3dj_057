@@ -18,6 +18,11 @@ namespace EletricGo.Domain.Deliveries
         }
 
         override
+        public int GetHashCode(){
+            return deliveryID.GetHashCode();
+        }
+
+        override
         public bool Equals(Object obj)
         {
             if (obj == null || GetType() != obj.GetType())

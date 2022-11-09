@@ -16,26 +16,12 @@ jobs:
           command: |
             dotnet build
       - run:
-          working_directory: WarehouseManagementTest/Unit
-          name: Unit Testing
+          working_directory: WarehouseManagementTest
+          name: Build the Tests Solution
           command: |
             dotnet build
-            dotnet test
-      - run:
-          working_directory: WarehouseManagementTest/Integration
-          name: Integration Testing
-          command: |
-            dotnet build
-            dotnet test
-      - run:
-          working_directory: WarehouseManagementTest/Unit
-          name: Generate XUnit Coverage
-          command: |
-            dotnet build
-            dotnet dotnet test --collect:"XPlat Code Coverage"
-
 workflows:
-  buildAPI:
+  buildAndTestApp:
     jobs:
       - runTests
   
