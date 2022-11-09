@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EletricGo.Domain.Shared;
+using EletricGo.Domain.Warehouses;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
 
-namespace EletricGo.Domain.Warehouses
+namespace EletricGo.Services
 {
-    public class WarehouseService 
+    public class WarehouseService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWarehouseRepository _warehouseRepository;
-        
+
 
         public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository)
         {
@@ -31,7 +32,7 @@ namespace EletricGo.Domain.Warehouses
             var warehouse = await _warehouseRepository.GetByID(id);
             return warehouse?.ToWarehouseDto();
         }
-        
+
         /*public async Task<List<WarehouseDto>> GetByDescription(string designation)
         {
             var warehouse = await _warehouseRepository.GetByDescription(designation);
@@ -57,15 +58,15 @@ namespace EletricGo.Domain.Warehouses
             }
             catch (Exception e)
             {
-                
+
                 throw new InvalidOperationException(e.Message);
             }
-            
-            
+
+
             try
             {
                 await _warehouseRepository.Add(warehouse);
-                await this._unitOfWork.CommitAsync();
+                await _unitOfWork.CommitAsync();
             }
             catch (Exception exp)
             {
@@ -93,8 +94,8 @@ namespace EletricGo.Domain.Warehouses
             {
                 throw new InvalidOperationException(e.Message);
             }
-            
-            await this._unitOfWork.CommitAsync();
+
+            await _unitOfWork.CommitAsync();
             return warehouse.ToWarehouseDto();
         }
 
@@ -107,14 +108,15 @@ namespace EletricGo.Domain.Warehouses
                 return null;
             }
             _warehouseRepository.Delete(warehouse);
-            await this._unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync();
             return warehouse.ToWarehouseDto();
         }
 
-        public async Task<bool> FindWarehouse(WarehouseDto warehouseDto){
+        public async Task<bool> FindWarehouse(WarehouseDto warehouseDto)
+        {
             return await _warehouseRepository.Find(new WarehouseId(warehouseDto.Id));
         }
-    }    
-    
+    }
+
 }
 

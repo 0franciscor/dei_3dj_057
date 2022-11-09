@@ -3,6 +3,7 @@ using EletricGo.Domain.Deliveries;
 using Moq;
 using EletricGo.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
+using EletricGo.Services;
 
 namespace WarehouseManagementTest.Controllers
 {

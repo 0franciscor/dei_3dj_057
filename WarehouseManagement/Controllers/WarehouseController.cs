@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EletricGo.Domain.Warehouses;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
+using EletricGo.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EletricGo.Controllers
 {
-    
+
     [Route("api/warehouses")]
     [ApiController]
     

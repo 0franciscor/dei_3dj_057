@@ -1,10 +1,11 @@
+using EletricGo.Domain.Deliveries;
 using EletricGo.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EletricGo.Domain.Deliveries
+namespace EletricGo.Services
 {
     public class DeliveryService
     {
@@ -52,16 +53,16 @@ namespace EletricGo.Domain.Deliveries
 
             if (delivery == null)
                 return null;
-            
+
             await _deliveryRepository.Add(delivery);
-            await this._unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
 
         public virtual async Task<DeliveryDTO> UpdateDelivery(DeliveryDTO deliveryDTO)
         {
             var delivery = await _deliveryRepository.GetByID(new DeliveryID(deliveryDTO.deliveryID));
-            
+
             if (delivery == null)
                 return null;
 
@@ -76,9 +77,9 @@ namespace EletricGo.Domain.Deliveries
 
             if (delivery == null)
                 return null;
-            
+
             _deliveryRepository.Delete(delivery);
-            await this._unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
 
@@ -86,7 +87,7 @@ namespace EletricGo.Domain.Deliveries
         {
             return await _deliveryRepository.Find(deliveryID);
         }
-        
+
     }
 
 }

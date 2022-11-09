@@ -14,6 +14,7 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System;
 using EletricGo.Domain.Warehouses;
 using EletricGo.Infrastructure.Warehouses;
+using EletricGo.Services;
 
 namespace EletricGo
 {
