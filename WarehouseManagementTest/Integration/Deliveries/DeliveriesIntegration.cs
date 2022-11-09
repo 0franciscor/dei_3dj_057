@@ -144,7 +144,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
             var service = new DeliveryService(mockUnitRepo.Object, mockRepo.Object);
             var deliveryController = new DeliveryController(service);
 
-            var aux = await deliveryController.Patch(deliveryExpected);
+            var aux = await deliveryController.Post(deliveryExpected);
 
             if (aux == null)
                 Assert.Fail();
@@ -176,7 +176,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
             var deliveryService = new DeliveryService(mockUnit.Object, mockRepository.Object);
 
             var deliveryController = new DeliveryController(deliveryService);
-            var aux = await deliveryController.Put(postChangeDto);
+            var aux = await deliveryController.Patch(postChangeDto);
 
             if (aux == null)
                 Assert.Fail();

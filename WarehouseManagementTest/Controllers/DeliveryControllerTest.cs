@@ -137,7 +137,7 @@ namespace WarehouseManagementTest.Controllers
             deliveryServiceMock.Setup(repo => repo.CreateDelivery(deliveryExpected)).ReturnsAsync(deliveryExpected);
 
             var deliveryController = new DeliveryController(deliveryServiceMock.Object);
-            var aux = await deliveryController.Patch(deliveryExpected);
+            var aux = await deliveryController.Post(deliveryExpected);
 
             if (aux == null)
                 Assert.Fail();
