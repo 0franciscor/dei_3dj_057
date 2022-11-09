@@ -12,12 +12,6 @@ build-and-test-WarehouseManagement:
           name: Build
           command: |
             dotnet build
-      - run:
-          working_directory: WarehouseManagementTest/Domain
-          name: Unit Testing
-          command: |
-            dotnet build
-            dotnet test
 workflows:
   build-and-deploy:
     jobs:
