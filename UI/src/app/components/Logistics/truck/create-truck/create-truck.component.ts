@@ -28,7 +28,7 @@ export class CreateTruckComponent implements OnInit {
     console.log(this.formCreateTruck.value);
 
     //send formCreateTruck.value to API
-    const url = 'https://localhost:3000/api/truck/';
+    const url = 'http://localhost:3000/api/truck/';
     const data = this.formCreateTruck.value;
     // const httpAgent = new http.Agent({ rejectUnauthorized: false });
     fetch(url, {
