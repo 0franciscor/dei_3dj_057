@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  Build and Test API:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,3 +24,6 @@ jobs:
       - name: Test
         working-directory: ./WarehouseManagementTest
         run: dotnet test --no-restore --verbosity normal
+      - name: Code Coverage Calculation
+        working-directory: ./WarehouseManagementTest
+        run: dotnet dotnet test --collect:"XPlat Code Coverage"
