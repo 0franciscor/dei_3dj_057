@@ -27,7 +27,3 @@ jobs:
       - name: Code Coverage Calculation
         working-directory: ./WarehouseManagementTest
         run: dotnet dotnet test --collect:"XPlat Code Coverage"
-      - name: Downloading the Coverage
-        uses: actions/download-artifact@v3
-        with:
-          name: coverage.cobertura.xml
