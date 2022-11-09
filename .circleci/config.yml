@@ -20,9 +20,10 @@ jobs:
           name: API Test Solution Build
           command: |
             dotnet build
+            dotnet test
       - run:
-          working_directory: WarehouseManagementTest/Unit
-          name: UnitTests
+          working_directory: WarehouseManagementTest
+          name: API Test Solution Run
           command: |
             dotnet test
 workflows:
