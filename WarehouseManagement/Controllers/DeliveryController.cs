@@ -56,6 +56,8 @@ namespace EletricGo.Controllers
             if (firstDate > secondDate)
                 (secondDate, firstDate) = (firstDate, secondDate);
 
+            Console.WriteLine(parsedDates);
+
             try
             {
                 var obj = await _deliveryService.GetByPeriod(firstDate, secondDate);
