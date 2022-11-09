@@ -12,14 +12,19 @@ jobs:
       - checkout
       - run:
           working_directory: WarehouseManagement
-          name: Build the API
+          name: API Build
           command: |
             dotnet build
       - run:
           working_directory: WarehouseManagementTest
-          name: Build the Tests Solution
+          name: API Test Solution Build
           command: |
             dotnet build
+      - run:
+          working_directory: WarehouseManagementTest/Unit
+          name: UnitTests
+          command: |
+            dotnet test
 workflows:
   buildAndTestApp:
     jobs:
