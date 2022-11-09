@@ -19,6 +19,8 @@ jobs:
         working-directory: ./WarehouseManagement
         run: dotnet restore
       - name: Build
+        working-directory: ./WarehouseManagement
         run: dotnet build --no-restore
       - name: Test
+        working-directory: ./WarehouseManagementTest
         run: dotnet test --no-restore --verbosity normal
