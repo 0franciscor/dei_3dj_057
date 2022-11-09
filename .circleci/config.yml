@@ -15,9 +15,28 @@ jobs:
           name: Build the API
           command: |
             dotnet build
+      - run:
+          working_directory: WarehouseManagementTest
+          name: Unit Testing
+          command: |
+            dotnet build
+            dotnet test
+      - run:
+          working_directory: Backend/GestArm_API/GestArmTestes/IntegrationTesting
+          name: Integration Testing
+          command: |
+            dotnet build
+            dotnet test
+      - run:
+          working_directory: Backend/GestArm_API/GestArmTestes/UnitTesting
+          name: Generate XUnit Coverage
+          command: |
+            dotnet build
+            dotnet dotnet test --collect:"XPlat Code Coverage"
 
 workflows:
   buildAPI:
     jobs:
       - build
+      - test
   

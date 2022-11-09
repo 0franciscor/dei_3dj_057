@@ -26,10 +26,6 @@
 	
 	  <ProjectReference Include="..\WarehouseManagement\EletricGo.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Integration\Deliveries\" />
-  </ItemGroup>
 	
 	
 

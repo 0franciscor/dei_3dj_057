@@ -1,7 +1,7 @@
 ﻿using EletricGo.Domain.Deliveries;
 using EletricGo.Domain.Shared;
 
-namespace WarehouseManagementTest.Domain.Deliveries
+namespace WarehouseManagementTest.Unit.Domain
 {
     [TestFixture]
     internal class DeliveryTest

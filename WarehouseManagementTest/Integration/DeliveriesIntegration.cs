@@ -1,10 +1,11 @@
 using EletricGo.Controllers;
+using EletricGo.Services;
 using EletricGo.Domain.Deliveries;
 using Moq;
 using EletricGo.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WarehouseManagementTest.Integration.Deliveries
+namespace WarehouseManagementTest.Integration
 {
     [TestFixture]
     internal class DeliveriesIntegration
@@ -20,7 +21,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
         private readonly string? destination = "testDestination";
 
         private readonly float deliveryMass = 30;
-        
+
 
         //SETUP LISTS FOR GETALL()
         private List<Delivery> GetDeliveriesList()
@@ -62,7 +63,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
 
             var resultList = await deliveryController.GetAll();
 
-            for(int i = 0; i < expectedList.Count; i++)
+            for (int i = 0; i < expectedList.Count; i++)
             {
                 Assert.AreEqual(expectedList[i].Id, resultList.Value[i].deliveryID);
             }
@@ -88,7 +89,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
                 Assert.Fail();
             else
             {
-                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+                var deliveryResult = (DeliveryDTO)(aux.Result as OkObjectResult).Value;
 
                 Assert.AreEqual(deliveryExpected.deliveryID, deliveryResult.deliveryID);
             }
@@ -118,7 +119,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
                 Assert.Fail();
             else
             {
-                var listResult = ((List<DeliveryDTO>)(aux.Result.Result as OkObjectResult).Value);
+                var listResult = (List<DeliveryDTO>)(aux.Result.Result as OkObjectResult).Value;
 
                 Assert.AreEqual(listExpected.First().deliveryID, listResult.First().deliveryID);
             }
@@ -150,7 +151,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
                 Assert.Fail();
             else
             {
-                var deliveryResult = ((DeliveryDTO)(aux.Result as CreatedAtActionResult).Value);
+                var deliveryResult = (DeliveryDTO)(aux.Result as CreatedAtActionResult).Value;
 
                 Assert.AreEqual(deliveryExpected.deliveryID, deliveryResult.deliveryID);
             }
@@ -169,7 +170,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
 
             var mockRepository = new Mock<IDeliveryRepository>();
             mockRepository.Setup(repo => repo.GetByID(new DeliveryID(id))).ReturnsAsync(delivery);
-            
+
             var mockUnit = new Mock<IUnitOfWork>();
             mockUnit.Setup(repo => repo.CommitAsync()); //does not return, but the service method updates the object
 
@@ -182,7 +183,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
                 Assert.Fail();
             else
             {
-                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+                var deliveryResult = (DeliveryDTO)(aux.Result as OkObjectResult).Value;
 
                 Assert.AreEqual(newLoadTime, deliveryResult.loadTime);
             }
@@ -207,7 +208,7 @@ namespace WarehouseManagementTest.Integration.Deliveries
                 Assert.Fail();
             else
             {
-                var deliveryResult = ((DeliveryDTO)(aux.Result as OkObjectResult).Value);
+                var deliveryResult = (DeliveryDTO)(aux.Result as OkObjectResult).Value;
 
                 Assert.AreEqual(deliveryResult.deliveryID, id);
             }
