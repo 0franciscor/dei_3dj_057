@@ -71,7 +71,7 @@ namespace EletricGo.Controllers
         }
 
         [HttpPost("CreateDelivery")]
-        public async Task<ActionResult<DeliveryDTO>> Patch([FromBody] DeliveryDTO dto)
+        public async Task<ActionResult<DeliveryDTO>> Post([FromBody] DeliveryDTO dto)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace EletricGo.Controllers
         }
 
         [HttpPatch("Update")]
-        public async Task<ActionResult<DeliveryDTO>> Put([FromBody] DeliveryDTO dto)
+        public async Task<ActionResult<DeliveryDTO>> Patch([FromBody] DeliveryDTO dto)
         {
             try
             {
