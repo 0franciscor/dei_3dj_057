@@ -7,7 +7,7 @@ build-and-test-WarehouseManagement:
       - image: mcr.microsoft.com/dotnet/sdk:6.0
     steps:
       - checkout
-      - run:
+      - build:
           working_directory: WarehouseManagement/EletricGo.csproj
           name: Build
           command: |
