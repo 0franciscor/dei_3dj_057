@@ -23,7 +23,7 @@ jobs:
           command: |
             dotnet.exe publish --configuration Release --output WarehouseManagement
       - persist_to_workspace:
-          root: ~/WarehouseManagement
+          root: ~/dei_3dj_057WarehouseManagement
           paths:
             - WebAPIFolder
   login-to-azure-and-deploy:
