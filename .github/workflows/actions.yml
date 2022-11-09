@@ -18,8 +18,11 @@ jobs:
           dotnet-version: '6.0'
           
       - name: Restore dependencies
+        working_directory: WarehouseManagement
         run: dotnet restore
       - name: Build
+        working_directory: WarehouseManagement
         run: dotnet build --no-restore
       - name: Test
+        working_directory: WarehouseManagementTest
         run: dotnet test --no-restore --verbosity normal
