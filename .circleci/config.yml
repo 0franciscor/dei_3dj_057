@@ -8,7 +8,7 @@ build-and-test-WarehouseManagement:
     steps:
       - checkout
       - run:
-          working_directory: WarehouseManagement/
+          working_directory: WarehouseManagement/EletricGo.csproj
           name: Build
           command: |
             dotnet build
