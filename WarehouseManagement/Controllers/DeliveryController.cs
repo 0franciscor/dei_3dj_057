@@ -53,7 +53,7 @@ namespace EletricGo.Controllers
             var parsedDates = receivedDates.Split(",");
 
             var firstDate = DateTime.ParseExact(parsedDates[0], "dd/MM/yyyy", new CultureInfo("pt-PT"));
-            var secondDate = DateTime.Parse(parsedDates[1]);
+            var secondDate = DateTime.ParseExact(parsedDates[1], "dd/MM/yyyy", new CultureInfo("pt-PT"));
 
             if (firstDate > secondDate)
                 (secondDate, firstDate) = (firstDate, secondDate);
