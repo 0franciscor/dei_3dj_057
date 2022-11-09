@@ -4,16 +4,20 @@ orbs:
   azure-cli: circleci/azure-cli@1.2.0
   windows: circleci/windows@2.2.0
 
-workflows:
+jobs:
   build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
+    steps:
+      - checkout
+      - build:
+          working_directory: WarehouseManagement/EletricGo.csproj
+          name: Build
+          command: |
+            dotnet build
+
+workflows:
+  buildAPI:
     jobs:
-      build-and-test-WarehouseManagement:
-      docker:
-        - image: mcr.microsoft.com/dotnet/sdk:6.0
-      steps:
-        - checkout
-        - build:
-            working_directory: WarehouseManagement/EletricGo.csproj
-            name: Build
-            command: |
-              dotnet build
+      - build
+  
