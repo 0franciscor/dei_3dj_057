@@ -9,9 +9,6 @@ jobs:
       name: windows/default
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - dotnet-packages-v1-{{ checksum "WarehouseManagement\EletricGo.csproj" }}
       - run:
           name: "Install project dependencies"
           command: dotnet.exe restore
