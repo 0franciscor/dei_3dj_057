@@ -18,28 +18,36 @@ interface Truck{
 })
 export class FleetManagerComponent implements OnInit {
 
-  public selectedObject : Truck | undefined;
-
-  public truckList: Truck[] = [];
+  public selectedTruckOption : any;
+  public selectedTruck: any;
+  
+  public truckList: any[] = [];
   
   constructor(private router: Router) { 
-    this.getTruck().then(data => {
-      data.forEach(element => {
-        this.truckList.push(element);
-      });
-    });
-
-    console.log(this.truckList.length);
-
+    this.getTruck();
+    this.selectedTruck= {
+      truckID: "",
+      tare: undefined,
+      capacity: undefined,
+      maxBatteryCapacity: undefined,
+      autonomy: undefined,
+      fastChargeTime: undefined
+    }
   }
 
-  test() {
-    console.log(this.selectedObject?.truckID);
-  }
 
   ngOnInit(): void {
     
   }
+
+  onTruckSelected($event: any){
+
+    let test = this.truckList.find(element => element.truckID == this.selectedTruckOption);
+    console.log(test)
+    this.selectedTruck = test;
+    
+  }
+
 
   async getTruck() {
     const url = 'http://localhost:3000/api/truck/all';
@@ -50,7 +58,10 @@ export class FleetManagerComponent implements OnInit {
         'Accept': 'application/json'
       }
     }).then(res => res.json().then(data => {test=data;}));
-    
+
+    test.forEach(element => {
+      this.truckList.push(element);
+    });
     return test;
   }
 

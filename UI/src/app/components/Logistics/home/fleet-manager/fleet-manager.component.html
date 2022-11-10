@@ -10,17 +10,30 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Truck</mat-label>
-        <select matNativeControl [(ngModel)]="selectedObject" name="truck">
-          <option value="" selected></option>
-          <option *ngFor="let truck of truckList;" [value]="truck">
+        <select matNativeControl [(ngModel)]="selectedTruckOption" (ngModelChange)="onTruckSelected($event)" name="truck">
+          <option value="" selected disabled></option>
+          <option *ngFor="let truck of truckList;" [value]="truck.truckID">
             {{truck.truckID}} 
           </option>
         </select>
       </mat-form-field>
+      <!-- display selectedTruck information -->
+      <mat-card *ngIf="selectedTruckOption">
+        <mat-card-title>{{selectedTruckOption}}</mat-card-title>
+        <mat-card-subtitle>Truck Information</mat-card-subtitle>
+        <mat-card-content>
+          <p>TruckID: {{selectedTruck.truckID}}</p>
+          <p>Tare: {{selectedTruck.tare}}</p>
+          <p>Capacity: {{selectedTruck.capacity}}</p>
+          <p>Maximum Battery Capacity: {{selectedTruck.maxBatteryCapacity}}</p>
+          <p>Autonomy: {{selectedTruck.autonomy}}</p>
+          <p>Fast Charge Time: {{selectedTruck.fastChargeTime}}</p>
+        </mat-card-content>
+      </mat-card>
+      
+     
 
-      {{selectedObject}}
 
-      <button (click)="test()"></button>
       
       
     </mat-card-actions>
