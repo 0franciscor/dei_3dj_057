@@ -43,8 +43,11 @@ jobs:
           node-version: '16.7.1'
       
       - name: Install dependencies
-      - run: npm ci
+        working-directory: ./Logistics
+        run: npm ci
       - name: Build Node.js
-      - run: npm run build --if-present
+        working-directory: ./Logistics
+        run: npm run build --if-present
       - name: Test Node.js
-      - run: npm test
+        working-directory: ./Logistics
+        run: npm test
