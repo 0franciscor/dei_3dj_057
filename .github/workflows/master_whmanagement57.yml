@@ -9,7 +9,7 @@ env:
     AZURE_WEBAPP_NAME: WhManagement57
     AZURE_WEBAPP_PACKAGE_PATH: './published' 
     DOTNET_PATH: 'WarehouseManagement'
-    DOTNET_VERSION: 6.0
+    DOTNET_VERSION: '6.0'
     
 jobs:
   build:
