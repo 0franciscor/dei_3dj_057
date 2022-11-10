@@ -9,6 +9,9 @@ on:
       - master
   workflow_dispatch:
 
+env:
+    DOTNET_ROOT: ./WarehouseManagement
+
 jobs:
   build:
     runs-on: windows-latest
@@ -27,15 +30,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        working-directory: ./WarehouseManagement
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}
 
       - name: Upload artifact for deployment job
-        working-directory: ./WarehouseManagement
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{env.DOTNET_ROOT}}
 
   deploy:
     runs-on: windows-latest
