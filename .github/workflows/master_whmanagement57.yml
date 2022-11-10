@@ -31,7 +31,7 @@ jobs:
 
       - name: dotnet publish
         working-directory: ./WarehouseManagement
-        run: dotnet publish -c Release -o
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
