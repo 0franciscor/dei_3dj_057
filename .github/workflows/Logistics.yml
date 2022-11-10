@@ -8,14 +8,14 @@ on:
 
 jobs: 
   BuildAndTestLogisticsAPI:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.7.1'
+          node-version: '16.17.1'
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
