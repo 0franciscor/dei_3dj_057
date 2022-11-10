@@ -40,8 +40,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.17.1'
-          working-directory: ./Logistics
-          cache: 'npm'
       - name: Install dependencies
         working-directory: ./Logistics
         run: npm install
