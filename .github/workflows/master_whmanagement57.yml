@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
+      
       - name: Set up .NET Core SDK ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v1
         with:
-          path: ${{ env.DOTNET_PATH }}
+          working-directory: ${{ env.DOTNET_PATH }}
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
