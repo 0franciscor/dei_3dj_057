@@ -17,6 +17,9 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
 import { CreateTruckComponent } from './components/Logistics/truck/create-truck/create-truck.component';
+import { FleetManagerComponent } from './components/Logistics/home/fleet-manager/fleet-manager.component';
+import { LogisticsManagerComponent } from './components/Logistics/home/logistics-manager/logistics-manager.component';
+import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { CreateTruckComponent } from './components/Logistics/truck/create-truck/
     LogInComponent,
     RegisterComponent,
     ToolBarComponent,
-    CreateTruckComponent
+    CreateTruckComponent,
+    FleetManagerComponent,
+    LogisticsManagerComponent,
+    WarehouseManagerComponent
   ],
   imports: [
     BrowserModule,
