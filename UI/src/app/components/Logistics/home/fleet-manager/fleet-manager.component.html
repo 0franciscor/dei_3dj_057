@@ -1,0 +1,27 @@
+<mat-card>
+    <mat-card-title>Fleet Manager</mat-card-title>
+    <mat-card-subtitle>ITS TRUCK MONTH!!</mat-card-subtitle>
+    <mat-card-actions>
+      <!-- Create mat-fab button with size 10 -->
+      
+      <button mat-raised-button style="width: 10em; height: 10em;" (click)="goToCreateTruck()" color="warn" aria-label="Example icon button with a home icon">
+        Create Truck
+      </button>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Truck</mat-label>
+        <select matNativeControl [(ngModel)]="selectedObject" name="truck">
+          <option value="" selected></option>
+          <option *ngFor="let truck of truckList;" [value]="truck">
+            {{truck.truckID}} 
+          </option>
+        </select>
+      </mat-form-field>
+
+      {{selectedObject}}
+
+      <button (click)="test()"></button>
+      
+      
+    </mat-card-actions>
+  </mat-card>
