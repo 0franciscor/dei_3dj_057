@@ -23,12 +23,15 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
+        working-directory: ./WarehouseManagement
         run: dotnet build --configuration Release
 
       - name: dotnet publish
+        working-directory: ./WarehouseManagement
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
+        working-directory: ./WarehouseManagement
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
