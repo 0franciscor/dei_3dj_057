@@ -1,4 +1,4 @@
-﻿name: EletricGo
+﻿name: WarehouseManagement
 
 on:
   push:
@@ -32,22 +32,3 @@ jobs:
       - name: Code Coverage Calculation
         working-directory: ./WarehouseManagementTest
         run: dotnet dotnet test --collect:"XPlat Code Coverage"
-  
-  BuildAndTestLogisticsAPI:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.7.1'
-      
-      - name: Install dependencies
-        working-directory: ./Logistics
-        run: npm ci
-      - name: Build Node.js
-        working-directory: ./Logistics
-        run: npm run build --if-present
-      - name: Test Node.js
-        working-directory: ./Logistics
-        run: npm test
