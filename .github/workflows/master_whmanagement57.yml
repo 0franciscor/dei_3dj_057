@@ -3,56 +3,39 @@
 
 name: Build and deploy ASP.Net Core app to Azure Web App - WhManagement57
 
-on:
-  push:
-    branches:
-      - master
-  workflow_dispatch:
+on: [push, workflow_dispatch]
 
 env:
-    DOTNET_ROOT: ./WarehouseManagement
-
+    AZURE_WEBAPP_NAME: WhManagement57
+    AZURE_WEBAPP_PACKAGE_PATH: './published' 
+    DOTNET_PATH: './WarehouseManagement'
+    DOTNET_VERSION: 6.0
+    
 jobs:
   build:
-    runs-on: windows-latest
-
+    name: Build and Deploy
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up .NET Core
+      - name: Set up .NET Core SDK ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0'
-          include-prerelease: true
+          path: ${{ env.DOTNET_PATH }}
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build with dotnet
-        working-directory: ./WarehouseManagement
-        run: dotnet build --configuration Release
+      - name: Restore
+        run: dotnet restore
 
-      - name: dotnet publish
-        working-directory: ./WarehouseManagement
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}
+      - name: Build
+        run: dotnet build --no-restore
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          path: ${{env.DOTNET_ROOT}}
-          name: .net-app
+      - name: Publish
+        run: dotnet publish --no-build -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: .net-app
-
-      - name: Deploy to Azure Web App
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DFE3F12876244B97813E63AEF0351A9D }}
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
