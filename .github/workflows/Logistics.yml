@@ -12,16 +12,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.7.1'
-      
-      - name: Install dependencies
-        working-directory: ./Logistics
-        run: npm ci
-      - name: Build Node.js
-        working-directory: ./Logistics
-        run: npm run build --if-present
-      - name: Test Node.js
-        working-directory: ./Logistics
-        run: npm test
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
