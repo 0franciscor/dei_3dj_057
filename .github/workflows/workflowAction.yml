@@ -6,9 +6,16 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+    DOTNET_PATH: './WarehouseManagement'
+    NODE_PATH: './Logistics'
+
 jobs:
   BuildAndTestWarehouseAPI:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.DOTNET_PATH }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v3
@@ -16,20 +23,19 @@ jobs:
           dotnet-version: '6.0'
           
       - name: Restore dependencies
-        working-directory: ./WarehouseManagement
         run: dotnet restore
       - name: Build
-        working-directory: ./WarehouseManagement
         run: dotnet build --no-restore
       - name: Test
-        working-directory: ./WarehouseManagementTest
         run: dotnet test --no-restore --verbosity normal
       - name: Code Coverage Calculation
-        working-directory: ./WarehouseManagementTest
         run: dotnet dotnet test --collect:"XPlat Code Coverage"
   
   BuildAndTestLogisticsAPI:
     runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ${{ env.NODE_PATH }}
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
@@ -37,11 +43,8 @@ jobs:
         with:
           node-version: '16.17.1'
       - name: Install dependencies
-        working-directory: ./Logistics
         run: npm ci
       - name: Build
-        working-directory: ./Logistics
         run: npm run build --if-present
       - name: Test
-        working-directory: ./Logistics
         run: npm test
