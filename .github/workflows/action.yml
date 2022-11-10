@@ -33,16 +33,17 @@ jobs:
         working-directory: ./WarehouseManagementTest
         run: dotnet dotnet test --collect:"XPlat Code Coverage"
   BuildAndTestLogisticsAPI:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.17.1'
+          cache: 'npm'
       - name: Install dependencies
         working-directory: ./Logistics
-        run: npm ci
+        run: npm install
       - name: Build
         working-directory: ./Logistics
         run: npm run build --if-present
