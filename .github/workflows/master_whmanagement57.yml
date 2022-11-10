@@ -15,6 +15,9 @@ jobs:
   build:
     name: Build and Deploy
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.DOTNET_PATH }}
     steps:
       - uses: actions/checkout@v2
       
