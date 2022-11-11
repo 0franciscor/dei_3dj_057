@@ -1,47 +1,112 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
+import NodeTemplate from './RoadNetworkJS/node-template';
 
 @Component({
   selector: 'app-road-network',
   templateUrl: './RoadNetworkJS/road-network.component.html',
   styleUrls: ['./road-network.component.css']
 })
-export class RoadNetworkComponent implements OnInit {
+export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
+  @ViewChild('canvas') 
+  private canvasRef!: ElementRef;
+
+  // Cube properties
+  @Input() public rotationSpeedX: number = 0.01;
+
+  @Input() public rotationSpeedY: number = 0.01;
   
+  @Input() public size: number = 200;
+  
+  @Input() public texture: string = "";
 
 
-  constructor() {
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight-64);
-    document.body.appendChild(renderer.domElement);
 
-    const geometryCircle = new THREE.CircleGeometry( 5, 32 );
-    const materialCircle = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-    const circle = new THREE.Mesh( geometryCircle, materialCircle );
-    circle.position.set(0,0,0);
-    scene.add( circle );
+  //Stage properties
+  @Input() public cameraZ: number = 400;
 
-    const animate = function () {
-        requestAnimationFrame(animate);
-        // circle.rotation.x += 0.01;
-        // circle.rotation.y += 0.01;
+  @Input() public fieldOfView: number = 1;
+  
+  @Input('nearClipping') public nearClippingPlane: number = 1;
+  
+  @Input('farClipping') public farClippingPlane: number = 1000;
 
-        renderer.render(scene, camera);
-    };
-    camera.position.z = 10;
-    renderer.render(scene, camera);
-    animate();
-   }
+
+  //Helper properties (private)
+
+  private camera!: THREE.PerspectiveCamera;
+
+  private get canvas(): HTMLCanvasElement {
+    return this.canvasRef.nativeElement;
+  }
+
+  private loader = new THREE.TextureLoader();
+  private geometry = new THREE.BoxGeometry(1, 1, 1);
+  private material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+
+ 
+
+ 
+
+  private renderer!: THREE.WebGLRenderer;
+
+  private scene!: THREE.Scene;
+
+  private node = new NodeTemplate();
+
+  private createScene() {
+    //Scene
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x000000);
+    this.scene.add(this.node.object);
+    
+    //Camera
+    this.camera = new THREE.PerspectiveCamera(
+      this.fieldOfView,
+      this.canvas.clientWidth / this.canvas.clientHeight,
+      this.nearClippingPlane,
+      this.farClippingPlane
+    );
+
+    this.camera.position.z = this.cameraZ;
+
+  }
+
+  private animateCircle() {
+    this.node.object.rotation.x += this.rotationSpeedX;
+    this.node.object.rotation.y += this.rotationSpeedY;
+  }
+
+
+
+  private startRenderingLoop() {
+    //Renderer
+    
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight-64);
+
+    let component: RoadNetworkComponent = this;
+    (function render() {
+      requestAnimationFrame(render);
+      component.animateCircle();
+      component.renderer.render(component.scene, component.camera);
+    }());
+
+
+  }
+
+
+  ngAfterViewInit() {
+    this.createScene();
+    this.startRenderingLoop();
+  }
+
 
   ngOnInit(): void {
 
   }
-
-  
-
   
 
 }
