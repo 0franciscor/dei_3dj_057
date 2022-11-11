@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-// const http = require('https');
-import fetch from 'node-fetch';
+import { TruckService } from 'src/app/Services/TruckService/truck.service';
+
+
 @Component({
   selector: 'app-create-truck',
   templateUrl: './create-truck.component.html',
@@ -10,7 +11,7 @@ import fetch from 'node-fetch';
 export class CreateTruckComponent implements OnInit {
 
   formCreateTruck!: FormGroup;
-  constructor(private fb: FormBuilder) {}
+  constructor(private truckService: TruckService,private fb: FormBuilder) {}
 
   ngOnInit() {
     this.formCreateTruck = this.fb.group({
@@ -25,20 +26,9 @@ export class CreateTruckComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formCreateTruck.value);
-
-    //send formCreateTruck.value to API
-    const url = 'http://localhost:3000/api/truck/';
-    const data = this.formCreateTruck.value;
-    // const httpAgent = new http.Agent({ rejectUnauthorized: false });
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      // agent: httpAgent
-    })
+    this.truckService.createTruck(this.formCreateTruck.value);
+  
+   
   }
 
 }

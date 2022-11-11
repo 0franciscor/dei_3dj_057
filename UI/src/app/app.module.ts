@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CubeComponent } from './cube/cube.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { RegisterComponent } from './components/register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,18 +19,19 @@ import { CreateTruckComponent } from './components/Logistics/truck/create-truck/
 import { FleetManagerComponent } from './components/Logistics/home/fleet-manager/fleet-manager.component';
 import { LogisticsManagerComponent } from './components/Logistics/home/logistics-manager/logistics-manager.component';
 import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
+import { RoadNetworkComponent } from './components/Logistics/road-network/road-network.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CubeComponent,
     LogInComponent,
     RegisterComponent,
     ToolBarComponent,
     CreateTruckComponent,
     FleetManagerComponent,
     LogisticsManagerComponent,
-    WarehouseManagerComponent
+    WarehouseManagerComponent,
+    RoadNetworkComponent
   ],
   imports: [
     BrowserModule,
