@@ -1,6 +1,8 @@
 export interface IRoutePersistence{
-    domainId: string;
+    id: string;
     routeID: string;
     date: string;
-    warehouses: string;
+    pathIDlist: string[];
+    truckID: string;
+    packagingID: string;
 }

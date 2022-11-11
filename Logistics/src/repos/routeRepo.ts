@@ -38,16 +38,25 @@ export default class RouteRepo implements IRouteRepo {
                 return RouteMap.toDomain(routeCreated);
             }
             else{
+
+                let pathToString;
+                var index=0;
+                for(var val of route.pathIDlist){
+                    pathToString[index]=val.id;
+                    index++;
+                }
+
                 routeDocument.routeID = route.routeID.id;
                 routeDocument.date = route.date.date;
-                routeDocument.warehouses = route.warehouse.warehouse;
+                routeDocument.pathIDlist= pathToString;
+                routeDocument.truckID = route.truck.id;
+                routeDocument.packagingID = route.packaging.id;
                 await routeDocument.save();
                 return route;
             }
         } catch (error){
             throw error;
         }
-
     }
 
     public async delete(route: Route): Promise<Route> {

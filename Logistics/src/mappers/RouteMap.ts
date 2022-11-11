@@ -11,12 +11,19 @@ import { IRouteDTO } from "../dto/IRouteDTO";
 export class RouteMap extends Mapper<Route> {
     
     public static toDTO(route: Route): IRouteDTO {
+        let pathToString;
+        var index=0;
+        for(var val of route.pathIDlist){
+            pathToString[index]=val.id;
+            index++;
+        }
         return {
             id: route.id.toString(),
             routeID: route.routeID.id,
             date: route.date.date,
-            warehouses: route.warehouse.warehouse,
-
+            pathIDlist: pathToString,
+            truckID: route.truck.id,
+            packagingID: route.packaging.id,
         } as IRouteDTO;
     }
     
@@ -35,12 +42,20 @@ export class RouteMap extends Mapper<Route> {
     }
 
     public static toPersistence(route: Route): any{
+
+        let pathToString;
+        var index=0;
+        for(var val of route.pathIDlist){
+            pathToString[index]=val.id;
+            index++;
+        }
         return {
-            domainId: route.id.toString(),
+            id: route.id.toString(),
             routeID: route.routeID.id,
             date: route.date.date,
-            warehouses: route.warehouse.warehouse,
-            
+            pathIDlist: pathToString,
+            truckID: route.truck.id,
+            packagingID: route.packaging.id,
         };
     }
         

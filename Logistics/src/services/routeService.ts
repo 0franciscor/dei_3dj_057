@@ -8,7 +8,10 @@ import { RouteMap } from "../mappers/RouteMap";
 import IRouteRepo from "./IRepos/IRouteRepo";
 import IRouteService from "./IServices/IRouteService";
 import config from "../../config";
-import { Warehouses } from "../domain/route/Warehouses";
+import { Packaging } from "../domain/packaging/Packaging";
+import { PackagingID } from "../domain/packaging/PackagingID";
+import { TruckID } from "../domain/truck/TruckID";
+
 
 @Service()
 export default class RouteService implements IRouteService {
@@ -75,20 +78,41 @@ export default class RouteService implements IRouteService {
 
     public async updateRoute(routeDTO: IRouteDTO): Promise<Result<IRouteDTO>> {
         try {
-            let route = await this.routeRepo.getRouteById(routeDTO.routeID);
+            const route = await this.routeRepo.getRouteById(routeDTO.routeID);
             if(route === null)
                 return Result.fail<IRouteDTO>("Route not found");
 
-            if(routeDTO.date != route.date.date && routeDTO.date != null)
-                route.date = Date.create(routeDTO.date).getValue();
-            if(routeDTO.warehouses != route.warehouse.warehouse && routeDTO.warehouses != null)
-                route.warehouse = Warehouses.create(routeDTO.warehouses).getValue();
+            if(routeDTO.packagingID !== route.packaging.id && routeDTO.packagingID!=null){
+                const packagingOrError = PackagingID.create(routeDTO.packagingID);
+                if(packagingOrError.isFailure){
+                    return Result.fail<IRouteDTO>(packagingOrError.error);
+                }
+
+                route.packaging = packagingOrError.getValue();
+
+            }
+                
+            if(routeDTO.truckID !== route.truck.id && routeDTO.truckID!=null){
+                const truckOrError = TruckID.create(routeDTO.truckID);
+                if(truckOrError.isFailure){
+                    return Result.fail<IRouteDTO>(truckOrError.error);
+                }
+
+                route.truck = truckOrError.getValue();
+            }
+               
+            if(routeDTO.date !== route.date.date && routeDTO.date!=null){
+                const dateOrError = Date.create(routeDTO.date);
+                if(dateOrError.isFailure) {
+                    return Result.fail<IRouteDTO>(dateOrError.error);
+                }
+                route.date = dateOrError.getValue();
+            }
 
             await this.routeRepo.save(route);
 
             const routeDTOResult = RouteMap.toDTO(route) as IRouteDTO;
             return Result.ok<IRouteDTO>(routeDTOResult);
-
         }catch(e){
             throw e;
         }

@@ -55,6 +55,10 @@ export class Path extends AggregateRoot<PathProps>{
         return this.props.extraTravelTime;
     }
 
+    set pathID(pathID: PathID){
+        this.props.pathID = pathID;
+    }
+
     set startWHId(startWHId : StartWHId){
         this.props.startWHId = startWHId;
     }

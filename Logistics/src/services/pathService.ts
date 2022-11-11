@@ -20,6 +20,18 @@ export default class PathService implements IPathService{
         @Inject(config.repos.path.name) private pathRepo: IPathRepo,
     ){}
 
+    public async exist(pathID: string): Promise<Result<boolean>> {
+        try {
+            const pathResult = await this.pathRepo.getPathById(pathID);
+            if(pathResult === null)
+                return Result.ok<boolean>(false);
+            return Result.ok<boolean>(true);
+        } catch (e) {
+            throw e;
+        }
+    }
+
+
     public async createPath(pathDTO: IPathDTO): Promise<Result<IPathDTO>> {
         try{
             const path = await this.pathRepo.getPathById(pathDTO.pathID);
@@ -63,7 +75,7 @@ export default class PathService implements IPathService{
         }catch(e){
             throw e;
         }
-    }
+    } 
 
     public async updatePath(pathDTO: IPathDTO): Promise<Result<IPathDTO>> {
         try{
@@ -128,4 +140,7 @@ export default class PathService implements IPathService{
             throw e;
         }
     }
+
+    
+
 }

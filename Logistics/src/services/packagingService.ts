@@ -21,6 +21,18 @@ export default class PackagingService implements IPackagingService {
         @Inject(config.repos.packaging.name) private packagingRepo: IPackagingRepo,
     ) { }
 
+
+    public async exist(packagingID: string): Promise<Result<boolean>> {
+        try {
+            const packagingResult = await this.packagingRepo.getPackagingById(packagingID);
+            if(packagingResult === null)
+                return Result.ok<boolean>(false);
+            return Result.ok<boolean>(true);
+        } catch (e) {
+            throw e;
+        }
+    }
+
     
     public async createPackaging(packagingDTO: IPackagingDTO): Promise<Result<IPackagingDTO>> {
         try {

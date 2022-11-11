@@ -20,11 +20,23 @@ const RouteSchema = new mongoose.Schema(
             required: true
         },
 
-        warehouses: {
+        pathIDlist: {
             type: String,
-            required:true
+            required: true
         },
 
+        truckID: {
+            type: String,
+            required: true
+        },
+
+        packagingID: {
+            type: String,
+            required: true
+        },
+
+     
+    
     },
     {
         timestamps: true
