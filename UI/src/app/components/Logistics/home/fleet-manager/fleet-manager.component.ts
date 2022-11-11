@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 
 interface Truck{
@@ -23,8 +24,10 @@ export class FleetManagerComponent implements OnInit {
   
   public truckList: any[] = [];
   
-  constructor(private router: Router) { 
-    this.getTruck();
+  constructor(private truckService: TruckService, private router: Router) { 
+    this.truckService.getTruck().then((data) => {
+      this.truckList = data;
+    });
     this.selectedTruck= {
       truckID: "",
       tare: undefined,
@@ -48,22 +51,6 @@ export class FleetManagerComponent implements OnInit {
     
   }
 
-
-  async getTruck() {
-    const url = 'http://localhost:3000/api/truck/all';
-    let test: any[] = [];
-    await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    }).then(res => res.json().then(data => {test=data;}));
-
-    test.forEach(element => {
-      this.truckList.push(element);
-    });
-    return test;
-  }
 
   goToCreateTruck() {
     this.router.navigate(['Logistics/Truck/CreateTruck']);
