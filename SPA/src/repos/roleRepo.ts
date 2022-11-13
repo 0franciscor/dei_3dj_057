@@ -33,21 +33,19 @@ export default class RoleRepo implements IRoleRepo {
   }
 
   public async save (role: Role): Promise<Role> {
-    const query = { domainId: role.id.toString()}; 
 
-    const roleDocument = await this.roleSchema.findOne( query );
+    const query = { roleId : role.roleId.id}; 
 
+    const roleDocument = await this.roleSchema.findOne( query as FilterQuery<IRolePersistence & Document> );
     try {
       if (roleDocument === null ) {
         const rawRole: any = RoleMap.toPersistence(role);
-
         const roleCreated = await this.roleSchema.create(rawRole);
-
         return RoleMap.toDomain(roleCreated);
       } else {
+        roleDocument.roleId = role.roleId.id;
         roleDocument.name = role.name.name;
         await roleDocument.save();
-
         return role;
       }
     } catch (err) {
@@ -55,10 +53,9 @@ export default class RoleRepo implements IRoleRepo {
     }
   }
 
-  public async findByDomainId (roleId: RoleId | string): Promise<Role> {
-    const query = { domainId: roleId};
+  public async findById (roleId: RoleId): Promise<Role> {
+    const query = { roleId: roleId};
     const roleRecord = await this.roleSchema.findOne( query as FilterQuery<IRolePersistence & Document> );
-
     if( roleRecord != null) {
       return RoleMap.toDomain(roleRecord);
     }
@@ -77,7 +74,6 @@ export default class RoleRepo implements IRoleRepo {
   public async delete(role: Role): Promise<Role>{
     const query = {roleId : role.roleId.id};
     const roleDocument = await this.roleSchema.findOne(query as FilterQuery<IRolePersistence & Document>);
-    
     try {
       if(roleDocument === null){
         return role;

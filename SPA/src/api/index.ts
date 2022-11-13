@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import roleRoute from './routes/roleRoute';
 import user from './routes/userRoute';
 
 export default () => {
@@ -6,6 +7,6 @@ export default () => {
 
 	
 	user(app);
-
+	roleRoute(app)
     return app;
 }

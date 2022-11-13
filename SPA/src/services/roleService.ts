@@ -16,7 +16,7 @@ export default class RoleService implements IRoleService {
 
   public async getRole( roleId: string): Promise<Result<IRoleDTO>> {
     try {
-      const role = await this.roleRepo.findByDomainId(roleId);
+      const role = await this.roleRepo.findById(roleId);
 
       if (role === null) {
         return Result.fail<IRoleDTO>("Role not found");
@@ -44,7 +44,6 @@ export default class RoleService implements IRoleService {
   public async createRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
     try {
       const roleOrError = await Role.create( roleDTO );
-
       if (roleOrError.isFailure) {
         return Result.fail<IRoleDTO>(roleOrError.errorValue());
       }
@@ -62,7 +61,7 @@ export default class RoleService implements IRoleService {
 
   public async updateRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
     try {
-      const role = await this.roleRepo.findByDomainId(roleDTO.id);
+      const role = await this.roleRepo.findById(roleDTO.roleId);
 
       if (role === null) {
         return Result.fail<IRoleDTO>("Role not found");
@@ -81,11 +80,13 @@ export default class RoleService implements IRoleService {
 
   public async deleteRole(roleId: string): Promise<Result<IRoleDTO>> {
       try {
-        const role = await this.roleRepo.findByDomainId(roleId);
+        const role = await this.roleRepo.findById(roleId);
         if(role===null){
           return Result.fail<IRoleDTO>("Role not found")
         }
         await this.roleRepo.delete(role);
+        const roleDTOResult =RoleMap.toDTO(role) as IRoleDTO;
+        return Result.ok<IRoleDTO>(roleDTOResult)
       } catch (error) {
         throw error
       }

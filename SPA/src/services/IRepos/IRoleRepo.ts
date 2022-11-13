@@ -5,7 +5,7 @@ import IRoleDTO from "../../dto/IRoleDTO";
 
 export default interface IRoleRepo extends Repo<Role> {
   save(role: Role): Promise<Role>;
-  findByDomainId (roleId: RoleId | string): Promise<Role>;
+  findById (roleId: RoleId | string): Promise<Role>;
   getAllRoles():Promise<Role[]>    
   delete(role:Role): Promise<Role>;
   //findByIds (rolesIds: RoleId[]): Promise<Role[]>;

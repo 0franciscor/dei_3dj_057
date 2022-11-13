@@ -13,7 +13,7 @@ export default (app: Router)=>{
     const ctrl = Container.get(config.controllers.role.name) as IRoleController;
 
     route.get('/id/:id',(req,res,next)=>{
-        req.body.roleId = req.params.id;~
+        req.body.roleId = req.params.id;
         ctrl.getRole(req,res,next)
     });
 
@@ -24,7 +24,7 @@ export default (app: Router)=>{
     route.post('/',
         celebrate({
             body: Joi.object({
-                id: Joi.string().required,
+                roleId: Joi.string().required(),
                 name: Joi.string().required()
             })
         }),
@@ -34,7 +34,7 @@ export default (app: Router)=>{
     route.patch('/',
         celebrate({
             body: Joi.object({
-                id: Joi.string().required,
+                roleId: Joi.string().required(),
                 name: Joi.string()
             })
         }),
@@ -42,7 +42,7 @@ export default (app: Router)=>{
     );
 
     route.delete('/id/:id',(req,res,next)=>{
-        req.body.userId = req.params.id;
+        req.body.roleId = req.params.id;
         ctrl.deleteRole(req,res,next)
     });
  

@@ -42,6 +42,7 @@ export class Role extends AggregateRoot<RoleProps> {
     } catch (error) {
       return Result.fail<Role>(error);
     }
+    
 
   }
 }

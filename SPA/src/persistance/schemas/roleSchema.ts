@@ -4,8 +4,8 @@ import mongoose from 'mongoose';
 const RoleSchema = new mongoose.Schema(
   {
     domainId: { type: String, unique: true },
+    name: { type: String, unique: true },
     roleId:{type:String, unique:true},
-    name: { type: String, unique: true }
   },
   {
     timestamps: true
