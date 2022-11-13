@@ -10,7 +10,7 @@ interface UserIdProps{
 export class UserId extends ValueObject<UserIdProps> {
 
   get id (): string {
-    return this.id;
+    return this.props.id;
   }
 
   private constructor (props: UserIdProps) {

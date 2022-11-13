@@ -18,15 +18,14 @@ export default class UserService implements IUserService{
     public async createUser(userDTO: IUserDTO): Promise<Result<IUserDTO>> {
         try {
             const user= await this.userRepo.findById(userDTO.userId);
-            if(user !== null)
+            if(user != null)
                 return Result.fail<IUserDTO>("User already exists");
             const userOrError = User.create(userDTO);
-            
             if(userOrError.isFailure){
                 return Result.fail<IUserDTO>(userOrError.error);
             }
             const userResult= userOrError.getValue();
-
+            
             await this.userRepo.save(userResult);
 
             const userDTOresult = UserMap.toDTO(userResult)as IUserDTO;

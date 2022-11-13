@@ -73,7 +73,8 @@ export class User extends AggregateRoot<UserProps>{
                 password: UserPassword.create(userDTO.password).getValue(),
                 role: RoleId.create(userDTO.role).getValue()
 
-            })
+            },id)
+            return Result.ok<User>(user);
         } catch (error) {
             return Result.fail<User>(error)
         }
