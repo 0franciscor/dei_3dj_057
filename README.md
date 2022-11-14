@@ -11,7 +11,7 @@ Explicit business rules
 
 Done:
 
-Tested and functional
-All business rules applied
-All group members are aware of the task dimension
+Tested and functional\
+All business rules applied\
+All group members are aware of the task dimension\
 	
