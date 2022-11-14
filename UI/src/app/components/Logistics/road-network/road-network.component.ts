@@ -16,7 +16,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   // Cube properties
   @Input() public rotationSpeedX: number = 0.01;
 
-  @Input() public rotationSpeedY: number = 0.01;
+  @Input() public rotationSpeedY: number = 0.005;
   
   @Input() public size: number = 200;
   
@@ -77,8 +77,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   }
 
   private animateCircle() {
-    // this.roadNetwork.object.rotation.x += this.rotationSpeedX;
-    // this.roadNetwork.object.rotation.y += this.rotationSpeedY;
+    this.roadNetwork.object.rotation.x += this.rotationSpeedX;
+    this.roadNetwork.object.rotation.y += this.rotationSpeedY;
   }
 
 

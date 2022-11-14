@@ -57,7 +57,7 @@ export const warehouseConnections = {
     1 to 6
     2 to 10
     2 to 13
-    3 to 12
+    3 to 1
     3 to 6
     4 to 13
     4 to 12
@@ -93,7 +93,7 @@ export const warehouseConnections = {
         [1,6],
         [2,10],
         [2,13],
-        [3,12],
+        [3,1],
         [3,6],
         [4,13],
         [4,12],
