@@ -28,9 +28,7 @@ export default class UserRepo implements IUserRepo {
 
   public async save (user: User): Promise<User> {
     const query = { userId: user.userId.id }; 
-
     const userDocument = await this.userSchema.findOne( query as FilterQuery<IUserPersistence & Document> );
-
     try {
       if (userDocument === null ) {
         const rawUser: any = UserMap.toPersistence(user);
@@ -65,15 +63,16 @@ export default class UserRepo implements IUserRepo {
       return null;
   }
 
-  public async findById (userId:string): Promise<User> {
+  public async findById (userId:UserId): Promise<User> {
     const query = {userId: userId}
     const userDocument = await this.userSchema.findOne(query as FilterQuery<IUserPersistence & Document>);
-    if(userDocument===null){
-      return null;
-    }
-    else {
+    if(userDocument!=null){
       return UserMap.toDomain(userDocument);
     }
+    else {
+      return null;
+    }
+    
   }
 
   public async findAllUsers():Promise<User[]>{

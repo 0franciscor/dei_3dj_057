@@ -45,7 +45,7 @@ export default (app: Router) => {
                 firstName: Joi.string(),
                 lastName: Joi.string(),
                 email: Joi.string(),
-                password: Joi.string().required(),
+                password: Joi.string(),
                 role: Joi.string()
             })
         }),

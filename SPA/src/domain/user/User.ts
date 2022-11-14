@@ -22,7 +22,7 @@ interface UserProps{
 
 export class User extends AggregateRoot<UserProps>{
     get id(): UniqueEntityID{
-        return this.id;
+        return this._id;
     }
 
 
@@ -73,7 +73,8 @@ export class User extends AggregateRoot<UserProps>{
                 password: UserPassword.create(userDTO.password).getValue(),
                 role: RoleId.create(userDTO.role).getValue()
 
-            })
+            },id)
+            return Result.ok<User>(user);
         } catch (error) {
             return Result.fail<User>(error)
         }

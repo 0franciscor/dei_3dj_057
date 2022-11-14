@@ -67,14 +67,15 @@ export default class UserController implements IUserController{
 
     public async updateUser(req:Request,res:Response,next:NextFunction){
         try {
-            const userOrError = await this.userService.updateUser(req.body as IUserDTO);
+            const userOrError = await this.userService.updateUser(req.body as IUserDTO) as Result<IUserDTO>;
+            console.log(userOrError)
             if(userOrError.isFailure){
                 res.status(404);
                 return res.send("user not found");
             }
 
             const userDTO = userOrError.getValue();
-            res.status(200);
+            res.status(201);
             return res.json(userDTO);
         } catch (error) {
             next(error)
