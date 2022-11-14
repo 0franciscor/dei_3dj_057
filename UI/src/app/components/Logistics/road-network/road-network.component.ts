@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
+import { nodeData, warehousePosition } from './RoadNetworkJS/default-data';
 import NodeTemplate from './RoadNetworkJS/node-template';
-
+import roadNetworkTemplate from './RoadNetworkJS/road-network';
 @Component({
   selector: 'app-road-network',
   templateUrl: './RoadNetworkJS/road-network.component.html',
@@ -15,7 +16,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   // Cube properties
   @Input() public rotationSpeedX: number = 0.01;
 
-  @Input() public rotationSpeedY: number = 0.01;
+  @Input() public rotationSpeedY: number = 0.005;
   
   @Input() public size: number = 200;
   
@@ -24,13 +25,13 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
 
   //Stage properties
-  @Input() public cameraZ: number = 400;
+  @Input() public cameraZ: number = 9000;
 
   @Input() public fieldOfView: number = 1;
   
   @Input('nearClipping') public nearClippingPlane: number = 1;
   
-  @Input('farClipping') public farClippingPlane: number = 1000;
+  @Input('farClipping') public farClippingPlane: number = 100000;
 
 
   //Helper properties (private)
@@ -41,11 +42,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     return this.canvasRef.nativeElement;
   }
 
-  private loader = new THREE.TextureLoader();
-  private geometry = new THREE.BoxGeometry(1, 1, 1);
-  private material = new THREE.MeshBasicMaterial({color: 0x00ff00});
 
- 
 
  
 
@@ -53,13 +50,19 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   private scene!: THREE.Scene;
 
-  private node = new NodeTemplate();
+  private roadNetwork !: roadNetworkTemplate;
+  
 
   private createScene() {
+
+    this.roadNetwork = new roadNetworkTemplate({positions:warehousePosition});
+    
+   
     //Scene
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x000000);
-    this.scene.add(this.node.object);
+    this.scene.add(this.roadNetwork.object);
+    
     
     //Camera
     this.camera = new THREE.PerspectiveCamera(
@@ -74,8 +77,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   }
 
   private animateCircle() {
-    this.node.object.rotation.x += this.rotationSpeedX;
-    this.node.object.rotation.y += this.rotationSpeedY;
+    this.roadNetwork.object.rotation.x += this.rotationSpeedX;
+    this.roadNetwork.object.rotation.y += this.rotationSpeedY;
   }
 
 
