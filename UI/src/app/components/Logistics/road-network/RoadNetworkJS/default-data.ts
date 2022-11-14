@@ -53,7 +53,7 @@ export const warehousePosition = {
 export const warehouseConnections = {
 
     /*
-    1 to 3
+    1 to 4
     1 to 6
     2 to 10
     2 to 13
@@ -89,7 +89,7 @@ export const warehouseConnections = {
     17 to 2
     */
     matrix: [
-        [1,3],
+        [1,4],
         [1,6],
         [2,10],
         [2,13],
