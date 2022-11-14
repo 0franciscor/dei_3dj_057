@@ -14,7 +14,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   private canvasRef!: ElementRef;
 
   // Cube properties
-  @Input() public rotationSpeedX: number = 0.01;
+  @Input() public rotationSpeedX: number = 0.001;
 
   @Input() public rotationSpeedY: number = 0.005;
   

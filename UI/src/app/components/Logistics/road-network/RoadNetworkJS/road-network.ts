@@ -17,14 +17,15 @@ export default class roadNetworkTemplate {
       
        for (let index = 0, connectionID = 0; index < positions.matrix.length; index++, connectionID+=2) {
             const element = positions.matrix[index];
-            const whConnections = [connections.matrix[connectionID], connections.matrix[connectionID+1]]
+            const whConnections = [positions.matrix[connections.matrix[connectionID][1]-1], positions.matrix[connections.matrix[connectionID+1][1]-1]]
            
             connections.matrix.forEach(element => {
-                if(element[1] == index){
+                
+                if(element[1] == index+1){
+                    console.log(element[1])
                     whConnections.push(positions.matrix[element[0]-1]);
                 }
             });
-
             const node = new NodeTemplate(element,whConnections);
             this.object.add(node.object);
     
