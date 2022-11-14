@@ -50,18 +50,13 @@ export default class UserService implements IUserService{
             const user = await this.userRepo.findById(userDTO.userId);
             if(user===null){
                 return Result.fail<IUserDTO>("User not found");
-            }
-            if(userDTO.email!== user.email.email && userDTO.email!== null){
-                const userEmailOrError = UserEmail.create(userDTO.email);
-                if(userEmailOrError.isFailure)
-                {return Result.fail<IUserDTO>(userEmailOrError.error)};
-                user.email = userEmailOrError.getValue();
-                
-            }
-           await this.userRepo.save(user);
+            }else{
+                user.email= UserEmail.create(userDTO.email).getValue();
+                await this.userRepo.save(user);
 
-           const userDTOresult = UserMap.toDTO(user)as IUserDTO;
-           return Result.ok<IUserDTO>(userDTOresult);
+                const userDTOresult = UserMap.toDTO(user) as IUserDTO;
+                return Result.ok<IUserDTO>(userDTOresult)
+            }
             
         } catch (error) {
             throw error

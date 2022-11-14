@@ -22,7 +22,7 @@ interface UserProps{
 
 export class User extends AggregateRoot<UserProps>{
     get id(): UniqueEntityID{
-        return this.id;
+        return this._id;
     }
 
 
