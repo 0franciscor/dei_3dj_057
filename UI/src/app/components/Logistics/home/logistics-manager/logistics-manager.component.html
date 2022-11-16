@@ -3,10 +3,37 @@
     <mat-card-subtitle>Manager of Logic</mat-card-subtitle>
     <mat-card-actions>
       
-      <button mat-raised-button color="warn">
-        Test Button (make your own buttons lmao)
+     
+      <!--Create path button-->
+      <button mat-raised-button color="warn" style="width: 10em; height: 10em;"  aria-label="Example icon button with a home icon" (click)="goToCreatePath()">
+        Create Path
       </button>
+      <mat-form-field appearance = "fill">
+        <mat-label>Path</mat-label>
+        <select matNativeControl [(ngModel)]="selectedPathOption"(ngModelChange)="onPathSelected($event)" name = "path">
+          <option value="" selected disabled></option>
+          <option *ngFor="let path of pathList;" [value]="path.pathID">{{path.pathID}}</option>
+        </select>
+      </mat-form-field>
+        <!--display selectedPath info-->
 
+        <mat-card *ngIf="selectedPathOption">
+          <mat-card-title>{{selectedPathOption}}</mat-card-title>
+          <mat-card-subtitle>Path Information</mat-card-subtitle>
+        
+        <mat-card-content>
+          <p>PathID: {{selectedPath.pathID}}</p>
+          <p>Start warehouse ID: {{selectedPath.startWHId}}</p>
+          <p>Destination warehouse ID:{{selectedPath.destinationWHId}}</p>
+          <p>Path Distance in KM:{{selectedPath.pathDistance}}</p>
+          <p>Path Travel time in min: {{selectedPath.pathTravelTime}}</p>
+          <p>Wasted truck energy kw/h:{{selectedPath.wastedEnergy}}</p>        
+          <p>Extra travel Time: {{selectedPath.extraTravelTime}}</p>
+        </mat-card-content>
+      
+      </mat-card>
+
+      <!--Road network button-->
       <button mat-raised-button (click)="goToRoadNetwork()" color="primary">
           See Road Network
       </button>

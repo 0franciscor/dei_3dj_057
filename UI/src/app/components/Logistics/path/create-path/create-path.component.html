@@ -1,0 +1,50 @@
+<div class="main-div">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                <h1>Create Path</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class ="sec-div">
+            <form [formGroup]="formCreatePath" (ngSubmit) ="onSubmit()">
+                <mat-form-field appearance ="fill">
+                    <mat-label>PathID</mat-label>
+                    <input matInput type="text" formControlName="pathID">
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance ="fill">
+                    <mat-label>Start Warehouse ID</mat-label>
+                    <input matInput type="string" formControlName="startWHId">
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance ="fill">
+                    <mat-label>Destination Warehouse ID</mat-label>
+                    <input matInput type="string" formControlName="destinationWHId">
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance ="fill">
+                    <mat-label>Path Distance in KM</mat-label>
+                    <input matInput type="number" formControlName="pathDistance">
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance ="fill">
+                    <mat-label>Path travel time in min</mat-label>
+                    <input matInput type="number" formControlName="pathTravelTime">
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance ="fill">
+                    <mat-label>Wasted truck energy kw/h</mat-label>
+                    <input matInput type="number" formControlName="wastedEnergy">
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance ="fill">
+                    <mat-label>Extra travel time in min</mat-label>
+                    <input matInput type="number" formControlName="extraTravelTime">
+                </mat-form-field>
+                <br>
+
+                <button mat-raised-button color="primary" type="submit">Create</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
