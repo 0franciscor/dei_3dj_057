@@ -3,7 +3,9 @@ import * as THREE from 'three';
 import { nodeData, warehousePosition } from './RoadNetworkJS/default-data';
 import NodeTemplate from './RoadNetworkJS/node-template';
 import roadNetworkTemplate from './RoadNetworkJS/road-network';
-@Component({
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
+ @Component({
   selector: 'app-road-network',
   templateUrl: './RoadNetworkJS/road-network.component.html',
   styleUrls: ['./road-network.component.css']
@@ -42,10 +44,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     return this.canvasRef.nativeElement;
   }
 
-
-
- 
-
   private renderer!: THREE.WebGLRenderer;
 
   private scene!: THREE.Scene;
@@ -74,6 +72,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
     this.camera.position.z = this.cameraZ;
 
+    
+
   }
 
   private animateCircle() {
@@ -97,6 +97,12 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       component.renderer.render(component.scene, component.camera);
     }());
 
+    
+    const controls = new OrbitControls(this.camera,this.canvas);
+
+    
+
+    
 
   }
 
