@@ -68,7 +68,6 @@ export default class PathService implements IPathService{
 
     public async getAllPath(pathDTO: IPathDTO): Promise<Result<IPathDTO[]>> {
         try{
-            console.log(pathDTO.startWHId, pathDTO.destinationWHId)
             const paths = await this.pathRepo.getAllPaths(pathDTO.startWHId, pathDTO.destinationWHId);
             const pathDTOResult = PathMap.toDTOList(paths) as IPathDTO[];
             return Result.ok<IPathDTO[]>(pathDTOResult);

@@ -23,6 +23,7 @@
     "@angular/router": "^14.2.0",
     "@types/three": "^0.146.0",
     "https": "^1.0.0",
+    "ng": "^0.0.0",
     "node-fetch": "^2.6.1",
     "rxjs": "~7.5.0",
     "save": "^2.9.0",
