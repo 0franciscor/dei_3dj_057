@@ -1,46 +1,20 @@
 <div class="main-div">
-  <mat-card >
-    <mat-card-header>
-      <mat-card-title>
-        <h1>Create Truck</h1>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content class ="sec-div">
-      <form [formGroup]="formCreateWarehouse" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="fill">
-          <mat-label>TruckID</mat-label>
-          <input matInput type="text" formControlName="truckID">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label>Tare</mat-label>
-          <input matInput type="number" formControlName="tare">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label>Capacity</mat-label>
-          <input matInput type="number" formControlName="capacity">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label>Maximum Battery Capacity</mat-label>
-          <input matInput type="number" formControlName="maxBatteryCapacity">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label>Autonomy</mat-label>
-          <input matInput type="number" formControlName="autonomy">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label>Fast Charge Time</mat-label>
-          <input matInput type="number" formControlName="fastChargeTime">
-        </mat-form-field>
-        <br>
-
-
-        <button mat-raised-button color="primary" type="submit" >Create</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+  <div class="container">
+    <div class="left">
+      <div class="header">
+        <h2 class="animation a1">Create Warehouse</h2>
+        <h4 class="animation a2">Please enter the information in the fields bellow</h4>
+      </div>
+      <div class="form">
+        <input type="email" class="form-field animation a3" placeholder="Warehouse Id">
+        <input type="password" class="form-field animation a4" placeholder="Address">
+        <input type="password" class="form-field animation a4" placeholder="Altitude">
+        <input type="password" class="form-field animation a4" placeholder="Latitude">
+        <input type="password" class="form-field animation a4" placeholder="Longitude">
+        <input type="password" class="form-field animation a4" placeholder="Description">
+        <button class="animation a6">CREATE</button>
+      </div>
+    </div>
+    <div class="right"></div>
+  </div>
 </div>
