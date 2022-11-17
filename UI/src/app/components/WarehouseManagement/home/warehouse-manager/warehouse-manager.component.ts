@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import {WarehouseService} from "../../../../Services/WarehouseService/WarehouseService";
 
 @Component({
   selector: 'app-warehouse-manager',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WarehouseManagerComponent implements OnInit {
 
-  constructor() { }
+  public selectedWarehouseOption : any;
+  public selectedWarehouse: any;
+
+  constructor(private warehouseService: WarehouseService, private router: Router) {
+
+  }
 
   ngOnInit(): void {
+  }
+
+  goToCreateWarehouse(){
+    this.router.navigate(['WarehouseManagement/Warehouse/CreateWarehouse'])
   }
 
 }
