@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EletricGo.Domain.Cities;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
 using EletricGo.Services;
@@ -19,6 +20,7 @@ namespace EletricGo.Controllers
         public WarehouseController(WarehouseService warehouseService)
         {
             _warehouseService = warehouseService;
+
         }
 
         [HttpGet("GetAll")]
@@ -26,6 +28,7 @@ namespace EletricGo.Controllers
         {
             List<WarehouseDto> dto = await _warehouseService.GetWarehouses();
             if (dto == null) return NotFound("Warehouses not found");
+            
 
             return dto;
         }
@@ -52,13 +55,15 @@ namespace EletricGo.Controllers
             {
                 var warehouse = await _warehouseService.CreateWarehouse(dto);
                 return CreatedAtAction(nameof(GetByID), new { id = warehouse.Id }, warehouse);
+
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Conflict(e.Message);
             }
             
-            
+
         }
 
         [HttpPut("Update")]
@@ -104,7 +109,7 @@ namespace EletricGo.Controllers
                 return Ok();
             return NotFound("The requested warehouse does not exist.");
         }
-    
+        
     
     }    
     

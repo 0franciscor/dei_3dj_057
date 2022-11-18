@@ -16,7 +16,8 @@ namespace EletricGo.Infrastructure.Warehouses
             builder.OwnsOne(b => b.Altitude).Property(b => b.altitude).HasColumnName("Altitude");
             builder.OwnsOne(b => b.Coordinates).Property(b => b.latitude).HasColumnName("Latitude");
             builder.OwnsOne(b => b.Coordinates).Property(b => b.longitude).HasColumnName("Longitude");
-            
+            builder.OwnsOne((b => b.cityId)).Property(b=>b.Id).HasColumnName("City_Id");
+
         }
     }    
 }

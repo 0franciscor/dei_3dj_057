@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Warehouses.ValueObjects
@@ -40,17 +41,7 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
             }
             this.number = int.Parse(aux[1]);
             
-            if (aux[2].Length != 8)
-            {
-                throw new BusinessRuleValidationException("The zip code isn't in the right format");
-            }
-            
-            if (!int.TryParse(aux[2][..4], out _) && !int.TryParse(aux[2].AsSpan(4,3), out _))
-            {
-                throw new BusinessRuleValidationException("The zip code isn't in the right format");
-            }
-
-            if (!aux[2].Substring(4,1).Equals("-"))
+            if (!Regex.IsMatch(aux[2], "[0-9]{4}-[0-9]{3}"))
             {
                 throw new BusinessRuleValidationException("The zip code isn't in the right format");
             }

@@ -21,7 +21,13 @@ namespace EletricGo.Domain.Shared
         {
             this.ObjValue = value;    
         }
-        
+
+        protected EntityID()
+        {
+            
+        }
+
+
         public abstract String AsString();
 
 

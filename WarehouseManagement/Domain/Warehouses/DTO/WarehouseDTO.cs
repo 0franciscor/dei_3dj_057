@@ -11,6 +11,8 @@ namespace EletricGo.Domain.Warehouses.DTO
 		public string Longitude { get; set; }
 		public string Designation { get; set; }
 		
+		public string City { get; set; }
+		
 
 	}
 }
