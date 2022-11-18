@@ -4,7 +4,7 @@
 
 package "<<aggregate>> WarehouseManagement"{
   entity Warehouse
-
+  entity City
   entity ChargingStation
   class WarehouseIndentifier
   class WarehouseDesignation
@@ -13,6 +13,8 @@ package "<<aggregate>> WarehouseManagement"{
   class CurrentOccupation
   class TotalOccupation
   class WarehouseAltitude
+  class CityId
+  class CityName
 
 }
 
@@ -29,7 +31,12 @@ entity ChargingStation <<entity>>
 class CurrentOccupation <<(V,#FF8B40) value object>>
 class TotalOccupation <<(V,#FF8B40) value object>>
 
-Warehouse "1" --> "1" ChargingStation: has
+entity City <<entity>>
+class CityId <<(V,#FF8B40) value object>>
+class CityName <<(V,#FF8B40) value object>>
+
+Warehouse "1" ---> "1" ChargingStation: has
+Warehouse "1" ----> "1" City : has
 
 Warehouse "1" --> "1" WarehouseIndentifier
 Warehouse "1" --> "1" WarehouseDesignation
@@ -40,5 +47,8 @@ Warehouse "1" --> "1" WarehouseAltitude
 
 ChargingStation "1" --> "1" CurrentOccupation
 ChargingStation "1" --> "1" TotalOccupation
+
+City "1" --> "1" CityId
+City "1" --> "1" CityName
 
 @enduml
