@@ -15,7 +15,7 @@ export class CreatePathComponent implements OnInit {
 
   ngOnInit(): void {
     this.formCreatePath= this.fb.group({
-      pathID: [''],
+      pathID: [''], 
       startWHId: [''],
       destinationWHId: [''],
       pathDistance: [''],
@@ -26,6 +26,7 @@ export class CreatePathComponent implements OnInit {
   }
 
   onSubmit(){
+    this.formCreatePath.value.pathID ="path"+ this.formCreatePath.value.startWHId + this.formCreatePath.value.destinationWHId
     this.pathService.createPath(this.formCreatePath.value);
   }
 
