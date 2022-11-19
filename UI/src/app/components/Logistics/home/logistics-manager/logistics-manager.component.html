@@ -8,30 +8,72 @@
       <button mat-raised-button color="warn" style="width: 10em; height: 10em;"  aria-label="Example icon button with a home icon" (click)="goToCreatePath()">
         Create Path
       </button>
-      <mat-form-field appearance = "fill">
-        <mat-label>Path</mat-label>
-        <select matNativeControl [(ngModel)]="selectedPathOption"(ngModelChange)="onPathSelected($event)" name = "path">
-          <option value="" selected disabled></option>
-          <option *ngFor="let path of pathList;" [value]="path.pathID">{{path.pathID}}</option>
-        </select>
-      </mat-form-field>
+      <!--Select path by WH id's-->
+      <form [formGroup]="formSelectWarehouse"(ngSubmit)="onSubmit()" >
+        <mat-form-field appearance = "fill">
+          <mat-label>Starting Warehouse</mat-label>
+          <input matInput type ="text" formControlName="startWHId">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance = "fill">
+          <mat-label>Destination Warehouse</mat-label>
+          <input matInput type ="text" formControlName="destinationWHId">
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" type="submit">Search</button>
+      </form>
+    
         <!--display selectedPath info-->
 
-        <mat-card *ngIf="selectedPathOption">
-          <mat-card-title>{{selectedPathOption}}</mat-card-title>
-          <mat-card-subtitle>Path Information</mat-card-subtitle>
+        <!-- <mat-card *ngIf="selectedPathOption"> -->
+          <!-- <table>
+            <thead>
+              <th>Path</th>
+              <th>Information</th>
+            </thead>
+            <tbody>
+              <tr *ngFor ="let path of selectedPathOption">
+                <td>{{path}}</td>
+              </tr>
+            </tbody>
+          </table> -->
+         <div class="pathTable">
+            <table *ngIf="selectedPathOption.length>0" class="table-of-paths">
+              <thead>
+                <tr>
+                  <th>Start Warehouse</th>
+                  <th>Destination warehouse</th>
+                  <th>Path distance</th>
+                  <th>Travel time</th>
+                  <th>Wasted energy</th>
+                  <th>Extra Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let path of selectedPathOption">
+                  <td>{{path.startWHId}}</td>
+                  <td>{{path.destinationWHId}}</td>
+                  <td>{{path.pathDistance}}</td>
+                  <td>{{path.pathTravelTime}}</td>
+                  <td>{{path.wastedEnergy}}</td>
+                  <td>{{path.extraTravelTime}}</td>
+                </tr>
+              </tbody>
+            </table>
+         </div>
+
+          
         
-        <mat-card-content>
-          <p>PathID: {{selectedPath.pathID}}</p>
+        <!-- <mat-card-content>
           <p>Start warehouse ID: {{selectedPath.startWHId}}</p>
           <p>Destination warehouse ID:{{selectedPath.destinationWHId}}</p>
           <p>Path Distance in KM:{{selectedPath.pathDistance}}</p>
           <p>Path Travel time in min: {{selectedPath.pathTravelTime}}</p>
           <p>Wasted truck energy kw/h:{{selectedPath.wastedEnergy}}</p>        
           <p>Extra travel Time: {{selectedPath.extraTravelTime}}</p>
-        </mat-card-content>
+        </mat-card-content> -->
       
-      </mat-card>
+      
 
       <!--Road network button-->
       <button mat-raised-button (click)="goToRoadNetwork()" color="primary">
