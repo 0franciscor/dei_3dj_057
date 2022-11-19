@@ -20,7 +20,7 @@ export default(app: Router)=>{
     ctrl.getPath(req,res,next);
   });
   
-  route.get('/all',(req,res,next)=> ctrl.getAllPaths(req,res,next));
+  route.get('/all/:startWHId/:destinationWHId',(req,res,next)=> ctrl.getAllPaths(req,res,next));
     
   route.post('/',
     celebrate({

@@ -8,16 +8,29 @@ export class PathService{
 
     constructor(){}
 
-    async getPath(){
-        const url = 'http://localhost:3000/api/path/all'
-        let test : any[]=[];
-        await fetch(url,{
-            method:'GET',
-            headers:{
-                'Accept': 'application/json'
-            }
-        }).then(res => res.json().then(data=>{test=data;}));
+    async getPath(warehouses:any){
+        if(warehouses.startWHId == ''){
+            warehouses.startWHId = "undefined"
+        }else if(warehouses.destinationWHId ==''){
+            warehouses.destinationWHId = "undefined"
+        };
 
+        const url = 'http://localhost:3000/api/path/all/'+warehouses.startWHId +"/"+warehouses.destinationWHId;
+        let test : any[]=[];
+        const data = warehouses
+        console.log(data)
+        try {
+            await fetch(url,{
+                method:'GET',
+                headers:{
+                    'Accept': 'application/json'
+                }
+            }).then(res => res.json().then(data=>{test=data;}));
+        } catch (error) {
+            
+        }
+        
+        console.log(test)
         return test;
     }
 
@@ -25,6 +38,7 @@ export class PathService{
         const url= 'http://localhost:3000/api/path/'
 
         const data = path;
+        console.log(data)
 
         fetch(url,{
             method: 'POST',

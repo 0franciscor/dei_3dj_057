@@ -32,7 +32,18 @@ export default class PathController implements IPathController{
 
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
         try {
-            const paths= await this.pathService.getAllPath(req.body);
+            if(req.params.startWHId == "undefined"){
+                req.params.startWHId="";
+            }else if(req.params.destinationWHId== "undefined"){
+                req.params.destinationWHId="";
+            }
+
+            let warehouses= {
+                startWHId: req.params.startWHId,
+                destinationWHId:req.params.destinationWHId
+            }as IPathDTO;
+
+            const paths= await this.pathService.getAllPath(warehouses);
             if(paths.getValue().length==0){
                 res.status(404) 
                 return res.send("No paths found");
