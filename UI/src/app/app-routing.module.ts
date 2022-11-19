@@ -9,6 +9,7 @@ import { RoadNetworkComponent } from './components/Logistics/road-network/road-n
 import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
 import { CreatePathComponent } from './components/Logistics/path/create-path/create-path.component';
 import {WarehouseComponent} from "./components/WarehouseManagement/warehouse/warehouse.component";
+import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
 
 
 const routes: Routes = [
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'Logistics/Home/LogisticsManager', component: LogisticsManagerComponent},
   { path: 'WarehouseManagement/Home/WarehouseManager', component: WarehouseManagerComponent},
   { path: 'Logistics/RoadNetwork', component: RoadNetworkComponent},
-  { path: 'WarehouseManagement/Warehouse/CreateWarehouse', component: WarehouseComponent}
+  { path: 'WarehouseManagement/Warehouse/CreateWarehouse', component: WarehouseComponent},
+  { path: 'WarehouseManagement/Delivery/CreateDelivery', component: CreateDeliveryComponent}
 ];
 
 @NgModule({
