@@ -18,6 +18,8 @@ namespace EletricGo.Domain.Warehouses
         public CityId cityId { get; set;}
 
         public Warehouse() { }
+
+        public Warehouse(EntityID id) { this.Id = id.Value;}
         
         public Warehouse(EntityID id, Address address, Altitude altitude, Coordinates coordinates, Designation designation)
         {

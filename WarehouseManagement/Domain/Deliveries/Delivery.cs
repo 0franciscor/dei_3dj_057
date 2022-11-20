@@ -1,19 +1,20 @@
 using EletricGo.Domain.Shared;
+using EletricGo.Domain.Warehouses;
+using EletricGo.Domain.Warehouses.ValueObjects;
 using System;
 
 namespace EletricGo.Domain.Deliveries
 {
     public class Delivery : Entity<DeliveryID>, IAggregateRoot
-    { 
-        public DeliveryDate deliveryDate { get; private set;}
-        public LoadTime loadTime { get; private set;}
-        public UnloadTime unloadTime { get; private set;}
-        public Destination destination { get; private set;}
-        public DeliveryMass deliveryMass { get; private set;}
-
-        public Delivery() { }
-        public Delivery(string Id, DeliveryDate deliveryDate, LoadTime loadTime, UnloadTime unloadTime, Destination destination, DeliveryMass deliveryMass)
-        { 
+    {
+        public DeliveryDate deliveryDate { get; private set; }
+        public LoadTime loadTime { get; private set; }
+        public UnloadTime unloadTime { get; private set; }
+        public Warehouse destination { get; private set; }
+        public DeliveryMass deliveryMass { get; private set; }
+        public Delivery() {}
+        public Delivery(string Id, DeliveryDate deliveryDate, LoadTime loadTime, UnloadTime unloadTime, Warehouse destination, DeliveryMass deliveryMass)
+        {
             this.Id = Id;
             this.deliveryDate = deliveryDate;
             this.loadTime = loadTime;
@@ -23,19 +24,26 @@ namespace EletricGo.Domain.Deliveries
         }
 
         public Delivery(DeliveryDTO deliveryDTO)
-        { 
+        {
             this.Id = deliveryDTO.deliveryID;
             this.deliveryDate = new DeliveryDate(deliveryDTO.deliveryDate);
             this.loadTime = new LoadTime(deliveryDTO.loadTime);
             this.unloadTime = new UnloadTime(deliveryDTO.unloadTime);
-            this.destination = new Destination(deliveryDTO.destination);
+            this.destination = new Warehouse(new WarehouseId(deliveryDTO.destination));
             this.deliveryMass = new DeliveryMass(deliveryDTO.deliveryMass);
         }
 
         public DeliveryDTO toDeliveryDTO()
         {
-            return new DeliveryDTO() {deliveryID = this.Id, deliveryDate = this.deliveryDate.AsDateTime(), loadTime = this.loadTime.AsFloat(), 
-                unloadTime = this.unloadTime.AsFloat(), destination = this.destination.AsString(), deliveryMass = this.deliveryMass.AsFloat() };
+            return new DeliveryDTO()
+            {
+                deliveryID = this.Id,
+                deliveryDate = this.deliveryDate.AsDateTime(),
+                loadTime = this.loadTime.AsFloat(),
+                unloadTime = this.unloadTime.AsFloat(),
+                destination = this.destination.Address.AsString(),
+                deliveryMass = this.deliveryMass.AsFloat()
+            };
         }
 
         public void Update(DeliveryDTO deliveryDTO)
@@ -50,7 +58,7 @@ namespace EletricGo.Domain.Deliveries
                 this.unloadTime = new UnloadTime(deliveryDTO.unloadTime);
 
             if (deliveryDTO.destination != null)
-                this.destination = new Destination(deliveryDTO.destination);
+                this.destination = new Warehouse(new WarehouseId(deliveryDTO.destination));
 
             if (deliveryDTO.deliveryMass != default(float))
                 this.deliveryMass = new DeliveryMass(deliveryDTO.deliveryMass);
@@ -64,7 +72,7 @@ namespace EletricGo.Domain.Deliveries
 
         override
         public bool Equals(Object obj)
-        { 
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
@@ -72,7 +80,5 @@ namespace EletricGo.Domain.Deliveries
             return this.Id.Equals(delivery.Id) && this.deliveryDate.Equals(delivery.deliveryDate) && this.loadTime.Equals(delivery.loadTime) && this.unloadTime.Equals(delivery.unloadTime) && this.destination.Equals(delivery.destination) && this.deliveryMass.Equals(delivery.deliveryMass);
 
         }
-
-    }    
+    }
 }
-
