@@ -7,7 +7,7 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
 	public class WarehouseId : EntityID
 	{
 		
-		public string warehouseID { get;}
+		public string warehouseID { get; set;}
 
 		public WarehouseId(string value) : base(value)
 		{

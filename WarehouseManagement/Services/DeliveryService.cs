@@ -87,7 +87,5 @@ namespace EletricGo.Services
         {
             return await _deliveryRepository.Find(deliveryID);
         }
-
     }
-
 }

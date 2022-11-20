@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using CsvHelper.Configuration.Attributes;
 using EletricGo.Domain.Cities.DTO;
 using EletricGo.Domain.Cities.ValueObjects;
 using EletricGo.Domain.Shared;

@@ -23,8 +23,8 @@ namespace EletricGo.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new WarehouseEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DeliveryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CityEntityTypeConfiguration());
         }
     }

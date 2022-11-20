@@ -23,7 +23,7 @@ public class CityRepository : BaseRepository<City, CityId>, ICityRepository
             
             return _context.City.First(c => c.Name.Name.ToUpper() == name.ToUpper());
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return null;
         }
