@@ -18,7 +18,11 @@ namespace EletricGo.Infrastructure.Deliveries
             builder.OwnsOne(b => b.loadTime).Property(b => b.time).HasColumnName("loadTime");
             builder.OwnsOne(b => b.unloadTime).Property(b => b.time).HasColumnName("unloadTime");
             builder.OwnsOne(b => b.deliveryMass).Property(b => b.mass).HasColumnName("deliveryMass");
-            builder.HasOne(b => b.destination).WithMany().HasForeignKey("warehouseId");
+            builder.HasOne(b => b.destination).WithMany().HasForeignKey(b => b.destinationId);
+            //builder.Property(b => b.destinationId).HasConversion(v => v, v => new WarehouseId(v));
+
+            /*builder.HasOne(b => b.warehouse).WithMany().HasForeignKey(b => b.warehouseId);
+            builder.Property(b => b.warehouseId).HasConversion(v => v.value, v => new WarehouseId(v));*/
         }
     }
 }
