@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ env.DOTNET_PATH }}
+        working-directory: ${{ env.DOTNET_TEST_PATH }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v3
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ env.DOTNET_TEST_PATH }}
+        working-directory: ${{ env.DOTNET_PATH }}
     steps:
       - uses: actions/checkout@v2
       
