@@ -50,6 +50,8 @@ export const warehousePosition = {
 
 }
 
+
+
 export const warehouseConnections = {
 
     /*
@@ -88,45 +90,53 @@ export const warehouseConnections = {
     17 to 1
     17 to 2
     */
+    
+    
+    
     matrix: [
-        [1,4],
-        [1,6],
-        [2,10],
-        [2,13],
-        [3,1],
-        [3,6],
-        [4,13],
-        [4,12],
-        [5,10],
-        [5,15],
-        [6,16],
-        [6,5],
-        [7,17],
-        [7,8],
-        [8,9],
-        [8,1],
-        [9,2],
-        [9,15],
-        [10,2],
-        [10,12],
-        [11,16],
-        [11,6],
-        [12,8],
-        [12,15],
-        [13,3],
-        [13,15],
-        [14,9],
-        [14,8],
-        [15,3],
-        [15,12],
-        [16,4],
-        [16,17],
-        [17,1],
-        [17,2]
+        [1,4,getRandomNumber()],
+        [1,6,getRandomNumber()],
+        [2,10,getRandomNumber()],
+        [2,13,getRandomNumber()],
+        [3,1,getRandomNumber()],
+        [3,6,getRandomNumber()],
+        [4,13,getRandomNumber()],
+        [4,12,getRandomNumber()],
+        [5,10,getRandomNumber()],
+        [5,15,getRandomNumber()],
+        [6,16,getRandomNumber()],
+        [6,5,getRandomNumber()],
+        [7,17,getRandomNumber()],
+        [7,8,getRandomNumber()],
+        [8,9,getRandomNumber()],
+        [8,1,getRandomNumber()],
+        [9,2,getRandomNumber()],
+        [9,15,getRandomNumber()],
+        [10,2,getRandomNumber()],
+        [10,12,getRandomNumber()],
+        [11,16,getRandomNumber()],
+        [11,6,getRandomNumber()],
+        [12,8,getRandomNumber()],
+        [12,15,getRandomNumber()],
+        [13,3,getRandomNumber()],
+        [13,15,getRandomNumber()],
+        [14,9,getRandomNumber()],
+        [14,8,getRandomNumber()],
+        [15,3,getRandomNumber()],
+        [15,12,getRandomNumber()],
+        [16,4,getRandomNumber()],
+        [16,17,getRandomNumber()],
+        [17,1,getRandomNumber()],
+        [17,2,getRandomNumber()]
     ]
 
 
     
         
 
+}
+
+function getRandomNumber() {
+    //return random number between 0.1 and 0.8
+    return Math.random() * (0.8 - 0.1) + 0.1;
 }
