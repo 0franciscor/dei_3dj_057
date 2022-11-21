@@ -33,10 +33,11 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal
       - name: Code Coverage Calculation
-        run: dotnet dotnet test --collect:"XPlat Code Coverage"
+        run: dotnet test --collect:"XPlat Code Coverage"
 
   Deployment:
     name: Build and Deploy
+    needs: [BuildAndTestWarehouseAPI]
     runs-on: ubuntu-latest
     defaults:
       run:
