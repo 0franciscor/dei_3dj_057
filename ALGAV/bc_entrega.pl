@@ -1,6 +1,6 @@
 
 %entrega(<idEntrega>,<data>,<massaEntrega>,<armazemEntrega>,<tempoColoc>,<tempoRet>)
-entrega(4439, 20221205, 200, 1, 8, 10).
+entrega(4439, 20221205, 10, 1, 8, 10).
 entrega(4438, 20221205, 150, 9, 7, 9).
 entrega(4445, 20221205, 100, 3, 5, 7).
 entrega(4443, 20221205, 120, 8, 6, 8).

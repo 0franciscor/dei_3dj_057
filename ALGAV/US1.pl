@@ -1,6 +1,6 @@
 :-consult('bc_armazens.pl').
-:-consult('bc_factos_camiao.pl')
-:-consult('bc_entrega.pl')
+:-consult('bc_factos_camiao.pl').
+:-consult('bc_entrega.pl').
 
 allPaths(L, LF) :-(checkIfCityExist(L),!,findMatosinhos(M1),deleteMatosinhos(M1,L,L2),findall(LAux,permutation(L2,LAux),L3),appendMatosinhos([M1],L3,LF)); write('One of the entered coordinates does not correspond to a warehouse that is in the system.').
 
@@ -15,15 +15,18 @@ appendMatosinhos(A,[L|LL],[L2|T]):- appendMatosinhos(A,LL,T), append(A,L,L1), ap
 findMatosinhos(M):-idArmazem('Matosinhos',M).
 
 
+weightWithDeliveries(IDTRUCK,DL,FW):- findTruck(IDTRUCK,TW,CP),sumDeliveryWeights(DL,DW,CP),FW is TW+DW.
 
-weightWithDeliveries(IDTRUCK,DL,FW):- carateristicasCam(IDTRUCK,TW,_,_,_,_),sumDeliveryWeights(DL,TW,DW),FW is TW+DW.
+findTruck(IDTRUCK,TW,CP):- carateristicasCam(IDTRUCK,TW,CP,_,_,_).
 
 
-sumDeliveryWeights([H|T],TW,DW):-entrega(H,_,DM,_,_,_),TW1 is TW+DM, sumDeliveryWeights(T,TW1,DW), DW is TW.
-sumDeliveryWeights([H|[]],_,DW):-entrega(H,_,DM,_,_,_),DW is DM,!.
+sumDeliveryWeights([],0,_):-!.
+sumDeliveryWeights([H|T],DW,CP):- sumDeliveryWeights(T,DW1,CP),entrega(H,_,WEIGHT,_,_,_),AUX is CP-DW1,((WEIGHT=<AUX,!,DW is DW1+WEIGHT); DW is DW1).
+
+%sumDeliveryWeights([H|T],TW,DW):-entrega(H,_,DM,_,_,_),TW1 is TW+DM, sumDeliveryWeights(T,TW1,DW), DW is TW.
+%sumDeliveryWeights([H|[]],_,DW):-entrega(H,_,DM,_,_,_),DW is DM,!.
 
 fullCapacity(IDTRUCK,FC):- carateristicasCam(IDTRUCK,T,C,_,_,_), FC is T*C.
-
 
 ratioWeights(FW,FC,FR):- FR is FW/FC.
 
