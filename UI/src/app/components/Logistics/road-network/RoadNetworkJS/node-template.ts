@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Vector3 } from "three";
 export default class NodeTemplate {
     object: THREE.Group;
 
@@ -27,8 +28,10 @@ export default class NodeTemplate {
             let x1 = (Math.PI*pos[0])/180;
 
             rectangle.rotation.z= Math.atan2((y2-y1),(x2-x1))-Math.PI/2;
-            
+
             rectangle.position.set(pos[0]-length/2*Math.sin(rectangle.rotation.z), pos[1]+length/2*Math.cos(rectangle.rotation.z), pos[2]);
+            
+           // rectangle.setFromComplanarPoints(pos[0]-length/2*Math.sin(rectangle.rotation.z), pos[1]+length/2*Math.cos(rectangle.rotation.z), pos[2]);
             this.object.add(rectangle);
 
 
@@ -37,15 +40,30 @@ export default class NodeTemplate {
             let roadGeometry = new THREE.PlaneGeometry( 0.5, roadLength, 32 );
             let roadMaterial = new THREE.MeshBasicMaterial( {color:  0xA52A2A , side: THREE.DoubleSide} );
             let road = new THREE.Mesh(roadGeometry, roadMaterial);
+
+
   
             
 
             
             
-
-
+            /* 5 */
             road.rotation.z= Math.atan2((y2-y1),(x2-x1))-Math.PI/2;
             road.position.set((pos[0]+element[0])/2, (pos[1]+element[1])/2, (pos[2]+element[2])/2);
+            
+          /*   if(pos[2]> element[2]){
+                let h = pos[2] - element[2];
+                incline = Math.atan(h/roadLength);
+                inclineVector = new THREE.Vector3(pos[0]-element[0],pos[1]-element[1],h)
+            }else if(pos[2] < element[2]){
+                let h = element[2]- pos[2];
+                incline = Math.atan(h/roadLength)
+                inclineVector = new THREE.Vector3(0,0,h)
+            }
+            
+            road.rotateOnAxis(inclineVector,incline) */ 
+            
+
             this.object.add(road);
             
             

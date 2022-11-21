@@ -77,8 +77,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   }
 
   private animateCircle() {
-    // this.roadNetwork.object.rotation.x += this.rotationSpeedX;
-    // this.roadNetwork.object.rotation.y += this.rotationSpeedY;
+   /*  this.roadNetwork.object.rotation.x += this.rotationSpeedX;
+    this.roadNetwork.object.rotation.y += this.rotationSpeedY; */
   }
 
 
