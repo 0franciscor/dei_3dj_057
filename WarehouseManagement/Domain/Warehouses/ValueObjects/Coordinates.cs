@@ -25,7 +25,7 @@ namespace EletricGo.Domain.Warehouses.ValueObjects
             }
 
             
-            if (!Regex.IsMatch(latitude,"-*([0-9]|[1-8][0-9]|90).[0-9]{4}º [N|S]"))
+            if (!Regex.IsMatch(latitude,"-*(([0-9])|([1-8][0-9])|(90)).[0-9]{4}º [N|S]"))
             {
                 throw new BusinessRuleValidationException("The latitude must be in the following format XX.XXXXº N");
             }
