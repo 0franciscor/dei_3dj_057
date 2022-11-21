@@ -40,29 +40,6 @@ namespace WarehouseManagementTest.Unit.Domain
         }
 
         [Test]
-        public void CreateDestinationInsuccessNull()
-        {
-            var ex = Assert.Throws<BusinessRuleValidationException>(() => new Destination(null));
-            Assert.That(ex.Message, Is.EqualTo("Destination cannot be null."));
-        }
-
-        [Test]
-        public void CreateDestinationInsuccessEmpty()
-        {
-            var ex = Assert.Throws<BusinessRuleValidationException>(() => new Destination(""));
-            Assert.That(ex.Message, Is.EqualTo("Destination cannot be empty."));
-        }
-
-        [Test]
-        public void CreateDestinationSuccess()
-        {
-            string destination = "Rua do ISEP";
-            var deliveryDestination = new Destination(destination);
-
-            Assert.That(destination, Is.EqualTo(deliveryDestination.AsString()));
-        }
-
-        [Test]
         public void CreateUnloadTimeInsuccess()
         {
             var ex = Assert.Throws<BusinessRuleValidationException>(() => new UnloadTime(-3));

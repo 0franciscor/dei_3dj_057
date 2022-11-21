@@ -28,11 +28,11 @@ namespace WarehouseManagementTest.Integration
         {
             var deliveryList = new List<Delivery>
             {
-                new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass)),
-                new Delivery("id2", new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass)),
-                new Delivery("id3", new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass)),
-                new Delivery("id4", new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass)),
-                new Delivery("id5", new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass)),
+                new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass)),
+                new Delivery("id2", new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass)),
+                new Delivery("id3", new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass)),
+                new Delivery("id4", new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass)),
+                new Delivery("id5", new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass)),
             };
 
             return deliveryList;
@@ -72,7 +72,7 @@ namespace WarehouseManagementTest.Integration
         [Test]
         public async Task GetByIDTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var deliveryExpected = delivery.toDeliveryDTO();
             var deliveryID = new DeliveryID(id);
 
@@ -98,7 +98,7 @@ namespace WarehouseManagementTest.Integration
         [Test]
         public async Task GetByPeriod()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var deliveryDTO = delivery.toDeliveryDTO();
 
             var dateTime1 = new DateTime(2024, 12, 10);
@@ -129,7 +129,7 @@ namespace WarehouseManagementTest.Integration
         [Test]
         public async Task PostTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var deliveryExpected = delivery.toDeliveryDTO();
 
             var mockUnit = new Mock<IUnitOfWork>();
@@ -160,7 +160,7 @@ namespace WarehouseManagementTest.Integration
         [Test]
         public async Task PutTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
 
             var preChangeDto = delivery.toDeliveryDTO();
             var postChangeDto = delivery.toDeliveryDTO();
@@ -192,7 +192,7 @@ namespace WarehouseManagementTest.Integration
         [Test]
         public async Task DeleteTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var deliveryExpected = delivery.toDeliveryDTO();
 
             var mockRepository = new Mock<IDeliveryRepository>();

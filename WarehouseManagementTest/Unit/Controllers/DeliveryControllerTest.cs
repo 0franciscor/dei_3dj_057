@@ -72,7 +72,7 @@ namespace WarehouseManagementTest.Unit.Controllers
         [Test]
         public async Task GetByIDTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var deliveryExpected = delivery.toDeliveryDTO();
             var deliveryID = new DeliveryID(id);
 
@@ -98,7 +98,7 @@ namespace WarehouseManagementTest.Unit.Controllers
         [Test]
         public async Task GetByPeriod()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var deliveryDTO = delivery.toDeliveryDTO();
 
             var dateTime1 = new DateTime(2023, 12, 10);
@@ -128,7 +128,7 @@ namespace WarehouseManagementTest.Unit.Controllers
         [Test]
         public async Task PostTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var deliveryExpected = delivery.toDeliveryDTO();
 
             var mockRepository = new Mock<IDeliveryRepository>();
@@ -154,7 +154,7 @@ namespace WarehouseManagementTest.Unit.Controllers
         [Test]
         public async Task PutTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
 
             var preChangeDto = delivery.toDeliveryDTO();
             var postChangeDto = delivery.toDeliveryDTO();
@@ -184,7 +184,7 @@ namespace WarehouseManagementTest.Unit.Controllers
         [Test]
         public async Task DeleteTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var deliveryExpected = delivery.toDeliveryDTO();
 
             var mockRepository = new Mock<IDeliveryRepository>();

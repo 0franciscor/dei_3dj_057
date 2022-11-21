@@ -1,10 +1,7 @@
-using EletricGo.Controllers;
 using EletricGo.Domain.Deliveries;
 using EletricGo.Domain.Shared;
-using Microsoft.AspNetCore.Mvc;
 using EletricGo.Services;
 using Moq;
-using System.Runtime.Intrinsics.X86;
 
 namespace WarehouseManagementTest.Unit.Services
 {
@@ -55,7 +52,7 @@ namespace WarehouseManagementTest.Unit.Services
         private List<Delivery> createdDeliveries()
         {
             var deliveryList = new List<Delivery>();
-            deliveryList.Add(new Delivery(id, new DeliveryDate(new DateTime(2025, 12, 13)), new LoadTime(1), new UnloadTime(2), new Destination("entregaTeste2"), new DeliveryMass(3)));
+            deliveryList.Add(new Delivery(id, new DeliveryDate(new DateTime(2025, 12, 13)), new LoadTime(1), new UnloadTime(2), destination, new DeliveryMass(3)));
 
             return deliveryList;
         }
@@ -63,7 +60,7 @@ namespace WarehouseManagementTest.Unit.Services
         [Test]
         public async Task GetDeliveryTest()
         {
-            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
 
             var mockRepository = new Mock<IDeliveryRepository>();
             mockRepository.Setup(repo => repo.GetByID(new DeliveryID(id))).ReturnsAsync(deliveryExpected);
@@ -80,7 +77,7 @@ namespace WarehouseManagementTest.Unit.Services
                 Assert.That(deliveryResult.deliveryDate, Is.EqualTo(deliveryExpected.deliveryDate.date));
                 Assert.That(deliveryResult.loadTime, Is.EqualTo(deliveryExpected.loadTime.time));
                 Assert.That(deliveryResult.unloadTime, Is.EqualTo(deliveryExpected.unloadTime.time));
-                Assert.That(deliveryResult.destination, Is.EqualTo(deliveryExpected.destination.destination));
+                Assert.That(deliveryResult.destination, Is.EqualTo(deliveryExpected.destination));
                 Assert.That(deliveryResult.deliveryMass, Is.EqualTo(deliveryExpected.deliveryMass.mass));
 
             });
@@ -89,7 +86,7 @@ namespace WarehouseManagementTest.Unit.Services
         [Test]
         public void GetByPeriodTest()
         {
-            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var delivery = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
             var dateTime1 = new DateTime(2023, 12, 10);
             var dateTime2 = new DateTime(2023, 12, 14);
 
@@ -115,7 +112,7 @@ namespace WarehouseManagementTest.Unit.Services
         [Test]
         public async Task CreateDeliveryTest()
         {
-            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
 
             var deliveryDto = new DeliveryDTO
             {
@@ -144,7 +141,7 @@ namespace WarehouseManagementTest.Unit.Services
                 Assert.That(deliveryResult.deliveryDate, Is.EqualTo(deliveryExpected.deliveryDate.date));
                 Assert.That(deliveryResult.loadTime, Is.EqualTo(deliveryExpected.loadTime.time));
                 Assert.That(deliveryResult.unloadTime, Is.EqualTo(deliveryExpected.unloadTime.time));
-                Assert.That(deliveryResult.destination, Is.EqualTo(deliveryExpected.destination.destination));
+                Assert.That(deliveryResult.destination, Is.EqualTo(deliveryExpected.destination));
                 Assert.That(deliveryResult.deliveryMass, Is.EqualTo(deliveryExpected.deliveryMass.mass));
 
             });
@@ -165,7 +162,7 @@ namespace WarehouseManagementTest.Unit.Services
                 deliveryMass = deliveryMass
             };
 
-            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
 
             var mockRepository = new Mock<IDeliveryRepository>();
             mockRepository.Setup(repo => repo.GetByID(new DeliveryID(id))).ReturnsAsync(deliveryExpected);
@@ -185,7 +182,7 @@ namespace WarehouseManagementTest.Unit.Services
         {
             var deliveryID = new DeliveryID(id);
 
-            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), new Destination(destination), new DeliveryMass(deliveryMass));
+            var deliveryExpected = new Delivery(id, new DeliveryDate(deliveryDate), new LoadTime(loadTime), new UnloadTime(unloadTime), destination, new DeliveryMass(deliveryMass));
 
             var mockRepository = new Mock<IDeliveryRepository>();
             mockRepository.Setup(repo => repo.GetByID(deliveryID)).ReturnsAsync(deliveryExpected);
@@ -203,7 +200,7 @@ namespace WarehouseManagementTest.Unit.Services
                 Assert.That(deliveryResult.deliveryDate, Is.EqualTo(deliveryExpected.deliveryDate.date));
                 Assert.That(deliveryResult.loadTime, Is.EqualTo(deliveryExpected.loadTime.time));
                 Assert.That(deliveryResult.unloadTime, Is.EqualTo(deliveryExpected.unloadTime.time));
-                Assert.That(deliveryResult.destination, Is.EqualTo(deliveryExpected.destination.destination));
+                Assert.That(deliveryResult.destination, Is.EqualTo(deliveryExpected.destination));
                 Assert.That(deliveryResult.deliveryMass, Is.EqualTo(deliveryExpected.deliveryMass.mass));
 
             });
