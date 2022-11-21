@@ -10,6 +10,7 @@ env:
     AZURE_WEBAPP_NAME: WhManagement57
     AZURE_WEBAPP_PACKAGE_PATH: './published' 
     DOTNET_PATH: 'WarehouseManagement'
+    DOTNET_TEST_PATH: 'WarehouseManagement'
     DOTNET_VERSION: '6.0'
     NODE_PATH: './Logistics'
 
@@ -39,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ env.DOTNET_PATH }}
+        working-directory: ${{ env.DOTNET_TEST_PATH }}
     steps:
       - uses: actions/checkout@v2
       
