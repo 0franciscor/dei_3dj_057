@@ -35,14 +35,14 @@ namespace EletricGo
         {
             
 
-            services.AddCors(options =>
+            /*services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
                         builder.WithOrigins("http://localhost:3000");
                     });
-            });
+            });*/
 
             services.AddDbContext<EletricGoDBContext>(opt =>
                         opt.UseMySql(Configuration.GetConnectionString("Default"),
@@ -94,7 +94,7 @@ namespace EletricGo
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(options => options.WithOrigins("http://localhost:4200, http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthorization();
 
