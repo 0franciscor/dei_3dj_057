@@ -9,23 +9,30 @@ using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouses;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
+using EletricGo.Services.Interfaces;
 
 
 namespace EletricGo.Services
 {
-    public class WarehouseService
+    public class WarehouseService : IServices
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWarehouseRepository _warehouseRepository;
-        private readonly CityService _cityService;
+        private readonly ICityService _cityService;
 
 
-        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository, CityService cityService)
+        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository, ICityService cityService)
         {
             _unitOfWork = unitOfWork;
             _warehouseRepository = warehouseRepository;
             _cityService = cityService;
             
+        }
+        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository)
+        {
+            _unitOfWork = unitOfWork;
+            _warehouseRepository = warehouseRepository;
+
         }
 
         public async Task<List<WarehouseDto>> GetWarehouses()
@@ -92,8 +99,8 @@ namespace EletricGo.Services
             catch (Exception exp)
             {
                 // Log what you need from here.
-                //throw new InvalidOperationException(exp.Message);
-                throw new InvalidOperationException("There is already a warehouse with this id in the system", exp);
+                throw new InvalidOperationException(exp.Message);
+                //throw new InvalidOperationException("There is already a warehouse with this id in the system", exp);
             }
 
             return warehouse.ToWarehouseDto();

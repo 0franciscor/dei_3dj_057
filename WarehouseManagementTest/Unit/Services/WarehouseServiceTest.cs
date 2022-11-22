@@ -1,9 +1,10 @@
-using EletricGo.Domain.Deliveries;
+using EletricGo.Domain.Cities.ValueObjects;
 using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouses;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
 using EletricGo.Services;
+using EletricGo.Services.Interfaces;
 using Moq;
 
 namespace WarehouseManagementTest.Unit.Services
@@ -17,19 +18,22 @@ namespace WarehouseManagementTest.Unit.Services
 
         private readonly int altitude = 200;
 
-        private readonly string latitude = "45";
+        private readonly string latitude = "45.8746º N";
 
-        private readonly string longitude = "79";
+        private readonly string longitude = "79.2651º W";
 
         private readonly string description = "Porto";
+        
+        private readonly string CityId = "1";
 
         [Test]
         public void DefineDriverServiceConstructor()
         {
-            var mockDeliveryRepo = new Mock<IWarehouseRepository>();
-            var mockUnitWork = new Mock<IUnitOfWork>();
+            var mockDeliveryRepo = new Moq.Mock<IWarehouseRepository>();
+            var mockUnitWork = new Moq.Mock<IUnitOfWork>();
+            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnitWork.Object, mockDeliveryRepo.Object);
+            var service = new WarehouseService(mockUnitWork.Object, mockDeliveryRepo.Object, cityService.Object);
 
             Assert.That(service, Is.Not.Null);
         }
@@ -38,12 +42,14 @@ namespace WarehouseManagementTest.Unit.Services
         [Test]
         public async Task GetWarehousesTest()
         {
-            var mockRepository = new Mock<IWarehouseRepository>();
+            var mockRepository = new Moq.Mock<IWarehouseRepository>();
             mockRepository.Setup(repo => repo.GetAll()).ReturnsAsync(CreatedWarehouses());
 
-            var mockUnit = new Mock<IUnitOfWork>();
+            var mockUnit = new Moq.Mock<IUnitOfWork>();
+            
+            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
 
             var expectedList = await service.GetWarehouses();
 
@@ -55,7 +61,7 @@ namespace WarehouseManagementTest.Unit.Services
         private List<Warehouse> CreatedWarehouses()
         {
             var warehouseList = new List<Warehouse>();
-            warehouseList.Add(new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(altitude), new Coordinates(latitude, longitude), new Designation(description)));
+            warehouseList.Add(new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(altitude), new Coordinates(latitude, longitude), new Designation(description), new CityId(CityId)));
 
             return warehouseList;
         }
@@ -63,14 +69,16 @@ namespace WarehouseManagementTest.Unit.Services
         [Test]
         public async Task GetWarehouseTest()
         {
-            var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(altitude), new Coordinates(latitude, longitude), new Designation(description));
+            var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(altitude), new Coordinates(latitude, longitude), new Designation(description), new CityId(CityId));
 
-            var mockRepository = new Mock<IWarehouseRepository>();
+            var mockRepository = new Moq.Mock<IWarehouseRepository>();
             mockRepository.Setup(repo => repo.GetByID(new WarehouseId("WH1"))).ReturnsAsync(warehouseExpected);
 
-            var mockUnit = new Mock<IUnitOfWork>();
+            var mockUnit = new Moq.Mock<IUnitOfWork>();
+            
+            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
 
             var warehouseResult = await service.GetWarehouse(new WarehouseId(id + "1"));
 
@@ -89,7 +97,7 @@ namespace WarehouseManagementTest.Unit.Services
         [Test]
         public async Task CreateWarehouseTest()
         {
-            var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(altitude), new Coordinates(latitude, longitude), new Designation(description));
+            var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(altitude), new Coordinates(latitude, longitude), new Designation(description), new CityId(CityId));
 
             var warehouseDto = new WarehouseDto()
             {
@@ -101,14 +109,16 @@ namespace WarehouseManagementTest.Unit.Services
                 Designation = description
             };
 
-            var mockRepository = new Mock<IWarehouseRepository>();
-            var mockUnit = new Mock<IUnitOfWork>();
+            var mockRepository = new Moq.Mock<IWarehouseRepository>();
+            var mockUnit = new Moq.Mock<IUnitOfWork>();
             mockRepository.Setup(repo => repo.Add(warehouseExpected));
             mockUnit.Setup(repo => repo.CommitAsync());
 
             mockRepository.Setup(repo => repo.GetByID(new WarehouseId(id + "1"))).ReturnsAsync(null as Warehouse);
-
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
+            
+            var cityService = new Moq.Mock<ICityService>();
+            
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object,cityService.Object);
 
             var warehouseResult = await service.CreateWarehouse(warehouseDto);
 
@@ -139,14 +149,16 @@ namespace WarehouseManagementTest.Unit.Services
                 Designation = description
             };
 
-            var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(201), new Coordinates(latitude, longitude), new Designation(description));
+            var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(201), new Coordinates(latitude, longitude), new Designation(description), new CityId(CityId));
 
-            var mockRepository = new Mock<IWarehouseRepository>();
+            var mockRepository = new Moq.Mock<IWarehouseRepository>();
             mockRepository.Setup(repo => repo.GetByID(warehouseId)).ReturnsAsync(warehouseExpected);
 
-            var mockUnit = new Mock<IUnitOfWork>();
+            var mockUnit = new Moq.Mock<IUnitOfWork>();
+            
+            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
 
             var getDel = await service.UpdateWarehouse(warehouseDto);
 
@@ -159,15 +171,17 @@ namespace WarehouseManagementTest.Unit.Services
         {
             var warehouseId = new WarehouseId(id + "1");
 
-            var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(201), new Coordinates(latitude, longitude), new Designation(description));
+            var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(201), new Coordinates(latitude, longitude), new Designation(description), new CityId(CityId));
 
-            var mockRepository = new Mock<IWarehouseRepository>();
+            var mockRepository = new Moq.Mock<IWarehouseRepository>();
             mockRepository.Setup(repo => repo.GetByID(warehouseId)).ReturnsAsync(warehouseExpected);
             mockRepository.Setup(repo => repo.Delete(warehouseExpected));
 
-            var mockUnit = new Mock<IUnitOfWork>();
+            var mockUnit = new Moq.Mock<IUnitOfWork>();
+            
+            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
 
             var warehouseResult = await service.DeleteWarehouse(warehouseId.warehouseID);
 

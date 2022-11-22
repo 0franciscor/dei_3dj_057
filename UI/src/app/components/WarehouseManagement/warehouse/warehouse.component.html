@@ -1,20 +1,48 @@
-<div class="main-div">
-  <div class="container">
-    <div class="left">
-      <div class="header">
+
+<div class="left">
+  <mat-card >
+    <mat-card-header>
+      <mat-card-title class="header">
         <h2 class="animation a1">Create Warehouse</h2>
-        <h4 class="animation a2">Please enter the information in the fields bellow</h4>
-      </div>
-      <div class="form">
-        <input type="email" class="form-field animation a3" placeholder="Warehouse Id">
-        <input type="password" class="form-field animation a4" placeholder="Address">
-        <input type="password" class="form-field animation a4" placeholder="Altitude">
-        <input type="password" class="form-field animation a4" placeholder="Latitude">
-        <input type="password" class="form-field animation a4" placeholder="Longitude">
-        <input type="password" class="form-field animation a4" placeholder="Description">
-        <button class="animation a6">CREATE</button>
-      </div>
-    </div>
-    <div class="right"></div>
-  </div>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content >
+      <form class="form" [formGroup]="formCreateWarehouse" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="standard">
+          <mat-label>WarehouseID</mat-label>
+          <input matInput type="text" formControlName="Id">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Address</mat-label>
+          <input matInput type="text" formControlName="Address">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Altitude</mat-label>
+          <input matInput type="number" formControlName="Altitude">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Latitude</mat-label>
+          <input matInput type="text" formControlName="Latitude">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Longitude</mat-label>
+          <input matInput type="text" formControlName="Longitude">
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Designation</mat-label>
+          <input matInput type="text" formControlName="Designation">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" >Create</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>
+
+
+

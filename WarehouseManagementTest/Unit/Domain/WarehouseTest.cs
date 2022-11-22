@@ -18,7 +18,7 @@ public class WarehouseTest
     [Test]
     public void CreatingAddressWithAInvalidZipCode()
     {
-        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Address("Rua António Bernardino,47,45375-334,Porto"));
+        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Address("Rua António Bernardino,47,45-334,Porto"));
         Assert.That(ex.Message, Is.EqualTo("The zip code isn't in the right format"));
     }
 
@@ -46,8 +46,8 @@ public class WarehouseTest
     [Test]
     public void CreatingLatitudeWithValueOutOfRangeAllowed()
     {
-        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Coordinates("-99", "167"));
-        Assert.That(ex.Message, Is.EqualTo("The latitude must be in the range [-90,90]"));
+        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Coordinates("999.7486º E", "167.8765º W"));
+        Assert.That(ex.Message, Is.EqualTo("The latitude must be in the following format XX.XXXXº N"));
     }
 
     [Test]
@@ -67,21 +67,21 @@ public class WarehouseTest
     [Test]
     public void CreatingLongitudeWithValueOutOfRangeAllowed()
     {
-        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Coordinates("-65", "197"));
-        Assert.That(ex.Message, Is.EqualTo("The longitude must be in the range [-180,180]"));
+        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Coordinates("-65.7635º N", "197.7625º S"));
+        Assert.That(ex.Message, Is.EqualTo("The longitude must be in the following format XX.XXXXº W"));
     }
 
     [Test]
     public void CreatingLongitudeWithNullValue()
     {
-        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Coordinates("72", null));
+        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Coordinates("72.8764º N", null));
         Assert.That(ex.Message, Is.EqualTo("The latitude or longitude can't be null or empty"));
     }
 
     [Test]
     public void CreatingLongitudeWithEmptyValue()
     {
-        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Coordinates("72", ""));
+        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Coordinates("72.6534º N", ""));
         Assert.That(ex.Message, Is.EqualTo("The latitude or longitude can't be null or empty"));
     }
 

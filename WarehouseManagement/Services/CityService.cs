@@ -4,10 +4,11 @@ using EletricGo.Domain.Cities;
 using EletricGo.Domain.Cities.DTO;
 using EletricGo.Domain.Cities.ValueObjects;
 using EletricGo.Domain.Shared;
+using EletricGo.Services.Interfaces;
 
 namespace EletricGo.Services;
 
-public class CityService : IServices
+public class CityService : ICityService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICityRepository _cityRepository;
@@ -70,7 +71,7 @@ public class CityService : IServices
         _cityRepository.Delete(city);
     }
 
-    public async Task<int> ImportCitiesFromCsv(string fileName)
+    public async Task ImportCitiesFromCsv(string fileName)
     {
 
         importCsv = new ImportCitiesFromCsvService(fileName);
@@ -92,8 +93,6 @@ public class CityService : IServices
 
             throw new Exception(e.Message);
         }
-
-        return citiesRead.Count;
 
     }
 
