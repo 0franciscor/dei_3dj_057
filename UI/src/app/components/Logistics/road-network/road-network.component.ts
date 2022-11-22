@@ -57,7 +57,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   
   
 
-  debug = 0;
   private async createScene() {
 
     let rnService = new RoadNetworkService();
@@ -81,17 +80,11 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
     }
 
-   
-    
-    
-    if(warehouses.length == 0 || this.debug == 1)
-      this.roadNetwork = new roadNetworkTemplate({positions:warehousePosition});
-    else{
-      
-      let positions = roadNetworkTemplate.calculatePositions(warehouses);
-      this.roadNetwork = new roadNetworkTemplate({positions:positions,
-        paths:paths});
-    }
+
+    let positions = roadNetworkTemplate.calculatePositions(warehouses);
+    this.roadNetwork = new roadNetworkTemplate({positions:positions,
+      paths:paths});
+
       
     
 

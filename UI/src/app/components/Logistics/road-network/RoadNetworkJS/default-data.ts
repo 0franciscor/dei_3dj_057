@@ -55,40 +55,40 @@ export const warehousePosition = {
 export const warehouseConnections = {
 
     /*
-    1 to 4
-    1 to 6
-    2 to 10
-    2 to 13
-    3 to 1
-    3 to 6
-    4 to 13
-    4 to 12
-    5 to 10
-    5 to 15
-    6 to 16
-    6 to 5
-    7 to 17
-    7 to 8
-    8 to 9
-    8 to 1
-    9 to 2
-    9 to 15
-    10 to 2
-    10 to 12
-    11 to 16
-    11 to 6
-    12 to 8
-    12 to 15
-    13 to 3
-    13 to 15
-    14 to 9
-    14 to 8
-    15 to 3
-    15 to 12
-    16 to 4
-    16 to 17
-    17 to 1
-    17 to 2
+    TH1 to WH1
+    TH1 to WH3
+    TM1 to WH7
+    TM1 to WJ1
+    TS1 to TH1
+    TS1 to WH3
+    WH1 to WJ1
+    WH1 to WH9
+    WH2 to WH7
+    WH2 to WJ3
+    WH3 to WJ4
+    WH3 to WH2
+    WH4 to WJ5
+    WH4 to WH5
+    WH5 to WH6
+    WH5 to TH1
+    WH6 to TM1
+    WH6 to WJ3
+    WH7 to TM1
+    WH7 to WH9
+    WH8 to WJ4
+    WH8 to WH3
+    WH9 to WH5
+    WH9 to WJ3
+    WJ1 to TS1
+    WJ1 to WJ4
+    WJ2 to WH6
+    WJ2 to WH5
+    WJ3 to TS1
+    WJ3 to WH9
+    WJ4 to WH1
+    WJ4 to WJ5
+    WJ5 to TH1
+    WJ5 to TM1
     */
     
     

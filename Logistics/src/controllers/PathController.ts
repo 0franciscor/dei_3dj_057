@@ -33,11 +33,11 @@ export default class PathController implements IPathController{
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
         try {
             if(req.params.startWHId == "undefined"){
-                req.params.startWHId="";
-            }else if(req.params.destinationWHId== "undefined"){
-                req.params.destinationWHId="";
+                req.params.startWHId=undefined;
             }
-
+            if(req.params.destinationWHId== "undefined"){
+                req.params.destinationWHId=undefined;
+            }
             let warehouses= {
                 startWHId: req.params.startWHId,
                 destinationWHId:req.params.destinationWHId

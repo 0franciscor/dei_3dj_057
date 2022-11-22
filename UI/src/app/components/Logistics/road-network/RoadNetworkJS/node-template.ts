@@ -81,14 +81,26 @@ export default class NodeTemplate {
 
 
             //outgoing road
-            let roadLength = Math.sqrt(Math.pow((destination.x-pos.x),2)+Math.pow((destination.y-pos.y),2))-length*2;
+            
+            
+
+
+            let roadLength = Math.sqrt(Math.pow((destination.x-pos.x),2)+Math.pow((destination.y-pos.y),2)+Math.pow(destination.z-pos.z,2));
+
+            
+
+            let angle = Math.sqrt(Math.pow((destination.x-pos.x),2)+Math.pow((destination.y-pos.y),2))-length*2;
+
             let roadGeometry = new THREE.PlaneGeometry( element.roadWidth, roadLength, 32 );
             let roadMaterial = new THREE.MeshBasicMaterial( {color:  0xA52A2A , side: THREE.DoubleSide} );
             let road = new THREE.Mesh(roadGeometry, roadMaterial);
             road.position.set((pos.x+destination.x)/2, (pos.y+destination.y)/2, (pos.z+destination.z)/2);
 
             road.rotation.z= Math.atan2((destination.y-pos.y),(destination.x-pos.x))-Math.PI/2;
-           
+            console.log("angle",angle);
+
+            
+            road.rotateOnAxis(new THREE.Vector3(1,0,0),Math.atan2((destination.z-pos.z),angle));
             
             this.object.add(road);
             
