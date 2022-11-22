@@ -48,6 +48,14 @@ export default {
     role: {
       name: "roleController",
       path:"../controllers/roleController"
+    },
+    warehouse: {
+      name: "warehouseController",
+      path:"../controllers/warehouseController"
+    },
+    path: {
+      name: "pathController",
+      path:"../controllers/pathController"
     }
   },
 
