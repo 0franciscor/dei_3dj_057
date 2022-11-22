@@ -22,20 +22,23 @@ export default class NodeTemplate {
     constructor(pos:posProps, outGoingConnections: any[],incomingConnections: any[],allPositions: any[]) {
         
         this.object = new THREE.Group();
+        
         let length = 2;
-        let largestWidth=0.5;
+        let largestWidth=0;
 
-        let circleWidth=largestWidth*2;
+        
         
 
         incomingConnections.forEach((element:elementProps ) => {
             
+            
+            if(element.roadWidth > largestWidth)
+                largestWidth = element.roadWidth;
+
+            //incoming connection element
             let starting = allPositions.filter((allPositions:any) => allPositions.wh == element.startWHId).at(0);
             
-          
-            
-            
-            let rectangleGeometry = new THREE.PlaneGeometry( largestWidth, length, 32 );
+            let rectangleGeometry = new THREE.PlaneGeometry( element.roadWidth, length, 32 );
             let rectangleMaterial = new THREE.MeshBasicMaterial( {color:  0x40e0d0, side: THREE.DoubleSide} );
             let rectangle: THREE.Mesh = new THREE.Mesh( rectangleGeometry, rectangleMaterial );
             
@@ -55,11 +58,13 @@ export default class NodeTemplate {
        
 
         outGoingConnections.forEach((element:elementProps) => {
+            if(element.roadWidth > largestWidth)
+                largestWidth = element.roadWidth;
            
-
+            //outgoing connection element
             let destination = allPositions.filter((allPositions:any) => allPositions.wh == element.destinationWHId).at(0);
 
-            let rectangleGeometry = new THREE.PlaneGeometry( largestWidth, length, 32 );
+            let rectangleGeometry = new THREE.PlaneGeometry( element.roadWidth, length, 32 );
             let rectangleMaterial = new THREE.MeshBasicMaterial( {color:  0x40e0d0, side: THREE.DoubleSide} );
             let rectangle: THREE.Mesh = new THREE.Mesh( rectangleGeometry, rectangleMaterial );
             
@@ -75,9 +80,9 @@ export default class NodeTemplate {
             this.object.add(rectangle);
 
 
-            
+            //outgoing road
             let roadLength = Math.sqrt(Math.pow((destination.x-pos.x),2)+Math.pow((destination.y-pos.y),2))-length*2;
-            let roadGeometry = new THREE.PlaneGeometry( largestWidth, roadLength, 32 );
+            let roadGeometry = new THREE.PlaneGeometry( element.roadWidth, roadLength, 32 );
             let roadMaterial = new THREE.MeshBasicMaterial( {color:  0xA52A2A , side: THREE.DoubleSide} );
             let road = new THREE.Mesh(roadGeometry, roadMaterial);
             road.position.set((pos.x+destination.x)/2, (pos.y+destination.y)/2, (pos.z+destination.z)/2);
@@ -88,13 +93,8 @@ export default class NodeTemplate {
             this.object.add(road);
             
 
-        
-            
-            
-             
-
         });
-        
+        let circleWidth=largestWidth*2;
         let geometry = new THREE.CircleGeometry(circleWidth, 32 );
         let material = new THREE.MeshBasicMaterial( { color: 0x008080, side: THREE.DoubleSide } );
         
