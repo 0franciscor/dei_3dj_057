@@ -25,12 +25,6 @@ export default class WarehouseController implements IWarehouseController {
         method: 'GET',
         agent: httpAgent
     });
-
-    if(response.status != 200){
-      res.status(404)
-      return res.send("No warehouses found");
-    }
-    
     
     let data = await response.json();
     res.status(200)
