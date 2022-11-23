@@ -9,7 +9,7 @@ export class DeliveryService {
   constructor() { }
 
   async getDelivery(){
-    const url = "https://localhost:5001/api/deliveries/getAll";
+    const url = "http://localhost:3001/api/deliveries/getAll";
     let receivedDelivery: any[] = [];
     await fetch(url, {
       method: 'GET',
@@ -22,7 +22,7 @@ export class DeliveryService {
   }
 
   async createDelivery(delivery: any) {
-    const url = "https://localhost:5001/api/deliveries/getAll";
+    const url = "http://localhost:3001/api/delivery/create";
     const data = delivery;
     fetch(url, {
       method: 'POST',

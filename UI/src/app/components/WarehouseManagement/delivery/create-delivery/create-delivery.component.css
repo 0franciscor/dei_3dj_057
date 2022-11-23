@@ -1,4 +1,18 @@
+.main-div{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.sec-div{
+  width: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 
 * { box-sizing: border-box; }
 @import url('https://fonts.googleapis.com/css?family=Rubik:400,500&display=swap');
 
@@ -145,3 +159,4 @@ body {
     width: 440px;
   }
 }
+ */
