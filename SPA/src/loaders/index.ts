@@ -46,6 +46,11 @@ export default async({expressApp})=>{
         path: config.controllers.warehouse.path
     }
 
+    const deliveryController = {
+        name: config.controllers.delivery.name,
+        path: config.controllers.delivery.path
+    }
+
     const userService = {
         name: config.services.user.name,
         path: config.services.user.path
@@ -71,7 +76,8 @@ export default async({expressApp})=>{
             userController,
             roleController,
             pathController,
-            warehouseController
+            warehouseController,
+            deliveryController
         ],
         repos:[
             userRepo,
