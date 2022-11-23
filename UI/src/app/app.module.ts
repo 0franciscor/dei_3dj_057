@@ -14,6 +14,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
 import { CreateTruckComponent } from './components/Logistics/truck/create-truck/create-truck.component';
 import { FleetManagerComponent } from './components/Logistics/home/fleet-manager/fleet-manager.component';
@@ -51,7 +53,9 @@ import { CreateDeliveryComponent } from './components/WarehouseManagement/delive
     MatToolbarModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
