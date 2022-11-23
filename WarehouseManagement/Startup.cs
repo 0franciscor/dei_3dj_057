@@ -33,16 +33,14 @@ namespace EletricGo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
-
-            /*services.AddCors(options =>
+            services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000", "http://localhost:4200");
+                        builder.WithOrigins("http://localhost:3000", "http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
                     });
-            });*/
+            });
 
             services.AddDbContext<EletricGoDBContext>(opt =>
                         opt.UseMySql(Configuration.GetConnectionString("Default"),
@@ -94,7 +92,7 @@ namespace EletricGo
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(options => options.WithOrigins("http://localhost:4200, http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
