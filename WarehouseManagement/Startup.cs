@@ -108,13 +108,14 @@ namespace EletricGo
 
             services.AddTransient<IDeliveryRepository, DeliveryRepository>();
             services.AddTransient<DeliveryService>();
-            
+
+            services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<CityService>();
             
             services.AddTransient<IWarehouseRepository, WarehouseRepository>();
             services.AddTransient<WarehouseService>();
             
-            services.AddTransient<ICityRepository, CityRepository>();
-            services.AddTransient<CityService>();
+            ;
 
         }
 

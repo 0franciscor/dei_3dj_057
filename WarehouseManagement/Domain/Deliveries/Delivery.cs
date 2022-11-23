@@ -1,6 +1,5 @@
 using EletricGo.Domain.Shared;
-using EletricGo.Domain.Warehouses;
-using EletricGo.Domain.Warehouses.ValueObjects;
+using EletricGo.Domain.Cities;
 using System;
 
 namespace EletricGo.Domain.Deliveries
@@ -10,7 +9,7 @@ namespace EletricGo.Domain.Deliveries
         public DeliveryDate deliveryDate { get; private set; }
         public LoadTime loadTime { get; private set; }
         public UnloadTime unloadTime { get; private set; }
-        public Warehouse destinationWarehouse { get; private set; }
+        public City destinationCity { get; private set; }
         public string destination { get; private set; }
         public DeliveryMass deliveryMass { get; private set; }
         public Delivery() {}
