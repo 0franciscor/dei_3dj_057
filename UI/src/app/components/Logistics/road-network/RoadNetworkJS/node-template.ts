@@ -1,3 +1,4 @@
+import { elementAt } from "rxjs";
 import * as THREE from "three";
 
 import { warehousePosition, warehouseConnections } from "./default-data";
@@ -23,22 +24,32 @@ export default class NodeTemplate {
         
         this.object = new THREE.Group();
         
-        let length = 2;
+        
         let largestWidth=0;
 
-        
-        
+        incomingConnections.forEach((element:elementProps)=>{
+            if(element.roadWidth > largestWidth)
+                largestWidth = element.roadWidth;
+        })
+        outGoingConnections.forEach((element:elementProps)=>{
+            if(element.roadWidth > largestWidth)
+                largestWidth = element.roadWidth;
+        })
+        const circleConstant = 2;
+        let circleRadius=(largestWidth*circleConstant)/2;
 
+
+        const connectionConstant = 0.5;
+        let connectionLength = connectionConstant*circleConstant;
         incomingConnections.forEach((element:elementProps ) => {
             
             
-            if(element.roadWidth > largestWidth)
-                largestWidth = element.roadWidth;
+            
 
             //incoming connection element
             let starting = allPositions.filter((allPositions:any) => allPositions.wh == element.startWHId).at(0);
             
-            let rectangleGeometry = new THREE.PlaneGeometry( element.roadWidth, length, 32 );
+            let rectangleGeometry = new THREE.PlaneGeometry( element.roadWidth, connectionLength, 32 );
             let rectangleMaterial = new THREE.MeshBasicMaterial( {color:  0x40e0d0, side: THREE.DoubleSide} );
             let rectangle: THREE.Mesh = new THREE.Mesh( rectangleGeometry, rectangleMaterial );
             
@@ -49,7 +60,7 @@ export default class NodeTemplate {
             
             rectangle.rotation.z= Math.atan2((startY-posY),(startX-posX))-Math.PI/2;
 
-            rectangle.position.set(pos.x-length/2*Math.sin(rectangle.rotation.z), pos.y+length/2*Math.cos(rectangle.rotation.z), pos.z);
+            rectangle.position.set(pos.x-connectionLength/2*Math.sin(rectangle.rotation.z), pos.y+connectionLength/2*Math.cos(rectangle.rotation.z), pos.z);
             
             this.object.add(rectangle);
 
@@ -58,13 +69,11 @@ export default class NodeTemplate {
        
 
         outGoingConnections.forEach((element:elementProps) => {
-            if(element.roadWidth > largestWidth)
-                largestWidth = element.roadWidth;
            
             //outgoing connection element
             let destination = allPositions.filter((allPositions:any) => allPositions.wh == element.destinationWHId).at(0);
 
-            let rectangleGeometry = new THREE.PlaneGeometry( element.roadWidth, length, 32 );
+            let rectangleGeometry = new THREE.PlaneGeometry( element.roadWidth, connectionLength, 32 );
             let rectangleMaterial = new THREE.MeshBasicMaterial( {color:  0x40e0d0, side: THREE.DoubleSide} );
             let rectangle: THREE.Mesh = new THREE.Mesh( rectangleGeometry, rectangleMaterial );
             
@@ -75,21 +84,25 @@ export default class NodeTemplate {
             
             rectangle.rotation.z= Math.atan2((destY-posY),(destX-posX))-Math.PI/2;
 
-            rectangle.position.set(pos.x-length/2*Math.sin(rectangle.rotation.z), pos.y+length/2*Math.cos(rectangle.rotation.z), pos.z);
+            rectangle.position.set(pos.x-connectionLength/2*Math.sin(rectangle.rotation.z), pos.y+connectionLength/2*Math.cos(rectangle.rotation.z), pos.z);
 
             this.object.add(rectangle);
 
+            //calculate connectionLength in x axis
+            let connectionLengthX = connectionLength*Math.sin(rectangle.rotation.z);
+            //calculate connectionLength in y axis
+            let connectionLengthY = connectionLength*Math.cos(rectangle.rotation.z);
+
+            console.log(connectionLengthX);
+            console.log(connectionLengthY);
+
 
             //outgoing road
-            
-            
-
-
             let roadLength = Math.sqrt(Math.pow((destination.x-pos.x),2)+Math.pow((destination.y-pos.y),2)+Math.pow(destination.z-pos.z,2));
 
             
 
-            let angle = Math.sqrt(Math.pow((destination.x-pos.x),2)+Math.pow((destination.y-pos.y),2))-length*2;
+            let angle = Math.sqrt(Math.pow((destination.x-pos.x),2)+Math.pow((destination.y-pos.y),2))-connectionLength*2;
 
             let roadGeometry = new THREE.PlaneGeometry( element.roadWidth, roadLength, 32 );
             let roadMaterial = new THREE.MeshBasicMaterial( {color:  0xA52A2A , side: THREE.DoubleSide} );
@@ -106,8 +119,9 @@ export default class NodeTemplate {
             
 
         });
-        let circleWidth=largestWidth*2;
-        let geometry = new THREE.CircleGeometry(circleWidth, 32 );
+        
+        //circle
+        let geometry = new THREE.CircleGeometry(circleRadius, 32 );
         let material = new THREE.MeshBasicMaterial( { color: 0x008080, side: THREE.DoubleSide } );
         
         
