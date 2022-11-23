@@ -8,29 +8,44 @@ export default class roadNetworkTemplate {
 
     constructor(parameters: any) {
         this.object = new THREE.Group();
-        this.createNodes(parameters.positions, warehouseConnections);
+        this.createNodes(parameters.positions, parameters.paths);
     }
 
+    public static calculatePositions(warehouses: any[]) {
+        let positions: any[] = [];
+        warehouses.forEach(warehouse => {
+            let latitudeString = warehouse.latitude.toString().replace(/º N/,"");
+            let latitude = parseFloat(latitudeString);
 
-    private createNodes(positions: typeof warehousePosition, connections: typeof warehouseConnections) {
+            let longitudeString = warehouse.longitude.toString().replace(/º W/,"");
+            let longitude = parseFloat(longitudeString);
 
-      
-       for (let index = 0, connectionID = 0; index < positions.matrix.length; index++, connectionID+=2) {
-            const element = positions.matrix[index];
-            // console.log(connections.matrix[connectionID][2])
-            const whConnections = [positions.matrix[connections.matrix[connectionID][1]-1], positions.matrix[connections.matrix[connectionID+1][1]-1]];
-            const roadWidth: number[] = [];
-            connections.matrix.forEach(element => {
-                roadWidth.push(element[2]);
-                if(element[1] == index+1){
-                    whConnections.push(positions.matrix[element[0]-1]);
-                }
-            });
+            let height = warehouse.altitude
+
+            let x = ( (50 - (-50))/(8.7613-8.2451) )*(longitude-8.2451) + (-50);
+            let y = ( (50 - (-50))/(42.1115-40.8387) )*(latitude-40.8387) + (-50);
+            let z = ((50 -0)/800-0) * (height-0) + 0;
             
-            const node = new NodeTemplate(element,whConnections,roadWidth);
+            positions.push({wh:warehouse.id, x: x, y: y, z: z });
+        });
+        return positions;
+
+    }
+
+    private createNodes(positions: any, connections: any) {
+        
+      
+        positions.forEach((element: any) => {
+            
+            let originatingFrom = connections.filter((connection: any) => connection.startWHId == element.wh);
+            let comingConnections = connections.filter((connection: any) => connection.destinationWHId == element.wh);
+
+            let node = new NodeTemplate(element,originatingFrom,comingConnections,positions);
             this.object.add(node.object);
+
+        });
+
     
-       }
 
     }
 }

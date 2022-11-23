@@ -4,6 +4,7 @@ import { nodeData, warehousePosition } from './RoadNetworkJS/default-data';
 import NodeTemplate from './RoadNetworkJS/node-template';
 import roadNetworkTemplate from './RoadNetworkJS/road-network';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { animate } from '@angular/animations';
@@ -52,17 +53,49 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     return this.canvasRef.nativeElement;
   }
 
+
+
+ 
+
   private renderer!: THREE.WebGLRenderer;
 
   private scene!: THREE.Scene;
 
   private roadNetwork !: roadNetworkTemplate;
   
+  
 
-  private createScene() {
+  private async createScene() {
 
-    this.roadNetwork = new roadNetworkTemplate({positions:warehousePosition});
+    let rnService = new RoadNetworkService();
+    let warehouses: any[] = [];
+    await rnService.getAllWarehouses().then((data) => {
+      warehouses = data;
+    });
+    let paths: any[] = [];
+    console.log(warehouses)
+    for( const warehouse of warehouses){
+
+      await rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
+        
+        if(data != null){
+          for (const element of data) {
+            paths.push({startWHId:element.startWHId, destinationWHId:element.destinationWHId, roadWidth:this.getRandomNumber()});
+          }
+  
+        }
+      });
+
+    }
+
+
+    let positions = roadNetworkTemplate.calculatePositions(warehouses);
+    this.roadNetwork = new roadNetworkTemplate({positions:positions,
+      paths:paths});
+
+      
     
+
    
     //Scene
     this.scene = new THREE.Scene();
@@ -119,13 +152,12 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
     this.camera.position.z = this.cameraZ;
 
-    
-
+  
   }
 
   private animateCircle() {
     // this.roadNetwork.object.rotation.x += this.rotationSpeedX;
-    // this.roadNetwork.object.rotation.y += this.rotationSpeedY;
+    // this.roadNetwork.object.rotation.y += this.rotationSpeedY; 
   }
 /* 
   //Animate road
@@ -149,18 +181,12 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       component.renderer.render(component.scene, component.camera);
     }());
 
-    
-    const controls = new OrbitControls(this.camera,this.canvas);
-
-    
-
-    
-
+    new OrbitControls(this.camera,this.canvas);
   }
 
 
-  ngAfterViewInit() {
-    this.createScene();
+  async ngAfterViewInit() {
+    await this.createScene();
     this.startRenderingLoop();
   }
 
@@ -176,10 +202,3 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 }
 
 }
-
-
-
-
-
-
-
