@@ -4,14 +4,22 @@ import { nodeData, warehousePosition } from './RoadNetworkJS/default-data';
 import NodeTemplate from './RoadNetworkJS/node-template';
 import roadNetworkTemplate from './RoadNetworkJS/road-network';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { animate } from '@angular/animations';
 
  @Component({
   selector: 'app-road-network',
   templateUrl: './RoadNetworkJS/road-network.component.html',
   styleUrls: ['./road-network.component.css']
 })
+
+
+  
+
 export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
+  
   @ViewChild('canvas') 
   private canvasRef!: ElementRef;
 
@@ -58,10 +66,49 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
    
     //Scene
     this.scene = new THREE.Scene();
+    //const scene1 = new THREE.Scene();
     this.scene.background = new THREE.Color(0x000000);
     this.scene.add(this.roadNetwork.object);
     
+
+
+    /* //load road model
+    const loader = new GLTFLoader();
+    //this.scene.add(loader)
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath( '/examples/js/libs/draco/' );
+    loader.setDRACOLoader( dracoLoader );
     
+    loader.load('./assets/road/scene.gltf', 
+      function ( gltf ) {
+        console.log(gltf)
+        scene1.add(gltf.scene)
+        gltf.animations; // Array<THREE.AnimationClip>
+        gltf.scene; // THREE.Group
+        gltf.scenes; // Array<THREE.Group>
+        gltf.cameras; // Array<THREE.Camera>
+        gltf.asset; // Object
+      },
+      // called while loading is progressing
+      function ( xhr ) {
+      
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+      
+      },
+      // called when loading has errors
+      function ( error ) {
+      
+        console.log( 'An error happened' );
+      
+      }
+    );
+      this.scene.add(scene1)
+    //lightning
+    const light = new THREE.DirectionalLight(0xffffffff,1)
+    light.position.set(2,2,5)
+    this.scene.add(light); */
+
+
     //Camera
     this.camera = new THREE.PerspectiveCamera(
       this.fieldOfView,
@@ -80,8 +127,13 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     // this.roadNetwork.object.rotation.x += this.rotationSpeedX;
     // this.roadNetwork.object.rotation.y += this.rotationSpeedY;
   }
-
-
+/* 
+  //Animate road
+  private animateRoad(){
+    requestAnimationFrame(animate)
+    this.renderer.render(this.scene,this.camera);
+  }
+ */
 
   private startRenderingLoop() {
     //Renderer
@@ -118,4 +170,16 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   }
   
 
+  private getRandomNumber() {
+    //return random number between 0.1 and 0.8
+    return Math.random() * (0.8 - 0.1) + 0.1;
 }
+
+}
+
+
+
+
+
+
+
