@@ -18,22 +18,22 @@ namespace EletricGo.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWarehouseRepository _warehouseRepository;
-        private readonly ICityService _cityService;
+        private readonly CityService _cityService;
 
 
-        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository, ICityService cityService)
+        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository, CityService cityService)
         {
             _unitOfWork = unitOfWork;
             _warehouseRepository = warehouseRepository;
             _cityService = cityService;
             
         }
-        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository)
+        /* public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository)
         {
             _unitOfWork = unitOfWork;
             _warehouseRepository = warehouseRepository;
 
-        }
+        } */
 
         public async Task<List<WarehouseDto>> GetWarehouses()
         {
