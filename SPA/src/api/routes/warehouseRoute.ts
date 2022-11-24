@@ -18,6 +18,12 @@ export default (app: Router) => {
         ctrl.getAllWarehouse(req,res,next)
     });
 
+    route.post('/create', (req,res,next)=>
+    {
+        ctrl.createWarehouse(req,res,next)
+    });
+
+    
     
  
 };

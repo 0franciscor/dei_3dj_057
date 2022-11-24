@@ -26,7 +26,7 @@
     "https": "^1.0.0",
     "loader": "^2.1.1",
     "ng": "^0.0.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "rxjs": "~7.5.0",
     "save": "^2.9.0",
     "three": "^0.146.0",
@@ -47,7 +47,7 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~4.7.2"
   },
-  "browser":{
-    "https":false
+  "browser": {
+    "https": false
   }
 }

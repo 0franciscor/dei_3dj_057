@@ -27,6 +27,7 @@ export class FleetManagerComponent implements OnInit {
   constructor(private truckService: TruckService, private router: Router) { 
     this.truckService.getTruck().then((data) => {
       this.truckList = data;
+      
     });
     this.selectedTruck= {
       truckID: "",

@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using CsvHelper.Configuration.Attributes;
 using EletricGo.Domain.Shared;
 
 namespace EletricGo.Domain.Cities.ValueObjects;
 
 public class CityName : IValueObject
 {
-    [Index(1)]
     public string Name { get; }
 
     public CityName(string name)

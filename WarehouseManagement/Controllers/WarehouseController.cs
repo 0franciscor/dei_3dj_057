@@ -29,7 +29,6 @@ namespace EletricGo.Controllers
             List<WarehouseDto> dto = await _warehouseService.GetWarehouses();
             if (dto == null) return NotFound("Warehouses not found");
             
-
             return dto;
         }
 
@@ -54,13 +53,12 @@ namespace EletricGo.Controllers
             try
             {
                 var warehouse = await _warehouseService.CreateWarehouse(dto);
-                return CreatedAtAction(nameof(GetByID), new { id = warehouse.Id }, warehouse);
-
+                return Ok(new {warehouse});
 
             }
             catch (Exception e)
             {
-                return Conflict(e.Message);
+                return Conflict(new {e.Message});
             }
             
 
