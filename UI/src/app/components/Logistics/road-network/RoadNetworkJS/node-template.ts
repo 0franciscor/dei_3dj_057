@@ -139,12 +139,22 @@ export default class NodeTemplate {
         
         this.object.add( light ); 
         const object1 = new THREE.Object3D();
+
+        var textureLoader = new THREE.TextureLoader();
+        var map = textureLoader.load('UI/src/assets/warehouse_obj/Farmhouse Texture.jpg');
+        var materialObjLoader = new THREE.MeshPhongMaterial({map: map});
+
         const loader = new OBJLoader(); 
-        loader.load('./assets/Casa Medieval 1/CasaMedievalC.obj', 
+        loader.load('./assets/4vd2sk31doow-farmhouse_maya16/Farmhouse Maya 2016 Updated/farmhouse_obj.obj', 
         function (root) { 
-            root.scale.set(0.3,0.3,0.3);
-            root.position.set(pos.x+circleRadius, pos.y, pos.z + 0.5); 
-            root.rotateX(Math.PI / 2); 
+            root.traverse( function ( node ) {
+
+                if ( node instanceof THREE.Mesh ) node.material = material;
+            
+              } );
+            root.scale.set(0.07,0.07,0.07);
+            root.position.set(pos.x, pos.y, pos.z + 0.2); 
+            root.rotateX(Math.PI /2); 
             object1.add(root);
     
         });
