@@ -1,6 +1,6 @@
 import { elementAt } from "rxjs";
 import * as THREE from "three";
-
+import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
 import { warehousePosition, warehouseConnections } from "./default-data";
 
 interface posProps{
@@ -133,6 +133,23 @@ export default class NodeTemplate {
 
 
         this.object.add(circle);
+
+        const light = new THREE.AmbientLight( 0x404040 ); 
+        light.intensity = 0.5; 
+        
+        this.object.add( light ); 
+        const object1 = new THREE.Object3D();
+        const loader = new OBJLoader(); 
+        loader.load('./assets/Casa Medieval 1/CasaMedievalC.obj', 
+        function (root) { 
+            root.scale.set(0.3,0.3,0.3);
+            root.position.set(pos.x+circleRadius, pos.y, pos.z + 0.5); 
+            root.rotateX(Math.PI / 2); 
+            object1.add(root);
+    
+        });
+
+        this.object.add(object1);
         
     }
 }

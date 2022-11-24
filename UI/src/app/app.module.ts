@@ -25,6 +25,7 @@ import { RoadNetworkComponent } from './components/Logistics/road-network/road-n
 import { CreatePathComponent } from './components/Logistics/path/create-path/create-path.component';
 import { WarehouseComponent } from './components/WarehouseManagement/warehouse/warehouse.component';
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
+import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CreateDeliveryComponent } from './components/WarehouseManagement/delive
     RoadNetworkComponent,
     CreatePathComponent,
     WarehouseComponent,
-    CreateDeliveryComponent
+    CreateDeliveryComponent,
+    WarehouseByIdComponent
   ],
   imports: [
     BrowserModule,
