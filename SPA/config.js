@@ -56,6 +56,10 @@ export default {
     warehouse: {
       name: "warehouseController",
       path:"../controllers/warehouseController"
+    },
+    delivery: {
+      name: "deliveryController",
+      path:"../controllers/deliveryController"
     }
   },
 
