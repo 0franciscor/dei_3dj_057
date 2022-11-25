@@ -57,28 +57,37 @@ dechargeTruck(BAT,ECOST,TRUCKE):- TRUCKE is BAT-ECOST.
 
 chargeTruck(BAT,CHARGEDTRUCK):- CHARGEDTRUCK is BAT*0.8.
 
-
 %get rid of deliveries in warehouse 5.
 %needed energy confirmations.(only extratraveltime added)
 %update battery state
+%remove right delivery
+%
+analisePath([_|[]],_,_,_,TOTALTIME,TIME):-TIME is TOTALTIME,!.
+analisePath([H|[H1|T]],IDTRUCK,[X|Y],BAT,TOTALTIME,TIME):- tempo(IDTRUCK,H,H1,[X|Y],TT),unloadTime([X|Y],UT),
+    energy(IDTRUCK,H,H1,[X|Y],ECOST),dechargeTruck(BAT,ECOST,TRUCKE),
+    extraTimeTravel(IDTRUCK,Y,H1,T,TRUCKE,FENERGY,ET),
+    totalTimeCounter(TOTALT,TT,UT,ET),TOTALTIME1 is TOTALTIME+TOTALT,
+    analisePath([H1|T],IDTRUCK,Y,FENERGY,TOTALTIME1,TIME).
 
-analisePath([_|[]],_,_,_,0):-!.
-analisePath([H|[H1|T]],IDTRUCK,[X|Y],BAT,T):- tempo(IDTRUCK,H,H1,[X|Y],TT),unloadTime([X|Y],UT),energy(IDTRUCK,H,H1,[X|Y],ECOST),dechargeTruck(BAT,ECOST,TRUCKE),
-    extraTimeTravel(IDTRUCK,Y,H1,T,TRUCKE,ET),analisePath([H1|T],IDTRUCK,Y,TRUCKE,T1), T1 is T+TT+UT+ET.
+
+totalTimeCounter(TOTALT,TT,UT,ET):- TOTALT is TT+UT+ET.
 
 
 
-extraTimeTravel(IDTRUCK,DL,BW,[H|_],TRUCKE,ET):- energy(IDTRUCK,BW,H,DL,E), dechargeTruck(TRUCKE,E,ENERGY),
+extraTimeTravel(_,_,_,[],_,_,ET):- ET is 0.
+extraTimeTravel(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,ET):- energy(IDTRUCK,BW,H,DL,E), dechargeTruck(TRUCKE,E,ENERGY),
     carateristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA),
-    (ENERGY< BAT*0.2,!, ET is EXTRA,chargeTruck(BAT,CT),TRUCKE is CT ; ET is 0).
+    ((ENERGY< BAT*0.2,!, ET is EXTRA,chargeTruck(BAT,CT),FENERGY is CT) ; (FENERGY is TRUCKE,ET is 0)).
+
 
 %compares best time of all paths
 
-comparePaths([],_,_,1000000):-!.
-comparePaths([H|T],IDTRUCK,DL,BP):-carateristicasCam(IDTRUCK,_,_,BAT,_,_), analisePath(H,IDTRUCK,DL,BAT,TIME),comparePaths(T,IDTRUCK,DL,BP1),(BP > TIME, BP1 is TIME ; BP1 is BP).
+comparePaths([],_,_,10000000.00000,[]):-!.
+comparePaths([H|T],IDTRUCK,DL,BP,QL):-carateristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME),comparePaths(T,IDTRUCK,DL,BP1,QL),
+    (BP1 > TIME,!, BP is TIME,QL = H; BP is BP1).
 
 
 appendDelivery(L,L1):- append([1], L, L2), append(L2,[1],L1).
 
 %append to list
-quickestPath(IDTRUCK,DELL,QL):-appendDelivery(DELL,DL),findAllPaths(DL,AP), comparePaths(AP,IDTRUCK,DL,BP), QL is BP.
+quickestPath(IDTRUCK,DELL,QL):-appendDelivery(DELL,DL),findAllPaths(DL,AP), comparePaths(AP,IDTRUCK,DL,_,QL).
