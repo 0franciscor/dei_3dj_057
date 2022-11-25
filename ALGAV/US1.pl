@@ -12,11 +12,12 @@ checkIfCityExist([H|T]):- ((idArmazem(_,H),!,checkIfCityExist(T));false).
 appendMatosinhos(_,[],[]):-!.
 appendMatosinhos(A,[L|LL],[L2|T]):- appendMatosinhos(A,LL,T), append(A,L,L1), append(L1,A,L2).
 
+
 findMatosinhos(M):-idArmazem('Matosinhos',M).
 
 
 
-%US2
+
 weightWithDeliveries(IDTRUCK,DL,FW):- carateristicasCam(IDTRUCK,TW,CP,_,_,_),sumDeliveryWeights(DL,DW,CP),FW is TW+DW.
 
 
@@ -35,7 +36,7 @@ calculateEnergy(KW,FW,FC,FE):-ratioWeights(FW,FC,FR), FE is KW*FR.
 
 tempo(IDTRUCK,B,E,DL,TIMETOTRAVEL):- dadosCam_t_e_ta(IDTRUCK,B,E,T,_,_), weightWithDeliveries(IDTRUCK,DL,FW),fullCapacity(IDTRUCK,FC),calculateTime(T,FW,FC,FT), TIMETOTRAVEL is FT.
 
-energy(IDTRUCK,B,E,DL,ENERGY):- dadosCam_t_e_ta(IDTRUCK,B,E,_,KW,_), weightWithDeliveries(IDTRUCK,DL,FW),fullCapacity(IDTRUCK,FC),calculateEnergy(KW,FW,FC,FE),carateristicasCam(IDTRUCK,_,_,CHARGE,_,_), ENERGY is CHARGE-FE.
+energy(IDTRUCK,B,E,DL,ENERGY):- dadosCam_t_e_ta(IDTRUCK,B,E,_,KW,_), weightWithDeliveries(IDTRUCK,DL,FW),fullCapacity(IDTRUCK,FC),calculateEnergy(KW,FW,FC,FE), ENERGY is FE.
 
 %!  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -50,21 +51,31 @@ findAllPaths(DL,AP):- extractDestinations(DL,WL),allPaths(WL,AP).
 % %TimeForEachPath(IDTRUCK,DH,B,E,TIME):-tempo(IDTRUCK,B,E,DL,TT),unloadTime(DL,UT),
 % updateWeight(DL), TIME is TT+UT.
 
+unloadTime([_|[YH|_]],UT):- entrega(YH,_,_,_,_,T), UT is T.
+
+dechargeTruck(BAT,ECOST,TRUCKE):- TRUCKE is BAT-ECOST.
+
+chargeTruck(BAT,CHARGEDTRUCK):- CHARGEDTRUCK is BAT*0.8.
+
 
 %get rid of deliveries in warehouse 5.
 %needed energy confirmations.(only extratraveltime added)
 %update battery state
 
-analisePath([_|[]],_,_,0):-!.
-analisePath([H|[H1|T]],IDTRUCK,[X|Y],T):- tempo(IDTRUCK,H,H1,[X|Y],TT),entrega(X,_,_,_,_,UT),energy(IDTRUCK,H,H1,[X|Y],TRUCKE), extraTimeTravel(IDTRUCK,[X|Y],H1,T,TRUCKE,ET),analisePath([H1|T],IDTRUCK,Y,T1), T1 is T+TT+UT+ET.
+analisePath([_|[]],_,_,_,0):-!.
+analisePath([H|[H1|T]],IDTRUCK,[X|Y],BAT,T):- tempo(IDTRUCK,H,H1,[X|Y],TT),unloadTime([X|Y],UT),energy(IDTRUCK,H,H1,[X|Y],ECOST),dechargeTruck(BAT,ECOST,TRUCKE),
+    extraTimeTravel(IDTRUCK,Y,H1,T,TRUCKE,ET),analisePath([H1|T],IDTRUCK,Y,TRUCKE,T1), T1 is T+TT+UT+ET.
 
-extraTimeTravel(IDTRUCK,DL,BW,[H|_],TRUCKE,ET):- energy(IDTRUCK,BW,H,DL,TRUCKE),carateristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA), (TRUCKE<BAT*0.2,ET is EXTRA,TRUCKE is BAT*0.8  ; ET is 0).
 
+
+extraTimeTravel(IDTRUCK,DL,BW,[H|_],TRUCKE,ET):- energy(IDTRUCK,BW,H,DL,E), dechargeTruck(TRUCKE,E,ENERGY),
+    carateristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA),
+    (ENERGY< BAT*0.2,!, ET is EXTRA,chargeTruck(BAT,CT),TRUCKE is CT ; ET is 0).
 
 %compares best time of all paths
 
 comparePaths([],_,_,1000000):-!.
-comparePaths([H|T],IDTRUCK,DL,BP):- analisePath(H,IDTRUCK,DL,TIME),comparePaths(T,IDTRUCK,DL,BP1),(BP > TIME, BP1 is TIME ; BP1 is BP).
+comparePaths([H|T],IDTRUCK,DL,BP):-carateristicasCam(IDTRUCK,_,_,BAT,_,_), analisePath(H,IDTRUCK,DL,BAT,TIME),comparePaths(T,IDTRUCK,DL,BP1),(BP > TIME, BP1 is TIME ; BP1 is BP).
 
 
 appendDelivery(L,L1):- append([1], L, L2), append(L2,[1],L1).
