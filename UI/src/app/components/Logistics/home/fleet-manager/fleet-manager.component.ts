@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
+
 
 
 interface Truck{
@@ -10,6 +12,11 @@ interface Truck{
   maxBatteryCapacity: number;
   autonomy: number;
   fastChargeTime: number;
+}
+
+export interface DialogData {
+  name: string;
+  message: string;
 }
 
 @Component({
@@ -24,7 +31,7 @@ export class FleetManagerComponent implements OnInit {
   
   public truckList: any[] = [];
   
-  constructor(private truckService: TruckService, private router: Router) { 
+  constructor(public dialog: MatDialog,private route: ActivatedRoute,private truckService: TruckService, private router: Router) { 
     this.truckService.getAllTruck().then((data) => {
       this.truckList = data;
       
@@ -60,11 +67,43 @@ export class FleetManagerComponent implements OnInit {
     this.router.navigate(['Logistics/Truck/EditTruck', truckID]);
     
   } 
-  deleteTruck(truckID:string) {
-    this.truckService.deleteTruck(truckID);
-    window.location.reload();
+  async deleteTruck(truckID:string) {
     
-    
+
+    let answer = await this.truckService.deleteTruck(truckID);
+    let message = "Truck Deleted Successfully";
+    if(answer.status != 200){
+      message = "Truck Deletion Failed";
+    }
+    const dialogRef = this.dialog.open(DeleteTruckComponentDialog, {
+      width: '250px',
+      data: {
+        name: this.selectedTruck.truckID,
+        message: message},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(answer.status == 200)
+        window.location.reload();
+      
+    });
   }
 
+  
+
+}
+
+@Component({
+  selector: 'app-fleet-manager',
+  templateUrl: 'delete-truck-dialog.html',
+})
+export class DeleteTruckComponentDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DeleteTruckComponentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) {}
+
+  onOk(): void {
+    this.dialogRef.close();
+  }
 }

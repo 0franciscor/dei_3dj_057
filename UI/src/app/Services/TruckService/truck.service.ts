@@ -68,17 +68,16 @@ export class TruckService {
   }
 
   async deleteTruck(truckID: string) {
-    const url = 'http://localhost:3001/api/truck/'+truckID;
+    const url = 'http://localhost:3001/api/truck/id/'+truckID;
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json'
       }
     });
+    
 
-    const data = await response.json();
-
-    return data;
+    return response;
   }
 
 

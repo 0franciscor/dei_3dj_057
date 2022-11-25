@@ -64,7 +64,6 @@ export default class TruckController implements ITruckController {
 
     public async updateTruck(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log(req.body);
             const truckOrError = await this.truckService.updateTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
             if (truckOrError.isFailure) {
                 res.status(404);

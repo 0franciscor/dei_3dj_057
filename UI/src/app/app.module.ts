@@ -19,7 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
 import { CreateTruckComponent } from './components/Logistics/truck/create-truck/create-truck.component';
-import { FleetManagerComponent } from './components/Logistics/home/fleet-manager/fleet-manager.component';
+import { FleetManagerComponent, DeleteTruckComponentDialog } from './components/Logistics/home/fleet-manager/fleet-manager.component';
 import { LogisticsManagerComponent } from './components/Logistics/home/logistics-manager/logistics-manager.component';
 import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
 import { RoadNetworkComponent } from './components/Logistics/road-network/road-network.component';
@@ -47,7 +47,8 @@ import { EditTruckComponent, EditTruckComponentDialog } from './components/Logis
     WarehouseByIdComponent,
     GetDeliveriesComponent,
     EditTruckComponent,
-    EditTruckComponentDialog
+    EditTruckComponentDialog,
+    DeleteTruckComponentDialog
   ],
   imports: [
     BrowserModule,

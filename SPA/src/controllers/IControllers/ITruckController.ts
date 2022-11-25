@@ -6,5 +6,6 @@ export default interface ITruckController  {
   getAllTruck(req: Request, res: Response, next: NextFunction)
   getTruck(req: Request, res: Response, next: NextFunction)
   editTruck(req: Request, res: Response, next: NextFunction)
+  deleteTruck(req: Request, res: Response, next: NextFunction)
   
 }

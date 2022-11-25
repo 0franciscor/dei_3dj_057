@@ -27,6 +27,10 @@ export default (app: Router)=>{
     route.patch('/',
         (req,res,next) => ctrl.editTruck(req,res,next)
     );
+
+    route.delete('/id/:id',
+        (req,res,next) => ctrl.deleteTruck(req,res,next)
+    );
  
 
 }

@@ -62,7 +62,6 @@ export default class TruckController implements ITruckController {
     const url = 'http://localhost:3000/api/truck/';
     
     const data = req.body;
-    console.log(data)
     const response = await fetch(url, {
       method: 'PATCH',
       body: JSON.stringify(data),
@@ -76,17 +75,23 @@ export default class TruckController implements ITruckController {
   }
 
   async deleteTruck(req: Request, res: Response, next: NextFunction) {
-    const url = 'http://localhost:3000/api/truck/';
-    const data = req.body;
+    const url = 'http://localhost:3000/api/truck/id/'+req.params.id;
+
     const response = await fetch(url, {
       method: 'DELETE',
-      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       },
       // agent: httpAgent
     })
-    console.log(response);
+    if(response.status != 200){
+      res.status(response.status);
+      return res.json({message: "Error deleting truck"});
+    }
+    const info = await response.json();
+    res.status(200);
+    return res.json(info);
+    
   }
 
  
