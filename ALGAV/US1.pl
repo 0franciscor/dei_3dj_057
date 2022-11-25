@@ -54,7 +54,7 @@ unloadTime([_|[YH|_]],UT):- entrega(YH,_,_,_,_,T), UT is T.
 
 dechargeTruck(BAT,ECOST,TRUCKE):- TRUCKE is BAT-ECOST.
 
-chargeTruck(BAT,CHARGEDTRUCK):- CHARGEDTRUCK is BAT*0.8.
+chargedTruck(BAT,CHARGEDTRUCK):- CHARGEDTRUCK is BAT*0.8.
 
 %get rid of deliveries in warehouse 5.
 %needed energy confirmations.(only extratraveltime added)
@@ -64,25 +64,41 @@ chargeTruck(BAT,CHARGEDTRUCK):- CHARGEDTRUCK is BAT*0.8.
 analisePath([_|[]],_,_,_,TOTALTIME,TIME):-TIME is TOTALTIME,!.
 analisePath([H|[H1|T]],IDTRUCK,[X|Y],BAT,TOTALTIME,TIME):- tempo(IDTRUCK,H,H1,[X|Y],TT),unloadTime([X|Y],UT),
     energy(IDTRUCK,H,H1,[X|Y],ECOST),dechargeTruck(BAT,ECOST,TRUCKE),
-    extraTimeTravel(IDTRUCK,Y,H1,T,TRUCKE,FENERGY,ET),
-    totalTimeCounter(TOTALT,TT,UT,ET),TOTALTIME1 is TOTALTIME+TOTALT,
+    checkIfCharges(IDTRUCK,Y,H1,T,TRUCKE,FENERGY,CT),
+    extraTravelTime(IDTRUCK,Y,H1,T,ET),
+    ((CT>=UT, UT1 is CT);(UT1 is UT)),
+    totalTimeCounter(TOTALT,TT,UT1,ET),TOTALTIME1 is TOTALTIME+TOTALT,
     analisePath([H1|T],IDTRUCK,Y,FENERGY,TOTALTIME1,TIME).
 
 
 totalTimeCounter(TOTALT,TT,UT,ET):- TOTALT is TT+UT+ET.
 
 
+extraTravelTime(_,_,_,[],ET):-ET is 0.
+extraTravelTime(IDTRUCK,DL,BW,[H|_],ET):-  energy(IDTRUCK,BW,H,DL,E),carateristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA),
+    (E>BAT, ET is EXTRA; ET is 0).
+
+chargeTruck(BAT,TRUCKE,CT):- CT is (BAT-TRUCKE)*60/48.
+
+
+checkIfCharges(_,_,_,[],_,_,CHARGETIME):- CHARGETIME is 0.
+checkIfCharges(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,BW,H,DL,E),carateristicasCam(IDTRUCK,_,_,BAT,_,_),
+    ((TRUCKE-E<BAT*0.8, chargeTruck(BAT,TRUCKE,CT),FENERGY is BAT*0.8,CHARGETIME is CT );FENERGY is TRUCKE-E,CHARGETIME is 0).
+
+
 
 extraTimeTravel(_,_,_,[],_,_,ET):- ET is 0.
-extraTimeTravel(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,ET):- energy(IDTRUCK,BW,H,DL,E), dechargeTruck(TRUCKE,E,ENERGY),
+extraTimeTravel(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,ET):-
+ energy(IDTRUCK,BW,H,DL,E), dechargeTruck(TRUCKE,E,ENERGY),
     carateristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA),
-    ((ENERGY< BAT*0.2,!, ET is EXTRA,chargeTruck(BAT,CT),FENERGY is CT) ; (FENERGY is TRUCKE,ET is 0)).
+    ((ENERGY< BAT*0.2,!, ET is EXTRA,chargedTruck(BAT,CT),FENERGY is CT) ; (FENERGY is TRUCKE,ET is 0)).
 
 
 %compares best time of all paths
 
 comparePaths([],_,_):-!.
-comparePaths([H|T],IDTRUCK,DL):-comparePaths(T,IDTRUCK,DL),carateristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME),createPathsWithEnergy(TIME,H).
+comparePaths([H|T],IDTRUCK,DL):-comparePaths(T,IDTRUCK,DL),carateristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME),
+    createPathsWithEnergy(H,TIME).
 
 createPathsWithEnergy(H,T):-assert(infoTime(H,T)).
 
