@@ -25,7 +25,7 @@ export class FleetManagerComponent implements OnInit {
   public truckList: any[] = [];
   
   constructor(private truckService: TruckService, private router: Router) { 
-    this.truckService.getTruck().then((data) => {
+    this.truckService.getAllTruck().then((data) => {
       this.truckList = data;
       
     });
@@ -47,7 +47,6 @@ export class FleetManagerComponent implements OnInit {
   onTruckSelected($event: any){
 
     let test = this.truckList.find(element => element.truckID == this.selectedTruckOption);
-    console.log(test)
     this.selectedTruck = test;
     
   }
@@ -55,6 +54,16 @@ export class FleetManagerComponent implements OnInit {
 
   goToCreateTruck() {
     this.router.navigate(['Logistics/Truck/CreateTruck']);
+    
+  }
+  goToEditTruck(truckID:string) {
+    this.router.navigate(['Logistics/Truck/EditTruck', truckID]);
+    
+  } 
+  deleteTruck(truckID:string) {
+    this.truckService.deleteTruck(truckID);
+    window.location.reload();
+    
     
   }
 

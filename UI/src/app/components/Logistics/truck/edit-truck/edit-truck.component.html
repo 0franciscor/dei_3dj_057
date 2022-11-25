@@ -1,0 +1,38 @@
+<mat-card>
+    <mat-card-title>{{selectedTruck.truckID}}</mat-card-title>
+    <mat-card-subtitle>Truck Information</mat-card-subtitle>
+    <mat-card-content>
+        
+        <form [formGroup]="formEditTruck" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill">
+                <mat-label>Tare</mat-label>
+                <input matInput type="number" formControlName="tare">
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+                <mat-label>Capacity</mat-label>
+                <input matInput type="number" formControlName="capacity">
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+                <mat-label>Maximum Battery Capacity</mat-label>
+                <input matInput type="number" formControlName="maxBatteryCapacity">
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+                <mat-label>Autonomy</mat-label>
+                <input matInput type="number" formControlName="autonomy">
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+                <mat-label>Fast Charge Time</mat-label>
+                <input matInput type="number" formControlName="fastChargeTime">
+            </mat-form-field>
+            <br>
+
+            
+            <button mat-raised-button color="primary" type="submit" >Edit</button>
+        </form>    
+    </mat-card-content>
+    <button mat-raised-button color="warn" (click)="goBack()">Go Back</button>
+  </mat-card>

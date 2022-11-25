@@ -5,11 +5,12 @@ import fetch from 'node-fetch';
   providedIn: 'root'
 })
 export class TruckService {
+  
 
   constructor() { }
 
-  async getTruck() {
-    const url = 'http://localhost:3000/api/truck/all';
+  async getTruck(truckID:string) {
+    const url = 'http://localhost:3001/api/truck/id/'+truckID;
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -21,9 +22,21 @@ export class TruckService {
 
     return data;
   }
+  
+  async getAllTruck() {
+    const url = 'http://localhost:3001/api/truck/all';
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    const data = await response.json();
+    return data;
+  }
 
   async createTruck(truck: any) {
-    const url = 'http://localhost:3000/api/truck/';
+    const url = 'http://localhost:3001/api/truck/';
     const data = truck;
     const response = await fetch(url, {
       method: 'POST',
@@ -31,9 +44,42 @@ export class TruckService {
       headers: {
         'Content-Type': 'application/json'
       },
-      // agent: httpAgent
     })
-    console.log(response);
+    const info = await response.json();
+    return info;
 
   }
+
+  async updateTruck(truck: any) {
+
+    const url = 'http://localhost:3001/api/truck/';
+    const data = truck;
+    const response = await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    
+  
+    return response;
+
+  }
+
+  async deleteTruck(truckID: string) {
+    const url = 'http://localhost:3001/api/truck/'+truckID;
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+
+    return data;
+  }
+
+
 }

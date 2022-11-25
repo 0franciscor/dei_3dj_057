@@ -4,10 +4,11 @@ import roleRoute from './routes/roleRoute';
 import user from './routes/userRoute';
 import warehouseRoute from './routes/warehouseRoute';
 import deliveryRoute from './routes/deliveryRoute';
+import truckRoute from './routes/truckRoute';
 
 export default () => {
 	const app = Router();
-
+	truckRoute(app)
 	pathRoute(app);	
 	user(app);
 	warehouseRoute(app);

@@ -60,6 +60,10 @@ export default {
     delivery: {
       name: "deliveryController",
       path:"../controllers/deliveryController"
+    },
+    truck: {
+      name: "truckController",
+      path:"../controllers/truckController"
     }
   },
 

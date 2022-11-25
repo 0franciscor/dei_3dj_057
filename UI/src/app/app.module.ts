@@ -9,13 +9,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatCardModule} from '@angular/material/card';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatInputModule} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
 import { CreateTruckComponent } from './components/Logistics/truck/create-truck/create-truck.component';
 import { FleetManagerComponent } from './components/Logistics/home/fleet-manager/fleet-manager.component';
@@ -27,6 +28,7 @@ import { WarehouseComponent } from './components/WarehouseManagement/warehouse/w
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
 import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
 import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
+import { EditTruckComponent, EditTruckComponentDialog } from './components/Logistics/truck/edit-truck/edit-truck.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { GetDeliveriesComponent } from './components/WarehouseManagement/deliver
     WarehouseComponent,
     CreateDeliveryComponent,
     WarehouseByIdComponent,
-    GetDeliveriesComponent
+    GetDeliveriesComponent,
+    EditTruckComponent,
+    EditTruckComponentDialog
   ],
   imports: [
     BrowserModule,
@@ -57,11 +61,12 @@ import { GetDeliveriesComponent } from './components/WarehouseManagement/deliver
     MatToolbarModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatDialogModule,
+    MatButtonModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

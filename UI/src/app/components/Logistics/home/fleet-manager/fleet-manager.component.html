@@ -29,6 +29,13 @@
           <p>Autonomy: {{selectedTruck.autonomy}}</p>
           <p>Fast Charge Time: {{selectedTruck.fastChargeTime}}</p>
         </mat-card-content>
+        
+        <button mat-raised-button style="width: 10em;" (click)="goToEditTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+          Edit Truck
+        </button>
+        <button mat-raised-button style="width: 10em;" (click)="deleteTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+          Delete Truck
+        </button>
       </mat-card>
       
      

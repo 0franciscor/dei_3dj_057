@@ -8,15 +8,17 @@ import { LogisticsManagerComponent } from './components/Logistics/home/logistics
 import { RoadNetworkComponent } from './components/Logistics/road-network/road-network.component';
 import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
 import { CreatePathComponent } from './components/Logistics/path/create-path/create-path.component';
-import {WarehouseComponent} from "./components/WarehouseManagement/warehouse/warehouse.component";
+import { WarehouseComponent } from "./components/WarehouseManagement/warehouse/warehouse.component";
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
 import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
+import { EditTruckComponent } from './components/Logistics/truck/edit-truck/edit-truck.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LogInComponent },
   { path: 'Logistics/Truck/CreateTruck', component: CreateTruckComponent },
-  {path: 'Logistics/Path/CreatePath', component: CreatePathComponent},
+  { path: 'Logistics/Truck/EditTruck/:id', component: EditTruckComponent},
+  { path: 'Logistics/Path/CreatePath', component: CreatePathComponent},
   { path: 'Logistics/Home/FleetManager', component: FleetManagerComponent},
   { path: 'Logistics/Home/LogisticsManager', component: LogisticsManagerComponent},
   { path: 'WarehouseManagement/Home/WarehouseManager', component: WarehouseManagerComponent},
