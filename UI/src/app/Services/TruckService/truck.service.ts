@@ -45,8 +45,7 @@ export class TruckService {
         'Content-Type': 'application/json'
       },
     })
-    const info = await response.json();
-    return info;
+    return response;
 
   }
 

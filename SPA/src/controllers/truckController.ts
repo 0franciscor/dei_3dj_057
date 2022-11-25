@@ -1,15 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-
-import { Inject, Service } from 'typedi';
-import config from "../../config";
-
+import { Service } from 'typedi';
 import ITruckController from "./IControllers/ITruckController";
-
-import { Result } from "../core/logic/Result";
-import { Console } from 'console';
-
 import fetch from 'node-fetch';
-const http = require('https');
 
 @Service()
 export default class TruckController implements ITruckController {
@@ -24,9 +16,14 @@ export default class TruckController implements ITruckController {
       headers: {
         'Content-Type': 'application/json'
       },
-      // agent: httpAgent
     })
-    return await response.json();
+    if(response.status != 201){
+      res.status(response.status);
+      return res.json({message: "Error creating truck"});
+    }
+    const info = await response.json();
+    res.status(201);
+    return res.json(info);
 
   }
 
@@ -38,7 +35,10 @@ export default class TruckController implements ITruckController {
         'Accept': 'application/json'
       }
     });
-
+    if(response.status != 200){
+      res.status(response.status);
+      return res.json({message: "Error getting all trucks"});
+    }
     const data = await response.json();
     res.status(200);
     return res.json(data);
@@ -52,6 +52,10 @@ export default class TruckController implements ITruckController {
         'Accept': 'application/json'
       }
     });
+    if(response.status != 200){
+      res.status(response.status);
+      return res.json({message: "Error getting truck"});
+    }
 
     const data = await response.json();
     res.status(200)
@@ -69,6 +73,10 @@ export default class TruckController implements ITruckController {
         'Content-Type': 'application/json'
       },
     })
+    if(response.status != 200){
+      res.status(response.status);
+      return res.json({message: "Error editing truck"});
+    }
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -82,7 +90,6 @@ export default class TruckController implements ITruckController {
       headers: {
         'Content-Type': 'application/json'
       },
-      // agent: httpAgent
     })
     if(response.status != 200){
       res.status(response.status);

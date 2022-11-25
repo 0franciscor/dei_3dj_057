@@ -18,7 +18,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
-import { CreateTruckComponent } from './components/Logistics/truck/create-truck/create-truck.component';
+import { CreateTruckComponent, CreateTruckComponentDialog } from './components/Logistics/truck/create-truck/create-truck.component';
 import { FleetManagerComponent, DeleteTruckComponentDialog } from './components/Logistics/home/fleet-manager/fleet-manager.component';
 import { LogisticsManagerComponent } from './components/Logistics/home/logistics-manager/logistics-manager.component';
 import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
@@ -48,7 +48,8 @@ import { EditTruckComponent, EditTruckComponentDialog } from './components/Logis
     GetDeliveriesComponent,
     EditTruckComponent,
     EditTruckComponentDialog,
-    DeleteTruckComponentDialog
+    DeleteTruckComponentDialog,
+    CreateTruckComponentDialog
   ],
   imports: [
     BrowserModule,

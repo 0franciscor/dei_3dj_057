@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
+
+export interface DialogData {
+  name: string;
+  message: string;
+}
 
 @Component({
   selector: 'app-create-truck',
@@ -11,7 +18,7 @@ import { TruckService } from 'src/app/Services/TruckService/truck.service';
 export class CreateTruckComponent implements OnInit {
 
   formCreateTruck!: FormGroup;
-  constructor(private truckService: TruckService,private fb: FormBuilder) {}
+  constructor(public dialog: MatDialog,private route: ActivatedRoute,private truckService: TruckService,private fb: FormBuilder,private router: Router) {}
 
   ngOnInit() {
     this.formCreateTruck = this.fb.group({
@@ -25,10 +32,41 @@ export class CreateTruckComponent implements OnInit {
 
   }
 
-  onSubmit() {
-    this.truckService.createTruck(this.formCreateTruck.value);
-  
+  async onSubmit() {
+    let answer = await this.truckService.createTruck(this.formCreateTruck.value);
+    let message = "Truck created successfully";
+    if(answer.status != 201){
+      message = "Error creating truck";
+    }
+    const dialogRef = this.dialog.open(CreateTruckComponentDialog, {
+      width: '250px',
+      data: {
+        name: this.formCreateTruck.value.truckID,
+        message: message},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(answer.status == 200)
+        this.router.navigate(['Logistics/Home/FleetManager']);
+      
+    });
    
   }
 
+}
+
+
+@Component({
+  selector: 'app-create-truck',
+  templateUrl: 'create-truck.dialog.component.html',
+})
+export class CreateTruckComponentDialog {
+  constructor(
+    public dialogRef: MatDialogRef<CreateTruckComponentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) {}
+
+  onOk(): void {
+    this.dialogRef.close();
+  }
 }
