@@ -10,22 +10,22 @@ export class TruckService {
 
   async getTruck() {
     const url = 'http://localhost:3000/api/truck/all';
-    let test: any[] = [];
-    await fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
       }
-    }).then(res => res.json().then(data => {test=data;}));
+    });
 
-    return test;
+    const data = await response.json();
+
+    return data;
   }
 
   async createTruck(truck: any) {
     const url = 'http://localhost:3000/api/truck/';
     const data = truck;
-    // const httpAgent = new http.Agent({ rejectUnauthorized: false });
-    fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -33,5 +33,7 @@ export class TruckService {
       },
       // agent: httpAgent
     })
+    console.log(response);
+
   }
 }
