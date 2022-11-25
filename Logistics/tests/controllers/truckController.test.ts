@@ -28,7 +28,7 @@ describe('TruckController Unit Tests', () => {
         let truckRepoInstance = Container.get(truckRepoClass);
         Container.set("TruckRepo", truckRepoInstance);
 
-        let truckServiceClass = require('../../src/services/TruckService').default;
+        let truckServiceClass = require('../../src/services/truckService').default;
         let truckServiceInstance = Container.get(truckServiceClass);
         Container.set("TruckService", truckServiceInstance);
 
@@ -693,7 +693,7 @@ describe("TruckController + TruckService Integration test", () => {
         let truckRepoInstance = Container.get(truckRepoClass);
         Container.set("TruckRepo", truckRepoInstance);
 
-        let truckServiceClass = require('../../src/services/TruckService').default;
+        let truckServiceClass = require('../../src/services/truckService').default;
         let truckServiceInstance = Container.get(truckServiceClass);
         Container.set("TruckService", truckServiceInstance);
 
@@ -947,7 +947,7 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
         let truckRepoInstance = Container.get(truckRepoClass);
         Container.set("TruckRepo", truckRepoInstance);
 
-        let truckServiceClass = require('../../src/services/TruckService').default;
+        let truckServiceClass = require('../../src/services/truckService').default;
         let truckServiceInstance = Container.get(truckServiceClass);
         Container.set("TruckService", truckServiceInstance);
 

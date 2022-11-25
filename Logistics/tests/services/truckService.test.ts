@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { Container } from 'typedi';
 import * as sinon from 'sinon';
-import TruckService from '../../src/services/TruckService';
+import TruckService from '../../src/services/truckService';
 import ITruckRepo from "../../src/repos/IRepos/ITruckRepo";
 import { ITruckDTO } from '../../src/dto/ITruckDTO';
 import 'mocha';
