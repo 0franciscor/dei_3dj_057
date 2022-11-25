@@ -82,9 +82,8 @@ extraTimeTravel(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,ET):- energy(IDTRUCK,BW,H,DL,
 
 %compares best time of all paths
 
-comparePaths([],_,_,10000000.00000,[]):-!.
-comparePaths([H|T],IDTRUCK,DL,BP,QL):-carateristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME),comparePaths(T,IDTRUCK,DL,BP1,QL),
-    (BP1 > TIME,!, BP is TIME,QL = H; BP is BP1).
+comparePaths([],_,_,10000000.00000,_):-!.
+comparePaths([H|T],IDTRUCK,DL,BP,QL):-comparePaths(T,IDTRUCK,DL,BP1,QL),carateristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME),((BP1 > TIME,!, BP is TIME,QL=H); BP is BP1).
 
 
 appendDelivery(L,L1):- append([1], L, L2), append(L2,[1],L1).
