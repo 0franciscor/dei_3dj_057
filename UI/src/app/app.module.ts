@@ -26,6 +26,7 @@ import { CreatePathComponent } from './components/Logistics/path/create-path/cre
 import { WarehouseComponent } from './components/WarehouseManagement/warehouse/warehouse.component';
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
 import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
+import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { WarehouseByIdComponent } from './components/WarehouseManagement/warehou
     CreatePathComponent,
     WarehouseComponent,
     CreateDeliveryComponent,
-    WarehouseByIdComponent
+    WarehouseByIdComponent,
+    GetDeliveriesComponent
   ],
   imports: [
     BrowserModule,
