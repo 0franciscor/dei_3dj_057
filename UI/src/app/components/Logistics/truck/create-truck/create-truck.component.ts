@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 
@@ -18,7 +18,7 @@ export interface DialogData {
 export class CreateTruckComponent implements OnInit {
 
   formCreateTruck!: FormGroup;
-  constructor(public dialog: MatDialog,private route: ActivatedRoute,private truckService: TruckService,private fb: FormBuilder,private router: Router) {}
+  constructor(public dialog: MatDialog,private truckService: TruckService,private fb: FormBuilder,private router: Router) {}
 
   ngOnInit() {
     this.formCreateTruck = this.fb.group({

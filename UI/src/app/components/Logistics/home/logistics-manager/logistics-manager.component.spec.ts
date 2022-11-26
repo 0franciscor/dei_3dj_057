@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LogisticsManagerComponent } from './logistics-manager.component';
 
@@ -8,7 +9,8 @@ describe('LogisticsManagerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LogisticsManagerComponent ]
+      declarations: [ LogisticsManagerComponent ],
+      imports: [FormsModule,ReactiveFormsModule]
     })
     .compileComponents();
 

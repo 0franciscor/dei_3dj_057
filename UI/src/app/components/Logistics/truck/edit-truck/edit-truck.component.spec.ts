@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
 
 import { EditTruckComponent } from './edit-truck.component';
 
@@ -8,7 +11,8 @@ describe('EditTruckComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditTruckComponent ]
+      declarations: [ EditTruckComponent ],
+      imports: [MatDialogModule,FormsModule,ReactiveFormsModule,RouterModule.forRoot([])],
     })
     .compileComponents();
 

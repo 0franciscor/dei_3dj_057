@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 
@@ -36,7 +36,7 @@ export class FleetManagerComponent implements OnInit {
   displayedColumns: string[] = ['TruckID', 'Tare', 'Capacity', 'Maximum Battery Capacity', 'Autonomy', 'Fast Charge Time', "Actions"];
   dataSource = this.truckList;
   
-  constructor(public dialog: MatDialog,private route: ActivatedRoute,private truckService: TruckService, private router: Router) { 
+  constructor(public dialog: MatDialog,private truckService: TruckService, private router: Router) { 
     this.truckService.getAllTruck().then((data) => {
       this.truckList = data;
       this.dataSource = this.truckList;
