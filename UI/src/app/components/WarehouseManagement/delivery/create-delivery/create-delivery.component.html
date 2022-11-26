@@ -2,7 +2,7 @@
     <mat-card class="matCardCreate">
         <mat-card-header>
 
-            <mat-card-title>
+            <mat-card-title class="tituloForm">
                 <h2>Creating a Delivery</h2>
                 <h4 class="animation a2">Please enter the information in the fields below</h4>
             </mat-card-title>
@@ -11,7 +11,7 @@
 
         <mat-card-content class="sec-div">
 
-            <form class="form-field animation a3" [formGroup]="formCreateDelivery" (ngSubmit)="onSubmit()">
+            <form [formGroup]="formCreateDelivery" (ngSubmit)="onSubmit()">
 
                 <mat-form-field class="deliveryID" appearance="fill">
                     <mat-label>DeliveryID</mat-label>

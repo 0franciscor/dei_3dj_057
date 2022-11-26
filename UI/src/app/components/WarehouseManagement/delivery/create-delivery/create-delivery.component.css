@@ -1,19 +1,23 @@
 .main-div{
-  height: 90%;
-  
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .sec-div{
-  width: 90%;
+  width: 100%;
   margin-top: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.tituloForm{
+  display: absolute;
+  justify-content: center;
+  align-items: center;
+}
 
 
 .createButton{

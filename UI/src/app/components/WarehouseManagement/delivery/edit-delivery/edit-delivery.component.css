@@ -1,27 +1,34 @@
 .main-div{
-    height: 90%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .sec-div{
-    width: 90%;
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .createButton{
-    position: flex;
-    top: 50%;
-    height: 40px;
-    width: 90px;
-  
-  }
-  
-  .createButtonDiv{
-    width: fit-content;
-    margin: auto;
-  }
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sec-div{
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tituloForm{
+  display: absolute;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.createButton{
+  position: flex;
+  top: 50%;
+  height: 40px;
+  width: 90px;
+
+}
+
+.createButtonDiv{
+  width: fit-content;
+  margin: auto;
+}
