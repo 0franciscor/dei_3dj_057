@@ -54,8 +54,14 @@ namespace EletricGo.Services
             if (delivery == null)
                 return null;
 
-            await _deliveryRepository.Add(delivery);
-            await _unitOfWork.CommitAsync();
+            try{
+                await _deliveryRepository.Add(delivery);
+                await _unitOfWork.CommitAsync();
+            } catch (Exception)
+            {
+                return null;
+            }
+            
             return delivery.toDeliveryDTO();
         }
 
