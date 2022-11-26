@@ -1,1 +1,36 @@
-<p>get-deliveries works!</p>
+<table mat-table [dataSource]="dataSource" class="deliveryTable">
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <ng-container matColumnDef="deliveryID">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let delivery of deliveryList"> {{delivery.deliveryID}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deliveryDate">
+        <th mat-header-cell *matHeaderCellDef> Delivery Date </th>
+        <td mat-cell *matCellDef="let delivery of deliveryList"> {{delivery.deliveryDate}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="loadTime">
+        <th mat-header-cell *matHeaderCellDef> Load Time </th>
+        <td mat-cell *matCellDef="let delivery of deliveryList"> {{delivery.loadTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unloadTime">
+        <th mat-header-cell *matHeaderCellDef> Unload Time </th>
+        <td mat-cell *matCellDef="let delivery of deliveryList"> {{delivery.unloadTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="destination">
+        <th mat-header-cell *matHeaderCellDef> Destination </th>
+        <td mat-cell *matCellDef="let delivery of deliveryList"> {{delivery.destination}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deliveryMass">
+        <th mat-header-cell *matHeaderCellDef> Delivery Mass </th>
+        <td mat-cell *matCellDef="let delivery of deliveryList"> {{delivery.loadTime}} </td>
+    </ng-container>
+
+</table>

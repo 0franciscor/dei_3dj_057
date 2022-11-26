@@ -29,6 +29,8 @@ import { CreateDeliveryComponent } from './components/WarehouseManagement/delive
 import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
 import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
 import { EditTruckComponent, EditTruckComponentDialog } from './components/Logistics/truck/edit-truck/edit-truck.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import { EditTruckComponent, EditTruckComponentDialog } from './components/Logis
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent],

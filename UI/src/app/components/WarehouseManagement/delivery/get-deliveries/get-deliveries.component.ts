@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
 
+
+
 @Component({
   selector: 'app-get-deliveries',
   templateUrl: './get-deliveries.component.html',
@@ -9,33 +11,27 @@ import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.servi
 })
 export class GetDeliveriesComponent implements OnInit {
 
-  public selectedDeliveryOption : any;
+  public selectedDeliveryOption: any;
   public selectedDelivery: any;
 
   public deliveryList: any[] = [];
 
-  constructor(private deliveryService : DeliveryService, private router : Router) {
-      
-      this.deliveryService.getDeliveries().then((data) => {
-        this.deliveryList = data;
-      });
-  
-      this.selectedDelivery = {
-        deliveryID: "",
-        deliveryDate: undefined,
-        loadTime: undefined,
-        unloadTime: undefined,
-        destination: undefined,
-        deliveryMass : undefined
-      }
-   }
+  displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass'];
+  dataSource = this.deliveryList;
+
+  constructor(private deliveryService: DeliveryService, private router: Router) {
+
+    this.deliveryService.getDeliveries().then((data) => {
+      this.deliveryList = data;
+      this.dataSource = this.deliveryList;
+    });
+  }
 
   ngOnInit(): void {
   }
 
-  onDeliverySelected($event: any){
+  /*onDeliverySelected($event: any) {
     let chosen = this.deliveryList.find(element => element.deliveryID == this.selectedDeliveryOption);
     this.selectedDelivery = chosen;
-  }
-
+  }*/
 }
