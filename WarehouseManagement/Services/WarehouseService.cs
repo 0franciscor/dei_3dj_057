@@ -9,7 +9,9 @@ using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouses;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
+using EletricGo.Infrastructure.Cities;
 using EletricGo.Services.Interfaces;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 
 namespace EletricGo.Services
@@ -21,19 +23,21 @@ namespace EletricGo.Services
         private readonly ICityService _cityService;
 
 
-        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository)
-        {
-            _unitOfWork = unitOfWork;
-            _warehouseRepository = warehouseRepository;
-
-        } 
-        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository, ICityService cityService)
+        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository, CityService cityService)
         {
             _unitOfWork = unitOfWork;
             _warehouseRepository = warehouseRepository;
             _cityService = cityService;
             
         }
+        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository)
+        {
+            _unitOfWork = unitOfWork;
+            _warehouseRepository = warehouseRepository;
+            
+
+        } 
+
         
         public async Task<List<WarehouseDto>> GetWarehouses()
         {

@@ -109,7 +109,7 @@ internal class WarehouseIntegration
         }
     }
 
-
+    /*
     [Test]
     public async Task PostTest()
     {
@@ -141,7 +141,7 @@ internal class WarehouseIntegration
             
             Assert.That(warehouseResult.Id, Is.EqualTo(warehouseExpected.Id));
         }
-    }
+    }*/
 
     [Test]
     public async Task PutTest()
