@@ -17,6 +17,7 @@ using EletricGo.Domain.Warehouses;
 using EletricGo.Infrastructure.Cities;
 using EletricGo.Infrastructure.Warehouses;
 using EletricGo.Services;
+using EletricGo.Services.Interfaces;
 
 namespace EletricGo
 {

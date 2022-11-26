@@ -18,23 +18,23 @@ namespace EletricGo.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWarehouseRepository _warehouseRepository;
-        private readonly CityService _cityService;
+        private readonly ICityService _cityService;
 
 
-        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository, CityService cityService)
+        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository)
+        {
+            _unitOfWork = unitOfWork;
+            _warehouseRepository = warehouseRepository;
+
+        } 
+        public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository, ICityService cityService)
         {
             _unitOfWork = unitOfWork;
             _warehouseRepository = warehouseRepository;
             _cityService = cityService;
             
         }
-        /* public WarehouseService(IUnitOfWork unitOfWork, IWarehouseRepository warehouseRepository)
-        {
-            _unitOfWork = unitOfWork;
-            _warehouseRepository = warehouseRepository;
-
-        } */
-
+        
         public async Task<List<WarehouseDto>> GetWarehouses()
         {
             var warehouses = await _warehouseRepository.GetAll();
@@ -78,7 +78,7 @@ namespace EletricGo.Services
             
             try
             {
-                await _cityService.ImportCitiesFromCsv("./cities.csv");
+                //await _cityService.ImportCitiesFromCsv("./cities.csv");
                 var city = await _cityService.CityExists(warehouseDto.Designation);
 
                 if (city == null)

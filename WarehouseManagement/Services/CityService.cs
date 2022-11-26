@@ -8,7 +8,7 @@ using EletricGo.Services.Interfaces;
 
 namespace EletricGo.Services;
 
-public class CityService : IServices
+public class CityService : ICityService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICityRepository _cityRepository;

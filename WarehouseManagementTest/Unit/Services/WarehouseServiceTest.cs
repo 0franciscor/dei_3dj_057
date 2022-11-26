@@ -1,3 +1,4 @@
+using EletricGo.Domain.Cities;
 using EletricGo.Domain.Cities.ValueObjects;
 using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouses;
@@ -31,9 +32,8 @@ namespace WarehouseManagementTest.Unit.Services
         {
             var mockDeliveryRepo = new Moq.Mock<IWarehouseRepository>();
             var mockUnitWork = new Moq.Mock<IUnitOfWork>();
-            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnitWork.Object, mockDeliveryRepo.Object, cityService.Object);
+            var service = new WarehouseService(mockUnitWork.Object, mockDeliveryRepo.Object);
 
             Assert.That(service, Is.Not.Null);
         }
@@ -46,10 +46,8 @@ namespace WarehouseManagementTest.Unit.Services
             mockRepository.Setup(repo => repo.GetAll()).ReturnsAsync(CreatedWarehouses());
 
             var mockUnit = new Moq.Mock<IUnitOfWork>();
-            
-            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
 
             var expectedList = await service.GetWarehouses();
 
@@ -75,10 +73,8 @@ namespace WarehouseManagementTest.Unit.Services
             mockRepository.Setup(repo => repo.GetByID(new WarehouseId("WH1"))).ReturnsAsync(warehouseExpected);
 
             var mockUnit = new Moq.Mock<IUnitOfWork>();
-            
-            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
 
             var warehouseResult = await service.GetWarehouse(new WarehouseId(id + "1"));
 
@@ -115,10 +111,8 @@ namespace WarehouseManagementTest.Unit.Services
             mockUnit.Setup(repo => repo.CommitAsync());
 
             mockRepository.Setup(repo => repo.GetByID(new WarehouseId(id + "1"))).ReturnsAsync(null as Warehouse);
-            
-            var cityService = new Moq.Mock<ICityService>();
-            
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object,cityService.Object);
+
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, new CityService(mockUnit.Object,new Mock<ICityRepository>().Object));
 
             var warehouseResult = await service.CreateWarehouse(warehouseDto);
 
@@ -156,9 +150,7 @@ namespace WarehouseManagementTest.Unit.Services
 
             var mockUnit = new Moq.Mock<IUnitOfWork>();
             
-            var cityService = new Moq.Mock<ICityService>();
-
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
 
             var getDel = await service.UpdateWarehouse(warehouseDto);
 
@@ -178,10 +170,8 @@ namespace WarehouseManagementTest.Unit.Services
             mockRepository.Setup(repo => repo.Delete(warehouseExpected));
 
             var mockUnit = new Moq.Mock<IUnitOfWork>();
-            
-            var cityService = new Moq.Mock<ICityService>();
 
-            var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+            var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
 
             var warehouseResult = await service.DeleteWarehouse(warehouseId.warehouseID);
 

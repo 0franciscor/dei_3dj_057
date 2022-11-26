@@ -50,9 +50,9 @@ public class WarehouseControllerTest
     {
         var mockRepository = new Mock<IWarehouseRepository>();
         var mockUnit = new Mock<IUnitOfWork>();
-        var cityService = new Moq.Mock<ICityService>();
+        var cityService = new Moq.Mock<IServices>();
 
-        var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+        var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
 
         Assert.That(service, Is.Not.Null);
     }
@@ -67,8 +67,7 @@ public class WarehouseControllerTest
         var mockRepository = new Mock<IWarehouseRepository>();
         mockRepository.Setup(repo => repo.GetAll()).ReturnsAsync(expectedList);
         
-        var cityService = new Moq.Mock<ICityService>();
-        var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+        var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
         var controller = new WarehouseController(service);
 
         var resultList = await controller.Get();
@@ -94,8 +93,7 @@ public class WarehouseControllerTest
 
         mockRepository.Setup(repo => repo.GetByID(warehouseId)).ReturnsAsync(warehouse);
         
-        var cityService = new Moq.Mock<ICityService>();
-        var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+        var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
 
         var controller = new WarehouseController(service);
 
@@ -130,8 +128,7 @@ public class WarehouseControllerTest
         var mockRepository = new Mock<IWarehouseRepository>();
         var mockUnit = new Mock<IUnitOfWork>();
         
-        var cityService = new Moq.Mock<ICityService>();
-        var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+        var service = new WarehouseService(mockUnit.Object, mockRepository.Object, new Mock<ICityService>().Object);
         var controller = new WarehouseController(service);
 
         var aux = await controller.Post(warehouseExpected);
@@ -165,8 +162,7 @@ public class WarehouseControllerTest
         var mockUnit = new Mock<IUnitOfWork>();
         mockUnit.Setup(repo => repo.CommitAsync()); //does not return, but the service method updates the object
         
-        var cityService = new Moq.Mock<ICityService>();
-        var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+        var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
 
         var controller = new WarehouseController(service);
 
@@ -194,9 +190,8 @@ public class WarehouseControllerTest
         mockRepository.Setup(repo => repo.GetByID(new WarehouseId("WH1"))).ReturnsAsync(warehouse);
         mockRepository.Setup(repo => repo.Delete(warehouse));
         var mockUnit = new Mock<IUnitOfWork>();
-
-        var cityService = new Moq.Mock<ICityService>();
-        var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+        
+        var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
         var controller = new WarehouseController(service);
         var aux = await controller.Delete("WH1");
 

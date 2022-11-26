@@ -50,9 +50,8 @@ internal class WarehouseIntegration
     {
         var mockRepository = new Mock<IWarehouseRepository>();
         var mockUnit = new Mock<IUnitOfWork>();
-        var cityService = new Moq.Mock<ICityService>();
 
-        var service = new WarehouseService(mockUnit.Object, mockRepository.Object, cityService.Object);
+        var service = new WarehouseService(mockUnit.Object, mockRepository.Object);
 
         Assert.That(service, Is.Not.Null);
     }
@@ -139,7 +138,7 @@ internal class WarehouseIntegration
         else
         {
             var warehouseResult = (WarehouseDto)(aux.Result as CreatedAtActionResult).Value;
-
+            
             Assert.That(warehouseResult.Id, Is.EqualTo(warehouseExpected.Id));
         }
     }
