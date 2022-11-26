@@ -22,7 +22,6 @@ export class DeliveryService {
 
   async getDelivery(deliveryID: string){
     const url = "http://localhost:3001/api/delivery/" + deliveryID;
-    console.log(url);
     const response = await fetch(url, {
       method: 'GET',
       headers: {

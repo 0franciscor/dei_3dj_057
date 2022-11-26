@@ -19,6 +19,9 @@
   align-items: center;
 }
 
+.subLegenda{
+  margin-top: 7%;
+}
 
 .createButton{
   position: flex;

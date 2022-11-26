@@ -11,8 +11,14 @@ import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.servi
 export class EditDeliveryComponent implements OnInit {
 
   formEditDelivery!: FormGroup;
+  minDate: Date;
 
-  constructor(private route: ActivatedRoute, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) { }
+  constructor(private route: ActivatedRoute, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) { 
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const currentDay = new Date().getDate();
+    this.minDate = new Date(currentYear, currentMonth, currentDay);
+  }
 
   selectedDelivery = {
     deliveryID: "",

@@ -5,7 +5,7 @@
 
             <mat-card-title class="tituloForm">
                 Selected Delivery: {{selectedDelivery.deliveryID}}
-                <mat-card-subtitle>Please update the information in the fields below</mat-card-subtitle>
+                <h4 class="subLegenda"> Please update the information in the fields below </h4>
             </mat-card-title>
 
         </mat-card-header>
@@ -19,7 +19,7 @@
 
                     <mat-label>Choose a new date</mat-label>
 
-                    <input matInput [matDatepicker]="picker" formControlName="deliveryDate">
+                    <input matInput [min]="minDate" matInput [matDatepicker]="picker" formControlName="deliveryDate">
                     <mat-hint>MM/DD/YYYY</mat-hint>
 
                     <mat-datepicker-toggle class="datePickerIcon" matIconSuffix [for]="picker">
