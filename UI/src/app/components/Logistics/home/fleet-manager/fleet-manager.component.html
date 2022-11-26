@@ -1,47 +1,114 @@
 <mat-card>
-    <mat-card-title>Fleet Manager</mat-card-title>
-    <mat-card-subtitle>ITS TRUCK MONTH!!</mat-card-subtitle>
-    <mat-card-actions>
-      <!-- Create mat-fab button with size 10 -->
-      
-      <button mat-raised-button style="width: 10em; height: 10em;" (click)="goToCreateTruck()" color="warn" aria-label="Example icon button with a home icon">
+  <mat-card-title>Fleet Manager</mat-card-title>
+  <mat-card-subtitle>ITS TRUCK MONTH!!</mat-card-subtitle>
+  <mat-card-actions>
+    <!-- Create mat-fab button with size 10 -->
+    <div style="display: flex; flex-direction: row; gap:10px">
+
+      <button mat-raised-button style="width: 10em; height: 10em;" (click)="goToCreateTruck()" color="warn">
         Create Truck
+      </button>      
+      
+      <div style="display: flex; flex-direction: column; justify-content:space-between">
+        <button mat-raised-button style="width: 15em;" (click)="toggleSeeAll()" color="primary">
+          See All
+        </button>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Truck</mat-label>
+          <select matNativeControl [(ngModel)]="selectedTruckOption" (ngModelChange)="onTruckSelected($event)" name="truck">
+            <option value="" selected disabled></option>
+            <option *ngFor="let truck of truckList;" [value]="truck.truckID">
+              {{truck.truckID}} 
+            </option>
+          </select>
+        </mat-form-field>
+      </div>
+
+    </div>
+    
+    
+
+    
+
+    <!-- display selectedTruck information -->
+    <mat-card *ngIf="selectedTruckOption">
+      <mat-card-title>{{selectedTruckOption}}</mat-card-title>
+      <mat-card-subtitle>Truck Information</mat-card-subtitle>
+      <mat-card-content>
+        <p>TruckID: {{selectedTruck.truckID}}</p>
+        <p>Tare: {{selectedTruck.tare}}</p>
+        <p>Capacity: {{selectedTruck.capacity}}</p>
+        <p>Maximum Battery Capacity: {{selectedTruck.maxBatteryCapacity}}</p>
+        <p>Autonomy: {{selectedTruck.autonomy}}</p>
+        <p>Fast Charge Time: {{selectedTruck.fastChargeTime}}</p>
+      </mat-card-content>
+      
+      <button mat-raised-button style="width: 10em;" (click)="goToEditTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+        Edit Truck
       </button>
+      <button mat-raised-button style="width: 10em;" (click)="deleteTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+        Delete Truck
+      </button>
+    </mat-card>
+    
+  </mat-card-actions>
+</mat-card>
+<table mat-table [dataSource]="dataSource" class="truckTable" *ngIf="seeAll" >
 
-      <mat-form-field appearance="fill">
-        <mat-label>Truck</mat-label>
-        <select matNativeControl [(ngModel)]="selectedTruckOption" (ngModelChange)="onTruckSelected($event)" name="truck">
-          <option value="" selected disabled></option>
-          <option *ngFor="let truck of truckList;" [value]="truck.truckID">
-            {{truck.truckID}} 
-          </option>
-        </select>
-      </mat-form-field>
-      <!-- display selectedTruck information -->
-      <mat-card *ngIf="selectedTruckOption">
-        <mat-card-title>{{selectedTruckOption}}</mat-card-title>
-        <mat-card-subtitle>Truck Information</mat-card-subtitle>
-        <mat-card-content>
-          <p>TruckID: {{selectedTruck.truckID}}</p>
-          <p>Tare: {{selectedTruck.tare}}</p>
-          <p>Capacity: {{selectedTruck.capacity}}</p>
-          <p>Maximum Battery Capacity: {{selectedTruck.maxBatteryCapacity}}</p>
-          <p>Autonomy: {{selectedTruck.autonomy}}</p>
-          <p>Fast Charge Time: {{selectedTruck.fastChargeTime}}</p>
-        </mat-card-content>
-        
-        <button mat-raised-button style="width: 10em;" (click)="goToEditTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
-          Edit Truck
-        </button>
-        <button mat-raised-button style="width: 10em;" (click)="deleteTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
-          Delete Truck
-        </button>
-      </mat-card>
-      
-     
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+<!-- ['TruckID', 'Tare', 'Capacity', 'Maximum Battery CApacity', 'Autonomy', 'Fast Charge Time', "Actions"]; -->
 
+  <!-- TruckID Column -->
+  <ng-container matColumnDef="TruckID">
+    <th mat-header-cell *matHeaderCellDef> TruckID </th>
+    <td mat-cell *matCellDef="let element"> {{element.truckID}} </td>
+  </ng-container>
 
-      
-      
-    </mat-card-actions>
-  </mat-card>
+  <!-- Tare Column -->
+  <ng-container matColumnDef="Tare">
+    <th mat-header-cell *matHeaderCellDef> Tare </th>
+    <td mat-cell *matCellDef="let element"> {{element.tare}} </td>
+  </ng-container>
+
+  <!-- Capacity Column -->
+  <ng-container matColumnDef="Capacity">
+    <th mat-header-cell *matHeaderCellDef> Capacity </th>
+    <td mat-cell *matCellDef="let element"> {{element.capacity}} </td>
+  </ng-container>
+
+  <!-- Maximum Battery Capacity Column -->
+  <ng-container matColumnDef="Maximum Battery Capacity">
+    <th mat-header-cell *matHeaderCellDef> Maximum Battery Capacity </th>
+    <td mat-cell *matCellDef="let element"> {{element.maxBatteryCapacity}} </td>
+  </ng-container>
+
+  <!-- Autonomy Column -->
+  <ng-container matColumnDef="Autonomy">
+    <th mat-header-cell *matHeaderCellDef> Autonomy </th>
+    <td mat-cell *matCellDef="let element"> {{element.autonomy}} </td>
+  </ng-container>
+  
+  <!-- Fast Charge Time Column -->
+  <ng-container matColumnDef="Fast Charge Time">
+    <th mat-header-cell *matHeaderCellDef> Fast Charge Time </th>
+    <td mat-cell *matCellDef="let element"> {{element.fastChargeTime}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="Actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let element"> 
+      <button mat-raised-button style="width: 10em;" (click)="goToEditTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+        Edit Truck
+      </button>
+      <button mat-raised-button style="width: 10em;" (click)="deleteTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+        Delete Truck
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

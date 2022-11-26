@@ -30,11 +30,16 @@ export class FleetManagerComponent implements OnInit {
   public selectedTruck: any;
   
   public truckList: any[] = [];
+
+  public seeAll: boolean = false;
+
+  displayedColumns: string[] = ['TruckID', 'Tare', 'Capacity', 'Maximum Battery Capacity', 'Autonomy', 'Fast Charge Time', "Actions"];
+  dataSource = this.truckList;
   
   constructor(public dialog: MatDialog,private route: ActivatedRoute,private truckService: TruckService, private router: Router) { 
     this.truckService.getAllTruck().then((data) => {
       this.truckList = data;
-      
+      this.dataSource = this.truckList;
     });
     this.selectedTruck= {
       truckID: "",
@@ -46,15 +51,15 @@ export class FleetManagerComponent implements OnInit {
     }
   }
 
+  
 
   ngOnInit(): void {
     
   }
 
   onTruckSelected($event: any){
-
-    let test = this.truckList.find(element => element.truckID == this.selectedTruckOption);
-    this.selectedTruck = test;
+    this.seeAll=false;
+    this.selectedTruck = this.truckList.find(element => element.truckID == this.selectedTruckOption);;
     
   }
 
@@ -89,7 +94,10 @@ export class FleetManagerComponent implements OnInit {
     });
   }
 
-  
+  toggleSeeAll(){
+    this.selectedTruckOption="";
+    this.seeAll=!this.seeAll;
+  }
 
 }
 
