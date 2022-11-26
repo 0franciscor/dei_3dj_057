@@ -73,7 +73,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       warehouses = data;
     });
     let paths: any[] = [];
-    console.log(warehouses)
+    
     for( const warehouse of warehouses){
 
       await rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
@@ -87,6 +87,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       });
 
     }
+    
 
 
     let positions = roadNetworkTemplate.calculatePositions(warehouses);

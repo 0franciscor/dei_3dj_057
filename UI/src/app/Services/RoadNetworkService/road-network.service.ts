@@ -13,7 +13,7 @@ export class RoadNetworkService {
     const response = await fetch(url, {
       method: 'GET'
     });
-    console.log(response)
+    
     let data = await response.json();
     return data;
   }
