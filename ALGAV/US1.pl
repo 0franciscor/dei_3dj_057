@@ -37,6 +37,10 @@ tempo(IDTRUCK,B,E,DL,TIMETOTRAVEL):- dadosCam_t_e_ta(IDTRUCK,B,E,T,_,_), weightW
 
 energy(IDTRUCK,B,E,DL,ENERGY):- dadosCam_t_e_ta(IDTRUCK,B,E,_,KW,_), weightWithDeliveries(IDTRUCK,DL,FW),fullCapacity(IDTRUCK,FC),calculateEnergy(KW,FW,FC,FE), ENERGY is FE.
 
+
+
+
+
 %!  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 extractDestinations([],[]):-!.
@@ -44,31 +48,27 @@ extractDestinations([H|T], [X|Y]):-entrega(H,_,_,W,_,_), extractDestinations(T,Y
 
 findAllPaths(DL,AP):- extractDestinations(DL,WL),allPaths(WL,AP).
 
-%%unloadTime(H,T):- entrega(H,_,_,_,_,T).
-
-
-% %TimeForEachPath(IDTRUCK,DH,B,E,TIME):-tempo(IDTRUCK,B,E,DL,TT),unloadTime(DL,UT),
-% updateWeight(DL), TIME is TT+UT.
-
 unloadTime([_|[YH|_]],UT):- entrega(YH,_,_,_,_,T), UT is T.
 
 dechargeTruck(BAT,ECOST,TRUCKE):- TRUCKE is BAT-ECOST.
 
-chargedTruck(BAT,CHARGEDTRUCK):- CHARGEDTRUCK is BAT*0.8.
 
-%get rid of deliveries in warehouse 5.
-%needed energy confirmations.(only extratraveltime added)
-%update battery state
-%remove right delivery
-%
+removeFromDel(X,[X|Y],Y).
+removeFromDel(X,[H|T],[H|T1]):- removeFromDel(X,T,T1).
+
+
+deleteDelivery(H1,[X|Y],FDL):- entrega(DEL,_,_,H1,_,_),removeFromDel(DEL,[X|Y],FDL).
+
+
 analisePath([_|[]],_,_,_,TOTALTIME,TIME):-TIME is TOTALTIME,!.
 analisePath([H|[H1|T]],IDTRUCK,[X|Y],BAT,TOTALTIME,TIME):- tempo(IDTRUCK,H,H1,[X|Y],TT),unloadTime([X|Y],UT),
     energy(IDTRUCK,H,H1,[X|Y],ECOST),dechargeTruck(BAT,ECOST,TRUCKE),
-    checkIfCharges(IDTRUCK,Y,H1,T,TRUCKE,FENERGY,CT),
-    extraTravelTime(IDTRUCK,Y,H1,T,ET),
+    deleteDelivery(H1,[X|Y],FDL),
+    checkIfCharges(IDTRUCK,FDL,H1,T,TRUCKE,FENERGY,CT),
+    extraTravelTime(IDTRUCK,FDL,H1,T,ET),
     ((CT>=UT, UT1 is CT);(UT1 is UT)),
     totalTimeCounter(TOTALT,TT,UT1,ET),TOTALTIME1 is TOTALTIME+TOTALT,
-    analisePath([H1|T],IDTRUCK,Y,FENERGY,TOTALTIME1,TIME).
+    analisePath([H1|T],IDTRUCK,FDL,FENERGY,TOTALTIME1,TIME).
 
 
 totalTimeCounter(TOTALT,TT,UT,ET):- TOTALT is TT+UT+ET.
@@ -76,23 +76,23 @@ totalTimeCounter(TOTALT,TT,UT,ET):- TOTALT is TT+UT+ET.
 
 extraTravelTime(_,_,_,[],ET):-ET is 0.
 extraTravelTime(IDTRUCK,DL,BW,[H|_],ET):-  energy(IDTRUCK,BW,H,DL,E),carateristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA),
-    (E>BAT, ET is EXTRA; ET is 0).
+    (BAT*0.8-E<BAT*0.2, ET is EXTRA; ET is 0).
 
-chargeTruck(BAT,TRUCKE,CT):- CT is (BAT-TRUCKE)*60/48.
+chargeTruck(BAT,TRUCKE,CT):- CT is (BAT*0.8-TRUCKE)*60/48.
+
+lastCharge(KW,CT):- CT is KW*60/48.
+
+
+checkIfCharges(IDTRUCK,DL,BW,[5|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,BW,5,DL,E),carateristicasCam(IDTRUCK,_,_,BAT,_,_),
+(   (BAT*0.2-E>0,lastCharge(BAT*0.2-E,CT),FENERGY is BAT*0.2,CHARGETIME is CT); chargeTruck(BAT,TRUCKE,CT),FENERGY is BAT*0.8,CHARGETIME is CT ).
 
 
 checkIfCharges(_,_,_,[],_,_,CHARGETIME):- CHARGETIME is 0.
 checkIfCharges(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,BW,H,DL,E),carateristicasCam(IDTRUCK,_,_,BAT,_,_),
-    ((TRUCKE-E<BAT*0.8, chargeTruck(BAT,TRUCKE,CT),FENERGY is BAT*0.8,CHARGETIME is CT );FENERGY is TRUCKE-E,CHARGETIME is 0).
-
-
-
-extraTimeTravel(_,_,_,[],_,_,ET):- ET is 0.
-extraTimeTravel(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,ET):-
- energy(IDTRUCK,BW,H,DL,E), dechargeTruck(TRUCKE,E,ENERGY),
-    carateristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA),
-    ((ENERGY< BAT*0.2,!, ET is EXTRA,chargedTruck(BAT,CT),FENERGY is CT) ; (FENERGY is TRUCKE,ET is 0)).
-
+ (
+     (TRUCKE<BAT*0.2, chargeTruck(BAT,BAT*0.2,CT),FENERGY is BAT*0.8,CHARGETIME is CT);
+     ((TRUCKE-E<BAT*0.2, chargeTruck(BAT,TRUCKE,CT),FENERGY is BAT*0.8,CHARGETIME is CT );FENERGY is TRUCKE,CHARGETIME is 0)
+   ).
 
 %compares best time of all paths
 
