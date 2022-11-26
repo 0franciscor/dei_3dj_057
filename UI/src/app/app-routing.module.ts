@@ -13,6 +13,7 @@ import { CreateDeliveryComponent } from './components/WarehouseManagement/delive
 import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
 import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
 import { EditTruckComponent } from './components/Logistics/truck/edit-truck/edit-truck.component';
+import { EditDeliveryComponent } from './components/WarehouseManagement/delivery/edit-delivery/edit-delivery.component';
 
 
 
@@ -28,7 +29,8 @@ const routes: Routes = [
   { path: 'WarehouseManagement/Warehouse/CreateWarehouse', component: WarehouseComponent},
   { path: 'WarehouseManagement/Warehouse/GetWarehouseById', component: WarehouseByIdComponent},
   { path: 'WarehouseManagement/Delivery/CreateDelivery', component: CreateDeliveryComponent},
-  { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent}
+  { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent},
+  { path: 'WarehouseManagement/Delivery/EditDelivery/:id', component: EditDeliveryComponent},
 ];
 
 @NgModule({

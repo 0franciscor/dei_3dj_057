@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
 
-
-
 @Component({
   selector: 'app-get-deliveries',
   templateUrl: './get-deliveries.component.html',
@@ -16,7 +14,7 @@ export class GetDeliveriesComponent implements OnInit {
 
   public deliveryList: any[] = [];
 
-  displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass'];
+  displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass', 'edit'];
   dataSource = this.deliveryList;
 
   constructor(private deliveryService: DeliveryService, private router: Router) {
@@ -30,8 +28,8 @@ export class GetDeliveriesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  /*onDeliverySelected($event: any) {
-    let chosen = this.deliveryList.find(element => element.deliveryID == this.selectedDeliveryOption);
-    this.selectedDelivery = chosen;
-  }*/
+  goToEditDelivery(deliveryID : string) {
+    
+  }
+  
 }
