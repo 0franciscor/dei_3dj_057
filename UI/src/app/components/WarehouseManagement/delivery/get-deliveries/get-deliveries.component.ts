@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
 
 @Component({
   selector: 'app-get-deliveries',
@@ -7,9 +9,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GetDeliveriesComponent implements OnInit {
 
-  constructor() { }
+  public selectedDeliveryOption : any;
+  public selectedDelivery: any;
+
+  public deliveryList: any[] = [];
+
+  constructor(private deliveryService : DeliveryService, private router : Router) {
+      
+      this.deliveryService.getDeliveries().then((data) => {
+        this.deliveryList = data;
+      });
+  
+      this.selectedDelivery = {
+        deliveryID: "",
+        deliveryDate: undefined,
+        loadTime: undefined,
+        unloadTime: undefined,
+        destination: undefined,
+        deliveryMass : undefined
+      }
+   }
 
   ngOnInit(): void {
+  }
+
+  onDeliverySelected($event: any){
+    let chosen = this.deliveryList.find(element => element.deliveryID == this.selectedDeliveryOption);
+    this.selectedDelivery = chosen;
   }
 
 }

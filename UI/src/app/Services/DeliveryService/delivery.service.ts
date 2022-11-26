@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ComponentFactoryResolver, Injectable } from '@angular/core';
 import fetch from 'node-fetch';
 
 @Injectable({
@@ -8,16 +8,13 @@ export class DeliveryService {
 
   constructor() { }
 
-  async getDelivery(){
-    const url = "http://localhost:3001/api/deliveries/getAll";
+  async getDeliveries(){
+    const url = "http://localhost:3001/api/delivery/all";
     let receivedDelivery: any[] = [];
     await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
+      method: 'GET'
     }).then(res => res.json().then(data => {receivedDelivery = data;}));
-
+    console.log(receivedDelivery);
     return receivedDelivery;
   }
 

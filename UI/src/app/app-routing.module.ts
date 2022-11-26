@@ -11,7 +11,9 @@ import { CreatePathComponent } from './components/Logistics/path/create-path/cre
 import { WarehouseComponent } from "./components/WarehouseManagement/warehouse/warehouse.component";
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
 import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
+import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component'; +
 import { EditTruckComponent } from './components/Logistics/truck/edit-truck/edit-truck.component';
+
 
 
 const routes: Routes = [
@@ -26,6 +28,7 @@ const routes: Routes = [
   { path: 'WarehouseManagement/Warehouse/CreateWarehouse', component: WarehouseComponent},
   { path: 'WarehouseManagement/Warehouse/GetWarehouseById', component: WarehouseByIdComponent},
   { path: 'WarehouseManagement/Delivery/CreateDelivery', component: CreateDeliveryComponent}
+  { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent} +
 ];
 
 @NgModule({

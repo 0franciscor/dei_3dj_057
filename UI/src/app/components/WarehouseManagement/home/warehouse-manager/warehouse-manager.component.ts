@@ -29,4 +29,8 @@ export class WarehouseManagerComponent implements OnInit {
     this.router.navigate(['WarehouseManagement/Warehouse/GetWarehouseById'])
   }
 
+  goToGetDelivery(){
+    this.router.navigate(['WarehouseManagement/Delivery/GetDelivery'])
+  }
+
 }

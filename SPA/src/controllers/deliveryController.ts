@@ -31,7 +31,7 @@ export default class DeliveryController implements IDeliveryController {
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
 
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
-        const address = 'https://localhost:5001/api/delivery/createDelivery';
+        const address = 'https://localhost:5001/api/deliveries/GetAll';
 
         const response = await fetch(address, {
             method: 'GET',
