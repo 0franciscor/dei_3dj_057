@@ -29,7 +29,7 @@ export class GetDeliveriesComponent implements OnInit {
   }
 
   goToEditDelivery(deliveryID : string) {
-    
+    this.router.navigate(['WarehouseManagement/Delivery/EditDelivery', deliveryID]);
   }
   
 }

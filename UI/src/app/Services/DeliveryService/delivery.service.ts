@@ -20,6 +20,19 @@ export class DeliveryService {
     return data;
   }
 
+  async getDelivery(deliveryID: string){
+    const url = "http://localhost:3001/api/delivery/" + deliveryID;
+    console.log(url);
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    const data = await response.json();
+    return data;
+  }
+
   async createDelivery(delivery: any) {
     const url = "http://localhost:3001/api/delivery/create";
     const data = delivery;

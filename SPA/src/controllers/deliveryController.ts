@@ -11,23 +11,6 @@ const http = require('https');
 export default class DeliveryController implements IDeliveryController {
     constructor() { }
 
-    public async createDelivery(req: Request, res: Response, next: NextFunction) {
-        const httpAgent = new http.Agent({ rejectUnauthorized: false });
-        const address = 'https://localhost:5001/api/deliveries/CreateDelivery';
-
-        const response = await fetch(address,{
-            method: 'POST',
-            body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
-            agent: httpAgent
-        });
-        
-        let data = await response.json();
-        res.status(200);
-        return res.json(data);
-    };
-
-
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
 
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
@@ -38,11 +21,53 @@ export default class DeliveryController implements IDeliveryController {
             agent: httpAgent
         });
 
-        let data = await response.json();
-        res.status(200)
-        return res.json(data);
+        if (response.status != 200) {
+            res.status(response.status);
+            return res.json({ message: "Error Getting Deliveries" });
+        }
+        const info = await response.json();
+        res.status(200);
+        return res.json(info);
     }
-    
+
+    public async getDelivery(req: Request, res: Response, next: NextFunction) {
+        const httpAgent = new http.Agent({ rejectUnauthorized: false });
+        const address = 'https://localhost:5001/api/deliveries/GetByID/' + req.params.id;
+
+        const response = await fetch(address, {
+            method: 'GET',
+            agent: httpAgent
+        });
+
+        if (response.status != 200) {
+            res.status(response.status);
+            return res.json({ message: "Error Getting Delivery" });
+        }
+        const info = await response.json();
+        res.status(200);
+        return res.json(info);
+    }
+
+    public async createDelivery(req: Request, res: Response, next: NextFunction) {
+        const httpAgent = new http.Agent({ rejectUnauthorized: false });
+        const address = 'https://localhost:5001/api/deliveries/CreateDelivery';
+
+        const response = await fetch(address, {
+            method: 'POST',
+            body: JSON.stringify(req.body),
+            headers: { 'Content-Type': 'application/json' },
+            agent: httpAgent
+        });
+
+        if (response.status != 200) {
+            res.status(response.status);
+            return res.json({ message: "Error Creating Delivery"});
+        }
+        const info = await response.json();
+        res.status(200);
+        return res.json(info);
+    };
+
 
     public async updateDelivery(req: Request, res: Response, next: NextFunction) {
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
@@ -55,8 +80,12 @@ export default class DeliveryController implements IDeliveryController {
             agent: httpAgent
         });
 
-        let data = await response.json();
+        if (response.status != 200) {
+            res.status(response.status);
+            return res.json({ message: "Error Updating Delivery" });
+        }
+        const info = await response.json();
         res.status(200);
-        return res.json(data);
+        return res.json(info);
     }
 }
