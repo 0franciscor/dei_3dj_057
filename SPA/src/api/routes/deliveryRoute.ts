@@ -26,5 +26,5 @@ export default (app: Router) => {
     route.patch('/update', (req,res,next)=>
     {
         ctrl.updateDelivery(req,res,next)
-    }
+    });
 };
