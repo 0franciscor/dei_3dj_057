@@ -42,4 +42,21 @@ export default class DeliveryController implements IDeliveryController {
         res.status(200)
         return res.json(data);
     }
+    
+
+    public async updateDelivery(req: Request, res: Response, next: NextFunction) {
+        const httpAgent = new http.Agent({ rejectUnauthorized: false });
+        const address = 'https://localhost:5001/api/deliveries/Update';
+
+        const response = await fetch(address, {
+            method: 'PATCH',
+            body: JSON.stringify(req.body),
+            headers: { 'Content-Type': 'application/json' },
+            agent: httpAgent
+        });
+
+        let data = await response.json();
+        res.status(200);
+        return res.json(data);
+    }
 }

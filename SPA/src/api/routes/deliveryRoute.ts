@@ -22,4 +22,9 @@ export default (app: Router) => {
     {
         ctrl.createDelivery(req,res,next)
     });
+
+    route.patch('/update', (req,res,next)=>
+    {
+        ctrl.updateDelivery(req,res,next)
+    }
 };
