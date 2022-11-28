@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import fetch from 'node-fetch';
 import * as http from "http";
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,7 +38,9 @@ export class WarehouseService {
         'Content-Type': 'application/json'
       },
 
-    }).then(res => res.json().then(data => {answer=data;}));
+    })
+    console.log(response);
+    return response;
 
     
   }

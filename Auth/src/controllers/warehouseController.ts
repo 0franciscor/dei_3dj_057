@@ -46,9 +46,13 @@ export default class WarehouseController implements IWarehouseController {
           agent: httpAgent
       });
 
-      let data = await response.json();
-      res.status(200);
-      return res.json(data);
+      if(response.status != 200){
+        res.status(response.status);
+        return res.json({message: "Error creating warehouse"});
+      }
+      const info = await response.json();
+      res.status(201);
+      return res.json(info);
   }
 
   async getWarehouse(req: Request, res: Response, next: NextFunction) {

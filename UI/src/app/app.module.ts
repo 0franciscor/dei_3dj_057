@@ -31,7 +31,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditDeliveryComponent } from './components/WarehouseManagement/delivery/edit-delivery/edit-delivery.component';
 import { EditWarehouseComponent, EditWarehouseComponentDialog} from './components/WarehouseManagement/warehouse/edit-warehouse/edit-warehouse.component';
-import { CreateWarehouseComponent } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
+import { CreateWarehouseComponent, CreateWarehouseComponentDialog } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +56,8 @@ import { CreateWarehouseComponent } from './components/WarehouseManagement/wareh
     EditDeliveryComponent,
     EditWarehouseComponent,
     EditWarehouseComponentDialog,
-    CreateWarehouseComponent
+    CreateWarehouseComponent,
+    CreateWarehouseComponentDialog
   ],
   imports: [
     BrowserModule,

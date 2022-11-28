@@ -17,6 +17,7 @@ export default class TruckController implements ITruckController {
         'Content-Type': 'application/json'
       },
     })
+    
     if(response.status != 201){
       res.status(response.status);
       return res.json({message: "Error creating truck"});
