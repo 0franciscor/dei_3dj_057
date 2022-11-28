@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 env:
-    AZURE_WEBAPP_NAME: Logstics57
+    AZURE_WEBAPP_NAME: Logistics57
     NODE_PATH: './Logistics'
     CACHE_PATH: './Logistics/package-lock.json'
     NODE_VERSION: '16.17.1'
