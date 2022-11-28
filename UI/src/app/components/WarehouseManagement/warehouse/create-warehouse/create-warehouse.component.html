@@ -1,0 +1,67 @@
+
+<div class="left">
+    <mat-card >
+      <mat-card-header>
+        <mat-card-title class="header">
+          <h2 class="animation a1">Create Warehouse</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content >
+        <form class="form" [formGroup]="formCreateWarehouse" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="standard">
+            <mat-label>WarehouseID</mat-label>
+            <input matInput type="text" formControlName="Id">
+            <span style="color: red" *ngIf="Id && Id.invalid && Id.touched"
+                    class="error">Please enter a valid Warehouse Id</span>
+            <br>
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>Address</mat-label>
+            <input matInput type="text" formControlName="Address">
+            <span style="color: red" *ngIf="Address && Address.invalid && Address.touched"
+            class="error">Please enter a valid Address</span>
+          <br>
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>Altitude</mat-label>
+            <input matInput type="number" formControlName="Altitude">
+            <span style="color: red" *ngIf="Altitude && Altitude.invalid && Altitude.touched"
+            class="error">Please enter a valid Altitude</span>
+            <br>
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>Latitude</mat-label>
+            <input matInput type="text" formControlName="Latitude">
+            <span style="color: red" *ngIf="Latitude && Latitude.invalid && Latitude.touched"
+            class="error">Please enter a valid Latitude</span>
+            <br>
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>Longitude</mat-label>
+            <input matInput type="text" formControlName="Longitude">
+            <span style="color: red" *ngIf="Longitude && Longitude.invalid && Longitude.touched"
+            class="error">Please enter a valid Longitude</span>
+            <br>
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>Designation</mat-label>
+            <input matInput type="text" formControlName="Designation">
+            <span style="color: red" *ngIf="Designation && Designation.invalid && Designation.touched"
+            class="error">Please enter a valid Designation</span>
+            <br>
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" type="submit" >Create</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  
+  
+  

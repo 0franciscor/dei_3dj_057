@@ -98,7 +98,7 @@ export class EditTruckComponent implements OnInit {
   selector: 'app-edit-truck',
   templateUrl: 'edit-truck.dialog.component.html',
 })
-export class EditTruckComponentDialog {
+  export class EditTruckComponentDialog {
   constructor(
     public dialogRef: MatDialogRef<EditTruckComponentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
