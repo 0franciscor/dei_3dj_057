@@ -11,7 +11,8 @@ export class WarehouseService {
   constructor() { }
 
   async getWarehouse(WarehouseId:string) {
-    const url = 'http://localhost:3001/api/warehouse/getById/'+WarehouseId;
+    console.log(WarehouseId);
+    const url = 'http://localhost:3001/api/warehouse/'+ WarehouseId;
     
     const response = await fetch(url, {
       method: 'GET',
@@ -50,9 +51,9 @@ export class WarehouseService {
     const url = 'http://localhost:3001/api/warehouse/all';
     const response = await fetch(url, {
       method: 'GET'
-    }).then(res => res.json().then(data => {test=data;}));
-    console.log(test);
-    return test;
+    })
+    const data = await response.json();
+    return data;
     
   }
 
@@ -60,6 +61,8 @@ export class WarehouseService {
 
     const url = 'http://localhost:3001/api/warehouse/update';
     const data = warehouse;
+
+    console.log(data);
 
     const response = await fetch(url, {
       method: 'PUT',

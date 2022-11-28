@@ -34,40 +34,44 @@ export class EditWarehouseComponent implements OnInit {
   }
 
   selectedWarehouse = {
-    WarehouseId: "",
-    Address: undefined,
-    Altitude: undefined,
-    Latitude: undefined,
-    Longitude: undefined,
-    Designation: undefined,
+    id: "",
+    address: undefined,
+    altitude: undefined,
+    latitude: undefined,
+    longitude: undefined,
+    designation: undefined,
   }
 
   ngOnInit(): void {
     const warehouseID = this.route.snapshot.paramMap.get('id');
     this.formEditWarehouse = this.fb.group({
-      WarehouseId: this.selectedWarehouse.WarehouseId,
-      Altitude: this.selectedWarehouse.Altitude,
-      Address: this.selectedWarehouse.Address,
-      Latitude: this.selectedWarehouse.Latitude,
-      Longitude: this.selectedWarehouse.Longitude,
-      Designation: this.selectedWarehouse.Designation
+      id: this.selectedWarehouse.id,
+      altitude: this.selectedWarehouse.altitude,
+      address: this.selectedWarehouse.address,
+      latitude: this.selectedWarehouse.latitude,
+      longitude: this.selectedWarehouse.longitude,
+      designation: this.selectedWarehouse.designation
     });
+
 
     if (warehouseID)
       this.warehouseService.getWarehouse(warehouseID).then((data) => {
         this.selectedWarehouse = data;
+        console.log(data);
         this.formEditWarehouse = this.fb.group({
-          WarehouseId: this.selectedWarehouse.WarehouseId,
-          Altitude: this.selectedWarehouse.Altitude,
-          Address: this.selectedWarehouse.Address,
-          Latitude: this.selectedWarehouse.Latitude,
-          Longitude: this.selectedWarehouse.Longitude,
-          Designation: this.selectedWarehouse.Designation
+          id: this.selectedWarehouse.id,
+          altitude: this.selectedWarehouse.altitude,
+          address: this.selectedWarehouse.address,
+          latitude: this.selectedWarehouse.latitude,
+          longitude: this.selectedWarehouse.longitude,
+          designation: this.selectedWarehouse.designation
         });
+        console.log(this.formEditWarehouse.value);
       });
   }
 
   async onSubmit() {
+    console.log(this.formEditWarehouse.value);
     let answer = await this.warehouseService.updateWarehouse(this.formEditWarehouse.value);
     let message = "Warehouse updated successfully";
 
@@ -77,7 +81,7 @@ export class EditWarehouseComponent implements OnInit {
     const dialogRef = this.dialog.open(EditWarehouseComponentDialog, {
       width: '250px',
       data: {
-        name: this.selectedWarehouse.WarehouseId,
+        name: this.selectedWarehouse.id,
         message: message},
     });
 

@@ -9,12 +9,12 @@ import { RoadNetworkComponent } from './components/Logistics/road-network/road-n
 import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
 import { CreatePathComponent } from './components/Logistics/path/create-path/create-path.component';
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
-import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/get-warehouse/warehouse-by-id.component';
 import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
 import { EditTruckComponent } from './components/Logistics/truck/edit-truck/edit-truck.component';
 import { EditDeliveryComponent } from './components/WarehouseManagement/delivery/edit-delivery/edit-delivery.component';
 import { EditWarehouseComponent } from './components/WarehouseManagement/warehouse/edit-warehouse/edit-warehouse.component';
 import { CreateWarehouseComponent } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
+import { GetWarehousesComponent } from './components/WarehouseManagement/warehouse/get-warehouses/get-warehouses.component';
 
 
 
@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'WarehouseManagement/Home/WarehouseManager', component: WarehouseManagerComponent},
   { path: 'Logistics/RoadNetwork', component: RoadNetworkComponent},
   { path: 'WarehouseManagement/Warehouse/CreateWarehouse', component: CreateWarehouseComponent},
-  { path: 'WarehouseManagement/Warehouse/GetWarehouseById', component: WarehouseByIdComponent},
+  { path: 'WarehouseManagement/Warehouse/GetWarehouseById', component: GetWarehousesComponent},
   { path: 'WarehouseManagement/Delivery/CreateDelivery', component: CreateDeliveryComponent},
   { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent},
   { path: 'WarehouseManagement/Delivery/EditDelivery/:id', component: EditDeliveryComponent},
