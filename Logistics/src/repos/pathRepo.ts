@@ -52,10 +52,13 @@ export default class PathRepo implements IPathRepo{
         }
     }
     public async delete (Path: Path): Promise<Path>{
-        const query = {PathID: Path.pathID.id};
+        const query = {pathID: Path.pathID.id};
 
         const pathDocument = await this.pathSchema.findOne(query as 
         FilterQuery<IPathPersistance & Document>); 
+
+       
+        
         try {
             if(pathDocument === null){
                 return Path;
@@ -72,6 +75,7 @@ export default class PathRepo implements IPathRepo{
         
         public async getPathById(pathID: string): Promise<Path> {
             const query ={pathID: pathID}
+            
             const pathDocument = await this.pathSchema.findOne(query as 
             FilterQuery<IPathPersistance & Document>);
             if(pathDocument === null){
@@ -85,22 +89,23 @@ export default class PathRepo implements IPathRepo{
         public async getAllPaths(startWH:string ,destinationWH:string): Promise<Path[]> {
             let query;
             let pathDocument;
-            if(startWH==''){
+            if(startWH==''&& destinationWH != '' ){
                  query ={destinationWHId: destinationWH}
-            }else if(destinationWH==''){
+            }else if(destinationWH=='' && startWH != ''){
                  query ={startWHId: startWH}
             }
             else{
-                query = {startWIdH:startWH,destinationWHId:destinationWH}
+                query = {startWHId:startWH,destinationWHId:destinationWH}
            
             } 
             
-            if(startWH==undefined && destinationWH==undefined){
+            if(startWH=='' && destinationWH==''){
                 pathDocument = await this.pathSchema.find();
             }  else{
                 
-                pathDocument= await this.pathSchema.find(query as FilterQuery<IPathPersistance & Document>)}
-                
+                pathDocument= await this.pathSchema.find(query as FilterQuery<IPathPersistance & Document>)
+            }
+            
             
              let paths: Path[]= [];
             pathDocument.forEach(path=>{
