@@ -9,6 +9,7 @@ on:
 env:
     AZURE_WEBAPP_NAME: Logstics57
     NODE_PATH: './Logistics'
+    CACHE_PATH: './Logistics/package-lock.json'
     NODE_VERSION: '16.17.1'
 
 jobs:
@@ -23,13 +24,17 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: './Logistics/package-lock.json'
-      - name: npm install, build, and test
+          cache-dependency-path: ${{ env.CACHE_PATH }}
+
+      - name: Clean Install
         run: npm ci
+
       - name: Build
         run: npm run build --if-present
+
       - name: Test
-        run: npm test--if-present
+        run: npm test --if-present
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
