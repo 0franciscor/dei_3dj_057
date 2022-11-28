@@ -1,0 +1,30 @@
+.deliveryTable {
+    width: 100%;
+  }
+  
+  .mat-column-deliveryID{
+    width: 32px;
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+  }
+  
+  .mat-column-deliveryDate{
+    padding-left: 16px;
+  }
+  
+  .mat-column-loadTime{
+    font-style: italic;
+  }
+  
+  .mat-column-unloadTime{
+    font-style: italic;
+  }
+  
+  .mat-column-deliveryMass{
+    font-style: italic;
+  }
+  
+  /* .mat-column-edit{
+    align-items: center;
+  } */

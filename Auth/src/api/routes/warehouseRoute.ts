@@ -28,8 +28,7 @@ export default (app: Router) => {
         ctrl.editWarehouse(req,res,next)
     });
 
-    route.get('/getById/:id',(req,res,next)=>{
-        req.body.WarehouseId = req.params.id;
+    route.get('/:id',(req,res,next)=>{
         ctrl.getWarehouse(req,res,next)
     });
 
