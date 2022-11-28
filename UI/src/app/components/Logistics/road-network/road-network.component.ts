@@ -101,7 +101,11 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     //Scene
     this.scene = new THREE.Scene();
     //const scene1 = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x000000);
+    //i want to define a backgroud image for the scene
+    const loader = new THREE.TextureLoader();
+    loader.load('assets/sky.jpg', (texture) => {
+      this.scene.background = texture;
+    });
     this.scene.add(this.roadNetwork.object);
     
 

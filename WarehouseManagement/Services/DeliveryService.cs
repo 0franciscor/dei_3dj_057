@@ -56,12 +56,11 @@ namespace EletricGo.Services
 
             try{
                 await _deliveryRepository.Add(delivery);
-                await _unitOfWork.CommitAsync();
             } catch (Exception)
             {
                 return null;
             }
-            
+            await _unitOfWork.CommitAsync();
             return delivery.toDeliveryDTO();
         }
 
