@@ -1,4 +1,4 @@
-﻿name: EletricGo Software Testing and Deployment
+﻿name: WarehouseManagement Testing and Deployment
 
 on:
   push:
@@ -12,7 +12,6 @@ env:
     DOTNET_PATH: 'WarehouseManagement'
     DOTNET_TEST_PATH: 'WarehouseManagementTest'
     DOTNET_VERSION: '6.0'
-    NODE_PATH: './Logistics'
 
 jobs:
   BuildAndTestWarehouseAPI:
@@ -65,22 +64,3 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: 'WarehouseManagement/published'
-  
-  BuildAndTestLogisticsAPI:
-    runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: ${{ env.NODE_PATH }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.17.1'
-          cache: 'npm'
-          cache-dependency-path: './Logistics/package-lock.json'
-      - name: Install dependencies
-        run: npm ci
-      - name: Build
-        run: npm run build --if-present
-      - name: Test
-        run: npm test
