@@ -45,6 +45,7 @@ export class CreateDeliveryComponent implements OnInit {
   }
 
   get loadTime() {
+    console.log(this.formCreateDelivery.get('loadTime'));
     return this.formCreateDelivery.get('loadTime');
   }
 
