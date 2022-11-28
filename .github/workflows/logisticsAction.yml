@@ -29,9 +29,6 @@ jobs:
       - name: Install
         run: npm i
 
-      - name: Build
-        run: npm run build --if-present
-
       - name: Test
         run: npm test --if-present
 
@@ -42,7 +39,7 @@ jobs:
           path: ${{ env.NODE_PATH }}
       
   Deployment:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: [BuildAndTestLogisticsAPI]
     environment:
       name: 'production'
