@@ -1,6 +1,6 @@
 import config from "../../config";
 import { Inject, Service } from "typedi";
-import  IPathController  from "../controllers/IControllers/IPathController"
+import  IPathController  from "./IControllers/IPathController"
 import IPathService from "../services/IServices/IPathService";
 import { Request, Response, NextFunction } from "express";
 import { IPathDTO } from "../dto/IPathDTO";

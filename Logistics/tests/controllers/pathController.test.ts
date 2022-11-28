@@ -3,7 +3,7 @@ import {Response, Request, NextFunction} from 'express';
 import { Container } from 'typedi';
 import { Result }  from '../../src/core/logic/Result';
 import * as sinon from 'sinon';
-import PathController from '../../src/controllers/PathController'
+import PathController from '../../src/controllers/pathController'
 import IPathService from "../../src/services/IServices/IPathService";
 import { IPathDTO } from "../../src/dto/IPathDTO";
 import 'mocha'
