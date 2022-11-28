@@ -1,0 +1,21 @@
+.road-network-btn{
+    padding-top: 10px;
+}
+
+.Search-paths-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.CreatePath-Page{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.Search-btn{
+    width: fit-content;
+    margin: auto;
+}

@@ -3,40 +3,31 @@
     <mat-card-subtitle>Manager of Logic</mat-card-subtitle>
     <mat-card-actions>
       
-     
+    <div class="CreatePath-Page">
       <!--Create path button-->
       <button mat-raised-button color="warn" style="width: 10em; height: 10em;"  aria-label="Example icon button with a home icon" (click)="goToCreatePath()">
         Create Path
       </button>
       <!--Select path by WH id's-->
-      <form [formGroup]="formSelectWarehouse"(ngSubmit)="onSubmit()" >
-        <mat-form-field appearance = "fill">
-          <mat-label>Starting Warehouse</mat-label>
-          <input matInput type ="text" formControlName="startWHId">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance = "fill">
-          <mat-label>Destination Warehouse</mat-label>
-          <input matInput type ="text" formControlName="destinationWHId">
-        </mat-form-field>
-        <br>
-        <button mat-raised-button color="primary" type="submit">Search</button>
-      </form>
-    
+      <div class="Search-paths-form">
+        <form [formGroup]="formSelectWarehouse"(ngSubmit)="onSubmit()" >
+          <mat-form-field appearance = "fill">
+            <mat-label>Starting Warehouse</mat-label>
+            <input matInput type ="text" formControlName="startWHId">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance = "fill">
+            <mat-label>Destination Warehouse</mat-label>
+            <input matInput type ="text" formControlName="destinationWHId">
+          </mat-form-field>
+          <br>
+          <div class="Search-btn">
+            <button mat-raised-button color="primary" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
         <!--display selectedPath info-->
-
-        <!-- <mat-card *ngIf="selectedPathOption"> -->
-          <!-- <table>
-            <thead>
-              <th>Path</th>
-              <th>Information</th>
-            </thead>
-            <tbody>
-              <tr *ngFor ="let path of selectedPathOption">
-                <td>{{path}}</td>
-              </tr>
-            </tbody>
-          </table> -->
          <div class="pathTable">
             <table *ngIf="selectedPathOption.length>0" class="table-of-paths">
               <thead>
@@ -61,24 +52,13 @@
               </tbody>
             </table>
          </div>
-
-          
-        
-        <!-- <mat-card-content>
-          <p>Start warehouse ID: {{selectedPath.startWHId}}</p>
-          <p>Destination warehouse ID:{{selectedPath.destinationWHId}}</p>
-          <p>Path Distance in KM:{{selectedPath.pathDistance}}</p>
-          <p>Path Travel time in min: {{selectedPath.pathTravelTime}}</p>
-          <p>Wasted truck energy kw/h:{{selectedPath.wastedEnergy}}</p>        
-          <p>Extra travel Time: {{selectedPath.extraTravelTime}}</p>
-        </mat-card-content> -->
-      
       
 
       <!--Road network button-->
-      <button mat-raised-button (click)="goToRoadNetwork()" color="primary">
-          See Road Network
-      </button>
-      
+      <div class ="road-network-btn">
+        <button mat-raised-button (click)="goToRoadNetwork()" color="primary">
+            See Road Network
+        </button>
+    </div>
     </mat-card-actions>
   </mat-card>
