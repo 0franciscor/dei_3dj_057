@@ -39,7 +39,7 @@ namespace EletricGo
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000", "http://localhost:3001").AllowAnyHeader().AllowAnyMethod();
+                        builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
                     });
             });
 

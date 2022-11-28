@@ -9,32 +9,32 @@
                 <form [formGroup]="formCreateTruck" (ngSubmit)="onSubmit()">
                     <mat-form-field appearance="fill">
                         <mat-label>TruckID</mat-label>
-                        <input matInput type="text" formControlName="truckID">
+                        <input matInput type="text" formControlName="truckID" required>
                     </mat-form-field>
                     <br>
                     <mat-form-field appearance="fill">
                         <mat-label>Tare</mat-label>
-                        <input matInput type="number" formControlName="tare">
+                        <input matInput type="number" formControlName="tare" required>
                     </mat-form-field>
                     <br>
                     <mat-form-field appearance="fill">
                         <mat-label>Capacity</mat-label>
-                        <input matInput type="number" formControlName="capacity">
+                        <input matInput type="number" formControlName="capacity" required>
                     </mat-form-field>
                     <br>
                     <mat-form-field appearance="fill">
                         <mat-label>Maximum Battery Capacity</mat-label>
-                        <input matInput type="number" formControlName="maxBatteryCapacity">
+                        <input matInput type="number" formControlName="maxBatteryCapacity" required>
                     </mat-form-field>
                     <br>
                     <mat-form-field appearance="fill">
                         <mat-label>Autonomy</mat-label>
-                        <input matInput type="number" formControlName="autonomy">
+                        <input matInput type="number" formControlName="autonomy" required>
                     </mat-form-field>
                     <br>
                     <mat-form-field appearance="fill">
                         <mat-label>Fast Charge Time</mat-label>
-                        <input matInput type="number" formControlName="fastChargeTime">
+                        <input matInput type="number" formControlName="fastChargeTime" required>
                     </mat-form-field>
                     <br>
 

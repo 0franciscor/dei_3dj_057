@@ -10,9 +10,7 @@ async function startServer() {
   const app = express();
 
   const cors = require('cors');
-  app.use(cors({
-    origin: ['https://localhost:5001','http://localhost:5000', 'http://localhost:4200']
-  }));
+  app.use(cors());
 
   
 

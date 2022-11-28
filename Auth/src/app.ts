@@ -9,6 +9,9 @@ import Logger from './loaders/logger';
 async function startServer() {
   const app = express();
 
+  const cors = require('cors');
+  app.use(cors());
+
   await require('./loaders').default({ expressApp: app });
 
   app.listen(config.port, () => {

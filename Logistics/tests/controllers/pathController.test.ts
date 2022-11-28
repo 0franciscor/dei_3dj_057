@@ -3,7 +3,7 @@ import {Response, Request, NextFunction} from 'express';
 import { Container } from 'typedi';
 import { Result }  from '../../src/core/logic/Result';
 import * as sinon from 'sinon';
-import PathController from '../../src/controllers/PathController'
+import PathController from '../../src/controllers/pathController'
 import IPathService from "../../src/services/IServices/IPathService";
 import { IPathDTO } from "../../src/dto/IPathDTO";
 import 'mocha'
@@ -289,7 +289,7 @@ describe('PathController Unit Tests', ()=>{
         }];
 
         let req: Partial<Request> = {};
-        req.body={
+        req.params={
 
         }
 
@@ -336,8 +336,8 @@ describe('PathController Unit Tests', ()=>{
         }];
 
         let req: Partial<Request> = {};
-        req.body={
-            startWhId: 'WH6'
+        req.params={
+            startWHId : 'WH5',
         }
 
         let res: Partial<Response> ={
@@ -382,7 +382,7 @@ describe('PathController Unit Tests', ()=>{
         }];
 
         let req: Partial<Request> = {};
-        req.body={
+        req.params={
             destinationWHId: 'WH6'
         }
 
@@ -428,7 +428,7 @@ describe('PathController Unit Tests', ()=>{
         }];
 
         let req: Partial<Request> = {};
-        req.body={
+        req.params={
             startWhId: 'WH6',
             destinationWHId: 'WH5'
         }
@@ -476,6 +476,9 @@ describe('PathController Unit Tests', ()=>{
         }];
 
         let req: Partial<Request> = {};
+        req.params={
+
+        }
 
         let res: Partial<Response> ={
             status : sinon.spy(),
@@ -852,6 +855,7 @@ describe('PathController + PathService Integration tests ', () =>{
         let next: Partial<NextFunction>= () => {};
 
         let pathRepoInstance = Container.get("PathRepo");
+        sinon.stub(pathRepoInstance,'getAllPaths').returns(Promise.resolve([]));
         sinon.stub(pathRepoInstance, 'getPathById').returns(null);
         sinon.stub(pathRepoInstance,'save').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
 
@@ -1026,8 +1030,8 @@ describe('PathController + PathService Integration tests ', () =>{
         }];
 
         let req: Partial<Request> = {};
-            req.body = {
-                pathID: "pathID"
+            req.params = {
+               
             };
 
         let res: Partial<Response> = {
@@ -1124,6 +1128,7 @@ describe("PathController + PathService + PathRepo Integration tests", ()=>{
         let next: Partial<NextFunction> = () => {};
 
         let pathSchemaInstance= Container.get("pathSchema");
+        sinon.stub(pathSchemaInstance,'find').returns(Promise.resolve([]));
         sinon.stub(pathSchemaInstance,'findOne').returns(Promise.resolve(null));
         sinon.stub(pathSchemaInstance,'create').returns(Promise.resolve(body2 as IPathPersistance));
 
@@ -1351,7 +1356,10 @@ describe("PathController + PathService + PathRepo Integration tests", ()=>{
         } as IPathPersistance;
 
         let req: Partial<Request> = {};
-        req.body=body;
+        req.body=body; 
+        req.params={
+            
+        }
 
         let res: Partial<Response> = {
             status: sinon.spy()

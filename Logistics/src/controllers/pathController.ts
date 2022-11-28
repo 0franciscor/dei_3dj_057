@@ -1,6 +1,6 @@
 import config from "../../config";
 import { Inject, Service } from "typedi";
-import  IPathController  from "../controllers/IControllers/IPathController"
+import  IPathController  from "./IControllers/IPathController"
 import IPathService from "../services/IServices/IPathService";
 import { Request, Response, NextFunction } from "express";
 import { IPathDTO } from "../dto/IPathDTO";
@@ -31,12 +31,15 @@ export default class PathController implements IPathController{
     }
 
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
+        
         try {
             if(req.params.startWHId == "undefined"){
                 req.params.startWHId="";
-            }else if(req.params.destinationWHId== "undefined"){
+            } 
+            if(req.params.destinationWHId== "undefined"){
                 req.params.destinationWHId="";
             }
+            
 
             let warehouses= {
                 startWHId: req.params.startWHId,
@@ -82,7 +85,7 @@ export default class PathController implements IPathController{
             const pathOrError = await this.pathService.createPath(req.body as IPathDTO) as Result<IPathDTO>;
             if(pathOrError.isFailure){
                 res.status(409)
-                return res.send("Path already exists");
+                return res.send(pathOrError.error);
             }
             
             

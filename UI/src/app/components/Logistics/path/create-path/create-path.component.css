@@ -3,4 +3,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+    overflow: hidden;
+    flex-wrap: wrap;
+    flex-direction: column;
+    animation-name: left;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-delay: 1s;
+    margin:auto;
+}
