@@ -8,9 +8,12 @@ import Logger from './loaders/logger';
 
 async function startServer() {
   const app = express();
-
+  app.use(function setCommonHeaders(req, res, next) {
+    res.set("Access-Control-Allow-Private-Network", "true");
+    next();
+  });
   const cors = require('cors');
-  app.use(cors());
+  app.use(cors({credentials:true}));
 
   await require('./loaders').default({ expressApp: app });
 
