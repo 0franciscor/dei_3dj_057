@@ -1,0 +1,58 @@
+<div class="main-div">
+    <mat-card class="matCardCreate">
+
+        <mat-card-header>
+
+            <mat-card-title class="tituloForm">
+                Selected Warehouse: {{selectedWarehouse.WarehouseId}}
+                <h4 class="subLegenda"> Please update the information in the fields below </h4>
+            </mat-card-title>
+
+        </mat-card-header>
+
+
+        <mat-card-content class="sec-div">
+
+            <form [formGroup]="formEditWarehouse" (ngSubmit)="onSubmit()">
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Address</mat-label>
+                    <input matInput type="text" formControlName="Address">
+                </mat-form-field>
+
+                <br>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Altitude</mat-label>
+                    <input matInput type="number" formControlName="Altitude">
+                </mat-form-field>
+
+                <br>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Latitude</mat-label>
+                    <input matInput type="text" formControlName="Latitude">
+                </mat-form-field>
+
+                <br>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Longitude</mat-label>
+                    <input matInput type="text" formControlName="Longitude">
+                </mat-form-field>
+
+                <br>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Designation</mat-label>
+                    <input matInput type="text" formControlName="Designation">
+                </mat-form-field>
+
+                <br>
+                <div class="createButtonDiv">
+                    <button mat-raised-button color="primary" type="submit">Edit</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -23,6 +23,16 @@ export default (app: Router) => {
         ctrl.createWarehouse(req,res,next)
     });
 
+    route.put('/update', (req,res,next)=>
+    {
+        ctrl.editWarehouse(req,res,next)
+    });
+
+    route.get('/getById/:id',(req,res,next)=>{
+        req.body.WarehouseId = req.params.id;
+        ctrl.getWarehouse(req,res,next)
+    });
+
     
     
  

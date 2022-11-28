@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { LogInComponent } from './components/log-in/log-in.component';
 // import { RegisterComponent } from './components/register/register.component';
 import { CreateTruckComponent } from './components/Logistics/truck/create-truck/create-truck.component';
@@ -8,12 +8,13 @@ import { LogisticsManagerComponent } from './components/Logistics/home/logistics
 import { RoadNetworkComponent } from './components/Logistics/road-network/road-network.component';
 import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
 import { CreatePathComponent } from './components/Logistics/path/create-path/create-path.component';
-import { WarehouseComponent } from "./components/WarehouseManagement/warehouse/warehouse.component";
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
-import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
+import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/get-warehouse/warehouse-by-id.component';
 import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
 import { EditTruckComponent } from './components/Logistics/truck/edit-truck/edit-truck.component';
 import { EditDeliveryComponent } from './components/WarehouseManagement/delivery/edit-delivery/edit-delivery.component';
+import { EditWarehouseComponent } from './components/WarehouseManagement/warehouse/edit-warehouse/edit-warehouse.component';
+import { CreateWarehouseComponent } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
 
 
 
@@ -26,11 +27,13 @@ const routes: Routes = [
   { path: 'Logistics/Home/LogisticsManager', component: LogisticsManagerComponent},
   { path: 'WarehouseManagement/Home/WarehouseManager', component: WarehouseManagerComponent},
   { path: 'Logistics/RoadNetwork', component: RoadNetworkComponent},
-  { path: 'WarehouseManagement/Warehouse/CreateWarehouse', component: WarehouseComponent},
+  { path: 'WarehouseManagement/Warehouse/CreateWarehouse', component: CreateWarehouseComponent},
   { path: 'WarehouseManagement/Warehouse/GetWarehouseById', component: WarehouseByIdComponent},
   { path: 'WarehouseManagement/Delivery/CreateDelivery', component: CreateDeliveryComponent},
   { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent},
   { path: 'WarehouseManagement/Delivery/EditDelivery/:id', component: EditDeliveryComponent},
+  { path: 'WarehouseManagement/Warehouse/EditWarehouse/:id', component: EditWarehouseComponent},
+
 ];
 
 @NgModule({
