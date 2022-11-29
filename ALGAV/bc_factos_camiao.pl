@@ -1,6 +1,7 @@
 %carateristicasCam(<nome_camiao>,<tara>,<capacidade_carga>,<carga_total_baterias>,<autonomia>,<t_recarr_bat_20a80>).
 carateristicasCam(eTruck01,7500,4300,80,100,60).
 
+
 %dadosCam_t_e_ta(<nome_camiao>,<cidade_origem>,<cidade_destino>,<tempo>,<energia>,<tempo_adicional>).
 dadosCam_t_e_ta(eTruck01,1,2,122,42,0).
 dadosCam_t_e_ta(eTruck01,1,3,122,46,0).
