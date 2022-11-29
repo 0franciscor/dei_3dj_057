@@ -22,6 +22,14 @@ export default class TruckController implements ITruckController {
       res.status(response.status);
       return res.json({message: "Error creating truck"});
     }
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_truck';
+    const response_prolog = await fetch(url_prolog, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
     const info = await response.json();
     res.status(201);
     return res.json(info);
@@ -78,6 +86,15 @@ export default class TruckController implements ITruckController {
       res.status(response.status);
       return res.json({message: "Error editing truck"});
     }
+
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_truck';
+    const response_prolog = await fetch(url_prolog, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -96,6 +113,14 @@ export default class TruckController implements ITruckController {
       res.status(response.status);
       return res.json({message: "Error deleting truck"});
     }
+
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/delete_truck';
+    const response_prolog = await fetch(url_prolog, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
     const info = await response.json();
     res.status(200);
     return res.json(info);

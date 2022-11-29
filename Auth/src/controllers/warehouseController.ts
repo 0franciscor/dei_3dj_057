@@ -76,6 +76,16 @@ export default class WarehouseController implements IWarehouseController {
         res.status(response.status);
         return res.json({message: "Error creating warehouse"});
       }
+
+      const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
+
+      const response_prolog = await fetch(address_prolog,{
+          method: 'POST',
+          body: JSON.stringify(response.body),
+          headers: { 'Content-Type': 'application/json' },
+          agent: httpAgent
+      });
+
       const info = await response.json();
       res.status(201);
       return res.json(info);
@@ -121,6 +131,17 @@ export default class WarehouseController implements IWarehouseController {
       res.status(response.status);
       return res.json({message: "Error updating warehouse"});
     }
+
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
+    
+    const response_prolog = await fetch(url_prolog, {
+      method: 'PUT',
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      agent: httpAgent
+    })
 
     const info = await response.json();
     res.status(200);

@@ -63,6 +63,14 @@ export default class DeliveryController implements IDeliveryController {
             res.status(response.status);
             return res.json({ message: "Error Creating Delivery"});
         }
+
+        const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_delivery';
+        const response_prolog = await fetch(address_prolog, {
+            method: 'POST',
+            body: JSON.stringify(req.body),
+            headers: { 'Content-Type': 'application/json' },
+            agent: httpAgent
+        });
         const info = await response.json();
         res.status(200);
         return res.json(info);
@@ -84,6 +92,16 @@ export default class DeliveryController implements IDeliveryController {
             res.status(response.status);
             return res.json({ message: "Error Updating Delivery" });
         }
+
+        const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_delivery';
+
+        const response_prolog = await fetch(address_prolog, {
+            method: 'PUT',
+            body: JSON.stringify(req.body),
+            headers: { 'Content-Type': 'application/json' },
+            agent: httpAgent
+        });
+        
         const info = await response.json();
         res.status(200);
         return res.json(info);

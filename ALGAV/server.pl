@@ -13,14 +13,17 @@
 :- http_handler('/create_truck', create_truck, []).
 :- http_handler('/create_delivery', create_delivery, []).
 :- http_handler('/create_path', create_path, []).
+:- http_handler('/create_warehouse', create_warehouse, []).
 :- http_handler('/update_city', update_city,  []).
 :- http_handler('/update_truck', update_truck, []).
 :- http_handler('/update_delivery', update_delivery, []).
 :- http_handler('/update_path', update_path, []).
+:- http_handler('/update_warehouse', update_warehouse, []).
 :- http_handler('/delete_city', delete_city,  []).
 :- http_handler('/delete_truck', delete_truck, []).
 :- http_handler('/delete_delivery', delete_delivery, []).
 :- http_handler('/delete_path', delete_path, []).
+:- http_handler('/delete_path', delete_warehouse, []).
 :- http_handler('/count', count, []).
 :- http_handler('/reset', resetar, []).
 
@@ -64,7 +67,7 @@ delete_city(Request):-
 create_truck(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
-        Id = DictIn.get(truckId), Tare = DictIn.get(tare), Capacity = DictIn.get(capacity), BateryCapacity = DictIn.get(maxBatteryCapacity), Autonomy = DictIn.get(autonomy), TimeToCharge = DictIn.get(),
+        Id = DictIn.get(truckId), Tare = DictIn.get(tare), Capacity = DictIn.get(capacity), BateryCapacity = DictIn.get(maxBatteryCapacity), Autonomy = DictIn.get(autonomy), TimeToCharge = DictIn.get(fastChargeTime),
         (create_truck(Id, Tare, Capacity, BateryCapacity, Autonomy,TimeToCharge, TruckJson), reply_json(TruckJson,  [status(200)]), !);
         reply_json(_, [status(500)]).
         
@@ -87,14 +90,14 @@ delete_truck(Request):-
 create_delivery(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
-        Id = DictIn.get(deliveryID), Date = DictIn.get(deliveryDate), Mass = DictIn.get(deliveryMass), Destination = DictIn.get(destination), LoadTime = DictIn.get(loadTime), UnloadTime = DictIn.get(unloadTime),
+        Id = DictIn.get(deliveryID), Date = DictIn.get(deliveryDate), LoadTime = DictIn.get(loadTime), UnloadTime = DictIn.get(unloadTime), Destination = DictIn.get(destination), Mass = DictIn.get(deliveryMass), 
         (create_delivery(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson), reply_json(DeliveryJson,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 update_delivery(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
-        Id = DictIn.get(deliveryID), Date = DictIn.get(deliveryDate), Mass = DictIn.get(deliveryMass), Destination = DictIn.get(destination), LoadTime = DictIn.get(loadTime), UnloadTime = DictIn.get(unloadTime),
+        Id = DictIn.get(deliveryID), Date = DictIn.get(deliveryDate), LoadTime = DictIn.get(loadTime), UnloadTime = DictIn.get(unloadTime), Destination = DictIn.get(destination), Mass = DictIn.get(deliveryMass), 
         (update_delivery(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson), reply_json(DeliveryJson,  [status(200)]), !);
         reply_json(_, [status(500)]).
         
@@ -117,7 +120,7 @@ create_path(Request):-
 update_path(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
-        Truck = DictIn.get(truck), CityOrig = DictIn.get(startWHId), CityDest = DictIn.get(destinationWHId), PathTime = DictIn.get(pathTravelTime), Energy = DictIn.get(wastedEnergy), AditionalTime = DictIn.get(extraTravelTime),
+        Truck = DictIn.get(truck), OldCityOrig = DictIn.get(startWHId), OldCityDest = DictIn.get(destinationWHId), PathTime = DictIn.get(pathTravelTime), Energy = DictIn.get(wastedEnergy), AditionalTime = DictIn.get(extraTravelTime),
         (update_path(OldCityOrig, OldCityDest, Truck, PathTime, Energy, AditionalTime, PathJson), reply_json(PathJson,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
@@ -132,16 +135,16 @@ delete_path(Request):-
 create_warehouse(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
-        Id = DictIn.get(id), Adrress = DictIn.get(address), Altitude = DictIn.get(altitude), Latitude = DictIn.get(latitude), Longitude = DictIn.get(longitude), Designation = DictIn.get(designation), City = DictIn.get(city),
+        Id = DictIn.get(id), Address = DictIn.get(address), Altitude = DictIn.get(altitude), Latitude = DictIn.get(latitude), Longitude = DictIn.get(longitude), Designation = DictIn.get(designation), City = DictIn.get(city),
         (create_warehouse((Id, Address, Altitude, Latitude, Longitude, Designation, City, WarehouseJson), reply_json(WarehouseJson, [status(200)]), !);
-        reply_json(_, [status(500)]).
+        reply_json(_, [status(500)])).
 
 update_warehouse(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
-       Id = DictIn.get(id), Adrress = DictIn.get(address), Altitude = DictIn.get(altitude), Latitude = DictIn.get(latitude), Longitude = DictIn.get(longitude), Designation = DictIn.get(designation), City = DictIn.get(city),
+       	Id = DictIn.get(id), Address = DictIn.get(address), Altitude = DictIn.get(altitude), Latitude = DictIn.get(latitude), Longitude = DictIn.get(longitude), Designation = DictIn.get(designation), City = DictIn.get(city),
         (update_warehouse((Id, Address, Altitude, Latitude, Longitude, Designation, City, WarehouseJson), reply_json(WarehouseJson, [status(200)]), !);
-        reply_json(_, [status(500)]).
+        reply_json(_, [status(500)])).
         
 delete_warehouse(Request):-
 		cors_enable,
@@ -155,3 +158,4 @@ delete_warehouse(Request):-
 gethostname(Host),
 format('~nHTTP server ready:  http://~w:~w ~n~n',[Host,Port]),
 http_daemon([port(Port),user(root),fork(false)]).
+

@@ -17,6 +17,12 @@ count/8, resetar/0]).
 :-dynamic infoTime/2.
 :-dynamic armazem/7.
 
+:- json_object warehouse_json(id:string, address:string, altitude:integer, latitude:string, longitude:string, 	designation:string, city:integer).
+:- json_object city_json(id:integer, name:string).
+:- json_object truck_json(truckID:string, tare:integer, capacity:integer, maxBatteryCapacity:integer, autonomy:integer, fastChargeTime:integer).
+:- json_object paths_json(pathTravelTime:integer, wastedEnergy:double,extraTravelTime:integer).
+:- json_object deliveries_json(deliveryID:string, deliveryDate:string, deliveryMass:integer, destination:string, loadTime:integer, unloadTime:integer).
+
 % ---------------------------------------------------------------------------
 city_URL("http://5.249.66.111:3001/api/warehouse/allCities").
 warehouse_URL("http://5.249.66.111:3001/api/warehouse/all").
@@ -66,11 +72,11 @@ get_warehouse(Warehouse) :-
 			http_open(URL, In, [request_header('Accept'='application/json'), cert_verify_hook(cert_accept_any)]),
 	        json_read_dict(In, Warehouse), close(In)).
 
-parse_warehouses([]).
-parse_warehouses([HWarehouse|TWarehouse]):-
+parse_warehouse([]).
+parse_warehouse([HWarehouse|TWarehouse]):-
 		(create_warehouse(HWarehouse.get(id), HWarehouse.get(address), HWarehouse.get(altitude), HWarehouse.get(altitude), HWarehouse.get(latitude), HWarehouse.get(longitude), HWarehouse.get(designation), HWarehouse.get(city), _),
-		parse_Cities(TWarehouse));
-        parse_Cities(TWarehouse).
+		parse_warehouse(TWarehouse));
+                parse_warehouse(TWarehouse).
 
 % ---------------------------------------------------------------------------
 set_cities():-
@@ -86,8 +92,8 @@ get_cities(Cities) :-
 parse_cities([]).
 parse_cities([HCity|TCity]):-
 		(add_city(HCity.get(id), HCity.get(name), _),
-		parse_Cities(TCity));
-        parse_Cities(TCity).
+		parse_cities(TCity));
+                parse_cities(TCity).
 
 % ---------------------------------------------------------------------------
 
@@ -105,7 +111,7 @@ parse_trucks([]).
 parse_trucks([HTruck|TTruck]):-
 		(create_truck(HTruck.get(truckID), HTruck.get(tare), HTruck.get(capacity), HTruck.get(maxBatteryCapacity), HTruck.get(autonomy), HTruck.get(fastChargeTime), _),
 		parse_trucks(TTruck));
-        parse_trucks(TTruck).
+                parse_trucks(TTruck).
 
 % ---------------------------------------------------------------------------
 
@@ -122,9 +128,9 @@ get_paths(Paths) :-
 parse_paths([]).
 parse_paths([HPath|TPath]):- armazem(HPath.get(startWHId),_,_,_,_,_,InitialCity),
 		armazem(HPath.get(destinationWHId),_,_,_,_,_,FinalCity),
-		(create_path('eTruck01', InitialCity, FinalCity, HPath.get(pathTravelTime), HPath(wastedEnergy),HPath(extraTravelTime),_),
-		parse_trucks(TPath));
-        parse_trucks(TPath).
+		(create_path('eTruck01', InitialCity, FinalCity, HPath.get(pathTravelTime), HPath.get(wastedEnergy),HPath.get(extraTravelTime),_),
+		parse_paths(TPath));
+                parse_paths(TPath).
 
 % ---------------------------------------------------------------------------
 
@@ -140,9 +146,9 @@ get_deliveries(Delivery) :-
 
 parse_deliveries([]).
 parse_deliveries([HDelivery|TDelivery]):-
-		(create_delivery(HDelivery.get(deliveryID), HDelivery.get(deliveryDate), HDelivery.get(deliveryMass), HDelivery.get(destination), HDelivery.get(loadTime), HDelivery(unloadTime),_),
-		parse_trucks(TDelivery));
-        parse_trucks(TDelivery).
+		(create_delivery(HDelivery.get(deliveryID), HDelivery.get(deliveryDate), HDelivery.get(deliveryMass), HDelivery.get(destination), HDelivery.get(loadTime), HDelivery.get(unloadTime),_),
+		parse_deliveries(TDelivery));
+                parse_deliveries(TDelivery).
 
 % ---------------------------------------------------------------------------
 add_city(Id, Name, CityJson):- \+idArmazem(_,Id), assertz(idArmazem(Name, Id)), cityprolog_tojson(Id, Name, CityJson).
@@ -231,3 +237,5 @@ count(LC, LT, LD, LP, TC, TT, TD, TP):-
 % ---------------------------------------------------------------------------
 resetar():-
 	retractall(idArmazem(_,_)).
+
+
