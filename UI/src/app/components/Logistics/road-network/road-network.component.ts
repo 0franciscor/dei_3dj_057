@@ -8,6 +8,7 @@ import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-net
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { animate } from '@angular/animations';
+import { Scene } from 'three';
 
  @Component({
   selector: 'app-road-network',
@@ -171,6 +172,20 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     this.renderer.render(this.scene,this.camera);
   }
  */
+  
+  
+  private lastwindowWidth: number = window.innerWidth;
+  private lastwindowHeight: number = window.innerHeight;
+  private onWindowResize() {
+    if(this.lastwindowWidth != window.innerWidth || this.lastwindowHeight != window.innerHeight){
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.lastwindowWidth = window.innerWidth;
+      this.lastwindowHeight = window.innerHeight;
+    }
+    
+  }
 
   private startRenderingLoop() {
     //Renderer
@@ -183,6 +198,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     (function render() {
       requestAnimationFrame(render);
       component.animateCircle();
+      component.onWindowResize();
       component.renderer.render(component.scene, component.camera);
     }());
 

@@ -100,10 +100,10 @@
   <ng-container matColumnDef="Actions">
     <th mat-header-cell *matHeaderCellDef> Actions </th>
     <td mat-cell *matCellDef="let element"> 
-      <button mat-raised-button style="width: 10em;" (click)="goToEditTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+      <button mat-raised-button style="width: 10em;" (click)="goToEditTruck(element.truckID)" color="primary" aria-label="Example icon button with a home icon">
         Edit Truck
       </button>
-      <button mat-raised-button style="width: 10em;" (click)="deleteTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+      <button mat-raised-button style="width: 10em;" (click)="deleteTruck(element.truckID)" color="primary" aria-label="Example icon button with a home icon">
         Delete Truck
       </button>
     </td>
