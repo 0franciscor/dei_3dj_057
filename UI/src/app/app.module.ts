@@ -24,7 +24,6 @@ import { WarehouseManagerComponent } from './components/WarehouseManagement/home
 import { RoadNetworkComponent } from './components/Logistics/road-network/road-network.component';
 import { CreatePathComponent } from './components/Logistics/path/create-path/create-path.component';
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
-import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/get-warehouse/warehouse-by-id.component';
 import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
 import { EditTruckComponent, EditTruckComponentDialog } from './components/Logistics/truck/edit-truck/edit-truck.component';
 import { MatTableModule } from '@angular/material/table';
@@ -32,6 +31,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditDeliveryComponent } from './components/WarehouseManagement/delivery/edit-delivery/edit-delivery.component';
 import { EditWarehouseComponent, EditWarehouseComponentDialog} from './components/WarehouseManagement/warehouse/edit-warehouse/edit-warehouse.component';
 import { CreateWarehouseComponent, CreateWarehouseComponentDialog } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
+import { GetWarehousesComponent } from './components/WarehouseManagement/warehouse/get-warehouses/get-warehouses.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,6 @@ import { CreateWarehouseComponent, CreateWarehouseComponentDialog } from './comp
     CreatePathComponent,
     CreateWarehouseComponent,
     CreateDeliveryComponent,
-    WarehouseByIdComponent,
     GetDeliveriesComponent,
     EditTruckComponent,
     EditTruckComponentDialog,
@@ -57,7 +56,8 @@ import { CreateWarehouseComponent, CreateWarehouseComponentDialog } from './comp
     EditWarehouseComponent,
     EditWarehouseComponentDialog,
     CreateWarehouseComponent,
-    CreateWarehouseComponentDialog
+    CreateWarehouseComponentDialog,
+    GetWarehousesComponent
   ],
   imports: [
     BrowserModule,

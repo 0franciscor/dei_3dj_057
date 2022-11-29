@@ -28,9 +28,13 @@ export default class WarehouseController implements IWarehouseController {
     });
     
     
-    let data = await response.json();
-    res.status(200)
-    return res.json(data);
+    if (response.status != 200) {
+      res.status(response.status);
+      return res.json({ message: "Error Getting Warehouses" });
+    }
+    const info = await response.json();
+    res.status(200);
+    return res.json(info);
 
   }
 
@@ -58,14 +62,14 @@ export default class WarehouseController implements IWarehouseController {
   async getWarehouse(req: Request, res: Response, next: NextFunction) {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
-    const url = 'https://localhost:5001/api/warehouses/GetById/'+req.body.warehouseId;
+    const url = 'https://localhost:5001/api/warehouses/GetById/'+req.params.id;
 
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        agent: httpAgent
-      }
+      },
+      agent: httpAgent
     });
     if(response.status != 200){
       res.status(response.status);
@@ -82,10 +86,9 @@ export default class WarehouseController implements IWarehouseController {
 
     const url = 'https://localhost:5001/api/warehouses/Update';
     
-    const data = req.body;
     const response = await fetch(url, {
       method: 'PUT',
-      body: JSON.stringify(data),
+      body: JSON.stringify(req.body),
       headers: {
         'Content-Type': 'application/json'
       },
@@ -94,7 +97,7 @@ export default class WarehouseController implements IWarehouseController {
 
     if(response.status != 200){
       res.status(response.status);
-      return res.json({message: "Error editing truck"});
+      return res.json({message: "Error updating warehouse"});
     }
 
     const info = await response.json();
