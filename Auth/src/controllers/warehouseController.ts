@@ -38,6 +38,28 @@ export default class WarehouseController implements IWarehouseController {
 
   }
 
+  public async getAllCities(req: Request, res: Response, next: NextFunction){
+    
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+    const address = 'https://localhost:5001/api/warehouses/GetAllCities';
+
+    
+    const response = await fetch(address, {
+        method: 'GET',
+        agent: httpAgent
+    });
+    
+    
+    if (response.status != 200) {
+      res.status(response.status);
+      return res.json({ message: "Error Getting Warehouses" });
+    }
+    const info = await response.json();
+    res.status(200);
+    return res.json(info);
+
+  }
+
   public async createWarehouse(req: Request, res: Response, next: NextFunction){
 
     const httpAgent = new http.Agent({ rejectUnauthorized: false });

@@ -53,6 +53,7 @@ export default class TruckController implements ITruckController {
 
             const truckDTO = truckOrError.getValue();
             res.status(201);
+            
             return res.json( truckDTO );
 
 

@@ -6,5 +6,6 @@ export default interface IWarehouseController  {
   getAllWarehouse(req: Request, res: Response, next: NextFunction)
   getWarehouse(req: Request, res: Response, next: NextFunction)
   editWarehouse(req: Request, res: Response, next: NextFunction)
+  getAllCities(req: Request, res: Response, next: NextFunction)
   
 }

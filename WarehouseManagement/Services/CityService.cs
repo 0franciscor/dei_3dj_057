@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EletricGo.Domain.Cities;
 using EletricGo.Domain.Cities.DTO;
@@ -46,6 +48,12 @@ public class CityService : ICityService
         }
 
         return city.ToCityDto();
+    }
+
+    public async Task<List<CityDto>> GetAllCities()
+    {
+        var cities = await _cityRepository.GetAll();
+        return cities.Select(c => c.ToCityDto()).ToList();
     }
 
     public Task<City> CityExists(string name)
@@ -100,6 +108,8 @@ public class CityService : ICityService
     {
         return _cityRepository.VerifyNumberOfCitiesInSystem();
     }
+
+
 
 
 

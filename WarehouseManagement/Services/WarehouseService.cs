@@ -45,6 +45,12 @@ namespace EletricGo.Services
             return warehouses.Select(x => x.ToWarehouseDto()).ToList();
         }
 
+        
+        public async Task<List<CityDto>> GetCities()
+        {
+            return await _cityService.GetAllCities();
+        }
+
         public async Task<WarehouseDto> GetWarehouse(WarehouseId id)
         {
             var warehouse = await _warehouseRepository.GetByID(id);

@@ -60,5 +60,9 @@ public class City : Entity<CityId>
         return Id + "," + Name.Name;
     }
     
+    public CityDto toCityDto()
+    {
+        return new CityDto() {id = this.Id, name = this.Name.Name};
+    }
 
 }
