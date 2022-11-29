@@ -5,141 +5,81 @@ import fetch from 'node-fetch';
   providedIn: 'root'
 })
 export class TruckService {
-  
 
-  constructor() { }
+  public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
+   
+  constructor() {}
 
   async getTruck(truckID:string) {
-    const url = 'http://localhost:3001/api/truck/id/'+truckID;
-    const urlBackUp = "http://5.249.66.111:3001/api/truck/id/"+truckID;
-    try{
+    const url = this.urlOrigin+'api/truck/id/'+truckID;
+  
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-  
-      const data = await response.json();
-  
-      return data;
-    }
-    catch{
+    const data = await response.json();
 
-      const response = await fetch(urlBackUp, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-  
-      const data = await response.json();
-  
-      return data;
-    }
+    return data;
+    
+   
   }
   
   async getAllTruck() {
-    const url = 'http://localhost:3001/api/truck/all';
-    const urlBackUp = "http://5.249.66.111:3001/api/truck/all";
-    try{
-        
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      const data = await response.json();
-      return data;
-    }
-    catch{
-
-      const response = await fetch(urlBackUp, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      const data = await response.json();
-      return data;
-    }
+    const url = this.urlOrigin+'api/truck/all';
+    console.log(url);
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    const data = await response.json();
+    return data;
+    
   }
 
   async createTruck(truck: any) {
-    const url = 'http://localhost:3001/api/truck/';
-    const urlBackUp = "http://5.249.66.111:3001/api/truck/";
+    const url = this.urlOrigin+'api/truck/';
+    
 
     const data = truck;
+ 
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    return response;
     
-    try{
-
-      const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      return response;
-    }
-    catch{
-
-      const response = await fetch(urlBackUp, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      return response;
-    }
 
   }
 
   async updateTruck(truck: any) {
 
-    const url = 'http://localhost:3001/api/truck/';
-    const urlBackUp = "http://5.249.66.111:3001/api/truck/";
-    try{
+    const url = this.urlOrigin+'api/truck/';
 
-      const data = truck;
-      const response = await fetch(url, {
-        method: 'PATCH',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
+    const data = truck;
+    const response = await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
       
     
-      return response;
+    return response;
   
-    }catch{
-
-      const data = truck;
-      const response = await fetch(urlBackUp, {
-        method: 'PATCH',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      
-    
-      return response;
-  
-    }
   }
 
   async deleteTruck(truckID: string) {
-    const url = 'http://localhost:3001/api/truck/id/'+truckID;
-    const urlBackUp = "http://5.249.66.111:3001/api/truck/id/"+truckID;
-    
-    
-    try {
-     
+    const url = this.urlOrigin+'api/truck/id/'+truckID;
+       
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
@@ -150,19 +90,6 @@ export class TruckService {
 
     return response;
    
-    } catch {
-  
-      const response = await fetch(urlBackUp, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-  
-      return response;
-        
-    }
   }
 
 

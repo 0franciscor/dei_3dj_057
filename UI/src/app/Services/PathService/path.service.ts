@@ -6,6 +6,7 @@ import fetch from 'node-fetch';
 })
 export class PathService{
 
+    public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
     constructor(){}
 
     async getPath(warehouses:any){
@@ -18,19 +19,16 @@ export class PathService{
         const url = 'http://localhost:3000/api/path/all/'+warehouses.startWHId +"/"+warehouses.destinationWHId;
         let test : any[]=[];
         const data = warehouses
-        console.log(data)
-        try {
-            await fetch(url,{
-                method:'GET',
-                headers:{
-                    'Accept': 'application/json'
-                }
-            }).then(res => res.json().then(data=>{test=data;}));
-        } catch (error) {
-            
-        }
         
-        console.log(test)
+       
+        await fetch(url,{
+            method:'GET',
+            headers:{
+                'Accept': 'application/json'
+            }
+        }).then(res => res.json().then(data=>{test=data;}));
+    
+       
         return test;
     }
 
@@ -38,7 +36,7 @@ export class PathService{
         const url= 'http://localhost:3000/api/path/'
 
         const data = path;
-        console.log(data)
+        
 
         fetch(url,{
             method: 'POST',
