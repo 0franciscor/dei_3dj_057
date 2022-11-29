@@ -29,7 +29,6 @@ export class TruckService {
   
   async getAllTruck() {
     const url = this.urlOrigin+'api/truck/all';
-    console.log(url);
     const response = await fetch(url, {
       method: 'GET',
       headers: {

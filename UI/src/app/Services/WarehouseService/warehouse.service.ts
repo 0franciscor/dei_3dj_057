@@ -11,7 +11,6 @@ export class WarehouseService {
   constructor() { }
 
   async getWarehouse(WarehouseId:string) {
-    console.log(WarehouseId);
     const url = this.urlOrigin+'api/warehouse/'+ WarehouseId;
  
     const response = await fetch(url, {

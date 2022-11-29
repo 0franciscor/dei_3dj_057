@@ -10,9 +10,7 @@ export class RoadNetworkService {
 
 
   async getAllWarehouses() {
-    console.log(this.urlOrigin)
     const url = this.urlOrigin+"api/warehouse/all";
-    console.log(url);
     const response = await fetch(url, {
       method: 'GET'
     });
