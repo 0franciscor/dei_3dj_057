@@ -127,6 +127,21 @@ namespace EletricGo.Services
 
             try
             {
+                if(dto.Designation != null){
+                    var city = await _cityService.CityExists(dto.Designation);
+
+                    if (city == null)
+                    {
+                        var cityAux = await _cityService.CreateCity(new CityDto()
+                            { id = (_cityService.NumberOfCities() + 1).ToString(), name = warehouse.Designation.designation });
+                        warehouse.AssociateCityWithWarehouse(new CityId(cityAux.id));
+                    }
+                    else
+                    {
+                        warehouse.AssociateCityWithWarehouse(new CityId(city.Id));
+                    }
+                }
+                
                 warehouse.Update(dto);
             }
             catch (Exception e)
