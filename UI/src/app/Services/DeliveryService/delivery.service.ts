@@ -17,6 +17,8 @@ export class DeliveryService {
       }
     });
     const data = await response.json();
+
+    console.log(data.value);
     return data;
   }
 
