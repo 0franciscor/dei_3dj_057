@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { elementAt } from 'rxjs';
+import { PackagingService } from 'src/app/Services/PackageService/package.service';
 
 import{ PathService } from 'src/app/Services/PathService/path.service';
 
@@ -28,7 +29,7 @@ export class LogisticsManagerComponent implements OnInit {
   public pathList: any[]=[];
 
   formSelectWarehouse!: FormGroup;
-  constructor(private router: Router,private pathService: PathService,private fb: FormBuilder) {
+  constructor(private router: Router,private pathService: PathService,private fb: FormBuilder,private packageService: PackagingService) {
     this.selectedPath={
       pathID:"",
       startWHId: undefined,
@@ -87,12 +88,21 @@ export class LogisticsManagerComponent implements OnInit {
     
   }
 
+
   goToCreatePath(){
     this.router.navigate(['/Logistics/Path/CreatePath']);
   }
 
+  goToCreatePackage(){
+    this.router.navigate(['/Logistics/Packaging/CreatePackage'])
+  }
+
   goToRoadNetwork() {
     this.router.navigate(['/Logistics/RoadNetwork']);
+  }
+
+  goToPackageList() {
+    this.router.navigate(['/Logistics/Packaging/ListPackage']);
   }
 
 }
