@@ -100,7 +100,7 @@ export default class NodeTemplate {
 
 
                 //outgoing road
-                let roadLength = Math.sqrt(Math.pow((destination.x - pos.x), 2) + Math.pow((destination.y - pos.y), 2) + Math.pow(destination.z - pos.z, 2));
+                let roadLength = Math.sqrt(Math.pow((destination.x - pos.x), 2) + Math.pow((destination.y - pos.y), 2) + Math.pow(destination.z - pos.z, 2))-Math.tan(connectionLength);
 
 
 
