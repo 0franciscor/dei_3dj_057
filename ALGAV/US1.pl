@@ -104,4 +104,4 @@ comparePaths([H|T],IDTRUCK,DL):-comparePaths(T,IDTRUCK,DL),carateristicasCam(IDT
 appendDelivery(L,L1):- append([1], L, L2), append(L2,[1],L1).
 
 %append to list
-quickestPath(IDTRUCK,DELL,L,T):-retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP), comparePaths(AP,IDTRUCK,DL),!,infoTime(T,L).
+quickestPath(IDTRUCK,DELL,L):-retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP), comparePaths(AP,IDTRUCK,DL),!,infoTime(_,L).
