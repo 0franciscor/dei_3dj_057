@@ -41,7 +41,8 @@ export default class PackagingController implements IPackagingController {
             if (packaging.isFailure)
                 return res.status(404).send("Packaging not found");
 
-            res.status(200).json(packaging);
+            res.status(200).json(packaging.getValue());
+            
         } catch (e) {
             next(e);
         }
