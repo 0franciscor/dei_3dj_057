@@ -2,6 +2,7 @@ import { elementAt } from "rxjs";
 import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { warehousePosition, warehouseConnections } from "./default-data";
 
 interface posProps {
@@ -131,39 +132,25 @@ export default class NodeTemplate {
         this.object.add(circle);
 
         //Lighting
-        const light = new THREE.PointLight(0xffffff, 1, 0, 2);
+        const light = new THREE.AmbientLight(0xffffff, 1);
         //q: what are the ideal coordinates for the light?
-        light.position.set(pos.x, pos.y, pos.z + 0.1);
+        light.position.set(40,10,1200);
         this.object.add(light);
 
 
         // Warehouse Texture
         const warehouseTexture = new THREE.Object3D();
+        const gltfloader = new GLTFLoader();
 
-        const warehouseMtl = './assets/farmhouse/farmhouse_obj.mtl';
-        const warehouseObj = './assets/farmhouse/farmhouse_obj.obj';
-        const jpeg = './assets/farmhouse/farmhousetexture.jpg';
+        gltfloader.load(
+            './assets/farmhouse/scene.gltf', 
+            (object) => {
+            object.scene.scale.set(0.06, 0.06, 0.06);
+            object.scene.position.set(pos.x, pos.y, pos.z + 0.2);
+            object.scene.rotateX(Math.PI / 2);
+            warehouseTexture.add(object.scene);
 
-        const objLoader = new OBJLoader();
-
-        new MTLLoader().load(warehouseMtl, function (materials) {
-            materials.preload();
-            objLoader.setMaterials(materials).load(warehouseObj, function (object) {
-                object.position.y = - 95;
-                var texture = new THREE.TextureLoader().load(jpeg);
-
-                object.traverse(function (child) {   // aka setTexture
-                    if (child instanceof THREE.Mesh) {
-                        child.material.map = texture;
-                    }
-                });
-                object.scale.set(0.05, 0.05, 0.05);
-                object.position.set(pos.x, pos.y, pos.z + 0.2);
-                object.rotateX(Math.PI / 2);
-                warehouseTexture.add(object);
-            });
         });
-
         this.object.add(warehouseTexture);
 
     }
