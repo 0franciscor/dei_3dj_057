@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Service } from 'typedi';
 import ITruckController from "./IControllers/ITruckController";
 import fetch from 'node-fetch';
-
+const http = require('https');
 @Service()
 export default class TruckController implements ITruckController {
   constructor() {}
@@ -22,6 +22,7 @@ export default class TruckController implements ITruckController {
       res.status(response.status);
       return res.json({message: "Error creating truck"});
     }
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_truck';
     const response_prolog = await fetch(url_prolog, {
       method: 'POST',
@@ -29,6 +30,7 @@ export default class TruckController implements ITruckController {
       headers: {
         'Content-Type': 'application/json'
       },
+      agent: httpAgent
     })
     const info = await response.json();
     res.status(201);
@@ -86,7 +88,7 @@ export default class TruckController implements ITruckController {
       res.status(response.status);
       return res.json({message: "Error editing truck"});
     }
-
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_truck';
     const response_prolog = await fetch(url_prolog, {
       method: 'PUT',
@@ -94,6 +96,7 @@ export default class TruckController implements ITruckController {
       headers: {
         'Content-Type': 'application/json'
       },
+      agent: httpAgent
     })
     const info = await response.json();
     res.status(200);
@@ -113,13 +116,14 @@ export default class TruckController implements ITruckController {
       res.status(response.status);
       return res.json({message: "Error deleting truck"});
     }
-
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/delete_truck';
     const response_prolog = await fetch(url_prolog, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
+      agent: httpAgent
     })
     const info = await response.json();
     res.status(200);
