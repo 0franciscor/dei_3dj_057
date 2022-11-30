@@ -32,6 +32,8 @@ import { EditTruckComponent, EditTruckComponentDialog } from './components/Logis
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditDeliveryComponent } from './components/WarehouseManagement/delivery/edit-delivery/edit-delivery.component';
+import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
+import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { EditDeliveryComponent } from './components/WarehouseManagement/delivery
     EditTruckComponentDialog,
     DeleteTruckComponentDialog,
     CreateTruckComponentDialog,
-    EditDeliveryComponent
+    EditDeliveryComponent,
+    CreatePackageComponent,
+    PackageListComponent
   ],
   imports: [
     BrowserModule,

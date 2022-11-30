@@ -14,8 +14,8 @@ import { WarehouseByIdComponent } from './components/WarehouseManagement/warehou
 import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
 import { EditTruckComponent } from './components/Logistics/truck/edit-truck/edit-truck.component';
 import { EditDeliveryComponent } from './components/WarehouseManagement/delivery/edit-delivery/edit-delivery.component';
-
-
+import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
+import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LogInComponent },
@@ -31,6 +31,8 @@ const routes: Routes = [
   { path: 'WarehouseManagement/Delivery/CreateDelivery', component: CreateDeliveryComponent},
   { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent},
   { path: 'WarehouseManagement/Delivery/EditDelivery/:id', component: EditDeliveryComponent},
+  { path: 'Logistics/Packaging/CreatePackage', component: CreatePackageComponent},
+  { path: 'Logistics/Packaging/ListPackage', component: PackageListComponent}
 ];
 
 @NgModule({

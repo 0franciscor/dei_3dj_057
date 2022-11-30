@@ -64,6 +64,10 @@ export default {
     truck: {
       name: "truckController",
       path:"../controllers/truckController"
+    },
+    package: {
+      name: "packageController",
+      path: "../controllers/packageController"
     }
   },
 
