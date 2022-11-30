@@ -3,6 +3,7 @@ import dependencyInjectorLoader from './dependencyInjector';
 import mongooseLoader from './mongoose';
 import Logger from './logger';
 import config from '../../config';
+import packageController from '../controllers/packageController';
 
 export default async({expressApp})=>{
     const mongoConnection = await mongooseLoader();
@@ -56,6 +57,11 @@ export default async({expressApp})=>{
         path: config.controllers.truck.path
     }
 
+    const packageController = {
+        name: config.controllers.package.name,
+        path: config.controllers.package.path
+    }
+
 
 
     const userService = {
@@ -85,7 +91,9 @@ export default async({expressApp})=>{
             pathController,
             warehouseController,
             deliveryController,
-            truckController
+            truckController,
+            packageController
+            
         ],
         repos:[
             userRepo,
