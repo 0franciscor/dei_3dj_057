@@ -8,8 +8,8 @@ import truckRoute from './routes/truckRoute';
 
 export default () => {
 	const app = Router();
-	truckRoute(app)
-	pathRoute(app);	
+	truckRoute(app);
+	pathRoute(app);
 	user(app);
 	warehouseRoute(app);
 	deliveryRoute(app);
