@@ -1,0 +1,39 @@
+.packageTable {
+  width: 100%;
+}
+
+.mat-column-packagingID{
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.mat-column-truckID{
+  padding-left: 16px;
+  font-style: italic;
+}
+
+.mat-column-deliveryID{
+  padding-left: 16px;
+  font-style: italic;
+}
+
+.mat-column-xPosition{
+  padding-left: 16px;
+  font-style: italic;
+}
+
+.mat-column-yPosition{
+  padding-left: 16px;
+  font-style: italic;
+}
+
+.mat-column-zPosition{
+  padding-left: 16px;
+  font-style: italic;
+}
+
+/* .mat-column-edit{
+  align-items: center;
+} */
