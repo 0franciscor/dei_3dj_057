@@ -1,11 +1,7 @@
-import { Dialog } from '@angular/cdk/dialog';
-import { Injectable } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA  } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA  } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { setupTestingRouter } from '@angular/router/testing';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 import { CreateTruckComponent, CreateTruckComponentDialog } from './create-truck.component';
@@ -81,7 +77,7 @@ describe('CreateTruckComponent', () => {
 
   it('onOk', async () => {
     
-    //spy dialogref
+    
     const dialogSpy = spyOn(dialogComponent.dialogRef, 'close');
     
     dialogComponent.onOk();
