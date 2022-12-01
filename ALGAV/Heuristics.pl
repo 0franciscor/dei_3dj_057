@@ -32,8 +32,8 @@ compareClosest(ARMAZEM, [H|T], TEMPO, FH):- compareClosest(ARMAZEM, T, TEMPO1, F
 
 % Cheapest Warehouse first Mass/Km Heuristic %
 extractCities([],[]).
-extractCities(Delivery_List, Warehouse_List):- appendDelivery(Delivery_List, Final_List), extractDestinations(Final_List, WarehouseListWithCringe), 
-                                               findMatosinhos(Matosinhos), delete(WarehouseListWithCringe, Matosinhos, Warehouse_List).
+extractCities(Delivery_List, Warehouse_List):- appendDelivery(Delivery_List, Final_List), extractDestinations(Final_List, WarehouseListWithMatosinhos), 
+                                               findMatosinhos(Matosinhos), delete(WarehouseListWithMatosinhos, Matosinhos, Warehouse_List).
 
 extractMassFromWarehouse([DH],[MH]):- entrega(_,_,MH,DH,_,_).
 extractMassFromWarehouse([DH|DT],[MH|MT]):-extractMassFromWarehouse(DT,MT), entrega(_,_,MH,DH,_,_).
