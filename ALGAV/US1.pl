@@ -16,7 +16,6 @@ checkIfCityExist([H|T]):- ((idArmazem(_,H),!,checkIfCityExist(T));false).
 appendMatosinhos(_,[],[]):-!.
 appendMatosinhos(A,[L|LL],[L2|T]):- appendMatosinhos(A,LL,T), append(A,L,L1), append(L1,A,L2).
 
-
 findMatosinhos(M):-idArmazem('Matosinhos',M).
 
 weightWithDeliveries(IDTRUCK,DL,FW):- carateristicasCam(IDTRUCK,TW,CP,_,_,_),sumDeliveryWeights(DL,DW,CP),FW is TW+DW.
@@ -104,4 +103,6 @@ comparePaths([H|T],IDTRUCK,DL):-comparePaths(T,IDTRUCK,DL),carateristicasCam(IDT
 appendDelivery(L,L1):- append([1], L, L2), append(L2,[1],L1).
 
 %append to list
-quickestPath(IDTRUCK,DELL,L,T):-retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP), comparePaths(AP,IDTRUCK,DL),!,infoTime(T,L).
+getAllDeliveriesInADay(DATE, LDFinal):- findall(X, entrega(X,DATE,_,_,_,_), LD), delete(LD,1,LDFinal).
+
+quickestPath(IDTRUCK,DATE,L):-!,getAllDeliveriesInADay(DATE,DELL),retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP),comparePaths(AP,IDTRUCK,DL),!,infoTime(_,L).

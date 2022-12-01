@@ -1,7 +1,5 @@
 :-consult('US1.pl').
 
-
-
 % Largest Mass first Heuristic %
 extractMass([X],[M]):- entrega(X,_,M,_,_,_).
 extractMass([H|T],[H1|T1]):- extractMass(T,T1), entrega(H,_,H1,_,_,_).
