@@ -14,18 +14,17 @@ largestMassFirst(E,L):- extractMass(E,M), sort(M, M1), reverse(M1, M2), extractW
 
 %% Closest Warehouse First %%
 
-
 closestWarehouseFirst([],[]).
-closestWarehouseFirst(DELIVERY_LIST, PATH_LIST):- appendDelivery(DELIVERY_LIST, FINAL_LIST), extractDestinations(FINAL_LIST, WAREHOUSE_LIST), searchClosestWarehouse(WAREHOUSE_LIST,PATH_LIST).
+closestWarehouseFirst(DELIVERY_LIST, PATH_LIST):- appendDelivery(DELIVERY_LIST, FINAL_LIST),
+                                                  extractDestinations(FINAL_LIST, WAREHOUSE_LIST_MATOSINHOS),
+                                                  delete(WAREHOUSE_LIST_MATOSINHOS, 5, WAREHOUSE_LIST),
+                                                  searchClosestWarehouse(5,WAREHOUSE_LIST,PATH_LIST).
 
-searchClosestWarehouse([],[]):-!.
-searchClosestWarehouse([5|[H|T]], PATH_LIST):- dadosCam_t_e_ta(_, H, HT, TEMPO,_,_), compareClosest(H,[HT|TT],TEMPO,PATH_LIST).
+searchClosestWarehouse(_,[],[]):-!.
+searchClosestWarehouse(BEGIN,[H|T],[MENOR|PATH_LIST]):- compareClosest(BEGIN,[H|T],_,MENOR), delete([H|T], MENOR, NOVA_LISTA), searchClosestWarehouse(MENOR, NOVA_LISTA, PATH_LIST).
 
-compareClosest(_,[|5],_,1000000,[]):-!.
-compareClosest(ARMAZEM, [H|Y], TEMPO, [FH|FT]):- compareClosest(ARMAZEM, Y, TEMPO2, FT), dadosCam_t_e_ta(TRUCKID, ARMAZEM, H, TEMPO,_,_), ((TEMPO < TEMPO2, !, FH is ARMAZEM); FH is H).
-
-
-
+compareClosest(_,[],1000,_):-!.
+compareClosest(ARMAZEM, [H|T], TEMPO, FH):- compareClosest(ARMAZEM, T, TEMPO1, FH1), dadosCam_t_e_ta(_, ARMAZEM, H, TEMPO2,_,_), ((TEMPO2 < TEMPO1, !, (FH is H, TEMPO is TEMPO2));(TEMPO is TEMPO1,FH is FH1)).
 
 
 
