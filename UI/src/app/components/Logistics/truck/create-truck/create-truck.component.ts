@@ -49,13 +49,13 @@ export class CreateTruckComponent implements OnInit {
       });
   
       dialogRef.afterClosed().subscribe(result => {
-        if(answer.status == 200)
+        if(answer.status == 201){
           this.router.navigate(['Logistics/Home/FleetManager']);
-        
+        }
       });
      
     }
-    
+
   }
 
 }

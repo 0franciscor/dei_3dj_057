@@ -1,27 +1,43 @@
-import { Injectable } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA  } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 import { CreateTruckComponent, CreateTruckComponentDialog } from './create-truck.component';
 
 describe('CreateTruckComponent', () => {
   let component: CreateTruckComponent;
-  let dialogComponent : CreateTruckComponentDialog;
   let fixture: ComponentFixture<CreateTruckComponent>;
+  let dialogComponent: CreateTruckComponentDialog;
+  let dialogFixture: ComponentFixture<CreateTruckComponentDialog>;
+  let fakeTruckService: any;
+
+  const dialogMock = {
+    close: () => { }
+    };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ CreateTruckComponent, CreateTruckComponentDialog ],
-      imports: [MatDialogModule,FormsModule,ReactiveFormsModule],
-      providers: [TestService]
-    })
-    .compileComponents();
+      imports: [MatDialogModule,FormsModule,ReactiveFormsModule, BrowserAnimationsModule],
+      providers: [TruckService, {provide: MatDialogRef, useValue: dialogMock},{ provide: MAT_DIALOG_DATA, useValue: {} },]
+    }).compileComponents();
 
+    fakeTruckService = jasmine.createSpyObj('TruckService', ['createTruck']);
+    fakeTruckService.createTruck.and.returnValue(Promise.resolve({status: 201}));
+
+    TestBed.overrideProvider(TruckService, {useValue: fakeTruckService});
     fixture = TestBed.createComponent(CreateTruckComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.ngOnInit();
+    
+    dialogFixture = TestBed.createComponent(CreateTruckComponentDialog);
+    dialogComponent = dialogFixture.componentInstance;
+    dialogFixture.detectChanges();
+    dialogComponent.ngOnInit();
+    
     
   });
 
@@ -29,74 +45,46 @@ describe('CreateTruckComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create a form with 6 controls', () => {
-    expect(component.formCreateTruck.contains('truckID')).toBeTruthy();
-    expect(component.formCreateTruck.contains('tare')).toBeTruthy();
-    expect(component.formCreateTruck.contains('capacity')).toBeTruthy();
-    expect(component.formCreateTruck.contains('maxBatteryCapacity')).toBeTruthy();
-    expect(component.formCreateTruck.contains('autonomy')).toBeTruthy();
-    expect(component.formCreateTruck.contains('fastChargeTime')).toBeTruthy();
+  it('onSubmit with invalid form', async () => {
+    component.onSubmit();
+    expect(component.formCreateTruck.valid).toBeFalsy();
   });
 
-  it('should make the truckID control required', () => {
-    let control = component.formCreateTruck.get('truckID');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-  });
 
-  it('should make the tare control required', () => {
-    let control = component.formCreateTruck.get('tare');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-  });
-
-  it('should make the capacity control required', () => {
-    let control = component.formCreateTruck.get('capacity');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-  });
-
-  it('should make the maxBatteryCapacity control required', () => {
-    let control = component.formCreateTruck.get('maxBatteryCapacity');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-  });
-
-  it('should make the autonomy control required', () => {
-    let control = component.formCreateTruck.get('autonomy');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-  });
-
-  it('should make the fastChargeTime control required', () => {
-    let control = component.formCreateTruck.get('fastChargeTime');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-  });
-
-  it('should create a truck', () => {
+  it('onSubmit with valid form', async () => {
     component.formCreateTruck.controls['truckID'].setValue('test');
-    component.formCreateTruck.controls['tare'].setValue('test');
-    component.formCreateTruck.controls['capacity'].setValue('test');
-    component.formCreateTruck.controls['maxBatteryCapacity'].setValue('test');
-    component.formCreateTruck.controls['autonomy'].setValue('test');
-    component.formCreateTruck.controls['fastChargeTime'].setValue('test');
+    component.formCreateTruck.controls['tare'].setValue(1);
+    component.formCreateTruck.controls['capacity'].setValue(1);
+    component.formCreateTruck.controls['maxBatteryCapacity'].setValue(1);
+    component.formCreateTruck.controls['autonomy'].setValue(1);
+    component.formCreateTruck.controls['fastChargeTime'].setValue(1);
+    component.onSubmit();
     expect(component.formCreateTruck.valid).toBeTruthy();
   });
 
-  it('should call the onSubmit method', () => {
-    spyOn(component, 'onSubmit');
-    let button = fixture.debugElement.nativeElement.querySelector('button');
-    button.click();
-    expect(component.onSubmit).toHaveBeenCalledTimes(1);
+
+  it('onSubmit with valid form, error on create', async () => {
+    component.formCreateTruck.controls['truckID'].setValue('test');
+    component.formCreateTruck.controls['tare'].setValue(1);
+    component.formCreateTruck.controls['capacity'].setValue(1);
+    component.formCreateTruck.controls['maxBatteryCapacity'].setValue(1);
+    component.formCreateTruck.controls['autonomy'].setValue(1);
+    component.formCreateTruck.controls['fastChargeTime'].setValue(1);
+    fakeTruckService.createTruck.and.returnValue(Promise.resolve({status: 500}));
+    component.onSubmit();
+    expect(component.formCreateTruck.valid).toBeTruthy();
+  });
+
+  it('onOk', async () => {
+    
+    
+    const dialogSpy = spyOn(dialogComponent.dialogRef, 'close');
+    
+    dialogComponent.onOk();
+    expect(dialogSpy).toHaveBeenCalled();
   });
 
 
 });
 
 
-@Injectable()
-export class TestService {
-  constructor() { }
-  createTruck(formGroup: FormGroup) { return "--------------------------------------------------------------" }
-}

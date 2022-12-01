@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SERVER_TOKEN } from '@angular/flex-layout';
 import fetch from 'node-fetch';
 
 @Injectable({
@@ -13,13 +14,7 @@ export class TruckService {
   async getTruck(truckID:string) {
     const url = this.urlOrigin+'api/truck/id/'+truckID;
   
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-
+    const response = await this.sendFetch(url, 'GET', null);
     const data = await response.json();
 
     return data;
@@ -29,12 +24,7 @@ export class TruckService {
   
   async getAllTruck() {
     const url = this.urlOrigin+'api/truck/all';
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
+    const response = await this.sendFetch(url, 'GET', null);
     const data = await response.json();
     return data;
     
@@ -46,13 +36,7 @@ export class TruckService {
 
     const data = truck;
  
-    const response = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
+    const response = await this.sendFetch(url, 'POST', data);
     return response;
     
 
@@ -63,13 +47,7 @@ export class TruckService {
     const url = this.urlOrigin+'api/truck/';
 
     const data = truck;
-    const response = await fetch(url, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
+    const response = await this.sendFetch(url, 'PATCH', data);
       
     
     return response;
@@ -78,17 +56,28 @@ export class TruckService {
 
   async deleteTruck(truckID: string) {
     const url = this.urlOrigin+'api/truck/id/'+truckID;
-       
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-    
+
+    const response = await this.sendFetch(url, 'DELETE', null);
 
     return response;
-   
+  }
+
+  async sendFetch(url: string, method: string, data: any) {
+    if(data)
+      return fetch(url, {
+        method: method,
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+    else
+      return fetch(url, {
+        method: method,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
   }
 
 
