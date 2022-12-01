@@ -5,9 +5,11 @@ extractMass([X],[M]):- entrega(X,_,M,_,_,_).
 extractMass([H|T],[H1|T1]):- extractMass(T,T1), entrega(H,_,H1,_,_,_).
 
 extractWarehouse([],[Matosinhos]):- findMatosinhos(Matosinhos).
-extractWarehouse([H|T],[H1|T1]):- extractWarehouse(T,T1), entrega(_,_,H,H1,_,_).
+extractWarehouse([HD|TD],[H1|T1]):- extractWarehouse(TD,T1), entrega(HD,_,_,H1,_,_).
 
-largestMassFirst(E,L):- extractMass(E,M), sort(M, M1), reverse(M1, M2), extractWarehouse(M2,L1), findMatosinhos(Matosinhos),append([Matosinhos],L1,L).
+largestMassFirst(Delivery,WarehouseSorted):- extractMass(Delivery,Mass), sortTwoList(Mass,Delivery,_,DeliverySorted),
+                                             reverse(DeliverySorted,DeliverySortedReversed), extractWarehouse(DeliverySortedReversed,WarehouseSorted),!.
+
 
 
 %% Closest Warehouse First %%
@@ -28,7 +30,8 @@ compareClosest(ARMAZEM, [H|T], TEMPO, FH):- compareClosest(ARMAZEM, T, TEMPO1, F
 
 % Cheapest Warehouse first Mass/Km Heuristic %
 extractCities([],[]).
-extractCities(Delivery_List, Warehouse_List):- appendDelivery(Delivery_List, Final_List), extractDestinations(Final_List, WarehouseListWithCringe), delete(WarehouseListWithCringe, 5, Warehouse_List).
+extractCities(Delivery_List, Warehouse_List):- appendDelivery(Delivery_List, Final_List), extractDestinations(Final_List, WarehouseListWithMatosinhos), 
+                                               findMatosinhos(Matosinhos), delete(WarehouseListWithMatosinhos, Matosinhos, Warehouse_List).
 
 extractMassFromWarehouse([DH],[MH]):- entrega(_,_,MH,DH,_,_).
 extractMassFromWarehouse([DH|DT],[MH|MT]):-extractMassFromWarehouse(DT,MT), entrega(_,_,MH,DH,_,_).
