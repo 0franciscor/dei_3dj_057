@@ -5,8 +5,11 @@ autonumber
 actor "Warehouse Manager" as admin
 
 
-box "<<System(C4)>>\n       EletricGo" #LightYellow
-participant SPA as ui <<Container(C4)>>
+box "<<Container(C4)>>\n       UI" #LightYellow
+participant CreateWarehouseComponent as uiComponent <<Container(C4)>>
+participant CreateWarehouseService as uiService <<Container(C4)>>
+box "<<Container(C4)>>\n       Auth" #LightBlue
+participant WarehouseController as authController <<Container(C4)>>
 box "<<Container(C4)>>\n    Warehouse Management" #LightGreen
 participant WarehouseRoute as  WM <<Component(C4)>>
 participant WarehouseController as  CTL <<Component(C4)>>
@@ -17,19 +20,27 @@ participant WarehouseRepository as  WR <<Component(C4)>>
 end box
 end box
 
-admin -> ui: I want to create a new warehouse
-activate ui
+admin -> uiComponent: I want to create a new warehouse
+activate uiComponent
 
-ui -> admin: asks for the details on the new warehouse
-deactivate ui
+uiComponent -> admin: asks for the details on the new warehouse
+deactivate uiComponent
 
-admin -> ui: inserts the information about the new warehouse
+admin -> uiComponent: inserts the information about the new warehouse
 
-activate ui
-ui -> WM: POST CreateWarehouse(warehouseDto)
+activate uiComponent
+uiComponent -> uiService: createWarehouse(warehouseDto)
+activate uiService
+uiService -> authController : POST createWarehouse(warehouseDto)
+activate authController
+authController -> WM : POST createWarehouse(warehouseDto)
 activate WM
+WM -> CTL : CreateWarehouse(warehouseDto)
+deactivate WM
+deactivate authController
+deactivate uiService
 alt If warehouse don´t exist in the system 
-WM -> CTL: POST CreateWarehouse(warehouseDto)
+
 activate CTL
 CTL -> SV : CreateWarehouse(warehouseDto)
 activate SV
@@ -51,19 +62,25 @@ deactivate W
 SV --> CTL : warehouseDto
 deactivate SV
 CTL --> WM : warehouseDto
+activate WM
 deactivate CTL
 
 
-WM --> ui: 200 OK
+WM --> authController: 200 OK
+activate authController
+authController --> uiService : 200 OK 
+activate uiService 
+uiService --> uiComponent : 200 OK 
+deactivate uiService
+deactivate authController
 deactivate WM
 
-ui -> admin: informs about the success of the operation
-deactivate ui
+uiComponent -> admin: informs about the success of the operation
+deactivate uiComponent
 
 else If a warehouse already exists with the id entered
 
-WM -> CTL: POST CreateWarehouse(warehouseDto)
-activate WM
+
 activate CTL
 CTL -> SV : CreateWarehouse(warehouseDto)
 activate SV
@@ -78,20 +95,28 @@ activate WR
 WR --> SV : false
 deactivate WR
 SV --> CTL : InvalidOperationException
+
 deactivate SV
 CTL --> WM : InvalidOperationException
-deactivate CTL
 
-WM --> ui: 409 CONFLICT
+
+deactivate CTL
+activate WM
+WM --> authController: 409 CONFLICT
+activate authController
+authController --> uiService : 409 CONFLICT 
+activate uiService 
+uiService --> uiComponent : 409 CONFLICT 
+deactivate uiService
+deactivate authController
 deactivate WM
 
-activate ui
-ui -> admin: informs about the fail of the operation
-deactivate ui 
+activate uiComponent
+uiComponent -> admin: informs about the fail of the operation
+deactivate uiComponent 
 
 else If the attributes do not respect the business rules
-WM -> CTL: POST CreateWarehouse(warehouseDto)
-activate WM
+
 activate CTL
 CTL -> SV : CreateWarehouse(warehouseDto)
 activate SV
@@ -105,15 +130,22 @@ SV --> CTL : BusinessRuleValidationException
 deactivate SV
 CTL --> WM : BusinessRuleValidationException
 deactivate CTL
-
-WM --> ui: 409 CONFLICT
+deactivate CTL
+activate WM
+WM --> authController: 409 CONFLICT
+activate authController
+authController --> uiService : 409 CONFLICT 
+activate uiService 
+uiService --> uiComponent : 409 CONFLICT 
+deactivate uiService
+deactivate authController
 deactivate WM
 
-activate ui
-ui -> admin: informs about the fail of the operation
-deactivate ui 
+activate uiComponent
+uiComponent -> admin: informs about the fail of the operation
+deactivate uiComponent 
 end 
-deactivate ui
+deactivate uiComponent
 deactivate admin
 
 @enduml

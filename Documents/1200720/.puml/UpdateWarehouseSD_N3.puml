@@ -2,8 +2,11 @@
 autonumber
 
 actor "Warehouse Manager" as admin
-box "<<System(C4)>>\n       EletricGo" #LightYellow
-participant SPA as ui <<Container(C4)>>
+box "<<Container(C4)>>\n       UI" #LightYellow
+participant CreateWarehouseComponent as uiComponent <<Container(C4)>>
+participant CreateWarehouseService as uiService <<Container(C4)>>
+box "<<Container(C4)>>\n       Auth" #LightBlue
+participant WarehouseController as authController <<Container(C4)>>
 box "<<Container(C4)>>\n    Warehouse Management" #LightGreen
 participant WarehouseRoute as  WM <<Component(C4)>>
 participant WarehouseController as  CTL <<Component(C4)>>
@@ -15,32 +18,40 @@ end box
 
 end box
 
-admin -> ui: I want to update the details of a warehouse
-activate ui
+admin -> uiComponent: I want to update the details of a warehouse
+activate uiComponent
 
-ui --> admin: asks for the ID of the warehouse
-deactivate ui
+uiComponent --> admin: asks for the ID of the warehouse
+deactivate uiComponent
 
-admin -> ui: inserts the ID of the warehouse
-activate ui
+admin -> uiComponent: inserts the ID of the warehouse
+activate uiComponent
 
-ui --> admin: asks for the information to update
-deactivate ui
+uiComponent --> admin: asks for the information to update
+deactivate uiComponent
 
-admin -> ui: inserts the information to update
-activate ui
+admin -> uiComponent: inserts the information to update
+activate uiComponent
 
-ui -> WM : PUT Update()
-activate WM
-alt If the Id entered matches the Id of a warehouse\n  in the system and the business rules for the\n  new attributes are respected
-
+uiComponent -> uiService : updateWarehouse(warehouseDto)
+activate uiService
+uiService -> authController : PUT editWarehouse(warehouseDto)
+activate authController
+authController -> WM : PUT Update()
+activate WM 
 WM -> CTL : Update()
 activate CTL
 CTL -> SV : UpdateWarehouse(warehouseDto)
+deactivate CTL
+deactivate WM
+deactivate authController
+deactivate uiService
+alt If the Id entered matches the Id of a warehouse\n  in the system and the business rules for the\n  new attributes are respected
 activate SV
-
 SV -> WR : GetById(warehouseDto.Id)
+
 activate WR
+
 
 WR --> SV : warehouse 
 deactivate WR
@@ -56,23 +67,31 @@ activate W
 W --> SV : warehouseDto
 deactivate W 
 SV --> CTL : warehouseDto
+activate CTL
 deactivate SV
 
 CTL --> WM : warehouseDto
-deactivate CTL 
+deactivate CTL
+activate WM
 
-WM --> ui : 200 OK 
+
+
+WM --> authController : 200 OK 
 deactivate WM
+activate authController
+authController --> uiService : 200 OK 
+deactivate authController
+activate uiService
+uiService --> uiComponent : 200 OK 
+deactivate uiService
 
-ui --> admin: displays the updated information and \ninforms about the operation success
-deactivate ui
+
+uiComponent --> admin: displays the updated information and \ninforms about the operation success
+deactivate uiComponent
 
 else If the Id entered does not match the Id of a warehouse in the system
 
-WM -> CTL : Update()
-activate WM
-activate CTL
-CTL -> SV : UpdateWarehouse(warehouseDto)
+
 activate SV
 
 SV -> WR : GetById(warehouseDto.Id)
@@ -83,25 +102,31 @@ deactivate WR
 
 
 SV --> CTL : null
+activate CTL
+
 deactivate SV
 
 CTL --> WM : null
-deactivate CTL 
+deactivate CTL
+activate WM
+WM --> authController : 409 CONFLICT 
+deactivate WM
+activate authController
+authController --> uiService : 409 CONFLICT 
+deactivate authController
+activate uiService
+uiService --> uiComponent : 409 CONFLICT 
+activate uiComponent
+deactivate uiService
 
-
-WM --> ui : 409 CONFLICT
 deactivate WM
 
-activate ui
-ui --> admin : display a message error
-deactivate ui
+
+uiComponent --> admin : display a message error
+deactivate uiComponent
 
 else  If the business rules for the new attributes are not respected
 
-WM -> CTL : Update()
-activate WM
-activate CTL
-CTL -> SV : UpdateWarehouse(warehouseDto)
 activate SV
 
 SV -> WR : GetById(warehouseDto.Id)
@@ -116,21 +141,28 @@ activate W
 W --> SV : BusinessRuleValidationException
 deactivate W 
 SV --> CTL : InvalidOperationException
+
+activate CTL
 deactivate SV
 
 CTL --> WM : InvalidOperationException
 deactivate CTL 
-
-WM --> ui : 409 CONFLICT
+activate WM
+WM --> authController : 409 CONFLICT 
 deactivate WM
-
-activate ui
-ui --> admin : display a message error
-deactivate ui
+activate authController
+authController --> uiService : 409 CONFLICT 
+deactivate authController
+activate uiService
+uiService --> uiComponent : 409 CONFLICT 
+activate uiComponent
+deactivate uiService
+uiComponent --> admin : display a message error
+deactivate uiComponent
 end 
 
 
-deactivate ui
+deactivate uiComponent
 deactivate admin
 
 @enduml
