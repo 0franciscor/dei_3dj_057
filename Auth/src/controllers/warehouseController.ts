@@ -148,6 +148,4 @@ export default class WarehouseController implements IWarehouseController {
     return res.json(info);
   }
 
-
-
 }

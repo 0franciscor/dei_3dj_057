@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="588px" preserveAspectRatio="none" style="width:1511px;height:588px;background:#FFFFFF;" version="1.1" viewBox="0 0 1511 588" width="1511px" zoomAndPan="magnify"><defs/><g><!--MD5=[5aa9a250c3a2dcb5fef3ce713a84af24]
+cluster Warehouse Management--><g id="cluster_Warehouse Management"><path d="M8.5,6 L184.5,6 A3.75,3.75 0 0 1 187,8.5 L194,27.6406 L1501.5,27.6406 A2.5,2.5 0 0 1 1504,30.1406 L1504,578.5 A2.5,2.5 0 0 1 1501.5,581 L8.5,581 A2.5,2.5 0 0 1 6,578.5 L6,8.5 A2.5,2.5 0 0 1 8.5,6 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="6" x2="194" y1="27.6406" y2="27.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="175" x="10" y="20.6738">Warehouse Management</text></g><!--MD5=[fb9ccc1243333cb7b4e4755ff5f6d2f9]
+cluster IF--><g id="cluster_IF"><path d="M1145.5,147 L1243.5,147 A3.75,3.75 0 0 1 1246,149.5 L1253,168.6406 L1477.5,168.6406 A2.5,2.5 0 0 1 1480,171.1406 L1480,233.5 A2.5,2.5 0 0 1 1477.5,236 L1145.5,236 A2.5,2.5 0 0 1 1143,233.5 L1143,149.5 A2.5,2.5 0 0 1 1145.5,147 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="1143" x2="1253" y1="168.6406" y2="168.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="97" x="1147" y="161.6738">Infrastructure</text></g><!--MD5=[7a0e2afdff0a7ce6f56d84f055480d2c]
+cluster ADP--><g id="cluster_ADP"><path d="M873.5,345 L1004.5,345 A3.75,3.75 0 0 1 1007,347.5 L1014,366.6406 L1296.5,366.6406 A2.5,2.5 0 0 1 1299,369.1406 L1299,530.5 A2.5,2.5 0 0 1 1296.5,533 L873.5,533 A2.5,2.5 0 0 1 871,530.5 L871,347.5 A2.5,2.5 0 0 1 873.5,345 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="871" x2="1014" y1="366.6406" y2="366.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="130" x="875" y="359.6738">Interface Adapters</text></g><!--MD5=[d49622069896581d394c2cf2b2b21fd8]
+cluster SV--><g id="cluster_SV"><path d="M848.5,48 L993.5,48 A3.75,3.75 0 0 1 996,50.5 L1003,69.6406 L1116.5,69.6406 A2.5,2.5 0 0 1 1119,72.1406 L1119,233.5 A2.5,2.5 0 0 1 1116.5,236 L848.5,236 A2.5,2.5 0 0 1 846,233.5 L846,50.5 A2.5,2.5 0 0 1 848.5,48 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="846" x2="1003" y1="69.6406" y2="69.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="144" x="850" y="62.6738">Application Services</text></g><!--MD5=[da0ebfe2170ff46381adf01d9e27d23e]
+cluster DM--><g id="cluster_DM"><path d="M32.5,147 L85.5,147 A3.75,3.75 0 0 1 88,149.5 L95,168.6406 L819.5,168.6406 A2.5,2.5 0 0 1 822,171.1406 L822,554.5 A2.5,2.5 0 0 1 819.5,557 L32.5,557 A2.5,2.5 0 0 1 30,554.5 L30,149.5 A2.5,2.5 0 0 1 32.5,147 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="30" x2="95" y1="168.6406" y2="168.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="52" x="34" y="161.6738">Domain</text></g><!--MD5=[0d99d65ace22e45511a90a7e65fdb1f1]
+cluster Shared--><g id="cluster_Shared"><path d="M385.5,444 L436.5,444 A3.75,3.75 0 0 1 439,446.5 L446,465.6406 L795.5,465.6406 A2.5,2.5 0 0 1 798,468.1406 L798,530.5 A2.5,2.5 0 0 1 795.5,533 L385.5,533 A2.5,2.5 0 0 1 383,530.5 L383,446.5 A2.5,2.5 0 0 1 385.5,444 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="383" x2="446" y1="465.6406" y2="465.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="50" x="387" y="458.6738">Shared</text></g><!--MD5=[183c398cc71e485dd3ff1e9121f1d7d7]
+entity WarehouseRoute--><g id="elem_WarehouseRoute"><path d="M1313,181 L1437,181 A3.75,3.75 0 0 1 1439.5,183.5 L1446.5,202.6406 L1461,202.6406 A2.5,2.5 0 0 1 1463.5,205.1406 L1463.5,217.1406 A2.5,2.5 0 0 1 1461,219.6406 L1313,219.6406 A2.5,2.5 0 0 1 1310.5,217.1406 L1310.5,183.5 A2.5,2.5 0 0 1 1313,181 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="1310.5" x2="1446.5" y1="202.6406" y2="202.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="1320.5" y="196.6738">WarehouseRoute</text></g><!--MD5=[e7b4ba715b9378c57f39440bbe1913bc]
+entity Persistence--><g id="elem_Persistence"><path d="M1161.5,181 L1248.5,181 A3.75,3.75 0 0 1 1251,183.5 L1258,202.6406 L1272.5,202.6406 A2.5,2.5 0 0 1 1275,205.1406 L1275,217.1406 A2.5,2.5 0 0 1 1272.5,219.6406 L1161.5,219.6406 A2.5,2.5 0 0 1 1159,217.1406 L1159,183.5 A2.5,2.5 0 0 1 1161.5,181 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="1159" x2="1258" y1="202.6406" y2="202.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="74" x="1169" y="196.6738">Persistence</text></g><!--MD5=[ee32b16a82e51fd3d2b907d329578518]
+entity WarehouseController--><g id="elem_WarehouseController"><path d="M890,379 L1038,379 A3.75,3.75 0 0 1 1040.5,381.5 L1047.5,400.6406 L1062,400.6406 A2.5,2.5 0 0 1 1064.5,403.1406 L1064.5,415.1406 A2.5,2.5 0 0 1 1062,417.6406 L890,417.6406 A2.5,2.5 0 0 1 887.5,415.1406 L887.5,381.5 A2.5,2.5 0 0 1 890,379 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="887.5" x2="1047.5" y1="400.6406" y2="400.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="897.5" y="394.6738">WarehouseController</text></g><!--MD5=[ce922bf3a1bc498551f168618b825ad4]
+entity BaseController--><g id="elem_BaseController"><path d="M1029.5,478 L1136.5,478 A3.75,3.75 0 0 1 1139,480.5 L1146,499.6406 L1160.5,499.6406 A2.5,2.5 0 0 1 1163,502.1406 L1163,514.1406 A2.5,2.5 0 0 1 1160.5,516.6406 L1029.5,516.6406 A2.5,2.5 0 0 1 1027,514.1406 L1027,480.5 A2.5,2.5 0 0 1 1029.5,478 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="1027" x2="1146" y1="499.6406" y2="499.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="94" x="1037" y="493.6738">BaseController</text></g><!--MD5=[022c090f87954f5ea490c96918402a5b]
+entity WarehouseRepository--><g id="elem_WarehouseRepository"><path d="M1102,379 L1256,379 A3.75,3.75 0 0 1 1258.5,381.5 L1265.5,400.6406 L1280,400.6406 A2.5,2.5 0 0 1 1282.5,403.1406 L1282.5,415.1406 A2.5,2.5 0 0 1 1280,417.6406 L1102,417.6406 A2.5,2.5 0 0 1 1099.5,415.1406 L1099.5,381.5 A2.5,2.5 0 0 1 1102,379 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="1099.5" x2="1265.5" y1="400.6406" y2="400.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="1109.5" y="394.6738">WarehouseRepository</text></g><!--MD5=[168f4c431c79fda92c0f26eb6756219e]
+entity WarehouseService--><g id="elem_WarehouseService"><path d="M864.5,82 L997.5,82 A3.75,3.75 0 0 1 1000,84.5 L1007,103.6406 L1021.5,103.6406 A2.5,2.5 0 0 1 1024,106.1406 L1024,118.1406 A2.5,2.5 0 0 1 1021.5,120.6406 L864.5,120.6406 A2.5,2.5 0 0 1 862,118.1406 L862,84.5 A2.5,2.5 0 0 1 864.5,82 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="862" x2="1007" y1="103.6406" y2="103.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="120" x="872" y="97.6738">WarehouseService</text></g><!--MD5=[6b3035cb4ba8d474fa99dfd80243dbb0]
+entity IService--><g id="elem_IService"><path d="M864.5,181 L927.5,181 A3.75,3.75 0 0 1 930,183.5 L937,202.6406 L951.5,202.6406 A2.5,2.5 0 0 1 954,205.1406 L954,217.1406 A2.5,2.5 0 0 1 951.5,219.6406 L864.5,219.6406 A2.5,2.5 0 0 1 862,217.1406 L862,183.5 A2.5,2.5 0 0 1 864.5,181 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="862" x2="937" y1="202.6406" y2="202.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50" x="872" y="196.6738">IService</text></g><!--MD5=[d8299e5e0613ae77ab0168f886fab789]
+entity IRepository--><g id="elem_IRepository"><path d="M992,181 L1076,181 A3.75,3.75 0 0 1 1078.5,183.5 L1085.5,202.6406 L1100,202.6406 A2.5,2.5 0 0 1 1102.5,205.1406 L1102.5,217.1406 A2.5,2.5 0 0 1 1100,219.6406 L992,219.6406 A2.5,2.5 0 0 1 989.5,217.1406 L989.5,183.5 A2.5,2.5 0 0 1 992,181 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="989.5" x2="1085.5" y1="202.6406" y2="202.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="71" x="999.5" y="196.6738">IRepository</text></g><!--MD5=[b587871a90dba9f2aaab101b92e47432]
+entity Warehouse--><g id="elem_Warehouse"><path d="M541,181 L627,181 A3.75,3.75 0 0 1 629.5,183.5 L636.5,202.6406 L651,202.6406 A2.5,2.5 0 0 1 653.5,205.1406 L653.5,217.1406 A2.5,2.5 0 0 1 651,219.6406 L541,219.6406 A2.5,2.5 0 0 1 538.5,217.1406 L538.5,183.5 A2.5,2.5 0 0 1 541,181 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="538.5" x2="636.5" y1="202.6406" y2="202.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="73" x="548.5" y="196.6738">Warehouse</text></g><!--MD5=[f06635067bc7e7eb7b85eba0827e4143]
+entity WarehouseId--><g id="elem_WarehouseId"><path d="M48.5,280 L145.5,280 A3.75,3.75 0 0 1 148,282.5 L155,301.6406 L169.5,301.6406 A2.5,2.5 0 0 1 172,304.1406 L172,316.1406 A2.5,2.5 0 0 1 169.5,318.6406 L48.5,318.6406 A2.5,2.5 0 0 1 46,316.1406 L46,282.5 A2.5,2.5 0 0 1 48.5,280 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="46" x2="155" y1="301.6406" y2="301.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84" x="56" y="295.6738">WarehouseId</text></g><!--MD5=[00823990eac27b2ae94a3bf40de1d0d9]
+entity Address--><g id="elem_Address"><path d="M209.5,280 L274.5,280 A3.75,3.75 0 0 1 277,282.5 L284,301.6406 L298.5,301.6406 A2.5,2.5 0 0 1 301,304.1406 L301,316.1406 A2.5,2.5 0 0 1 298.5,318.6406 L209.5,318.6406 A2.5,2.5 0 0 1 207,316.1406 L207,282.5 A2.5,2.5 0 0 1 209.5,280 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="207" x2="284" y1="301.6406" y2="301.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52" x="217" y="295.6738">Address</text></g><!--MD5=[e36a124ea88d4a2de59ee76e3e8aa8f9]
+entity Altitude--><g id="elem_Altitude"><path d="M339,280 L399,280 A3.75,3.75 0 0 1 401.5,282.5 L408.5,301.6406 L423,301.6406 A2.5,2.5 0 0 1 425.5,304.1406 L425.5,316.1406 A2.5,2.5 0 0 1 423,318.6406 L339,318.6406 A2.5,2.5 0 0 1 336.5,316.1406 L336.5,282.5 A2.5,2.5 0 0 1 339,280 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="336.5" x2="408.5" y1="301.6406" y2="301.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47" x="346.5" y="295.6738">Altitude</text></g><!--MD5=[8b84c71bfca9aaed692d8a1f351b3ffe]
+entity Coordinates--><g id="elem_Coordinates"><path d="M463,280 L553,280 A3.75,3.75 0 0 1 555.5,282.5 L562.5,301.6406 L577,301.6406 A2.5,2.5 0 0 1 579.5,304.1406 L579.5,316.1406 A2.5,2.5 0 0 1 577,318.6406 L463,318.6406 A2.5,2.5 0 0 1 460.5,316.1406 L460.5,282.5 A2.5,2.5 0 0 1 463,280 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="460.5" x2="562.5" y1="301.6406" y2="301.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="77" x="470.5" y="295.6738">Coordinates</text></g><!--MD5=[0c526e5cbe2c2f3475f5378e5b5b65f1]
+entity Designation--><g id="elem_Designation"><path d="M617,280 L705,280 A3.75,3.75 0 0 1 707.5,282.5 L714.5,301.6406 L729,301.6406 A2.5,2.5 0 0 1 731.5,304.1406 L731.5,316.1406 A2.5,2.5 0 0 1 729,318.6406 L617,318.6406 A2.5,2.5 0 0 1 614.5,316.1406 L614.5,282.5 A2.5,2.5 0 0 1 617,280 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="614.5" x2="714.5" y1="301.6406" y2="301.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="624.5" y="295.6738">Designation</text></g><!--MD5=[31dc64b577cd0f0ab19ba60c8523865c]
+entity IAggregateRoot--><g id="elem_IAggregateRoot"><path d="M528,478 L640,478 A3.75,3.75 0 0 1 642.5,480.5 L649.5,499.6406 L664,499.6406 A2.5,2.5 0 0 1 666.5,502.1406 L666.5,514.1406 A2.5,2.5 0 0 1 664,516.6406 L528,516.6406 A2.5,2.5 0 0 1 525.5,514.1406 L525.5,480.5 A2.5,2.5 0 0 1 528,478 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="525.5" x2="649.5" y1="499.6406" y2="499.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="99" x="535.5" y="493.6738">IAggregateRoot</text></g><!--MD5=[8782f0471144d5c6a9c7ee1b77df72d9]
+entity IEntity--><g id="elem_IEntity"><path d="M704.5,478 L755.5,478 A3.75,3.75 0 0 1 758,480.5 L765,499.6406 L779.5,499.6406 A2.5,2.5 0 0 1 782,502.1406 L782,514.1406 A2.5,2.5 0 0 1 779.5,516.6406 L704.5,516.6406 A2.5,2.5 0 0 1 702,514.1406 L702,480.5 A2.5,2.5 0 0 1 704.5,478 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="702" x2="765" y1="499.6406" y2="499.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="38" x="712" y="493.6738">IEntity</text></g><!--MD5=[bbd47a723b4613a9b03820f339a696c9]
+entity IEntityId--><g id="elem_IEntityId"><path d="M402,478 L464,478 A3.75,3.75 0 0 1 466.5,480.5 L473.5,499.6406 L488,499.6406 A2.5,2.5 0 0 1 490.5,502.1406 L490.5,514.1406 A2.5,2.5 0 0 1 488,516.6406 L402,516.6406 A2.5,2.5 0 0 1 399.5,514.1406 L399.5,480.5 A2.5,2.5 0 0 1 402,478 " fill="#F1F1F1" style="stroke:#181818;stroke-width:0.5;"/><line style="stroke:#181818;stroke-width:0.5;" x1="399.5" x2="473.5" y1="499.6406" y2="499.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="409.5" y="493.6738">IEntityId</text></g><!--MD5=[683b4b98d73dabcb953afe1e24496c0d]
+link Warehouse to WarehouseId--><g id="link_Warehouse_WarehouseId"><path d="M538.24,211.95 C459.22,226.4 313.08,253.7 189,280 C187.73,280.27 186.44,280.54 185.15,280.82 " fill="none" id="Warehouse-to-WarehouseId" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="172.27,283.64,178.9849,286.2688,183.9941,281.0815,177.2792,278.4527,172.27,283.64" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[f4c22a92bdf6a3fe51395fda33eca7be]
+link Warehouse to Coordinates--><g id="link_Warehouse_Coordinates"><path d="M581.35,220.2 C570.41,234.16 555.27,253.49 542.76,269.45 " fill="none" id="Warehouse-to-Coordinates" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="534.61,279.85,541.4576,277.5894,542.0046,270.3991,535.157,272.6597,534.61,279.85" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[8566920427025708a5f3b0b060867253]
+link Warehouse to Altitude--><g id="link_Warehouse_Altitude"><path d="M554.8,220.09 C520.51,235.56 471.46,257.69 434.2,274.5 " fill="none" id="Warehouse-to-Altitude" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="422.06,279.98,429.1736,281.1619,433.0006,275.0501,425.887,273.8682,422.06,279.98" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[5c0d70447e3000ef55e5131b73e73d28]
+link Warehouse to Designation--><g id="link_Warehouse_Designation"><path d="M610.85,220.2 C621.92,234.16 637.27,253.49 649.94,269.45 " fill="none" id="Warehouse-to-Designation" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="658.2,279.85,657.6024,272.6637,650.7391,270.4513,651.3367,277.6376,658.2,279.85" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[8426aa805ba1ba7feef327b592f27c94]
+link Warehouse to Address--><g id="link_Warehouse_Address"><path d="M538.43,217.79 C482.4,233.66 394.85,258.46 319,280 C317.29,280.49 315.56,280.98 313.81,281.48 " fill="none" id="Warehouse-to-Address" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="301.22,285.06,308.0827,287.2743,312.7662,281.7912,305.9035,279.5769,301.22,285.06" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[babeb531e6a986fb19f373928fb08110]
+link Warehouse to IAggregateRoot--><g id="link_Warehouse_IAggregateRoot"><path d="M653.68,214.98 C687.81,226.25 728.3,246.12 749,280 C791.27,349.2 702.88,425.7 643.66,466.67 " fill="none" id="Warehouse-to-IAggregateRoot" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="647.28,472.67,626.77,477.96,639.51,461.03,647.28,472.67" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[de42e21c1e840b2ea95e1e841802dbed]
+link Warehouse to IEntity--><g id="link_Warehouse_IEntity"><path d="M653.73,211.94 C692.17,222.21 739.88,242.11 764,280 C798.83,334.72 777.04,413.43 758.92,459.34 " fill="none" id="Warehouse-to-IEntity" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="765.3,462.22,751.06,477.91,752.4,456.77,765.3,462.22" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[47efdb4c22d80de995a6cf09bfdf6394]
+link WarehouseId to IEntityId--><g id="link_WarehouseId_IEntityId"><path d="M140.91,319.12 C199.71,353.41 325.51,426.8 395.48,467.61 " fill="none" id="WarehouseId-to-IEntityId" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="399.06,461.6,412.81,477.72,392.01,473.69,399.06,461.6" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[0238c74712d15525c9d4b35f64d7d69a]
+link WarehouseService to IService--><g id="link_WarehouseService_IService"><path d="M936.25,121.2 C932.09,132.74 926.6,147.96 921.57,161.91 " fill="none" id="WarehouseService-to-IService" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="928.1,164.42,914.73,180.85,914.93,159.67,928.1,164.42" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[c9c0ffd847c40c36df4f6d2da5dd9a2b]
+link WarehouseService to IRepository--><g id="link_WarehouseService_IRepository"><path d="M962.86,121.2 C979.82,137.17 1004.24,160.18 1022.24,177.12 " fill="none" id="WarehouseService-to-IRepository" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1026.2,180.85,1022.3877,171.7689,1022.559,177.4232,1016.9047,177.5945,1026.2,180.85" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[fbd2bf4b90cce69cf0c5b45ba4c9cfdb]
+link WarehouseService to Warehouse--><g id="link_WarehouseService_Warehouse"><path d="M876.51,121.09 C813.72,138.64 720.27,164.76 658.75,181.96 " fill="none" id="WarehouseService-to-Warehouse" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="653.63,183.39,663.3738,184.8248,658.4462,182.0466,661.2244,177.119,653.63,183.39" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[980e13d87ab1f6e88d198f987abb6079]
+link WarehouseRepository to IRepository--><g id="link_WarehouseRepository_IRepository"><path d="M1177.14,378.76 C1152.97,346.1 1102.77,278.24 1071.97,236.6 " fill="none" id="WarehouseRepository-to-IRepository" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="1066.17,240.53,1059.9,220.29,1077.43,232.21,1066.17,240.53" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[7fa3cc1d809f2bf1ee7b341ae8d0bf5e]
+reverse link IService to WarehouseController--><g id="link_IService_WarehouseController"><path d="M916.28,225.37 C929.98,264.86 957.08,342.95 969.5,378.76 " fill="none" id="IService-backto-WarehouseController" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="914.52,220.29,913.7045,230.105,916.1654,225.0115,921.2589,227.4724,914.52,220.29" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[3ff2a8f5463f921021d8bf8ba6d9aada]
+link WarehouseController to BaseController--><g id="link_WarehouseController_BaseController"><path d="M998.94,418.2 C1015.24,431.49 1037.51,449.64 1056.51,465.13 " fill="none" id="WarehouseController-to-BaseController" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="1061.05,459.79,1072.13,477.85,1052.2,470.64,1061.05,459.79" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[dc470e4ce918dc85ebc77bf35787848c]
+reverse link Persistence to WarehouseRepository--><g id="link_Persistence_WarehouseRepository"><path d="M1213.83,225.37 C1208.6,264.86 1198.24,342.95 1193.49,378.76 " fill="none" id="Persistence-backto-WarehouseRepository" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1214.51,220.29,1209.362,228.6863,1213.8529,225.2466,1217.2926,229.7376,1214.51,220.29" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[22a200962ee550e3135b8559c2347b4a]
+link WarehouseRoute to BaseController--><g id="link_WarehouseRoute_BaseController"><path d="M1384.58,220.2 C1378.26,261.5 1357.61,361.33 1300,418 C1264.29,453.13 1211.21,472.88 1168.01,483.78 " fill="none" id="WarehouseRoute-to-BaseController" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1163.06,485,1172.7567,486.7246,1167.9141,483.8008,1170.8379,478.9581,1163.06,485" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[65ddb6f531a8cc47030086cd0c375c6c]
+@startuml
+'https://plantuml.com/component-diagram
+
+ package "Warehouse Management"{
+    package "Infrastructure" as IF{
+        package WarehouseRoute
+        package Persistence
+    }
+
+    package "Interface Adapters" as ADP {
+        package WarehouseController
+        package BaseController
+        package WarehouseRepository
+    }
+
+    package "Application Services" as SV {
+        package WarehouseService
+        package IService
+        package IRepository
+
+
+    }
+    package "Domain" as DM {
+
+        package Shared{
+            package IAggregateRoot
+            package IEntity
+            package IEntityId
+        }
+        package Warehouse
+        package WarehouseId
+        package Address
+        package Altitude
+        package Coordinates
+        package Designation
+    }
+ }
+
+Warehouse - -* WarehouseId
+Warehouse - -* Coordinates
+Warehouse - -* Altitude
+Warehouse - -* Designation
+Warehouse - -* Address
+
+Warehouse ....|> IAggregateRoot
+Warehouse ....|> IEntity
+WarehouseId ..|> IEntityId
+
+WarehouseService ..|> IService
+WarehouseService ..> IRepository
+
+WarehouseService -down.> Warehouse
+
+WarehouseRepository ..|> IRepository
+
+WarehouseController -up..> IService
+WarehouseController ..|> BaseController
+
+WarehouseRepository -up..> Persistence
+
+WarehouseRoute ..> BaseController
+
+
+@enduml
+
+@startuml
+
+ package "Warehouse Management"{
+    package "Infrastructure" as IF{
+        package WarehouseRoute
+        package Persistence
+    }
+
+    package "Interface Adapters" as ADP {
+        package WarehouseController
+        package BaseController
+        package WarehouseRepository
+    }
+
+    package "Application Services" as SV {
+        package WarehouseService
+        package IService
+        package IRepository
+
+
+    }
+    package "Domain" as DM {
+
+        package Shared{
+            package IAggregateRoot
+            package IEntity
+            package IEntityId
+        }
+        package Warehouse
+        package WarehouseId
+        package Address
+        package Altitude
+        package Coordinates
+        package Designation
+    }
+ }
+
+Warehouse - -* WarehouseId
+Warehouse - -* Coordinates
+Warehouse - -* Altitude
+Warehouse - -* Designation
+Warehouse - -* Address
+
+Warehouse ....|> IAggregateRoot
+Warehouse ....|> IEntity
+WarehouseId ..|> IEntityId
+
+WarehouseService ..|> IService
+WarehouseService ..> IRepository
+
+WarehouseService -down.> Warehouse
+
+WarehouseRepository ..|> IRepository
+
+WarehouseController -up..> IService
+WarehouseController ..|> BaseController
+
+WarehouseRepository -up..> Persistence
+
+WarehouseRoute ..> BaseController
+
+
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 19:12:26 WEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: pt
+Country: BR
+--></g></svg>

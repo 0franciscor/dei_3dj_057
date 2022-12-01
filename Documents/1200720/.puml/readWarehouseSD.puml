@@ -3,7 +3,7 @@ autonumber
 
 actor "Warehouse Manager" as admin
 box "<<EletricGo(C4)>>\n       System"
-participant SPA as system <<Container(C4)>>
+participant Authz as system <<Container(C4)>>
 participant WarehouseManagement as  WM <<Container(C4)>>
 end box
 
