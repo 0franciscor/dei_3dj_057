@@ -7,7 +7,7 @@ extractMass([H|T],[H1|T1]):- extractMass(T,T1), entrega(H,_,H1,_,_,_).
 extractWarehouse([],[Matosinhos]):- findMatosinhos(Matosinhos).
 extractWarehouse([HD|TD],[H1|T1]):- extractWarehouse(TD,T1), entrega(HD,_,_,H1,_,_).
 
-largestMassFirst(Delivery,WarehouseSorted):- extractMass(Delivery,Mass), sortTwoList(Mass,Delivery,_,DeliverySorted),
+largestMassFirst(Day,WarehouseSorted):- getAllDeliveriesInADay(Day,Delivery), extractMass(Delivery,Mass), sortTwoList(Mass,Delivery,_,DeliverySorted),
                                              reverse(DeliverySorted,DeliverySortedReversed), extractWarehouse(DeliverySortedReversed,WarehouseSorted),!.
 
 
@@ -59,5 +59,5 @@ extractBoth(Origin, Destinations, Visited,Result):- extractMassFromWarehouse(Des
                                                         sortTwoList(MassOverDistances, Destinations, _, [H|T]), append([H],Visited, Visited2),extractBoth(H, T, Visited2,Result).
 
 
-cheapestWarehouseFirst(Entregas,Result):- extractCities(Entregas, Warehouse_List), findMatosinhos(Matosinhos),append([Matosinhos],Warehouse_List,[H|T]), EmptyList = [H], extractBoth(H,T,EmptyList,ResultNoMatosinhos),
+cheapestWarehouseFirst(Day,Result):- getAllDeliveriesInADay(Day,Entregas),extractCities(Entregas, Warehouse_List), findMatosinhos(Matosinhos),append([Matosinhos],Warehouse_List,[H|T]), EmptyList = [H], extractBoth(H,T,EmptyList,ResultNoMatosinhos),
                                           findMatosinhos(Matosinhos),append([Matosinhos],ResultNoMatosinhos,ResultReverse), reverse(ResultReverse,Result),!. 
