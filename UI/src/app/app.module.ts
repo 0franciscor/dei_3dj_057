@@ -76,7 +76,7 @@ import { GetWarehousesComponent } from './components/WarehouseManagement/warehou
     MatDialogModule,
     MatButtonModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
