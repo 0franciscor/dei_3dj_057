@@ -167,6 +167,19 @@ describe('TruckService', () => {
     expect(status.status).toEqual(201);
   });
 
+  it('should create a truck prolog', async () => {
+    const response = {
+      "status": 201,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.createTruckProlog('test');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(201);
+
+  });
+
   it('should update a truck', async () => {
     const response = {
       "status": 200,
@@ -179,6 +192,18 @@ describe('TruckService', () => {
     expect(status.status).toEqual(200);
   });
 
+  it('should update a truck prolog', async () => {
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.updateTruckProlog('test');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+  });
+
   it('should delete a truck', async () => {
     const response = {
       "status": 200,
@@ -187,6 +212,18 @@ describe('TruckService', () => {
     const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
     const status = await service.deleteTruck('test');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+  });
+
+  it('should delete a truck prolog', async () => {
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteTruckProlog('test');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
   });

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SERVER_TOKEN } from '@angular/flex-layout';
 import fetch from 'node-fetch';
 
 @Injectable({
@@ -37,6 +36,7 @@ export class TruckService {
     const data = truck;
  
     const response = await this.sendFetch(url, 'POST', data);
+    console.log("response", response);
     return response;
     
 
@@ -96,7 +96,7 @@ export class TruckService {
 
   async sendFetch(url: string, method: string, data: any) {
     if(data)
-      return fetch(url, {
+      return await fetch(url, {
         method: method,
         body: JSON.stringify(data),
         headers: {
@@ -104,7 +104,7 @@ export class TruckService {
         },
       })
     else
-      return fetch(url, {
+      return await fetch(url, {
         method: method,
         headers: {
           'Accept': 'application/json'

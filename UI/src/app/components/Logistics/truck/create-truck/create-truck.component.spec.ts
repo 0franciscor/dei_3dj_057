@@ -26,7 +26,7 @@ describe('CreateTruckComponent', () => {
       providers: [TruckService, {provide: MatDialogRef, useValue: dialogMock},{ provide: MAT_DIALOG_DATA, useValue: {} },]
     }).compileComponents();
 
-    fakeTruckService = jasmine.createSpyObj('TruckService', ['createTruck']);
+    fakeTruckService = jasmine.createSpyObj('TruckService', ['createTruck','createTruckProlog']);
     fakeTruckService.createTruck.and.returnValue(Promise.resolve({status: 201}));
 
     TestBed.overrideProvider(TruckService, {useValue: fakeTruckService});
@@ -47,8 +47,12 @@ describe('CreateTruckComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should create dialog', () => {
+    expect(dialogComponent).toBeTruthy();
+  });
+
   it('onSubmit with invalid form', async () => {
-    component.onSubmit();
+    await component.onSubmit();
     expect(component.formCreateTruck.valid).toBeFalsy();
   });
 
@@ -60,7 +64,7 @@ describe('CreateTruckComponent', () => {
     component.formCreateTruck.controls['maxBatteryCapacity'].setValue(1);
     component.formCreateTruck.controls['autonomy'].setValue(1);
     component.formCreateTruck.controls['fastChargeTime'].setValue(1);
-    component.onSubmit();
+    await component.onSubmit();
     expect(component.formCreateTruck.valid).toBeTruthy();
   });
 
@@ -73,7 +77,7 @@ describe('CreateTruckComponent', () => {
     component.formCreateTruck.controls['autonomy'].setValue(1);
     component.formCreateTruck.controls['fastChargeTime'].setValue(1);
     fakeTruckService.createTruck.and.returnValue(Promise.resolve({status: 500}));
-    component.onSubmit();
+    await component.onSubmit();
     expect(component.formCreateTruck.valid).toBeTruthy();
   });
 
@@ -137,6 +141,19 @@ describe('TruckService', () => {
     expect(status.status).toEqual(201);
   });
 
+  it('should create a truck prolog', async () => {
+    const response = {
+      "status": 201,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.createTruckProlog('test');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(201);
+
+  });
+
   it('should update a truck', async () => {
     const response = {
       "status": 200,
@@ -149,6 +166,18 @@ describe('TruckService', () => {
     expect(status.status).toEqual(200);
   });
 
+  it('should update a truck prolog', async () => {
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.updateTruckProlog('test');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+  });
+
   it('should delete a truck', async () => {
     const response = {
       "status": 200,
@@ -157,6 +186,18 @@ describe('TruckService', () => {
     const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
     const status = await service.deleteTruck('test');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+  });
+
+  it('should delete a truck prolog', async () => {
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteTruckProlog('test');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
   });
