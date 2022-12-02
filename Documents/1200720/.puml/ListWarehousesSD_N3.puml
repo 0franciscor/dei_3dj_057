@@ -2,8 +2,12 @@
 autonumber
 
 actor "Warehouse Manager" as admin 
-box "<<EletricGo(C4)>>\n       System" #LightYellow
-participant SPA as ui <<Container(C4)>>
+
+box "<<Container(C4)>>\n       UI" #LightYellow
+participant CreateWarehouseComponent as uiComponent <<Container(C4)>>
+participant CreateWarehouseService as uiService <<Container(C4)>>
+box "<<Container(C4)>>\n       Auth" #LightBlue
+participant WarehouseController as authController <<Container(C4)>>
 box "<<Container(C4)>>\n    Warehouse Management" #LightGreen
 participant WarehouseRoute as  WM <<Component(C4)>>
 participant WarehouseController as  CTL <<Component(C4)>>
@@ -15,16 +19,27 @@ end box
 end box
 
 
-admin -> ui: I want to consult the warehouses in the system
-activate ui
+admin -> uiComponent: I want to consult the warehouses in the system
+activate uiComponent
 
-ui -> WM : GET GetAll()
+uiComponent -> uiService : getAllWarehouses()
+activate uiService
+deactivate uiComponent
+uiService -> authController : GET getAllWarehouse()
+activate authController
+authController -> WM : GET GetAll()
 activate WM
-alt if there are warehouses in the system
 
 WM -> CTL : GetAll()
+deactivate WM
 activate CTL
 CTL -> SV : GetWarehouses()
+
+deactivate authController
+deactivate uiService
+alt if there are warehouses in the system
+
+
 activate SV 
 SV -> WR : GetAll()
 activate WR
@@ -38,38 +53,53 @@ deactivate W
 SV --> CTL : listOfWarehousesDto
 deactivate SV
 CTL --> WM : listOfWarehousesDto
+activate WM
 deactivate CTL
-WM --> ui : 200 OK 
+WM --> authController : 200 OK
+activate authController
+authController --> uiService : 200 OK
+activate uiService
+uiService --> uiComponent : 200 OK
+activate uiComponent
+
+deactivate uiService
+
+deactivate authController 
 deactivate WM
 
-
-ui --> admin: show all warehouses in the system
-deactivate ui
+uiComponent --> admin: show all warehouses in the system
+deactivate uiComponent
 
 else If there are no warehouses in the system
 
 
 
-WM -> CTL : GetAll()
-activate WM
-activate CTL
-CTL -> SV : GetWarehouses()
 activate SV 
 SV -> WR : GetAll()
-activate WR
+
 WR --> SV : null
 
 SV --> CTL : null
+activate CTL
 deactivate SV
 CTL --> WM : null
-deactivate CTL
+activate WM
 
-WM --> ui : 404 NOT FOUND
+
+deactivate CTL
+WM --> authController : 404 NOT FOUND
 deactivate WM
-activate ui
+activate authController
+authController --> uiService : 404 NOT FOUND
+deactivate authController
+activate uiService
+uiService --> uiComponent : 404 NOT FOUND
+deactivate uiService
+
+activate uiComponent
  
-ui --> admin: show message error "Warehouses not found"
-deactivate ui 
+uiComponent --> admin: show message error "Warehouses not found"
+deactivate uiComponent 
 
 
 end

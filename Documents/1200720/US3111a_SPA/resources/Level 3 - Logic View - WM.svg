@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1589px" preserveAspectRatio="none" style="width:980px;height:1589px;background:#FFFFFF;" version="1.1" viewBox="0 0 980 1589" width="980px" zoomAndPan="magnify"><defs/><g><!--MD5=[5d08ad99e8fa849af735c1515d4bb8c4]
+cluster <<component>> <<container (C4)>>\nWarehouse Management\n--><g id="cluster_&lt;&lt;component&gt;&gt; &lt;&lt;container (C4)&gt;&gt;\nWarehouse Management\n"><rect fill="none" height="1474" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="967" x="7" y="109"/><rect fill="none" height="10" style="stroke:#181818;stroke-width:1.0;" width="15" x="954" y="114"/><rect fill="none" height="2" style="stroke:#181818;stroke-width:1.0;" width="4" x="952" y="116"/><rect fill="none" height="2" style="stroke:#181818;stroke-width:1.0;" width="4" x="952" y="120"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="246" x="367.5" y="134.6738">&lt;&lt;component&gt;&gt; &lt;&lt;container (C4)&gt;&gt;</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="175" x="403" y="150.3145">Warehouse Management</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="4" x="488.5" y="165.9551"> </text></g><!--MD5=[79a9edb57a6ca9b06f329e6b3231c8f6]
+cluster Frameworks and Drivers Layers--><g id="cluster_Frameworks and Drivers Layers"><path d="M607.5,170 L830.5,170 A3.75,3.75 0 0 1 833,172.5 L840,191.6406 L947.5,191.6406 A2.5,2.5 0 0 1 950,194.1406 L950,278.5 A2.5,2.5 0 0 1 947.5,281 L607.5,281 A2.5,2.5 0 0 1 605,278.5 L605,172.5 A2.5,2.5 0 0 1 607.5,170 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="605" x2="840" y1="191.6406" y2="191.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="222" x="609" y="184.6738">Frameworks and Drivers Layers</text></g><!--MD5=[25deb2d1fce5dd98d4c0c0d14c16086b]
+cluster Interface Adapters Layer--><g id="cluster_Interface Adapters Layer"><path d="M298.5,640 L471.5,640 A3.75,3.75 0 0 1 474,642.5 L481,661.6406 L717.5,661.6406 A2.5,2.5 0 0 1 720,664.1406 L720,748.5 A2.5,2.5 0 0 1 717.5,751 L298.5,751 A2.5,2.5 0 0 1 296,748.5 L296,642.5 A2.5,2.5 0 0 1 298.5,640 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="296" x2="481" y1="661.6406" y2="661.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="172" x="300" y="654.6738">Interface Adapters Layer</text></g><!--MD5=[b8393d82f2444e332493eabe5d0dc1af]
+cluster Application Business Rules--><g id="cluster_Application Business Rules"><path d="M429.5,1110 L621.5,1110 A3.75,3.75 0 0 1 624,1112.5 L631,1131.6406 L631.5,1131.6406 A2.5,2.5 0 0 1 634,1134.1406 L634,1218.5 A2.5,2.5 0 0 1 631.5,1221 L429.5,1221 A2.5,2.5 0 0 1 427,1218.5 L427,1112.5 A2.5,2.5 0 0 1 429.5,1110 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="427" x2="631" y1="1131.6406" y2="1131.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="191" x="431" y="1124.6738">Application Business Rules</text></g><!--MD5=[fdded0eb0050d8dc91ab4a1c8d8f2292]
+cluster Enterprise Business Rules--><g id="cluster_Enterprise Business Rules"><path d="M327.5,1448 L515.5,1448 A3.75,3.75 0 0 1 518,1450.5 L525,1469.6406 L525.5,1469.6406 A2.5,2.5 0 0 1 528,1472.1406 L528,1556.5 A2.5,2.5 0 0 1 525.5,1559 L327.5,1559 A2.5,2.5 0 0 1 325,1556.5 L325,1450.5 A2.5,2.5 0 0 1 327.5,1448 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="325" x2="525" y1="1469.6406" y2="1469.6406"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="187" x="329" y="1462.6738">Enterprise Business Rules</text></g><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="8" x="451" y="88.0332">1</text><rect fill="#F1F1F1" height="12" style="stroke:#181818;stroke-width:1.5;" width="12" x="449" y="103"/><!--MD5=[97de1061a0ab8445a0a4bfc3e13b8318]
+entity DTO--><g id="elem_DTO"><rect fill="#F1F1F1" height="61.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="143" x="814.5" y="674"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="937.5" y="679"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="935.5" y="681"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="935.5" y="685"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="829.5" y="706.6738">«component»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="103" x="829.5" y="722.3145">WarehouseDTO</text></g><!--MD5=[8762e9d29cd8ecb81bb02eee4f96c375]
+entity SCHEMA--><g id="elem_SCHEMA"><rect fill="#F1F1F1" height="61.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="265" x="23.5" y="204"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="268.5" y="209"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="266.5" y="211"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="266.5" y="215"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="38.5" y="236.6738">«component»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="225" x="38.5" y="252.3145">WarehouseEntityTypeConfiguration</text></g><!--MD5=[5bab31b8118b8c8cff0440c347387734]
+entity API1--><g id="elem_API1"><ellipse cx="753" cy="488" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97" x="704.5" y="517.6738">IControllerBase</text></g><!--MD5=[a66cf04e2ad9efabc28f300b4d9e7438]
+entity API2--><g id="elem_API2"><ellipse cx="607" cy="943" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="545.5" y="972.6738">IWarehouseService</text></g><!--MD5=[98974da6efbf96758852716194ad0935]
+entity API3--><g id="elem_API3"><ellipse cx="645" cy="371" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="150" x="570" y="400.6738">IWarehousePersistence</text></g><!--MD5=[54d8b8a8518c755f932db9e04392bc91]
+entity API4--><g id="elem_API4"><ellipse cx="426" cy="1373" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="38" x="407" y="1402.6738">IEntity</text></g><!--MD5=[9e11d42bd15b8cfc476c54dfbb820c8d]
+entity API5--><g id="elem_API5"><ellipse cx="475" cy="826" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="403" y="855.6738">IWarehouseRepository</text></g><!--MD5=[57d57d1146d3d822d6fad0ff6fc9ff8e]
+entity API6--><g id="elem_API6"><ellipse cx="770" cy="704.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="106" x="717" y="734.1738">IWarehouseDTO</text></g><!--MD5=[ca6968f3b3d915fc5c6a7a1a407e56d8]
+entity API7--><g id="elem_API7"><ellipse cx="403" cy="371" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="325.5" y="400.6738">IEntityTypeConfiguration</text></g><!--MD5=[c42ed81cef7fdd2e33758127945b9a5b]
+entity UI--><g id="elem_UI"><rect fill="#F1F1F1" height="61.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="151" x="782.5" y="204"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="913.5" y="209"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="911.5" y="211"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="911.5" y="215"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="797.5" y="236.6738">«component»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="797.5" y="252.3145">WarehouseRoute</text></g><!--MD5=[2a8f2d1a3f8ab4e9f06faafc6ee3b661]
+entity PRT--><g id="elem_PRT"><rect fill="#F1F1F1" height="61.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="126" x="621" y="204"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="727" y="209"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="725" y="211"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="725" y="215"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="636" y="236.6738">«component»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="74" x="636" y="252.3145">Persistence</text></g><!--MD5=[87439e3fb2bd72484276c19727d934ee]
+entity CT--><g id="elem_CT"><rect fill="#F1F1F1" height="61.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="175" x="528.5" y="674"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="683.5" y="679"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="681.5" y="681"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="681.5" y="685"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="543.5" y="706.6738">«component»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="543.5" y="722.3145">WarehouseController</text></g><!--MD5=[7bbb50bb6a1a4a16f3de7991aea95734]
+entity RP--><g id="elem_RP"><rect fill="#F1F1F1" height="61.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="181" x="312.5" y="674"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="473.5" y="679"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="471.5" y="681"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="471.5" y="685"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="327.5" y="706.6738">«component»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="327.5" y="722.3145">WarehouseRepository</text></g><!--MD5=[cd81128ed1873346d3678821c65bf0c5]
+entity SV--><g id="elem_SV"><rect fill="#F1F1F1" height="61.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="160" x="450" y="1144"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="590" y="1149"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="588" y="1151"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="588" y="1155"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="465" y="1176.6738">«component»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="120" x="465" y="1192.3145">WarehouseService</text></g><!--MD5=[89b661764057acc56253a7c2eb97e6e4]
+entity WH--><g id="elem_WH"><rect fill="#F1F1F1" height="61.2813" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="126" x="363" y="1482"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="469" y="1487"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="467" y="1489"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="467" y="1493"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="378" y="1514.6738">«component»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="73" x="378" y="1530.3145">Warehouse</text></g><!--MD5=[e2307af040e3f87d22824e7603ca28ec]
+entity api--><g id="elem_api"><ellipse cx="455" cy="14" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="430.5" y="43.6738">WM API</text></g><!--MD5=[bad9a68d5e55e3332b43fb340c40bd41]
+link api to 1--><g id="link_api_1"><path d="M455,23.25 C455,41.92 455,86.99 455,102.58 " fill="none" id="api-1" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[22d10a3c8d5cb50274a958892da20aba]
+link UI to API1--><g id="link_UI_API1"><path d="M845.54,265.34 C822.56,320.38 774.39,435.77 758.33,474.23 " fill="none" id="UI-to-API1" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="756.37,478.93,763.5313,472.1686,758.2981,474.3167,756.15,469.0836,756.37,478.93" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="813" y="375.7686">use</text></g><!--MD5=[59b2c983182fbc2221bfd3fed3693ee0]
+link API1 to CT--><g id="link_API1_CT"><path d="M747.8,497.15 C729.42,525.92 666.95,623.72 635.07,673.65 " fill="none" id="API1-CT" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[0d5cc8aa95ebb24459893db76752798d]
+link API2 to SV--><g id="link_API2_SV"><path d="M604.26,952.17 C594.03,982.67 557.73,1090.86 539.95,1143.84 " fill="none" id="API2-SV" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[4786affd884f1377ce35e2c02eb5d6f0]
+link CT to API2--><g id="link_CT_API2"><path d="M614.86,735.45 C612.89,787.13 608.94,891.08 607.52,928.33 " fill="none" id="CT-to-API2" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="607.32,933.72,611.6775,924.8876,607.5204,928.724,603.684,924.5669,607.32,933.72" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="613" y="830.7686">use</text></g><!--MD5=[31ddc9947e7fc00e53fce56bc3b14aa7]
+link PRT to API3--><g id="link_PRT_API3"><path d="M675.44,265.02 C666.43,296.1 652.8,343.09 647.36,361.85 " fill="none" id="PRT-API3" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[2908b01a6aa67679545e9a8416c10eaf]
+reverse link API3 to RP--><g id="link_API3_RP"><path d="M635.94,384.41 C601.13,432.09 475.44,604.27 424.58,673.94 " fill="none" id="API3-backto-RP" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="639.02,380.19,630.4812,385.098,636.0706,384.2275,636.9411,389.817,639.02,380.19" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="518" y="558.7686">use</text></g><!--MD5=[e69836d66a5e0de6d4c1d0c08c72177e]
+link API4 to WH--><g id="link_API4_WH"><path d="M426,1382.19 C426,1401.38 426,1450.06 426,1481.91 " fill="none" id="API4-WH" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[d0df21cfe04ed5bc272ea125f3a28b94]
+link SV to API4--><g id="link_SV_API4"><path d="M514.2,1205.34 C491.12,1248.96 449.13,1328.29 432.78,1359.19 " fill="none" id="SV-to-API4" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="430.38,1363.73,438.109,1357.6256,432.707,1359.3045,431.0281,1353.9025,430.38,1363.73" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="482" y="1280.7686">use</text></g><!--MD5=[f245d567554e140c9e1f4e290c226fae]
+link RP to API5--><g id="link_RP_API5"><path d="M420.8,735.04 C437.12,762.13 460.22,800.47 470.15,816.96 " fill="none" id="RP-API5" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[55011b8e97c8f49b4e08cf06dc6de701]
+reverse link API5 to SV--><g id="link_API5_SV"><path d="M477.1,840.21 C485.1,890.65 513.88,1071.97 525.29,1143.85 " fill="none" id="API5-backto-SV" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="476.31,835.22,473.7725,844.7364,477.0949,840.158,481.6733,843.4804,476.31,835.22" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="506" y="1013.7686">use</text></g><!--MD5=[f78499c83be6f96070619e4f4df94a6b]
+link RP to API4--><g id="link_RP_API4"><path d="M385.36,735.34 C373.12,758.86 359,792.94 359,825 C359,825 359,825 359,1277 C359,1313.96 393.29,1346.66 412.81,1362.28 " fill="none" id="RP-to-API4" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="416.96,1365.52,412.3334,1356.8255,413.021,1362.4404,407.406,1363.1279,416.96,1365.52" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="360" y="1059.7686">use</text></g><!--MD5=[303f85d2c2a9e45b12c75444957fc024]
+link API6 to DTO--><g id="link_API6_DTO"><path d="M779.06,704.5 C790.76,704.5 802.46,704.5 814.15,704.5 " fill="none" id="API6-DTO" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[20c6a929d096d30b6204dc766915be41]
+link CT to API6--><g id="link_CT_API6"><path d="M703.8,704.5 C723.95,704.5 743.09,704.5 755.56,704.5 " fill="none" id="CT-to-API6" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="760.8,704.5,751.8,700.5,755.8,704.5,751.8,708.5,760.8,704.5" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="721.75" y="698.2686">use</text></g><!--MD5=[3c11a959d4e6db5cafb286903d65e768]
+reverse link API6 to SV--><g id="link_API6_SV"><path d="M769.09,718.68 C767.65,740.69 765,786.33 765,825 C765,825 765,825 765,1056 C765,1126.93 678.29,1155.04 610.22,1166.19 " fill="none" id="API6-backto-SV" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="769.43,713.61,764.8468,722.3275,769.1012,718.5992,772.8295,722.8536,769.43,713.61" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="766" y="947.7686">use</text></g><!--MD5=[5e58e4bf9aba9e29a207baa55db8a11e]
+link SCHEMA to API7--><g id="link_SCHEMA_API7"><path d="M210.21,265.02 C270.7,297.96 364,348.76 393.63,364.9 " fill="none" id="SCHEMA-API7" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[4d267822f3b7364a6cc5782d3f0c6c7b]
+reverse link API7 to RP--><g id="link_API7_RP"><path d="M403,385.29 C403,434.17 403,604.69 403,673.94 " fill="none" id="API7-backto-RP" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="403,380.19,399,389.19,403,385.19,407,389.19,403,380.19" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="404" y="558.7686">use</text></g><!--MD5=[765bdef505007d988711dc1649f0cba7]
+link PRT to API7--><g id="link_PRT_API7"><path d="M651.05,265.17 C640.64,273.6 628.77,282.29 617,289 C546.88,328.94 453.3,356.5 417.64,366.17 " fill="none" id="PRT-to-API7" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="412.43,367.57,422.1604,369.0927,417.2581,366.2701,420.0806,361.3678,412.43,367.57" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="601" y="309.7686">use</text></g><!--MD5=[48b8208612f9071317ff4735b4eb651c]
+@startuml
+'https://plantuml.com/component-diagram
+interface "WM API" as api
+component "<<component>> <<container (C4)>>\nWarehouse Management\n"{
+
+    portin 1
+    package "Frameworks and Drivers Layers" {
+        component "<<component>>\nWarehouseRoute" as UI
+        component "<<component>>\nPersistence" as PRT
+
+    }
+
+    package "Interface Adapters Layer" {
+        component "<<component>>\nWarehouseController" as CT
+        component "<<component>>\nWarehouseRepository" as RP
+
+    }
+
+    component "<<component>>\nWarehouseDTO" as DTO
+    component "<<component>>\nWarehouseEntityTypeConfiguration" as SCHEMA
+    interface "IControllerBase" as API1
+    interface "IWarehouseService" as API2
+    interface "IWarehousePersistence" as API3
+    interface "IEntity" as API4
+    interface "IWarehouseRepository" as API5
+    interface "IWarehouseDTO" as API6
+    interface "IEntityTypeConfiguration" as API7
+
+    package "Application Business Rules" {
+        component "<<component>>\nWarehouseService" as SV
+    }
+
+    package "Enterprise Business Rules" {
+        component "<<component>>\nWarehouse" as WH
+
+    }
+
+}
+
+api - - 1
+UI -down..> API1 : use
+CT -up- API1
+SV -up- - API2
+CT -down..>API2 : use
+
+PRT -down- API3
+RP -up..> API3 : use
+WH -up- API4
+SV -down..> API4 : use
+
+RP -down-API5
+SV -up..> API5 : use
+RP -down..> API4 : use
+
+DTO -left- API6
+CT -right.> API6 : use
+SV -up..> API6 : use
+
+SCHEMA - - API7
+RP -up...> API7 : use
+
+PRT ..> API7 : use
+
+@enduml
+
+@startuml
+interface "WM API" as api
+component "<<component>> <<container (C4)>>\nWarehouse Management\n"{
+
+    portin 1
+    package "Frameworks and Drivers Layers" {
+        component "<<component>>\nWarehouseRoute" as UI
+        component "<<component>>\nPersistence" as PRT
+
+    }
+
+    package "Interface Adapters Layer" {
+        component "<<component>>\nWarehouseController" as CT
+        component "<<component>>\nWarehouseRepository" as RP
+
+    }
+
+    component "<<component>>\nWarehouseDTO" as DTO
+    component "<<component>>\nWarehouseEntityTypeConfiguration" as SCHEMA
+    interface "IControllerBase" as API1
+    interface "IWarehouseService" as API2
+    interface "IWarehousePersistence" as API3
+    interface "IEntity" as API4
+    interface "IWarehouseRepository" as API5
+    interface "IWarehouseDTO" as API6
+    interface "IEntityTypeConfiguration" as API7
+
+    package "Application Business Rules" {
+        component "<<component>>\nWarehouseService" as SV
+    }
+
+    package "Enterprise Business Rules" {
+        component "<<component>>\nWarehouse" as WH
+
+    }
+
+}
+
+api - - 1
+UI -down..> API1 : use
+CT -up- API1
+SV -up- - API2
+CT -down..>API2 : use
+
+PRT -down- API3
+RP -up..> API3 : use
+WH -up- API4
+SV -down..> API4 : use
+
+RP -down-API5
+SV -up..> API5 : use
+RP -down..> API4 : use
+
+DTO -left- API6
+CT -right.> API6 : use
+SV -up..> API6 : use
+
+SCHEMA - - API7
+RP -up...> API7 : use
+
+PRT ..> API7 : use
+
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 19:12:26 WEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: pt
+Country: BR
+--></g></svg>
