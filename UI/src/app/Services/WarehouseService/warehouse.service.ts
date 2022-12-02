@@ -43,6 +43,23 @@ export class WarehouseService {
           
   }
 
+  async createWarehouseProlog(warehouse: any) {
+    const url = this.urlOrigin+'api/warehouse/createProlog';
+    
+    const data = warehouse;
+   
+    const response = fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+    })
+    return response;
+          
+  }
+
   async getAllWarehouses() {
     const url = this.urlOrigin+'api/warehouse/all';
 
@@ -72,20 +89,23 @@ export class WarehouseService {
      
   }
 
-  async deleteWarehouse(WarehousId: string) {
-    const url = this.urlOrigin+'api/warehouse/delete/'+WarehousId;
+  async updateWarehouseProlog(warehouse: any) {
+
+    const url = this.urlOrigin+'api/warehouse/updateProlog';
+    
+    const data = warehouse;
+
     const response = await fetch(url, {
-      method: 'DELETE',
+      method: 'PUT',
+      body: JSON.stringify(data),
       headers: {
-        'Accept': 'application/json'
-      }
-    });
+        'Content-Type': 'application/json'
+      },
+    })
     
     return response;
-      
-   
+     
   }
-
 
 
 }

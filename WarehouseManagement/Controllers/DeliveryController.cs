@@ -28,6 +28,12 @@ namespace EletricGo.Controllers
             return await _deliveryService.GetDeliveries();
         }
 
+        [HttpGet("GetAllProlog")]
+        public async Task<ActionResult<List<DeliveryPrologDTO>>> GetAllProlog()
+        {
+            return await _deliveryService.GetDeliveriesProlog();
+        }
+
         [HttpGet("GetByID/{id}")]
         public async Task<ActionResult<DeliveryDTO>> GetByID(string id)
         {

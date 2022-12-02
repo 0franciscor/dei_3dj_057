@@ -92,7 +92,7 @@ delete_truck(Request):-
 create_delivery(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
-        Id = DictIn.get(deliveryID), Date = DictIn.get(deliveryDate), LoadTime = DictIn.get(loadTime), UnloadTime = DictIn.get(unloadTime), Destination = DictIn.get(destination), Mass = DictIn.get(deliveryMass),
+        Id = DictIn.get(deliveryID), LoadTime = DictIn.get(loadTime), UnloadTime = DictIn.get(unloadTime), Destination = DictIn.get(destination), Mass = DictIn.get(deliveryMass), Date = DictIn.get(deliveryDateProlog), 
         (create_delivery(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson), reply_json(DeliveryJson,  [status(200)]), !);
         reply_json(_, [status(500)]).
 

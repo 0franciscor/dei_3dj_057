@@ -46,6 +46,19 @@ namespace EletricGo.Domain.Deliveries
             };
         }
 
+        public DeliveryPrologDTO toDeliveryDTOProlog()
+        {
+            return new DeliveryPrologDTO()
+            {
+                deliveryID = this.Id,
+                deliveryDateProlog = this.deliveryDate.AsDateTime().Year.ToString()+this.deliveryDate.AsDateTime().Month.ToString()+this.deliveryDate.AsDateTime().Day.ToString(),
+                loadTime = this.loadTime.AsFloat(),
+                unloadTime = this.unloadTime.AsFloat(),
+                destination = this.destination,
+                deliveryMass = this.deliveryMass.AsFloat()
+            };
+        }
+
         public void Update(DeliveryDTO deliveryDTO)
         {
             if (deliveryDTO.deliveryDate != default(DateTime))

@@ -42,6 +42,18 @@ export class TruckService {
 
   }
 
+  async createTruckProlog(truck: any) {
+    const url = this.urlOrigin+'api/truck/prolog';
+    
+
+    const data = truck;
+ 
+    const response = await this.sendFetch(url, 'POST', data);
+    return response;
+    
+
+  }
+
   async updateTruck(truck: any) {
 
     const url = this.urlOrigin+'api/truck/';
@@ -54,8 +66,28 @@ export class TruckService {
   
   }
 
+  async updateTruckProlog(truck: any) {
+
+    const url = this.urlOrigin+'api/truck/prolog';
+
+    const data = truck;
+    const response = await this.sendFetch(url, 'PATCH', data);
+      
+    
+    return response;
+  
+  }
+
   async deleteTruck(truckID: string) {
     const url = this.urlOrigin+'api/truck/id/'+truckID;
+
+    const response = await this.sendFetch(url, 'DELETE', null);
+
+    return response;
+  }
+
+  async deleteTruckProlog(truckID: string) {
+    const url = this.urlOrigin+'api/truck/idProlog/'+truckID;
 
     const response = await this.sendFetch(url, 'DELETE', null);
 

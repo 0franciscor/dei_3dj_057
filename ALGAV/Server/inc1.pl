@@ -30,7 +30,7 @@ city_URL("http://5.249.66.111:3001/api/warehouse/allCities").
 warehouse_URL("http://5.249.66.111:3001/api/warehouse/all").
 truck_URL("http://5.249.66.111:3001/api/truck/all").
 path_URL("http://5.249.66.111:3001/api/path/all/undefined/").
-delivery_URL("http://5.249.66.111:3001/api/delivery/all").
+delivery_URL("http://5.249.66.111:3001/api/delivery/allProlog").
 
 power(0).
 infoTime(100000000000000000,_).

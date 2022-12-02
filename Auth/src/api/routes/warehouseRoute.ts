@@ -28,9 +28,19 @@ export default (app: Router) => {
         ctrl.createWarehouse(req,res,next)
     });
 
+    route.post('/createProlog', (req,res,next)=>
+    {
+        ctrl.createWarehouseProlog(req,res,next)
+    });
+
     route.put('/update', (req,res,next)=>
     {
         ctrl.editWarehouse(req,res,next)
+    });
+
+    route.put('/updateProlog', (req,res,next)=>
+    {
+        ctrl.editWarehouseProlog(req,res,next)
     });
 
     route.get('/:id',(req,res,next)=>{

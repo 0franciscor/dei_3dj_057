@@ -38,6 +38,28 @@ export default class TruckController implements ITruckController {
 
   }
 
+  async createTruckProlog(req: Request, res: Response, next: NextFunction) {
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_truck';
+    const response_prolog = await fetch(url_prolog, {
+      method: 'POST',
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      agent: httpAgent
+    })
+
+    if(response_prolog.status != 201){
+      res.status(response_prolog.status);
+      return res.json({message: "Error creating truck"});
+    }
+    const info = await response_prolog.json();
+    res.status(201);
+    return res.json(info);
+
+  }
+
   async getAllTruck(req: Request, res: Response, next: NextFunction) {
     const url = 'http://localhost:3000/api/truck/all';
     const response = await fetch(url, {
@@ -103,6 +125,28 @@ export default class TruckController implements ITruckController {
     return res.json(info);
   }
 
+  async editTruckProlog(req: Request, res: Response, next: NextFunction) {
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_truck';
+
+    const response_prolog = await fetch(url_prolog, {
+      method: 'PUT',
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      agent: httpAgent
+    })
+
+    if(response_prolog.status != 200){
+      res.status(response_prolog.status);
+      return res.json({message: "Error editing truck"});
+    }
+    const info = await response_prolog.json();
+    res.status(200);
+    return res.json(info);
+  }
+
   async deleteTruck(req: Request, res: Response, next: NextFunction) {
     const url = 'http://localhost:3000/api/truck/id/'+req.params.id;
 
@@ -126,6 +170,30 @@ export default class TruckController implements ITruckController {
       agent: httpAgent
     })
     const info = await response.json();
+    res.status(200);
+    return res.json(info);
+    
+  }
+
+  async deleteTruckProlog(req: Request, res: Response, next: NextFunction) {
+  
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/delete_truck';
+
+    const response_prolog = await fetch(url_prolog, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      agent: httpAgent
+    })
+
+    if(response_prolog.status != 200){
+      res.status(response_prolog.status);
+      return res.json({message: "Error deleting truck"});
+    }
+
+    const info = await response_prolog.json();
     res.status(200);
     return res.json(info);
     

@@ -17,9 +17,7 @@ export default class PathController implements IPathController {
 
   public async getAllPaths(req: Request, res: Response, next: NextFunction){
     
-
     const address = 'http://localhost:3000/api/path/all/'+req.params.startWHId+"/undefined";
-
     
     const response = await fetch(address, {
         method: 'GET',

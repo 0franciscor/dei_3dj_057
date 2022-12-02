@@ -31,9 +31,12 @@ export class CreateDeliveryComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     console.log(this.formCreateDelivery.value);
-    this.deliveryService.createDelivery(this.formCreateDelivery.value);
+    let answer = await this.deliveryService.createDelivery(this.formCreateDelivery.value);
+    if(answer.status == 200){
+      this.deliveryService.createDeliveryProlog(answer.json());
+    }
   }
 
   get deliveryID() {

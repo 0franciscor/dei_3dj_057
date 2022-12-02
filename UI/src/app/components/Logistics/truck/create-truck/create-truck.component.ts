@@ -41,6 +41,7 @@ export class CreateTruckComponent implements OnInit {
       if(answer.status != 201){
         message = "Error creating truck";
       }
+      await this.truckService.createTruckProlog(answer.json());
       const dialogRef = this.dialog.open(CreateTruckComponentDialog, {
         width: '250px',
         data: {
