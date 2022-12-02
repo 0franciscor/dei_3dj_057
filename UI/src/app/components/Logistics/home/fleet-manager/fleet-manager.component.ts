@@ -89,7 +89,7 @@ export class FleetManagerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(answer.status == 200)
-        window.location.reload();
+        this.router.navigate(['Logistics/Truck/FleetManager']);
       
     });
   }
@@ -110,6 +110,8 @@ export class DeleteTruckComponentDialog {
     public dialogRef: MatDialogRef<DeleteTruckComponentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
+
+  ngOnInit():void{}
 
   onOk(): void {
     this.dialogRef.close();

@@ -26,7 +26,7 @@ export interface DialogData {
 })
 export class EditTruckComponent implements OnInit {
     formEditTruck!: FormGroup;
-  constructor(public dialog: MatDialog,private route: ActivatedRoute,private truckService: TruckService,private fb: FormBuilder,private router: Router) { }
+  constructor(public dialog: MatDialog,public route: ActivatedRoute,private truckService: TruckService,private fb: FormBuilder,private router: Router) { }
 
   selectedTruck = {
     truckID: "",
@@ -103,6 +103,8 @@ export class EditTruckComponent implements OnInit {
     public dialogRef: MatDialogRef<EditTruckComponentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
+
+  ngOnInit(): void {}
 
   onOk(): void {
     this.dialogRef.close();
