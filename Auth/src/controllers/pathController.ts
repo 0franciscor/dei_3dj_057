@@ -17,8 +17,7 @@ export default class PathController implements IPathController {
 
   public async getAllPaths(req: Request, res: Response, next: NextFunction){
     
-
-    const address = 'http://localhost:3000/api/path/all/'+req.params.startWHId+"/undefined";
+    const address = 'http://localhost:3000/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
 
     
     const response = await fetch(address, {
@@ -35,5 +34,24 @@ export default class PathController implements IPathController {
     }
   }
 
+  async createPath(req:Request,res:Response,next:NextFunction){
+    const url = 'http://localhost:3000/api/path/'
+    const data = req.body;
+    const response = await fetch(url,{
+      method: 'POST',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type': 'application/json'
+      },
+    })
+
+    if(response.status != 201){
+      res.status(response.status);
+      return res.json({message: "Error creating path"});
+    }
+    const info = await response.json();
+    res.status(201);
+    return res.json(info);
+  }
 
 }
