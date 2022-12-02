@@ -10,6 +10,8 @@ export interface DialogData {
   message: string;
 }
 
+
+
 @Component({
   selector: 'app-create-truck',
   templateUrl: './create-truck.component.html',

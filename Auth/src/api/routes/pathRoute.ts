@@ -13,8 +13,11 @@ export default (app: Router) => {
     const ctrl = Container.get(config.controllers.path.name) as IPathController;
 
 
-    route.get('/all/:startWHId/',(req,res,next)=> ctrl.getAllPaths(req,res,next));
+    route.get('/all/:startWHId/:destinationWHId',(req,res,next)=> ctrl.getAllPaths(req,res,next));
 
+    route.post('/',(req,res,next)=>ctrl.createPath(req,res,next)
+    
+    );
     
  
 };
