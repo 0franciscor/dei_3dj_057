@@ -26,9 +26,9 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/packagingSchema',
   };
 
-  const routeSchema={
-    name: 'routeSchema',
-    schema: '../persistence/schemas/routeSchema',
+  const tripSchema={
+    name: 'tripSchema',
+    schema: '../persistence/schemas/tripSchema',
   };
 
   const truckController = {
@@ -36,9 +36,9 @@ export default async ({ expressApp }) => {
     path: config.controllers.truck.path
   };
 
-  const routeController = {
-    name: config.controllers.route.name,
-    path: config.controllers.route.path
+  const tripController = {
+    name: config.controllers.trip.name,
+    path: config.controllers.trip.path
   };
 
   const pathController={
@@ -56,9 +56,9 @@ export default async ({ expressApp }) => {
     path: config.repos.truck.path
   };
 
-  const routeRepo = {
-    name: config.repos.route.name,
-    path: config.repos.route.path
+  const tripRepo = {
+    name: config.repos.trip.name,
+    path: config.repos.trip.path
   };
 
   const pathRepo={
@@ -77,9 +77,9 @@ export default async ({ expressApp }) => {
     path: config.services.truck.path
   };
 
-  const routeService = {
-    name: config.services.routes.name,
-    path: config.services.routes.path
+  const tripService = {
+    name: config.services.trip.name,
+    path: config.services.trip.path
   };
 
   const pathService={
@@ -98,25 +98,25 @@ export default async ({ expressApp }) => {
         truckSchema,
         pathSchema,
         packagingSchema,
-        routeSchema
+        tripSchema
     ],
     controllers: [
         truckController,
         pathController,
         packagingController,
-        routeController
+        tripController
     ],
     repos: [
         truckRepo,
         pathRepo,
         packagingRepo,
-        routeRepo
+        tripRepo
     ],
     services: [
         truckService,
         pathService,
         packagingService,
-        routeService
+        tripService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

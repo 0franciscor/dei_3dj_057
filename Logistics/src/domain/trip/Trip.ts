@@ -1,8 +1,8 @@
 import { AggregateRoot } from "../../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 import { Result } from "../../core/logic/Result";
-import { IRouteDTO } from "../../dto/IRouteDTO";
-import { RouteID } from "./RouteID";
+import { ITripDTO } from "../../dto/ITripDTO";
+import { TripID } from "./TripID";
 import { Date } from "./Date"
 import { PathID } from "../path/PathID";
 import { TruckID } from "../truck/TruckID";
@@ -11,21 +11,21 @@ import { StartWHId } from "../path/StartWHId";
 import { DestinationWHId } from "../path/DestinationWHId";
 
 
-interface RouteProps {
-    routeID: RouteID;
+interface TripProps {
+    tripID: TripID;
     date: Date;
     pathIDlist: PathID[];
     truckID: TruckID;
     packagingID: PackagingID;
 }
 
-export class Route extends AggregateRoot<RouteProps> {
+export class Trip extends AggregateRoot<TripProps> {
     get id (): UniqueEntityID{
         return this._id;
     }
 
-    get routeID (): RouteID {
-        return this.props.routeID;
+    get tripID (): TripID {
+        return this.props.tripID;
     }
 
     get date (): Date {
@@ -62,30 +62,30 @@ export class Route extends AggregateRoot<RouteProps> {
 
     
 
-    private constructor(props: RouteProps, id?:UniqueEntityID){
+    private constructor(props: TripProps, id?:UniqueEntityID){
         super(props,id);
     }
 
-    public static create ( routeDTO: IRouteDTO, id?:UniqueEntityID): Result<Route>{
+    public static create ( tripDTO: ITripDTO, id?:UniqueEntityID): Result<Trip>{
         try{
 
-            let list:PathID[];
+            let list:PathID[]=[];
 
-            routeDTO.pathIDlist.forEach(element => {
+            tripDTO.pathIDlist.forEach(element => {
                 list.push(PathID.create(element).getValue(),)
                       
             });
 
-            const route = new Route({
-                routeID: RouteID.create(routeDTO.routeID).getValue(),
-                date: Date.create(routeDTO.date).getValue(),
+            const trip = new Trip({
+                tripID: TripID.create(tripDTO.tripID).getValue(),
+                date: Date.create(tripDTO.date).getValue(),
                 pathIDlist: list,
-                truckID: TruckID.create(routeDTO.truckID).getValue(),
-                packagingID: PackagingID.create(routeDTO.packagingID).getValue(),
+                truckID: TruckID.create(tripDTO.truckID).getValue(),
+                packagingID: PackagingID.create(tripDTO.packagingID).getValue(),
             }, id);
-            return Result.ok<Route>(route);
+            return Result.ok<Trip>(trip);
         }catch(error) {
-            return Result.fail<Route>(error);
+            return Result.fail<Trip>(error);
         
         } 
     }

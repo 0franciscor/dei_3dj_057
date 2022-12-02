@@ -1,14 +1,14 @@
-import { IRoutePersistence } from "../../dataschema/IRoutePersistence";
+import { ITripPersistence } from "../../dataschema/ITripPersistence";
 import mongoose  from "mongoose";
 
-const RouteSchema = new mongoose.Schema(
+const TripSchema = new mongoose.Schema(
     {
         domainId: {
             type: String,
             unique: true,
         },
 
-        routeID: {
+        tripID: {
             type: String,
             unique: true,
             required: true
@@ -21,7 +21,7 @@ const RouteSchema = new mongoose.Schema(
         },
 
         pathIDlist: {
-            type: String,
+            type: Array,
             required: true
         },
 
@@ -44,4 +44,4 @@ const RouteSchema = new mongoose.Schema(
 );
 
 
-export default mongoose.model<IRoutePersistence & mongoose.Document>('Route',RouteSchema);
+export default mongoose.model<ITripPersistence & mongoose.Document>('Trip',TripSchema);

@@ -1,12 +1,8 @@
-
-export interface IRouteDTO {
+export interface ITripPersistence{
     id: string;
-    routeID: string;
+    tripID: string;
     date: string;
     pathIDlist: string[];
     truckID: string;
     packagingID: string;
-    
 }
-
-
