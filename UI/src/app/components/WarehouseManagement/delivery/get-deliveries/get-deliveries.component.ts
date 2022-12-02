@@ -14,7 +14,7 @@ export class GetDeliveriesComponent implements OnInit {
 
   public deliveryList: any[] = [];
 
-  displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass', 'edit'];
+  displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass', 'Actions'];
   dataSource = this.deliveryList;
 
   constructor(private deliveryService: DeliveryService, private router: Router) {
