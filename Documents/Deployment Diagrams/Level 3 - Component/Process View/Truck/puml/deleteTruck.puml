@@ -10,8 +10,13 @@ ParticipantBackgroundColor white
 
 actor "Fleet Manager" as manager
 
+box "<<Container(C4)>>\n           UI" #SandyBrown
+participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
+participant "TruckService" as TruckService <<Component(C4)>>
+end box
+
 box "<<System(C4)>>\n       System" #LightGray
-participant SPA as  SPA <<Container(C4)>>
+participant Auth as  Auth <<Container(C4)>>
 box "<<Container(C4)>>\n       Logistics" #LightCyan
 participant TruckRoute as Route <<Component(C4)>>
 participant TruckController as Controller <<Component(C4)>>
@@ -23,16 +28,18 @@ end box
 
 
 activate manager
-activate SPA
-manager -> SPA: Asks to delete Truck
 
-SPA -> manager: Asks for Truck ID
-deactivate SPA
+manager -> FleetManagerComponent: Asks to delete Truck
+activate FleetManagerComponent
+FleetManagerComponent -> manager: Asks for Truck ID
 
-manager ->SPA: Inserts Truck ID
-activate SPA
+manager ->FleetManagerComponent: Inserts Truck ID
 
-SPA -> Route: DELETE deleteTruck(truckID)
+FleetManagerComponent -> TruckService: deleteTruck(Truck ID)
+activate TruckService
+TruckService -> Auth: DELETE deleteTruck(Truck ID)
+activate Auth
+Auth -> Route: DELETE deleteTruck(truckID)
 activate Route
 Route -> Controller :DELETE deleteTruck(truckID)
 activate Controller
@@ -56,26 +63,40 @@ Service -> Repository: delete(truckID)
 Repository -> Persistance:deleteOne(truckInfo)
 
 Persistance->Repository: true
+
 Repository->Service: TruckInfo
+
 Service->Controller: TruckInfo
 Controller->Route: 200 OK + TruckInfo
-Route->SPA: 200 OK truckInfo
+Route->Auth: 200 OK truckInfo
 
-SPA->manager: Informs truck was successfully deleted
-deactivate Repository
+Auth->TruckService: 200 OK + truckInfo
+TruckService->FleetManagerComponent: 200 OK + truckInfo
+FleetManagerComponent->manager: Informs that Truck was deleted
 
 else Truck doesn't exist
 
 Service -> Repository: getTruckById(TruckInfo.id)
-activate Repository
+
 Repository -> Persistance: findOne(TruckInfo.id)
 
 Persistance->Repository: null
+deactivate Repository
 Repository->Service: null
+deactivate Repository
 Service->Controller: error, Truck doesn't exist
+deactivate Service
 Controller->Route: 404 NOT FOUND, Truck doesn't exist
-Route->SPA: 404 NOT FOUND, Truck doesn't exist
-SPA->manager: Informs about deletion failure
+deactivate Controller
+Route->Auth: 404 NOT FOUND, Truck doesn't exist
+deactivate Route
+
+Auth->TruckService: 404 NOT FOUND, Truck doesn't exist
+deactivate Auth
+TruckService->FleetManagerComponent: 404 NOT FOUND, Truck doesn't exist
+deactivate TruckService
+FleetManagerComponent->manager: Informs about deletion failure
+deactivate FleetManagerComponent
 
 
 @enduml

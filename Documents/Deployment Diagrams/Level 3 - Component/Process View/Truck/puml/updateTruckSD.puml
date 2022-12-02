@@ -10,8 +10,14 @@ ParticipantBackgroundColor white
 
 actor "Fleet Manager" as manager
 
+box "<<Container(C4)>>\n           UI" #SandyBrown
+participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
+participant "EditTruckComponent" as EditTruckComponent <<Component(C4)>>
+participant "TruckService" as TruckService <<Component(C4)>>
+end box
+
 box "<<System(C4)>>\n       System" #LightGray
-participant SPA as  SPA <<Container(C4)>>
+participant Auth as  Auth <<Container(C4)>>
 box "<<Container(C4)>>\n       Logistics" #LightCyan
 participant TruckRoute as Route <<Component(C4)>>
 participant TruckController as Controller <<Component(C4)>>
@@ -23,18 +29,28 @@ end box
 
 
 activate manager
-activate SPA
-manager -> SPA: Asks to update a Truck
+activate FleetManagerComponent
+manager -> FleetManagerComponent: Asks to update a Truck
 
-SPA -> manager: Asks for Truck ID
-deactivate SPA
+FleetManagerComponent -> manager: Asks for Truck ID
 
-manager ->SPA: Inserts Truck ID
-activate SPA
 
-SPA -> Route: PATCH updateTruck(truck)
+manager ->FleetManagerComponent: Inserts Truck ID
+
+FleetManagerComponent -> EditTruckComponent: navigates to EditTruckComponent
+activate EditTruckComponent
+
+EditTruckComponent -> manager: Asks for new Truck Info
+manager -> EditTruckComponent: Inserts new Truck Info
+EditTruckComponent -> TruckService: updateTruck(Truck)
+activate TruckService
+TruckService -> Auth: PATCH updateTruck(truck)
+
+activate Auth
+
+Auth -> Route: PATCH updateTruck(truck)
 activate Route
-Route -> Controller :PATCH updateTruck(truck)
+Route -> Controller: PATCH updateTruck(truck)
 activate Controller
 
 alt Truck exists 
@@ -58,19 +74,31 @@ Repository-> Service: truckInfo
 Service-> Controller: truckInfo
 
 Controller->Route: 200 OK + truckInfo
-Route ->SPA: 200 OK + truckInfo
-SPA-> manager: shows updated information 
-
+Route ->Auth: 200 OK + truckInfo
+Auth -> TruckService: 200 OK + truckInfo
+TruckService -> EditTruckComponent: 200 OK + truckInfo
+EditTruckComponent -> manager: informs Truck updated
+EditTruckComponent -> FleetManagerComponent: navigates to FleetManagerComponent
+deactivate FleetManagerComponent
 else Truck doesn't exists
 
 Controller -> Service: updateTruck(truck)
 Service -> Repository: getTruckById(truckInfo.id)
 Repository->Persistance: findOne(truckInfo.id)
 Persistance ->Repository: null
+deactivate Persistance
 Repository->Service: null
+deactivate Repository
 Service->Controller: error, truck doesn't exist
+deactivate Service
 Controller-> Route: 404 NOT FOUND, Truck doesn't exist
-Route ->SPA: 404 NOT FOUND, Truck doesn't exist
-SPA->manager: informs about update failure
-
+deactivate Controller
+Route ->Auth: 404 NOT FOUND, Truck doesn't exist
+deactivate Route
+Auth->TruckService: 404 NOT FOUND, Truck doesn't exist
+deactivate Auth
+TruckService -> EditTruckComponent: 404 NOT FOUND, Truck doesn't exist
+deactivate TruckService
+EditTruckComponent->manager: informs about update failure
+deactivate EditTruckComponent
 @enduml

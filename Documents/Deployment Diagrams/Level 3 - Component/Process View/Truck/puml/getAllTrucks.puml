@@ -10,8 +10,13 @@ ParticipantBackgroundColor white
 
 actor "Fleet Manager" as manager
 
+box "<<Container(C4)>>\n           UI" #SandyBrown
+participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
+participant "TruckService" as TruckService <<Component(C4)>>
+end box
+
 box "<<System(C4)>>\n       System" #LightGray
-participant SPA as  SPA <<Container(C4)>>
+participant Auth as  Auth <<Container(C4)>>
 box "<<Container(C4)>>\n       Logistics" #LightCyan
 participant TruckRoute as Route <<Component(C4)>>
 participant TruckController as Controller <<Component(C4)>>
@@ -23,12 +28,14 @@ end box
 
 
 activate manager
-activate SPA
-manager -> SPA: Asks to get all Trucks
 
-
-
-SPA -> Route: GET getAllTrucks()
+manager -> FleetManagerComponent: Asks to get all Trucks
+activate FleetManagerComponent
+FleetManagerComponent -> TruckService: getAllTrucks()
+activate TruckService
+TruckService -> Auth: GET getAllTrucks()
+activate Auth
+Auth -> Route: GET getAllTrucks()
 activate Route
 Route -> Controller: GET getAllTrucks()
 activate Controller
@@ -46,14 +53,25 @@ activate Persistance
 
 
 Persistance -> Repository: AllTrucks
+deactivate Persistance
 Repository->Service: AllTrucks
-Service -> Controller: AllTrucks
-
-Controller->Route: 200 OK + AllTrucks
-Route->SPA: 200 OK + AllTrucks
-
-SPA->manager: Shows all Trucks
 deactivate Repository
+
+Service -> Controller: AllTrucks
+deactivate Service
+Controller->Route: 200 OK + AllTrucks
+deactivate Controller
+Route->Auth: 200 OK + AllTrucks
+deactivate Route
+
+
+Auth->TruckService: 200 OK + AllTrucks
+deactivate Auth
+TruckService->FleetManagerComponent: 200 OK + AllTrucks
+deactivate TruckService
+FleetManagerComponent->manager: Shows all Trucks
+deactivate FleetManagerComponent
+deactivate manager
 
 
 

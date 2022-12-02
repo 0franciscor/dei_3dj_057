@@ -10,8 +10,13 @@ ParticipantBackgroundColor white
 
 actor "Fleet Manager" as manager
 
+box "<<Container(C4)>>\n           UI" #SandyBrown
+participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
+participant "TruckService" as TruckService <<Component(C4)>>
+end box
+
 box "<<System(C4)>>\n       System" #LightGray
-participant SPA as  SPA <<Container(C4)>>
+participant Auth as  Auth <<Container(C4)>>
 box "<<Container(C4)>>\n       Logistics" #LightCyan
 participant TruckRoute as Route <<Component(C4)>>
 participant TruckController as Controller <<Component(C4)>>
@@ -23,16 +28,21 @@ end box
 
 
 activate manager
-activate SPA
-manager -> SPA: Asks to get a Truck
 
-SPA -> manager: Asks for Truck ID
-deactivate SPA
+manager -> FleetManagerComponent: Asks to get a Truck
+activate FleetManagerComponent
+FleetManagerComponent -> manager: Asks for Truck ID
 
-manager ->SPA: Inserts Truck ID
-activate SPA
 
-SPA -> Route: GET getTruck(truckID)
+manager ->FleetManagerComponent: Inserts Truck ID
+
+FleetManagerComponent -> TruckService: getTruck(TruckID)
+activate TruckService
+TruckService -> Auth: GET getTruck(TruckID)
+
+activate Auth
+
+Auth -> Route: GET getTruck(truckID)
 activate Route
 Route -> Controller: GET getTruck(truckID)
 activate Controller
@@ -54,23 +64,35 @@ Repository->Service: truckInfo
 
 Service -> Controller: truckInfo
 Controller->Route: truckInfo
-Route->SPA: 200 OK, TruckInfo
+Route->Auth: 200 OK, TruckInfo
+Auth->TruckService: 200 OK, TruckInfo
+TruckService->FleetManagerComponent: 200 OK, TruckInfo
 
-SPA->manager: Shows required information about Truck
-deactivate Repository
+FleetManagerComponent->manager: Shows required information about Truck
+
 
 else Truck doesn't exist
 
 Service -> Repository: getTruckById(TruckInfo.id)
-activate Repository
+
 Repository -> Persistance: findOne(TruckID)
 
 Persistance->Repository: null
+deactivate Persistance
 Repository->Service: null
+deactivate Repository
 Service->Controller: error, Truck doesn't exist
+deactivate Service
 Controller->Route: 404 NOT FOUND, Truck doesn't exist
-Route->SPA: 404 NOT FOUND, Truck doesn't exist
-SPA->manager: Informs Truck doesn't exist
+deactivate Controller
+Route->Auth: 404 NOT FOUND, Truck doesn't exist
+deactivate Route
+Auth -> TruckService: 404 NOT FOUND, Truck doesn't exist
+deactivate Auth
+TruckService -> FleetManagerComponent: 404 NOT FOUND, Truck doesn't exist
+deactivate TruckService
+FleetManagerComponent -> manager: Informs that Truck doesn't exist
+deactivate FleetManagerComponent
 
 
 @enduml

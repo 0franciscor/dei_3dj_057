@@ -10,8 +10,14 @@ ParticipantBackgroundColor white
 
 actor "Fleet Manager" as manager
 
+box "<<Container(C4)>>\n           UI" #SandyBrown
+participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
+participant "CreateTruckComponent" as CreateTruckComponent <<Component(C4)>>
+participant "TruckService" as TruckService <<Component(C4)>>
+end box
+
 box "<<System(C4)>>\n       System" #LightGray
-participant SPA as  SPA <<Container(C4)>>
+participant Auth as  Auth <<Container(C4)>>
 box "<<Container(C4)>>\n       Logistics" #LightCyan
 participant TruckRoute as Route <<Component(C4)>>
 participant TruckController as Controller <<Component(C4)>>
@@ -23,16 +29,22 @@ end box
 
 
 activate manager
-activate SPA
-manager -> SPA: Asks to create a new Truck
 
-SPA -> manager: Asks for info about new Truck
-deactivate SPA
+manager -> FleetManagerComponent: Asks to create a new Truck
+activate FleetManagerComponent
+FleetManagerComponent -> CreateTruckComponent: navigate to CreateTruckComponent
+activate CreateTruckComponent
+CreateTruckComponent --> manager: Asks for info about new Truck
 
-manager ->SPA: Inserts Truck info
-activate SPA
+manager ->CreateTruckComponent: Inserts Truck info
 
-SPA -> Route: POST createTruck(TruckInfo)
+CreateTruckComponent -> TruckService: createTruck(Truck)
+activate TruckService
+TruckService -> Auth: POST createTruck(TruckInfo)
+
+activate Auth
+
+Auth -> Route: POST createTruck(TruckInfo)
 activate Route
 Route -> Controller :POST createTruck(TruckInfo)
 activate Controller
@@ -56,25 +68,42 @@ Persistance->Repository: true
 Repository->Service: TruckInfo
 Service->Controller: TruckInfo
 Controller->Route: 201 CREATED + TruckInfo
-Route->SPA: 201 CREATED
-SPA->manager: Informs about truck successfully created
-deactivate Service
-deactivate Repository
+Route->Auth: 201 CREATED
+Auth->TruckService: 201 CREATED
+TruckService->CreateTruckComponent: 201 CREATED
+
+CreateTruckComponent-->manager: Informs about truck successfully created
+CreateTruckComponent->FleetManagerComponent: navigate to FleetManagerComponent
+
+
 
 else Truck already exists
 
 Controller -> Service: createTruck(TruckInfo)
-activate Service
+
 
 Service -> Repository: getTruckById(TruckInfo.id)
-activate Repository
+
 
 Repository -> Persistance: findOne(TruckInfo.id)
 Persistance-> Repository: Truck
+deactivate Persistance
 Repository->Service: Truck
+deactivate Repository
 Service->Controller: error, Truck already exists
+deactivate Service
 Controller->Route: 409 CONFLIT, Truck already exists
-Route->SPA: 409 CONFLIT, Truck already exists
-SPA->manager: Informs about failure creating new Truck
+deactivate Controller
+Route->Auth: 409 CONFLIT, Truck already exists
+deactivate Route
+Auth->TruckService: 409 CONFLIT, Truck already exists
+deactivate Auth
 
+TruckService->CreateTruckComponent: 409 CONFLIT, Truck already exists
+deactivate TruckService
+CreateTruckComponent-->manager: Informs about failure creating new Truck
+CreateTruckComponent->FleetManagerComponent: navigate to FleetManagerComponent
+deactivate FleetManagerComponent
+deactivate CreateTruckComponent
+deactivate Manager
 @enduml
