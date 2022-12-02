@@ -55,9 +55,42 @@ export class DeliveryService {
     
   }
 
+  async createDeliveryProlog(delivery: any) {
+    const url = this.urlOrigin+'api/delivery/createProlog';
+    
+    const data = delivery;
+   
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    return response;
+    
+  }
+
   async updateDelivery(delivery: any) {
     const url = this.urlOrigin+'api/delivery/update';
    
+
+    const data = delivery;
+   
+    const response = await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    return response;
+    
+    
+  }
+
+  async updateDeliveryProlog(delivery: any) {
+    const url = this.urlOrigin+'api/delivery/updateProlog';
 
     const data = delivery;
    

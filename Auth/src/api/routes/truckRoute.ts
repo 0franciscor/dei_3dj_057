@@ -31,6 +31,18 @@ export default (app: Router)=>{
     route.delete('/id/:id',
         (req,res,next) => ctrl.deleteTruck(req,res,next)
     );
+
+    route.post('/prolog',
+        (req,res,next) => ctrl.createTruckProlog(req,res,next)
+    );
+
+    route.patch('/prolog',
+        (req,res,next) => ctrl.editTruckProlog(req,res,next)
+    );
+
+    route.delete('/idProlog/:id',
+        (req,res,next) => ctrl.deleteTruckProlog(req,res,next)
+    );
  
 
 }

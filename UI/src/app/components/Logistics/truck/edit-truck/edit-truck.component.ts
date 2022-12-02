@@ -75,6 +75,7 @@ export class EditTruckComponent implements OnInit {
     if(answer.status != 200){
       message = "Error updating truck";
     }
+    await this.truckService.updateTruck(answer.json());
     const dialogRef = this.dialog.open(EditTruckComponentDialog, {
       width: '250px',
       data: {

@@ -1,13 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-
 import { Inject, Service } from 'typedi';
-import config from "../../config";
-
 import IWarehouseController from "./IControllers/IWarehouseController";
-
-import { Result } from "../core/logic/Result";
-import { Console } from 'console';
-
 import fetch from 'node-fetch';
 const http = require('https');
 
@@ -77,19 +70,28 @@ export default class WarehouseController implements IWarehouseController {
         return res.json({message: "Error creating warehouse"});
       }
 
-      const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
-
-      const response_prolog = await fetch(address_prolog,{
-          method: 'POST',
-          body: JSON.stringify(response.body),
-          headers: { 'Content-Type': 'application/json' },
-          agent: httpAgent
-      });
-
       const info = await response.json();
       res.status(201);
       return res.json(info);
   }
+
+    public async createWarehouseProlog(req: Request, res: Response, next: NextFunction){
+
+      const httpAgent = new http.Agent({ rejectUnauthorized: false });
+
+      const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
+
+      const response_prolog = await fetch(address_prolog,{
+          method: 'POST',
+          body: JSON.stringify(req.body),
+          headers: { 'Content-Type': 'application/json' },
+          agent: httpAgent
+      });
+
+      const info = await response_prolog.json();
+      res.status(201);
+      return res.json(info);
+    }
 
   async getWarehouse(req: Request, res: Response, next: NextFunction) {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
@@ -144,6 +146,29 @@ export default class WarehouseController implements IWarehouseController {
     })
 
     const info = await response.json();
+    res.status(200);
+    return res.json(info);
+  }
+
+  async editWarehouseProlog(req: Request, res: Response, next: NextFunction) {
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
+    
+    const response_prolog = await fetch(url_prolog, {
+      method: 'PUT',
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      agent: httpAgent
+    })
+
+    if(response_prolog.status != 200){
+      res.status(response_prolog.status);
+      return res.json({message: "Error updating warehouse"});
+    }
+    const info = await response_prolog.json();
     res.status(200);
     return res.json(info);
   }

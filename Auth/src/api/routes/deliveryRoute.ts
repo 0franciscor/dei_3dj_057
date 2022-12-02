@@ -18,6 +18,11 @@ export default (app: Router) => {
         ctrl.getAllDeliveries(req,res,next)
     });
 
+    route.get('/allProlog', (req,res,next)=>
+    {
+        ctrl.getAllDeliveriesProlog(req,res,next)
+    });
+
     route.get('/:id', (req,res,next)=>
     {
         ctrl.getDelivery(req,res,next)
@@ -28,8 +33,18 @@ export default (app: Router) => {
         ctrl.createDelivery(req,res,next)
     });
 
+    route.post('/createProlog', (req,res,next)=>
+    {
+        ctrl.createDeliveryProlog(req,res,next)
+    });
+
     route.patch('/update', (req,res,next)=>
     {
         ctrl.updateDelivery(req,res,next)
+    });
+
+    route.patch('/updateProlog', (req,res,next)=>
+    {
+        ctrl.updateDeliveryProlog(req,res,next)
     });
 };

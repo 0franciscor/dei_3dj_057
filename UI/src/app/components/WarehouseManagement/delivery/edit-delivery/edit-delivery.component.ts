@@ -61,9 +61,11 @@ export class EditDeliveryComponent implements OnInit {
     if (answer.status != 200)
       message = "Error updating Delivery";
 
-    if (answer.status == 200)
+    if (answer.status == 200){
+      this.deliveryService.updateDeliveryProlog(answer.json());
       this.router.navigate(['WarehouseManagement/Delivery/GetDelivery']);
-
+    }
+     
   }
 
 }

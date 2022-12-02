@@ -30,6 +30,25 @@ export default class DeliveryController implements IDeliveryController {
         return res.json(info);
     }
 
+    public async getAllDeliveriesProlog(req: Request, res: Response, next: NextFunction) {
+
+        const httpAgent = new http.Agent({ rejectUnauthorized: false });
+        const address = 'https://localhost:5001/api/deliveries/GetAllProlog';
+
+        const response = await fetch(address, {
+            method: 'GET',
+            agent: httpAgent
+        });
+
+        if (response.status != 200) {
+            res.status(response.status);
+            return res.json({ message: "Error Getting Deliveries" });
+        }
+        const info = await response.json();
+        res.status(200);
+        return res.json(info);
+    }
+
     public async getDelivery(req: Request, res: Response, next: NextFunction) {
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         const address = 'https://localhost:5001/api/deliveries/GetByID/' + req.params.id;
@@ -64,6 +83,13 @@ export default class DeliveryController implements IDeliveryController {
             return res.json({ message: "Error Creating Delivery"});
         }
 
+        const info = await response.json();
+        res.status(200);
+        return res.json(info);
+    };
+
+    public async createDeliveryProlog(req: Request, res: Response, next: NextFunction) {
+        const httpAgent = new http.Agent({ rejectUnauthorized: false });
         const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_delivery';
         const response_prolog = await fetch(address_prolog, {
             method: 'POST',
@@ -71,7 +97,13 @@ export default class DeliveryController implements IDeliveryController {
             headers: { 'Content-Type': 'application/json' },
             agent: httpAgent
         });
-        const info = await response.json();
+
+        if (response_prolog.status != 200) {
+            res.status(response_prolog.status);
+            return res.json({ message: "Error Creating Delivery"});
+        }
+
+        const info = await response_prolog.json();
         res.status(200);
         return res.json(info);
     };
@@ -93,6 +125,14 @@ export default class DeliveryController implements IDeliveryController {
             return res.json({ message: "Error Updating Delivery" });
         }
 
+        const info = await response.json();
+        res.status(200);
+        return res.json(info);
+    }
+
+    public async updateDeliveryProlog(req: Request, res: Response, next: NextFunction) {
+        const httpAgent = new http.Agent({ rejectUnauthorized: false });
+
         const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_delivery';
 
         const response_prolog = await fetch(address_prolog, {
@@ -101,9 +141,16 @@ export default class DeliveryController implements IDeliveryController {
             headers: { 'Content-Type': 'application/json' },
             agent: httpAgent
         });
+
+        if (response_prolog.status != 200) {
+            res.status(response_prolog.status);
+            return res.json({ message: "Error Updating Delivery" });
+        }
         
-        const info = await response.json();
+        const info = await response_prolog.json();
         res.status(200);
         return res.json(info);
     }
+
+    
 }

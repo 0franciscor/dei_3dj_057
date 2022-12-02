@@ -24,6 +24,12 @@ namespace EletricGo.Services
             return deliveries.Select(x => x.toDeliveryDTO()).ToList();
         }
 
+        public virtual async Task<List<DeliveryPrologDTO>> GetDeliveriesProlog()
+        {
+            var deliveries = await _deliveryRepository.GetAll();
+            return deliveries.Select(x => x.toDeliveryDTOProlog()).ToList();
+        }
+
         public virtual async Task<DeliveryDTO> GetDelivery(DeliveryID deliveryID)
         {
             var delivery = await _deliveryRepository.GetByID(deliveryID);
