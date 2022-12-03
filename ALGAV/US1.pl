@@ -105,4 +105,10 @@ appendDelivery(L,L1):- append([1], L, L2), append(L2,[1],L1).
 %append to list
 getAllDeliveriesInADay(DATE, LDFinal):- findall(X, entrega(X,DATE,_,_,_,_), LD), delete(LD,1,LDFinal).
 
-quickestPath(IDTRUCK,DATE,L):-!,getAllDeliveriesInADay(DATE,DELL),retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP),comparePaths(AP,IDTRUCK,DL),!,infoTime(_,L).
+
+quickestPath(IDTRUCK,DATE,L,T):-!,
+get_time(Ti),
+getAllDeliveriesInADay(DATE,DELL),retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP),comparePaths(AP,IDTRUCK,DL),!,infoTime(T,L),
+get_time(Tf),
+TSol is Tf - Ti,
+write(TSol).
