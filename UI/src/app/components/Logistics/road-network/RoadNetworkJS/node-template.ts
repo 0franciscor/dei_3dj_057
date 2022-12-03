@@ -37,11 +37,12 @@ export default class NodeTemplate {
             if (element.roadWidth > largestWidth)
                 largestWidth = element.roadWidth;
         })
+        console.log("largestWidth", largestWidth);
         const circleConstant = 2;
         let circleRadius = (largestWidth * circleConstant) / 2;
 
 
-        const connectionConstant = 0.5;
+        const connectionConstant = 1;
         let connectionLength = connectionConstant * circleConstant;
         incomingConnections.forEach((element: elementProps) => {
 
@@ -93,15 +94,29 @@ export default class NodeTemplate {
 
                 this.object.add(rectangle);
 
-                //calculate connectionLength in x axis
-                let connectionLengthX = connectionLength * Math.sin(rectangle.rotation.z);
-                //calculate connectionLength in y axis
-                let connectionLengthY = connectionLength * Math.cos(rectangle.rotation.z);
-
+                
+                
 
 
                 //outgoing road
-                let roadLength = Math.sqrt(Math.pow((destination.x - pos.x), 2) + Math.pow((destination.y - pos.y), 2) + Math.pow(destination.z - pos.z, 2))-Math.tan(connectionLength);
+                
+                const roadBeginX = pos.x - connectionLength * Math.sin(rectangle.rotation.z);
+                const roadBeginY = pos.y + connectionLength * Math.cos(rectangle.rotation.z);
+                const roadBeginZ = pos.z;
+
+                
+                const roadEndX = destination.x + connectionLength * Math.sin(rectangle.rotation.z);
+                const roadEndY = destination.y - connectionLength * Math.cos(rectangle.rotation.z);
+                const roadEndZ = destination.z;
+
+
+               
+            
+
+                let roadLength = Math.sqrt(
+                    Math.pow((roadEndX - roadBeginX), 2) + 
+                    Math.pow((roadEndY - roadBeginY), 2) + 
+                    Math.pow(roadEndZ- roadBeginZ, 2));
 
 
 
@@ -125,7 +140,7 @@ export default class NodeTemplate {
 
         //Circle
         let geometry = new THREE.CircleGeometry(circleRadius, 32);
-        let material = new THREE.MeshBasicMaterial({ color: 0x008080, side: THREE.DoubleSide });
+        let material = new THREE.MeshBasicMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
 
         let circle: THREE.Mesh = new THREE.Mesh(geometry, material);
         circle.position.set(pos.x, pos.y, pos.z + 0.1);
@@ -137,20 +152,23 @@ export default class NodeTemplate {
         light.position.set(40,10,1200);
         this.object.add(light);
 
+        let warehouseScale = largestWidth *0.05;
 
         // Warehouse Texture
         const warehouseTexture = new THREE.Object3D();
         const gltfloader = new GLTFLoader();
 
+
         gltfloader.load(
             './assets/farmhouse/scene.gltf', 
             (object) => {
-            object.scene.scale.set(0.06, 0.06, 0.06);
+            object.scene.scale.set(warehouseScale, warehouseScale, warehouseScale);
             object.scene.position.set(pos.x, pos.y, pos.z + 0.2);
             object.scene.rotateX(Math.PI / 2);
             warehouseTexture.add(object.scene);
 
         });
+        
         this.object.add(warehouseTexture);
 
     }

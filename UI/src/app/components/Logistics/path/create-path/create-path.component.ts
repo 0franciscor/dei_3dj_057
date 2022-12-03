@@ -38,9 +38,9 @@ export class CreatePathComponent implements OnInit {
   async onSubmit(){
     this.formCreatePath.value.pathID ="path"+ this.formCreatePath.value.startWHId + this.formCreatePath.value.destinationWHId
    // if(this.formCreatePath.valid){
-      console.log("dentro")
+     
       let answer = await this.pathService.createPath(this.formCreatePath.value);
-      console.log(answer)
+      
       let message = "Path created Sucessfully!"
       if (answer.status != 201){
         message = "Error creating Path"

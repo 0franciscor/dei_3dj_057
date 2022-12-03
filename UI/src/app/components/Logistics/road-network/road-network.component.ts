@@ -74,28 +74,36 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       warehouses = data;
     });
     let paths: any[] = [];
-    
+    let limitPerWarehouse = 2;
     for( const warehouse of warehouses){
-
+      let amountPathOfWarehouse = 0;
       await rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
         
         if(data != null){
-          for (const element of data) {
-            paths.push({startWHId:element.startWHId, destinationWHId:element.destinationWHId, roadWidth:this.getRandomNumber()});
+          
+          while(amountPathOfWarehouse < limitPerWarehouse){
+            let randomPath = data[Math.floor(Math.random() * data.length)];
+            
+            if(!paths.includes(randomPath)){
+              paths.push({startWHId:randomPath.startWHId, destinationWHId:randomPath.destinationWHId, roadWidth:this.getRandomNumber()});
+              amountPathOfWarehouse++;
+            }
           }
+          
   
         }
       });
 
     }
-    
+      
 
 
     let positions = roadNetworkTemplate.calculatePositions(warehouses);
     this.roadNetwork = new roadNetworkTemplate({positions:positions,
       paths:paths});
 
-      
+    
+    
     
 
    
