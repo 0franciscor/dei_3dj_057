@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { JsonPipe } from '@angular/common';
 
 
 describe('CreateDeliveryComponent', () => {
@@ -24,12 +25,12 @@ describe('CreateDeliveryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CreateDeliveryComponent, CreateDeliveryComponentDialog],
-      imports: [MatDialogModule,FormsModule,ReactiveFormsModule, BrowserAnimationsModule, MatCardModule, MatFormFieldModule, MatInputModule],
+      imports: [MatDialogModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatCardModule, MatFormFieldModule, MatInputModule],
       providers: [DeliveryService, { provide: MatDialogRef, useValue: dialogMock }, { provide: MAT_DIALOG_DATA, useValue: {} }]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fakeDeliveryService = jasmine.createSpyObj('DeliveryService', ['createDelivery','createDeliveryProlog']);
+    fakeDeliveryService = jasmine.createSpyObj('DeliveryService', ['createDelivery', 'createDeliveryProlog']);
     fakeDeliveryService.createDelivery.and.returnValue(Promise.resolve({ status: 201 }));
 
     TestBed.overrideProvider(DeliveryService, { useValue: fakeDeliveryService });
@@ -85,7 +86,6 @@ describe('CreateDeliveryComponent', () => {
     dialogComponent.onOk();
     expect(dialogSpy).toHaveBeenCalled();
   });
-  
 
 });
 
@@ -101,17 +101,106 @@ describe('DeliveryService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should create a delivery', async () => {
+  it('should get a delivery', async () => {
     const response = {
-      "status": 201,
+      "deliveryID": "123",
+      "deliveryDate": "2023-05-05",
+      "loadTime": 5,
+      "unloadTime": 5,
+      "destination": "1",
+      "deliveryMass": 5,
+      json() {
+        return this;
+      }
     };
 
-    const fetchSpy = spyOn<any>(service, 'fetch').and.returnValue(Promise.resolve(response));
-    //TENS DE SEPARAR O FETCH
-    
-    const status = await service.createDelivery("1");
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const delivery = await service.getDelivery("123");
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(delivery).toEqual(response);
+  });
+
+  it('should get all deliveries', async () => {
+    const response = {
+      "deliveries": [
+        {
+          "deliveryID": "123",
+          "deliveryDate": "2023-05-05",
+          "loadTime": 5,
+          "unloadTime": 5,
+          "destination": "1",
+          "deliveryMass": 5
+        }
+      ],
+      json() {
+        return this;
+      }
+    };
+
+    const fetcgSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const deliveries = await service.getDeliveries();
+    expect(fetcgSpy).toHaveBeenCalled();
+    expect(deliveries).toEqual(response);
+  });
+
+  it('should create a delivery', async () => {
+    const response = {
+      "status": 201
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.createDelivery("123");
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(201);
   });
 
+  it('should create a delivery with prolog', async () => {
+    const response = {
+      "status": 201
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.createDeliveryProlog("123");
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(201);
+  });
+
+  it('should update a delivery', async () => {
+    const response = {
+      "status": 200
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.updateDelivery("123");
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+  });
+
+  it('should update a delivery with prolog', async () => {
+    const response = {
+      "status": 200
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.updateDeliveryProlog("123");
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+  });
+
+  it('should send a fetch without data', async () => {
+    const status = await service.sendFetch('test', 'POST', 'null');
+    expect(status.status).toEqual(404);
+  }); 
+
+  it('should send a fetch with data', async () => {
+    const status = await service.sendFetch('test', 'POST', 'test');
+    expect(status.status).toEqual(404);
+  });
+  
 });

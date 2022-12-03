@@ -1,6 +1,3 @@
-import { FixedSizeVirtualScrollStrategy } from "@angular/cdk/scrolling";
-import cypressConfig from "cypress.config";
-
 describe('Create Delivery Option', () => {
   it('should display the create delivery page', () => {
     cy.visit('http://localhost:4200/WarehouseManagement/Delivery/CreateDelivery');
@@ -22,7 +19,7 @@ describe('Create Delivery Option', () => {
   })
 
   it('should type in the deliveryID', () => {
-    cy.get('#deliveryID').type('Delivery4');
+    cy.get('#deliveryID').type('Delivery5');
   })
   it('should type in the date', () => {
     cy.get('#deliveryDate').type('12/21/2023');
@@ -44,6 +41,10 @@ describe('Create Delivery Option', () => {
     cy.get('#createButton').click();
   })
 
+
+})
+
+describe('popup delivery', () => {
   it('should display the delivery created message', () => {
     cy.get('p').contains('Delivery created successfully');
   })
