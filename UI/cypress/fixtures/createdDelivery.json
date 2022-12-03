@@ -1,0 +1,8 @@
+{
+    "deliveryID" : "Delivery4",
+    "deliveryDate" : "21/12/2023",
+    "loadTime" : 5,
+    "unloadTime" : 5,
+    "destination" : 5,
+    "deliveryMass" : 5
+}
