@@ -15,7 +15,7 @@
 
                 <mat-form-field class="deliveryID" appearance="fill">
                     <mat-label>DeliveryID</mat-label>
-                    <input matInput type="text" formControlName="deliveryID">
+                    <input matInput id="deliveryID" type="text" formControlName="deliveryID">
                     <br>
                     <span style="color: red" *ngIf="deliveryID && deliveryID.invalid && deliveryID.touched"
                         class="error">Please enter a valid Delivery ID</span>
@@ -27,7 +27,7 @@
 
                     <mat-label>Choose a date</mat-label>
 
-                    <input matInput [min]="minDate" matInput [matDatepicker]="picker" formControlName="deliveryDate">
+                    <input matInput id="deliveryDate" [min]="minDate" matInput [matDatepicker]="picker" formControlName="deliveryDate">
                     <mat-hint>MM/DD/YYYY</mat-hint>
 
                     <mat-datepicker-toggle class="datePickerIcon" matIconSuffix [for]="picker">
@@ -43,7 +43,7 @@
 
                 <mat-form-field class="unloadTime" appearance="fill">
                     <mat-label>Load Time</mat-label>
-                    <input matInput type="number" formControlName="loadTime">
+                    <input matInput id="loadTime" type="number" formControlName="loadTime">
                     <br>
                     <span style="color: red" *ngIf="loadTime && loadTime.invalid && loadTime.touched"
                         class="error">Please enter a valid
@@ -54,7 +54,7 @@
 
                 <mat-form-field class="unloadTime" appearance="fill">
                     <mat-label>Unload Time</mat-label>
-                    <input matInput type="number" formControlName="unloadTime">
+                    <input matInput id="unloadTime" type="number" formControlName="unloadTime">
                     <br>
                     <span style="color: red" *ngIf="unloadTime && unloadTime.invalid && unloadTime.touched"
                         class="error">Please enter a
@@ -65,7 +65,7 @@
 
                 <mat-form-field class="destination" appearance="fill">
                     <mat-label>Destination</mat-label>
-                    <input matInput type="textr" formControlName="destination">
+                    <input matInput id="destination" type="textr" formControlName="destination">
                     <br>
                     <span style="color: red" *ngIf="destination && destination.invalid && destination.touched"
                         class="error">Please
@@ -76,7 +76,7 @@
 
                 <mat-form-field class="deliveryMass" appearance="fill">
                     <mat-label>Delivery Mass</mat-label>
-                    <input matInput type="number" formControlName="deliveryMass">
+                    <input matInput id="deliveryMass" type="number" formControlName="deliveryMass">
                     <br>
                     <span style="color: red" *ngIf="deliveryMass && deliveryMass.invalid && deliveryMass.touched"
                         class="error">Please
@@ -85,7 +85,7 @@
 
                 <br>
                 <div class="createButtonDiv">
-                    <button class="createButton" mat-raised-button color="primary" type="submit">Create</button>
+                    <button id="createButton" class="createButton" mat-raised-button color="primary" type="submit">Create</button>
                 </div>
 
             </form>

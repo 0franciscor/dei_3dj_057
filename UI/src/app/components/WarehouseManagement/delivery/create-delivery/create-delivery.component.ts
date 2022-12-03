@@ -50,7 +50,7 @@ export class CreateDeliveryComponent implements OnInit {
     let answer = await this.deliveryService.createDelivery(this.formCreateDelivery.value);
     let message = "Delivery created successfully";
     if (answer.status == 201)
-      this.deliveryService.createDeliveryProlog(answer.json());
+      this.deliveryService.createDeliveryProlog(this.formCreateDelivery.value);
     else
       message = "Delivery creation failed";
 
@@ -103,6 +103,8 @@ export class CreateDeliveryComponentDialog {
     public dialogRef: MatDialogRef<CreateDeliveryComponentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
+
+  ngOnInit(): void {}
 
   onOk(): void {
     this.dialogRef.close();

@@ -73,5 +73,5 @@ export default class PathController implements IPathController {
     const info = await response_prolog.json();
     res.status(201);
     return res.json(info);
-
+  }
 }
