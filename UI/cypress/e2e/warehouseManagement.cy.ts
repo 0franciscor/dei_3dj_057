@@ -21,4 +21,6 @@ describe('Warehouse Manager Tab', () => {
     it('should display the introduction text', () => {
         cy.get('p').contains('On this page the warehouse manager can create warehouses and deliveries.').should('be.visible');
     })
+
+    
 })
