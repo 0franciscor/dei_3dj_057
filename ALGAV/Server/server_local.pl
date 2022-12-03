@@ -1,12 +1,11 @@
 :- use_module(inc1).
-:- use_module(library(http/http_unix_daemon)).
-:- use_module(library(http/http_parameters)).
-:- use_module(library(http/http_dispatch)).
-:- use_module(library(http/json_convert)).
 :- use_module(library(http/thread_httpd)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_json)).
+:- use_module(library(http/json_convert)).
 :- use_module(library(http/http_cors)).
-:- use_module(library(socket)).
+:- use_module(library(option)).
 
 :- http_handler(/, reply_root, []).
 :- http_handler('/create_city', create_city,  []).
@@ -239,8 +238,11 @@ heuristic_massAndDistance(Request):-
         reply_json(_, [status(500)]).
 
 % ---------------------------------------------------------------------------
-:- Port is 2228,
-gethostname(Host),
-format('~nHTTP server ready:  http://~w:~w ~n~n',[Host,Port]),
-http_daemon([port(Port),user(root),fork(false)]).
+server():-
+        delete_base_de_conhecimento(),
+        create_base_de_conhecimento(),
+        http_server(http_dispatch, [port(3000)]),
+        !.
 
+stop():-
+        http_stop_server(3000, []).

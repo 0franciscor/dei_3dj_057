@@ -1,8 +1,12 @@
-:- module(inc1, [add_city/3, update_city/3, remove_city/1,
+:-module(inc1, [add_city/3, update_city/3, remove_city/1,
 create_truck/7, update_truck/7, remove_truck/1,
 create_delivery/7, update_delivery/7, remove_delivery/1,
 create_path/7, update_path/7, remove_path/2,
 create_warehouse/8, update_warehouse/8, remove_warehouse/1,
+bestPath_findAll/3, create_base_de_conhecimento/0, delete_base_de_conhecimento/0,
+getById_city/2, getById_delivery/2, getById_truck/2,
+getById_path/3, getById_warehouse/2, heuristic_mass/2,
+heuristic_closestWarehouse/2,heuristic_massAndDistance/2,
 count/10, resetar/0]).
 
 :- use_module(library(http/json)).
@@ -14,27 +18,26 @@ count/10, resetar/0]).
 :- dynamic caracteristicasCam/6.
 :- dynamic entrega/6.
 :- dynamic dadosCam_t_e_ta/6.
-:-dynamic infoTime/2.
-:-dynamic armazem/7.
-:-dynamic power/1.
-:-dynamic infoTime/2.
+:- dynamic infoTime/2.
+:- dynamic armazem/7.
+:- dynamic power/1.
+:- dynamic infoTime/2.
 
 :- json_object warehouse_json(id:string, address:string, altitude:integer, latitude:string, longitude:string,	designation:string, city:integer).
 :- json_object city_json(id:integer, name:string).
 :- json_object truck_json(truckID:string, tare:integer, capacity:integer, maxBatteryCapacity:integer, autonomy:integer, fastChargeTime:integer).
-:- json_object paths_json(pathTravelTime:integer, wastedEnergy:double,extraTravelTime:integer).
-:- json_object deliveries_json(deliveryID:string, deliveryDate:string, deliveryMass:integer, destination:string, loadTime:integer, unloadTime:integer).
+:- json_object paths_json(startWHId:string, destinationWHId:string, pathTravelTime:string, wastedEnergy:string, extraTravelTime:string).
+:- json_object deliveries_json(deliveryID:string, deliveryMass:integer, destination:string, loadTime:integer, unloadTime:integer, deliveryDateProlog:string).
+:- json_object bestPath_json(date:string, truck:string, bestPath:list).
 
 % ---------------------------------------------------------------------------
 city_URL("http://5.249.66.111:3001/api/warehouse/allCities").
 warehouse_URL("http://5.249.66.111:3001/api/warehouse/all").
 truck_URL("http://5.249.66.111:3001/api/truck/all").
-path_URL("http://5.249.66.111:3001/api/path/all/undefined/").
+path_URL("http://5.249.66.111:3001/api/path/all/undefined/undefined").
 delivery_URL("http://5.249.66.111:3001/api/delivery/allProlog").
 
 power(0).
-infoTime(100000000000000000,_).
-entrega(1,20221205,0,5,0,0).
 
 check_sv():-
 		((power(0),
@@ -53,8 +56,8 @@ delete_base_de_conhecimento():-
 		retractall(dadosCam_t_e_ta(_, _, _, _, _, _)),
 		retractall(entrega(_, _, _, _, _, _)),
 		retractall(armazem(_, _, _, _, _, _, _)),
-        retractall(power(_)),
-        asserta(power(0)).
+		retractall(power(_)),
+		asserta(power(0)).
 
 % ---------------------------------------------------------------------------
 
@@ -63,7 +66,9 @@ create_base_de_conhecimento():-
 		set_cities(),
 		set_trucks(),
 		set_deliveries(),
-		set_paths(),!.
+		set_paths(),
+		assert(infoTime(100000000000000000,_)),
+		assert(entrega("1","2022125",0,"5",0,0)),!.
 
 % ---------------------------------------------------------------------------
 set_warehouse():-
@@ -130,9 +135,8 @@ get_paths(Paths) :-
         json_read_dict(In, Paths), close(In)).
 
 parse_paths([]).
-parse_paths([HPath|TPath]):- armazem(HPath.get(startWHId),_,_,_,_,_,InitialCity),
-		armazem(HPath.get(destinationWHId),_,_,_,_,_,FinalCity),
-		(create_path('eTruck01', InitialCity, FinalCity, HPath.get(pathTravelTime), HPath.get(wastedEnergy),HPath.get(extraTravelTime),_),
+parse_paths([HPath|TPath]):-
+		(create_path("eTruck01",HPath.get(destinationWHId), HPath.get(extraTravelTime), HPath.get(pathTravelTime), HPath.get(startWHId), HPath.get(wastedEnergy),_),
 		parse_paths(TPath));
         parse_paths(TPath).
 
@@ -150,7 +154,7 @@ get_deliveries(Delivery) :-
 
 parse_deliveries([]).
 parse_deliveries([HDelivery|TDelivery]):-
-		(create_delivery(HDelivery.get(deliveryID), HDelivery.get(deliveryDate), HDelivery.get(deliveryMass), HDelivery.get(destination), HDelivery.get(loadTime), HDelivery.get(unloadTime),_),
+		(create_delivery(HDelivery.get(deliveryID),HDelivery.get(deliveryDateProlog),HDelivery.get(deliveryMass), HDelivery.get(destination), HDelivery.get(loadTime), HDelivery.get(unloadTime),_),
 		parse_deliveries(TDelivery));
         parse_deliveries(TDelivery).
 
@@ -160,6 +164,8 @@ add_city(Id, Name, CityJson):- \+idArmazem(_,Id), assertz(idArmazem(Name, Id)), 
 update_city(Id, Name, CityJson):- check_sv(),idArmazem(_, Id), retract(idArmazem(_, Id)), assertz(idArmazem(Name, Id)), cityprolog_tojson(Id, Name, CityJson).
 
 remove_city(Id):- check_sv(),idArmazem(_, Id), retract(idArmazem(_, Id)).
+
+getById_city(Id, CityJson):- check_sv(),idArmazem(Name, Id), cityprolog_tojson(Id,Name,CityJson).
 
 % ---------------------------------------------------------------------------
 cityprolog_tojson(Id, Name, NoJson):-
@@ -176,6 +182,8 @@ update_truck(Id, Tare, Capacity, BateryCapacity, Autonomy,TimeToCharge, TruckJso
 remove_truck(Id):-
 	check_sv(),caracteristicasCam(Id, _, _, _, _, _), retract(caracteristicasCam(Id, _, _, _, _, _)).
 
+getById_truck(Id, TruckJson):- check_sv(),caracteristicasCam(Id, Tare, Capacity, BateryCapacity, Autonomy, TimeToCharge), truckprolog_tojson(Id,Tare,Capacity,BateryCapacity,Autonomy,TimeToCharge, TruckJson).
+
 % ---------------------------------------------------------------------------
 truckprolog_tojson(Id, Tare, Capacity, BateryCapacity, Autonomy,TimeToCharge, NoJson):-
 		atom_string(Id, IdJs), atom_string(Tare, TareJs), atom_string(Capacity, CapacityJs), atom_string(BateryCapacity, BateryCapacityJs), atom_string(Autonomy, AutonomyJs), atom_string(TimeToCharge, TimeToChargeJs),
@@ -191,14 +199,22 @@ update_delivery(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson)
 remove_delivery(Id):-
 	check_sv(),entrega(Id, _, _, _, _, _), retract(entrega(Id, _, _, _, _, _)).
 
+getById_delivery(Id, DeliveryJson):-
+	check_sv(),entrega(Id, Date, Mass, Destination, LoadTime, UnloadTime),
+	deliveryprolog_tojson(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson).
+
+
 % ---------------------------------------------------------------------------
 deliveryprolog_tojson(Id, Date, Mass, Destination, LoadTime, UnloadTime, NoJson):-
 		atom_string(Id, IdJs), atom_string(Date, DateJs), atom_string(Mass, MassJs), atom_string(Destination, DestinationJs), atom_string(LoadTime, LoadTimeJs), atom_string(UnloadTime, UnloadTimeJs),
 		NoJson=json([id = IdJs, date = DateJs, mass = MassJs, destination = DestinationJs, loadTime = LoadTimeJs, unloadTime = UnloadTimeJs]).
 
 % ---------------------------------------------------------------------------
-create_path(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, PathJson):-
-	\+dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _), assertz(dadosCam_t_e_ta(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime)), pathprolog_tojson(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, PathJson).
+create_path(Truck, CityDest, AditionalTime, PathTime, CityOrig, Energy, PathJson):-
+	\+dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _),
+	armazem(CityOrig,_,_,_,_,_,City),
+	armazem(CityDest,_,_,_,_,_,City1),
+	assertz(dadosCam_t_e_ta(Truck, City, City1, PathTime, Energy, AditionalTime)), pathprolog_tojson(Truck, City, City1, PathTime, Energy, AditionalTime, PathJson).
 
 update_path(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, PathJson):-
 	check_sv(),dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _), retract(dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _)), assertz(dadosCam_t_e_ta(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime)), pathprolog_tojson(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, PathJson).
@@ -206,9 +222,14 @@ update_path(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, PathJson
 remove_path(CityOrig, CityDest):-
 	check_sv(),dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _), retract(dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _)).
 
+getById_path(Origin, Destination, PathJson):-
+	check_sv(),
+	dadosCam_t_e_ta(Truck, Origin, Destination, PathTime, Energy, AditionalTime),
+	pathprolog_tojson(Truck, Origin, Destination, PathTime, Energy, AditionalTime, PathJson).
+
 % ---------------------------------------------------------------------------
 pathprolog_tojson(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, NoJson):-
-		atom_string(Truck, TruckJs), atom_string(CityOrig, CityOrigJs), atom_string(CityDest, CityDestJs), atom_string(PathTime, PathTimeJs), atom_string(Energy, EnergyJs), atom_string(AditionalTime, AditionalTimeJs),
+		atom_string(Truck, TruckJs),atom_string(CityOrig, CityOrigJs),atom_string(CityDest, CityDestJs),atom_string(PathTime, PathTimeJs),atom_string(Energy, EnergyJs),atom_string(AditionalTime, AditionalTimeJs),
 		NoJson=json([truck = TruckJs, origin = CityOrigJs, destination = CityDestJs, totalTime = PathTimeJs, energy = EnergyJs, aditionalTime = AditionalTimeJs]).
 
 % ---------------------------------------------------------------------------
@@ -220,6 +241,10 @@ update_warehouse(Id, Address, Altitude, Latitude, Longitude, Designation, City, 
 
 remove_warehouse(Id):-
 	check_sv(),armazem(Id,_,_,_,_,_,_), retract(armazem(Id,_,_,_,_,_,_)).
+
+getById_warehouse(Id, WarehouseJson):-
+	check_sv(),armazem(Id, Address, Altitude, Latitude, Longitude, Designation, City),
+	warehouseprolog_tojson(Id, Address, Altitude, Latitude, Longitude, Designation, City, WarehouseJson).
 
 % ---------------------------------------------------------------------------
 warehouseprolog_tojson(Id, Address, Altitude, Latitude, Longitude, Designation, City, NoJson):-
@@ -256,19 +281,32 @@ checkIfCityExist([H|T]):- ((idArmazem(_,H),!,checkIfCityExist(T));false).
 appendMatosinhos(_,[],[]):-!.
 appendMatosinhos(A,[L|LL],[L2|T]):- appendMatosinhos(A,LL,T), append(A,L,L1), append(L1,A,L2).
 
-findMatosinhos(M):-idArmazem('Matosinhos',M).
+findMatosinhos(M):-idArmazem("Matosinhos",M).
 
 
 % ----------------------------------US2---------------------------------------
 
-weightWithDeliveries(IDTRUCK,DL,FW):- carateristicasCam(IDTRUCK,TW,CP,_,_,_),sumDeliveryWeights(DL,DW,CP),FW is TW+DW.
+bestPath_findAll(Date, Truck, Json):-
+	check_sv(),
+	quickestPath(Truck, Date, Result),
+	bestPathProlog_ToJson(Date,Truck,Result,Json).
 
+bestPathProlog_ToJson(Date,Truck,Result,NoJson):-
+	atom_string(Date, DateJs), atom_string(Truck, TruckJs), lista_para_string(Result, ResultJs),
+	NoJson=json([date = DateJs, truck = TruckJs, bestPath = ResultJs]).
+
+lista_para_string([], []).
+lista_para_string([H|T], [HS|TS]):-
+	    atom_string(H, HS),
+	    lista_para_string(T, TS).
+
+weightWithDeliveries(IDTRUCK,DL,FW):- caracteristicasCam(IDTRUCK,TW,CP,_,_,_),sumDeliveryWeights(DL,DW,CP),FW is TW+DW.
 
 sumDeliveryWeights([],0,_):-!.
-sumDeliveryWeights([H|T],DW,CP):- sumDeliveryWeights(T,DW1,CP),entrega(H,_,WEIGHT,_,_,_),AUX is CP-DW1,			((WEIGHT=<AUX,!,DW is DW1+WEIGHT); DW is DW1).
+sumDeliveryWeights([H|T],DW,CP):- sumDeliveryWeights(T,DW1,CP),entrega(H,_,WEIGHT,_,_,_),AUX is CP-DW1,((WEIGHT=<AUX,!,DW is DW1+WEIGHT); DW is DW1).
 
 
-fullCapacity(IDTRUCK,FC):- carateristicasCam(IDTRUCK,T,C,_,_,_), FC is T+C.
+fullCapacity(IDTRUCK,FC):- caracteristicasCam(IDTRUCK,T,C,_,_,_), FC is T+C.
 
 ratioWeights(FW,FC,FR):- FR is FW/FC.
 
@@ -282,7 +320,7 @@ tempo(IDTRUCK,B,E,DL,TIMETOTRAVEL):- dadosCam_t_e_ta(IDTRUCK,B,E,T,_,_), weightW
 energy(IDTRUCK,B,E,DL,ENERGY):- dadosCam_t_e_ta(IDTRUCK,B,E,_,KW,_), weightWithDeliveries(IDTRUCK,DL,FW),fullCapacity(IDTRUCK,FC),calculateEnergy(KW,FW,FC,FE), ENERGY is FE.
 
 extractDestinations([],[]):-!.
-extractDestinations([H|T], [X|Y]):-entrega(H,_,_,W,_,_), extractDestinations(T,Y),  X is W.
+extractDestinations([H|T], [X|Y]):-entrega(H,_,_,W,_,_), extractDestinations(T,Y),  X = W.
 
 findAllPaths(DL,AP):- extractDestinations(DL,WL),allPaths(WL,AP).
 
@@ -313,7 +351,7 @@ totalTimeCounter(TOTALT,TT,UT,ET):- TOTALT is TT+UT+ET.
 
 
 extraTravelTime(_,_,_,[],ET):-ET is 0.
-extraTravelTime(IDTRUCK,DL,BW,[H|_],ET):-  energy(IDTRUCK,BW,H,DL,E),carateristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA),
+extraTravelTime(IDTRUCK,DL,BW,[H|_],ET):-  energy(IDTRUCK,BW,H,DL,E),caracteristicasCam(IDTRUCK,_,_,BAT,_,_),dadosCam_t_e_ta(IDTRUCK,BW,H,_,_,EXTRA),
     (BAT*0.8-E<BAT*0.2, ET is EXTRA; ET is 0).
 
 chargeTruck(BAT,TRUCKE,CT):- CT is (BAT*0.8-TRUCKE)*60/48.
@@ -321,12 +359,12 @@ chargeTruck(BAT,TRUCKE,CT):- CT is (BAT*0.8-TRUCKE)*60/48.
 lastCharge(KW,CT):- CT is KW*60/48.
 
 
-checkIfCharges(IDTRUCK,DL,BW,[5|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,BW,5,DL,E),carateristicasCam(IDTRUCK,_,_,BAT,_,_),
+checkIfCharges(IDTRUCK,DL,BW,[5|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,BW,5,DL,E),caracteristicasCam(IDTRUCK,_,_,BAT,_,_),
 (   (BAT*0.2-E>0,lastCharge(BAT*0.2-E,CT),FENERGY is BAT*0.2,CHARGETIME is CT); chargeTruck(BAT,TRUCKE,CT),FENERGY is BAT*0.8,CHARGETIME is CT ).
 
 
 checkIfCharges(_,_,_,[],_,_,CHARGETIME):- CHARGETIME is 0.
-checkIfCharges(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,BW,H,DL,E),carateristicasCam(IDTRUCK,_,_,BAT,_,_),
+checkIfCharges(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,BW,H,DL,E),caracteristicasCam(IDTRUCK,_,_,BAT,_,_),
  (
      (TRUCKE<BAT*0.2, chargeTruck(BAT,BAT*0.2,CT),FENERGY is BAT*0.8,CHARGETIME is CT);
      ((TRUCKE-E<BAT*0.2, chargeTruck(BAT,TRUCKE,CT),FENERGY is BAT*0.8,CHARGETIME is CT );FENERGY is TRUCKE,CHARGETIME is 0)
@@ -334,44 +372,70 @@ checkIfCharges(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,B
 
 
 comparePaths([],_,_):-!.
-comparePaths([H|T],IDTRUCK,DL):-comparePaths(T,IDTRUCK,DL),carateristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME), infoTime(TAux, _), ((TAux > TIME,!, retract(infoTime(TAux,_)),assert(infoTime(TIME,H))); true).
+comparePaths([H|T],IDTRUCK,DL):-comparePaths(T,IDTRUCK,DL),caracteristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME), infoTime(TAux, _), ((TAux > TIME,!, retract(infoTime(TAux,_)),assert(infoTime(TIME,H))); true).
 
-appendDelivery(L,L1):- append([1], L, L2), append(L2,[1],L1).
+appendDelivery(L,L1):- append(["1"], L, L2), append(L2,["1"],L1).
 
-quickestPath(IDTRUCK,DELL,L,T):-retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP), comparePaths(AP,IDTRUCK,DL),!,infoTime(T,L).
+getAllDeliveriesInADay(DATE, LDFinal):- findall(X, entrega(X,DATE,_,_,_,_), LD), delete(LD,"1",LDFinal).
+
+quickestPath(IDTRUCK,DATE,L):-!,getAllDeliveriesInADay(DATE,DELL),retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP),comparePaths(AP,IDTRUCK,DL),!,infoTime(_,L).
+
 
 
 % ----------------------------------Heuristics---------------------------------------
 
 % Largest Mass first Heuristic %
+
+heuristic_mass(Date, ResultJson):-
+	check_sv(),
+	largestMassFirst(Date,Result),
+	resultHeuristics_Prolog_ToJson(Date,Result,ResultJson).
+
+resultHeuristics_Prolog_ToJson(Date,Result,NoJson):-
+	atom_string(Date, DateJs), lista_para_string(Result, ResultJs),
+	NoJson=json([date = DateJs, bestRoute = ResultJs]).
+
 extractMass([X],[M]):- entrega(X,_,M,_,_,_).
 extractMass([H|T],[H1|T1]):- extractMass(T,T1), entrega(H,_,H1,_,_,_).
 
 extractWarehouse([],[Matosinhos]):- findMatosinhos(Matosinhos).
-extractWarehouse([H|T],[H1|T1]):- extractWarehouse(T,T1), entrega(_,_,H,H1,_,_).
+extractWarehouse([HD|TD],[H1|T1]):- extractWarehouse(TD,T1), entrega(HD,_,_,H1,_,_).
 
-largestMassFirst(E,L):- extractMass(E,M), sort(M, M1), reverse(M1, M2), extractWarehouse(M2,L1), findMatosinhos(Matosinhos),append([Matosinhos],L1,L).
-
+largestMassFirst(Day,WarehouseSorted):- 
+    getAllDeliveriesInADay(Day,Delivery), 
+    extractMass(Delivery,Mass), sortTwoList(Mass,Delivery,_,DeliverySorted),
+    reverse(DeliverySorted,DeliverySortedReversed), extractWarehouse(DeliverySortedReversed,WarehouseSorted),!.
 
 %% Closest Warehouse First %%
 
-closestWarehouseFirst([],[]).
-closestWarehouseFirst(DELIVERY_LIST, PATH_LIST):- appendDelivery(DELIVERY_LIST, FINAL_LIST),
-                                                  extractDestinations(FINAL_LIST, WAREHOUSE_LIST_MATOSINHOS),
-                                                  delete(WAREHOUSE_LIST_MATOSINHOS, 5, WAREHOUSE_LIST),
-                                                  searchClosestWarehouse(5,WAREHOUSE_LIST,PATH_LIST).
+heuristic_closestWarehouse(Date, ResultJson):-
+	check_sv(),
+	closestWarehouseFirst(Date,Result),
+	resultHeuristics_Prolog_ToJson(Date,Result,ResultJson).
 
+closestWarehouseFirst([],[]).
+closestWarehouseFirst(Day, PATH_LIST):- getAllDeliveriesInADay(Day,FINAL_LIST),
+                                        extractDestinations(FINAL_LIST, WAREHOUSE_LIST_MATOSINHOS),
+                                        delete(WAREHOUSE_LIST_MATOSINHOS, 5, WAREHOUSE_LIST),
+                                        searchClosestWarehouse("5",WAREHOUSE_LIST,PATH_LIST).
 searchClosestWarehouse(_,[],[]):-!.
 searchClosestWarehouse(BEGIN,[H|T],[MENOR|PATH_LIST]):- compareClosest(BEGIN,[H|T],_,MENOR), delete([H|T], MENOR, NOVA_LISTA), searchClosestWarehouse(MENOR, NOVA_LISTA, PATH_LIST).
 
 compareClosest(_,[],1000,_):-!.
-compareClosest(ARMAZEM, [H|T], TEMPO, FH):- compareClosest(ARMAZEM, T, TEMPO1, FH1), dadosCam_t_e_ta(_, ARMAZEM, H, TEMPO2,_,_), ((TEMPO2 < TEMPO1, !, (FH is H, TEMPO is TEMPO2));(TEMPO is TEMPO1,FH is FH1)).
-
+compareClosest(ARMAZEM, [H|T], TEMPO, FH):- compareClosest(ARMAZEM, T, TEMPO1, FH1), dadosCam_t_e_ta(_, ARMAZEM, H, TEMPO2,_,_), ((TEMPO2 < TEMPO1, !, (FH = H, TEMPO is TEMPO2));(TEMPO is TEMPO1,FH = FH1)).
 
 
 % Cheapest Warehouse first Mass/Km Heuristic %
+
+heuristic_massAndDistance(Date, ResultJson):-
+	check_sv(),
+	cheapestWarehouseFirst(Date,Result),
+	resultHeuristics_Prolog_ToJson(Date,Result,ResultJson).
+
+
 extractCities([],[]).
-extractCities(Delivery_List, Warehouse_List):- appendDelivery(Delivery_List, Final_List), extractDestinations(Final_List, WarehouseListWithCringe), delete(WarehouseListWithCringe, 5, Warehouse_List).
+extractCities(Delivery_List, Warehouse_List):- appendDelivery(Delivery_List, Final_List), extractDestinations(Final_List, WarehouseListWithMatosinhos),
+                                               findMatosinhos(Matosinhos), delete(WarehouseListWithMatosinhos, Matosinhos, Warehouse_List).
 
 extractMassFromWarehouse([DH],[MH]):- entrega(_,_,MH,DH,_,_).
 extractMassFromWarehouse([DH|DT],[MH|MT]):-extractMassFromWarehouse(DT,MT), entrega(_,_,MH,DH,_,_).
@@ -399,5 +463,6 @@ extractBoth(Origin, Destinations, Visited,Result):- extractMassFromWarehouse(Des
                                                         sortTwoList(MassOverDistances, Destinations, _, [H|T]), append([H],Visited, Visited2),extractBoth(H, T, Visited2,Result).
 
 
-cheapestWarehouseFirst(Entregas,Result):- extractCities(Entregas, Warehouse_List), findMatosinhos(Matosinhos),append([Matosinhos],Warehouse_List,[H|T]), EmptyList = [H], extractBoth(H,T,EmptyList,ResultNoMatosinhos),
-                                          findMatosinhos(Matosinhos),append([Matosinhos],ResultNoMatosinhos,ResultReverse), reverse(ResultReverse,Result),!. 
+cheapestWarehouseFirst(Day,Result):- 
+    getAllDeliveriesInADay(Day,Entregas),extractCities(Entregas, Warehouse_List), findMatosinhos(Matosinhos),append([Matosinhos],Warehouse_List,[H|T]), EmptyList = [H], extractBoth(H,T,EmptyList,ResultNoMatosinhos),
+    findMatosinhos(Matosinhos),append([Matosinhos],ResultNoMatosinhos,ResultReverse), reverse(ResultReverse,Result),!.
