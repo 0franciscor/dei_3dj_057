@@ -92,6 +92,8 @@ export class CreateWarehouseComponentDialog {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
 
+  ngOnInit(): void {}
+
   onOk(): void {
     this.dialogRef.close();
   }

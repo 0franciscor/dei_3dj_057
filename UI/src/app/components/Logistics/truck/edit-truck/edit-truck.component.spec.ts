@@ -11,11 +11,6 @@ import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 import { EditTruckComponent, EditTruckComponentDialog } from './edit-truck.component';
 
-
-
-
-
-
 describe('EditTruckComponent', () => {
   let component: EditTruckComponent;
   let fixture: ComponentFixture<EditTruckComponent>;

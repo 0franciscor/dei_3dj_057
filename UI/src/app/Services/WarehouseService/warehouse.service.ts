@@ -13,13 +13,7 @@ export class WarehouseService {
   async getWarehouse(WarehouseId:string) {
     const url = this.urlOrigin+'api/warehouse/'+ WarehouseId;
  
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-
+    const response = await this.sendFetch(url,'GET',null);
     const data = await response.json();
 
     return data;
@@ -30,15 +24,8 @@ export class WarehouseService {
     const url = this.urlOrigin+'api/warehouse/create';
     
     const data = warehouse;
-   
-    const response = fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      },
+    const response = await this.sendFetch(url, 'POST', data);
 
-    })
     return response;
           
   }
@@ -47,15 +34,8 @@ export class WarehouseService {
     const url = this.urlOrigin+'api/warehouse/createProlog';
     
     const data = warehouse;
-   
-    const response = fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      },
+    const response = await this.sendFetch(url, 'POST', data);
 
-    })
     return response;
           
   }
@@ -63,10 +43,9 @@ export class WarehouseService {
   async getAllWarehouses() {
     const url = this.urlOrigin+'api/warehouse/all';
 
-    const response = await fetch(url, {
-      method: 'GET'
-    })
+    const response = await this.sendFetch(url, 'GET', null);
     const data = await response.json();
+
     return data;
   
   }
@@ -76,14 +55,7 @@ export class WarehouseService {
     const url = this.urlOrigin+'api/warehouse/update';
     
     const data = warehouse;
-
-    const response = await fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
+    const response = await this.sendFetch(url, 'PUT', data);
     
     return response;
      
@@ -94,17 +66,28 @@ export class WarehouseService {
     const url = this.urlOrigin+'api/warehouse/updateProlog';
     
     const data = warehouse;
-
-    const response = await fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
+    const response = await this.sendFetch(url, 'PUT', data);
     
     return response;
      
+  }
+
+  async sendFetch(url: string, method: string, data: any) {
+    if(data)
+      return await fetch(url, {
+        method: method,
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+    else
+      return await fetch(url, {
+        method: method,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
   }
 
 

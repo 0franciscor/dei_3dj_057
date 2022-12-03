@@ -53,4 +53,25 @@ export default class PathController implements IPathController {
     return res.json(info);
   }
 
+  async createPathProlog(req:Request,res:Response,next:NextFunction){
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_path';
+
+    const response_prolog = await fetch(url_prolog, {
+      method: 'POST',
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      agent: httpAgent
+    })
+
+    if(response_prolog.status != 201){
+      res.status(response_prolog.status);
+      return res.json({message: "Error creating truck"});
+    }
+    const info = await response_prolog.json();
+    res.status(201);
+    return res.json(info);
+
 }

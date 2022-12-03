@@ -45,6 +45,8 @@ export class CreatePathComponent implements OnInit {
       if (answer.status != 201){
         message = "Error creating Path"
       }
+      
+      await this.pathService.createPathProlog(this.formCreatePath.value);
 
       const dialogRef = this.dialog.open(CreatePathComponentDialog,{
         width: '350px',

@@ -42,6 +42,10 @@ export class EditWarehouseComponent implements OnInit {
     designation: undefined,
   }
 
+  goBack(){
+    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+  }
+
   ngOnInit(): void {
     const warehouseID = this.route.snapshot.paramMap.get('id');
     this.formEditWarehouse = this.fb.group({
@@ -94,6 +98,8 @@ export class EditWarehouseComponent implements OnInit {
 
 }
 
+
+
 @Component({
   selector: 'app-edit-warehouse',
   templateUrl: 'edit-warehouse.dialog.component.html',
@@ -104,6 +110,10 @@ export class EditWarehouseComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
 
+  ngOnInit(){
+
+  }
+  
   onOk(): void {
     this.dialogRef.close();
   }

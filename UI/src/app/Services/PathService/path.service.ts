@@ -37,7 +37,13 @@ export class PathService{
       return response;
     }
 
-
+    async createPathProlog(path:any){
+      const url= this.urlOrigin+'api/path/prolog'
+      const data = path;
+      
+      const response = await this.sendFetch(url,'POST',data);
+      return response;
+    }
 
     async sendFetch(url: string, method: string, data: any) {
         if(data)

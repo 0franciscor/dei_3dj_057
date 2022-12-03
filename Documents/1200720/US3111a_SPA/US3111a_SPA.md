@@ -108,68 +108,132 @@ pelo seu identificador e designação.
 ## 3.3. Testes
 *Nesta secção deve sistematizar como os testes foram concebidos para permitir uma correta aferição da satisfação dos requisitos.*
 
-### 3.3.1 Testes de Integração
+### 3.3.1 Testes Unitários
 
-**WarehouseController**
+**Warehouse Service**
 
-    [Test]
-    public async Task PostTest()
-    {
-        var warehouse = new EletricGo.Domain.Warehouses.Warehouse(new WarehouseId(id + "1"), new Address(address),
-        new Altitude(altitude), new Coordinates(latitude, longitude), new Designation(description));
-        var warehouseExpected = warehouse.ToWarehouseDto();
-
-        var mockUnit = new Mock<IUnitOfWork>();
-        var mockRepository = new Mock<IWarehouseRepository>();
-
-
-        var mockRepo = new Mock<IWarehouseRepository>();
-        mockRepo.Setup(repo => repo.Add(warehouse)).ReturnsAsync(warehouse);
-        mockRepository.Setup(repo => repo.GetByID(new WarehouseId(id + "1"))).ReturnsAsync(null as EletricGo.Domain.Warehouses.Warehouse);
-        var mockUnitRepo = new Mock<IUnitOfWork>();
-        mockUnitRepo.Setup(repo => repo.CommitAsync());
-
-        var service = new WarehouseService(mockUnitRepo.Object, mockRepo.Object);
-        var controller = new WarehouseController(service);
-
-        var aux = await controller.Post(warehouseExpected);
-
-        if (aux == null)
-            Assert.Fail();
-        else
-        {
-            var warehouseResult = ((WarehouseDto)(aux.Result as CreatedAtActionResult).Value);
-
-            Assert.That(warehouseResult.Id, Is.EqualTo(warehouseExpected.Id));
-        }
-    }
-
-### 3.3.2 Testes Unitários
-
-**Teste 1:** Verificar que não é possível criar uma instância da classe Address se o código postal não estiver no formato correto.
-
-    [Test]
-    public void CreatingAddressWithAInvalidZipCode()
-    {
-        var ex = Assert.Throws<BusinessRuleValidationException>(() => new Address("Rua António Bernardino,47,45375-334,Porto"));
-        Assert.That(ex.Message, Is.EqualTo("The zip code isn't in the right format"));
-    }
-
-**Teste 2:** Verificar que não é possível criar uma instância da classe WarehouseId se o id não for alfanumérico.
+    describe('WarehouseService', () => {
+        let service: WarehouseService;
     
-     [Test]
-    public void CreatingWarehouseIdWithJustNumericCharacters()
-    {
-        var ex = Assert.Throws<BusinessRuleValidationException>(() => new WarehouseId("111"));
-        Assert.That(ex.Message, Is.EqualTo("The Id must be alphanumeric"));
-    }
+        beforeEach(() => {
+          TestBed.configureTestingModule({});
+          service = TestBed.inject(WarehouseService);
+        });
     
-    [Test]
-    public void CreatingWarehouseIdWithJustAlphabeticCharacters()
-    {
-        var ex = Assert.Throws<BusinessRuleValidationException>(() => new WarehouseId("CCC"));
-        Assert.That(ex.Message, Is.EqualTo("The Id must be alphanumeric"));
-    }
+        it('should be created', () => {
+          expect(service).toBeTruthy();
+        });
+    
+        it('should get a warehouse', async () => {
+          const response = {
+              "id": "TH1",
+              "address": "Rua António Bernardino,47,4535-334,Porto",
+              "altitude": 250,
+              "latitude": "40.9321º N",
+              "longitude": "8.2451º W",
+              "designation": "Arouca",
+              "city": "1",
+            json () {
+              return this;
+            }
+          };
+    
+          const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    
+          const warehouse = await service.getWarehouse('TH1');
+          expect(fetchSpy).toHaveBeenCalled();
+          expect(warehouse).toEqual(response);
+        });
+    
+    
+        it('should create a warehouse', async () => {
+          const response = {
+            "status": 200,
+          };
+    
+          const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    
+          const status = await service.createWarehouse('TH1');
+          expect(fetchSpy).toHaveBeenCalled();
+          expect(status.status).toEqual(200);
+        });
+    
+        it('should create a warehouse prolog', async () => {
+          const response = {
+            "status": 201,
+          };
+    
+          const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    
+          const status = await service.createWarehouseProlog('TH1');
+          expect(fetchSpy).toHaveBeenCalled();
+          expect(status.status).toEqual(201);
+    
+        });
+    
+        it('should update a warehouse', async () => {
+          const response = {
+            "status": 200,
+          };
+    
+          const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    
+          const status = await service.updateWarehouse('TH1');
+          expect(fetchSpy).toHaveBeenCalled();
+          expect(status.status).toEqual(200);
+        });
+    
+        it('should update a warehouse prolog', async () => {
+          const response = {
+            "status": 200,
+          };
+    
+          const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    
+          const status = await service.updateWarehouseProlog('TH1');
+          expect(fetchSpy).toHaveBeenCalled();
+          expect(status.status).toEqual(200);
+        });
+    
+    
+        it('should get all warehouses', async () => {
+          const response = {
+            "warehouses": [
+              {
+                "id": "TH1",
+                "address": "Rua António Bernardino,47,4535-334,Porto",
+                "altitude": 250,
+                "latitude": "40.9321º N",
+                "longitude": "8.2451º W",
+                "designation": "Arouca",
+                "city": "1",
+              }
+            ],
+            json () {
+              return this;
+            }
+          };
+    
+          const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    
+          const trucks = await service.getAllWarehouses();
+          expect(fetchSpy).toHaveBeenCalled();
+          expect(trucks).toEqual(response);
+        });
+    
+        it('should send a fetch without data', async () => {
+    
+          const status = await service.sendFetch('test', 'GET', null);
+          expect(status.status).toEqual(404);
+        });
+    
+        it('should send a fetch with data', async () => {
+          const status = await service.sendFetch('test', 'POST', "null");
+          expect(status.status).toEqual(404);
+        });
+
+    });
+
 
 # 4. Implementação
 

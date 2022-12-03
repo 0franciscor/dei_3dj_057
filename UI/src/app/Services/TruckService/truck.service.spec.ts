@@ -9,8 +9,6 @@ describe('TruckService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(TruckService);
     
-
-
   });
 
   it('should be created', () => {

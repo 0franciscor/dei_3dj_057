@@ -18,6 +18,10 @@ export default (app: Router) => {
     route.post('/',(req,res,next)=>ctrl.createPath(req,res,next)
     
     );
+
+    route.post('/prolog',(req,res,next)=>ctrl.createPathProlog(req,res,next)
+    
+    );
     
  
 };
