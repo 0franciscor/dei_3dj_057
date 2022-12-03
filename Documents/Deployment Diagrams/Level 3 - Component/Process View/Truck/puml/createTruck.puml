@@ -1,0 +1,109 @@
+@startuml createTruckSD
+
+autonumber
+!pragma teoz true
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+box "<<Container(C4)>>\n           UI" #SandyBrown
+participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
+participant "CreateTruckComponent" as CreateTruckComponent <<Component(C4)>>
+participant "TruckService" as TruckService <<Component(C4)>>
+end box
+
+box "<<System(C4)>>\n       System" #LightGray
+participant Auth as  Auth <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightCyan
+participant TruckRoute as Route <<Component(C4)>>
+participant TruckController as Controller <<Component(C4)>>
+participant TruckService as Service <<Component(C4)>>
+participant TruckRepository as Repository <<Component(C4)>>
+participant Persistance as Persistance <<Component(C4)>>
+end box
+
+
+
+activate manager
+
+manager -> FleetManagerComponent: Asks to create a new Truck
+activate FleetManagerComponent
+FleetManagerComponent -> CreateTruckComponent: navigate to CreateTruckComponent
+activate CreateTruckComponent
+CreateTruckComponent --> manager: Asks for info about new Truck
+
+manager ->CreateTruckComponent: Inserts Truck info
+
+CreateTruckComponent -> TruckService: createTruck(Truck)
+activate TruckService
+TruckService -> Auth: POST createTruck(TruckInfo)
+
+activate Auth
+
+Auth -> Route: POST createTruck(TruckInfo)
+activate Route
+Route -> Controller :POST createTruck(TruckInfo)
+activate Controller
+
+alt Truck doesn't exist 
+
+Controller -> Service: createTruck(TruckInfo)
+activate Service
+
+Service -> Repository: getTruckById(TruckInfo.id)
+activate Repository
+
+Repository -> Persistance: findOne(TruckInfo.id)
+activate Persistance
+Persistance -> Repository: null
+Repository->Service: null
+
+Service -> Repository: save(TruckInfo)
+Repository -> Persistance:save(TruckInfo)
+Persistance->Repository: true
+Repository->Service: TruckInfo
+Service->Controller: TruckInfo
+Controller->Route: 201 CREATED + TruckInfo
+Route->Auth: 201 CREATED
+Auth->TruckService: 201 CREATED
+TruckService->CreateTruckComponent: 201 CREATED
+
+CreateTruckComponent-->manager: Informs about truck successfully created
+CreateTruckComponent->FleetManagerComponent: navigate to FleetManagerComponent
+
+
+
+else Truck already exists
+
+Controller -> Service: createTruck(TruckInfo)
+
+
+Service -> Repository: getTruckById(TruckInfo.id)
+
+
+Repository -> Persistance: findOne(TruckInfo.id)
+Persistance-> Repository: Truck
+deactivate Persistance
+Repository->Service: Truck
+deactivate Repository
+Service->Controller: error, Truck already exists
+deactivate Service
+Controller->Route: 409 CONFLIT, Truck already exists
+deactivate Controller
+Route->Auth: 409 CONFLIT, Truck already exists
+deactivate Route
+Auth->TruckService: 409 CONFLIT, Truck already exists
+deactivate Auth
+
+TruckService->CreateTruckComponent: 409 CONFLIT, Truck already exists
+deactivate TruckService
+CreateTruckComponent-->manager: Informs about failure creating new Truck
+CreateTruckComponent->FleetManagerComponent: navigate to FleetManagerComponent
+deactivate FleetManagerComponent
+deactivate CreateTruckComponent
+deactivate Manager
+@enduml

@@ -25,7 +25,6 @@ export class GetWarehousesComponent implements OnInit {
     this.warehouseService.getAllWarehouses().then((data) => {
       this.warehouseList = data;
       this.dataSource = this.warehouseList;
-      console.log(this.warehouseList);
     });
   }
   

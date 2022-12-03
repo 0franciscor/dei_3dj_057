@@ -22,7 +22,7 @@ export class RoadNetworkService {
 
   async getPathBetweenWarehouses(warehouse1: string) {
 
-    const url = this.urlOrigin+"api/path/all/" + warehouse1;
+    const url = this.urlOrigin+"api/path/all/" + warehouse1+"/undefined";
    
     const response = await fetch(url, {
       method: 'GET'

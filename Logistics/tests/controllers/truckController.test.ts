@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import {Response, Request, NextFunction} from 'express';
 import { Container } from 'typedi';
-import config from '../../config';
 import { Result }  from '../../src/core/logic/Result';
 import * as sinon from 'sinon';
 import TruckController from '../../src/controllers/truckController';
@@ -9,9 +8,7 @@ import ITruckService from '../../src/services/IServices/ITruckService';
 import { ITruckDTO } from '../../src/dto/ITruckDTO';
 import { ITruckPersistence } from "../../src/dataschema/ITruckPersistence";
 import 'mocha';
-import { Document, FilterQuery, Model } from 'mongoose';
-import {expect} from "chai";
-import { json } from "body-parser";
+import { Document } from 'mongoose';
 import { TruckMap } from "../../src/mappers/TruckMap";
 import { Truck } from "../../src/domain/truck/Truck";
 
