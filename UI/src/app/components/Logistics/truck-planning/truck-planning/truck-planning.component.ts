@@ -56,23 +56,32 @@ export class TruckPlanningComponent implements OnInit {
     let answer = await this.planningService.getBestPath(this.formPlanning.value.truckName, this.finaldate)
     this.showPlan=await answer.json()
     this.infoList= this.showPlan.info
-    console.log(this.showPlan)
+    
 
   }
 
   async getHighestMassFirst(){
+    this.onSubmit();
     let answer = await this.planningService.getHighestMassFirst(this.finaldate)
-    console.log(answer)
+    this.showPlan=await answer.json()
+    this.infoList= this.showPlan.info
+    
   }
 
   async getClosestWarehouse(){
+    this.onSubmit();
     let answer = await this.planningService.getClosestWarehouse(this.finaldate)
-    console.log("123")
+    this.showPlan=await answer.json()
+    this.infoList= this.showPlan.info
+    
   }
 
   async getCheapestPath(){
+    this.onSubmit();
     let answer = await this.planningService.getCheapestPath(this.finaldate)
-    console.log(answer)
+    this.showPlan=await answer.json()
+    this.infoList= this.showPlan.info
+    
   }
 
    formatDate(date: Date) {

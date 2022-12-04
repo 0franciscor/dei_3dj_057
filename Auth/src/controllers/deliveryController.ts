@@ -155,6 +155,7 @@ export default class DeliveryController implements IDeliveryController {
     public async getDeliveryDestination(req: Request, res: Response, next: NextFunction){
         let deliveredWarehouseList :any[]=[]
         let deliveriesMoved : any[]=[]
+        console.log(req.body.pathList)
 
         let plan = {
             truck : "eTruck01",

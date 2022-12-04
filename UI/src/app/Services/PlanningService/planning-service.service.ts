@@ -32,11 +32,21 @@ export class PlanningService{
   async getHighestMassFirst(date: any){
     const url = this.urlOrigin+'api/planning/heuristicMass'
     const data={
-      date: date,
+      date: date, 
     }
+    console.log(data)
 
     const response = await this.sendFetch(url,'POST',data);
-    return response 
+    const pathlist=await response.json();
+    console.log(pathlist.bestRoute)
+
+   
+      const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      const body= {pathList:pathlist.bestRoute, date:date}
+      const plan = await this.sendFetch(url2,'POST',body)
+    
+    
+    return plan 
   }
 
   async getClosestWarehouse(date: any){
@@ -46,7 +56,16 @@ export class PlanningService{
     }
 
     const response = await this.sendFetch(url,'POST',data);
-    return response 
+    const pathlist=await response.json();
+    console.log(pathlist)
+
+   
+      const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      const body= {pathList:pathlist.bestRoute, date:date}
+      const plan = await this.sendFetch(url2,'POST',body)
+    
+    
+    return plan 
   }
 
   async getCheapestPath(date: any){
@@ -54,9 +73,17 @@ export class PlanningService{
     const data={
       date: date,
     }
-
     const response = await this.sendFetch(url,'POST',data);
-    return response 
+    const pathlist=await response.json();
+    console.log(pathlist)
+
+   
+      const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      const body= {pathList:pathlist.bestRoute, date:date}
+      const plan = await this.sendFetch(url2,'POST',body)
+    
+    
+    return plan 
   }
 
   async sendFetch(url: string, method: string, data: any) {
