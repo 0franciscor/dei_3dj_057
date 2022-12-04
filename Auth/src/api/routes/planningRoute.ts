@@ -10,7 +10,7 @@ const route = Router();
 export default (app: Router) => {
     app.use('/planning', route);
 
-    const ctrl = Container.get(config.controllers.path.name) as IPlanningController;
+    const ctrl = Container.get(config.controllers.planning.name) as IPlanningController;
 
 
     route.post('/bestPath',

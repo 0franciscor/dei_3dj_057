@@ -64,6 +64,10 @@ export default {
     truck: {
       name: "truckController",
       path:"../controllers/truckController"
+    },
+    planning:{
+      name:"planningController",
+      path:"../controllers/planningController"
     }
   },
 

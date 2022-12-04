@@ -146,7 +146,7 @@ public class WarehouseControllerTest
         }
     }*/
 
-    [Test]
+    /*[Test]
     public async Task PutTest()
     {
         var warehouse = new Warehouse(new WarehouseId(id + "1"), new Address(address),
@@ -179,7 +179,7 @@ public class WarehouseControllerTest
 
             Assert.That(warehouseResult.Altitude, Is.EqualTo(newAltitude));
         }
-    }
+    }*/
 
     [Test]
     public async Task DeleteTest()
