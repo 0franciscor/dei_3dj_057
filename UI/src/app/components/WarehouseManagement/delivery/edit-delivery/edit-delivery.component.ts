@@ -25,10 +25,10 @@ export class EditDeliveryComponent implements OnInit {
   selectedDelivery = {
     deliveryID: "",
     deliveryDate: undefined,
+    deliveryMass: undefined,
+    destination: undefined,
     loadTime: undefined,
     unloadTime: undefined,
-    destination: undefined,
-    deliveryMass: undefined,
   }
 
   goBack(){
