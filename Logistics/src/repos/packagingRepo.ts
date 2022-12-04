@@ -26,7 +26,7 @@ export default class PackagingRepo implements IPackagingRepo {
     }
 
     public async save(Packaging: Packaging): Promise<Packaging> {
-        const query = { PackagingID: Packaging.packagingID.id};
+        const query = { packagingID: Packaging.packagingID.id};
         const PackagingDocument = await this.PackagingSchema.findOne( query as FilterQuery<IPackagingPersistence & Document> );
         try {
             if(PackagingDocument === null) {
@@ -47,7 +47,7 @@ export default class PackagingRepo implements IPackagingRepo {
     }
 
     public async delete(Packaging: Packaging): Promise<Packaging> {
-        const query = { PackagingID: Packaging.packagingID.id};
+        const query = { packagingID: Packaging.packagingID.id};
         const PackagingDocument = await this.PackagingSchema.findOne( query as FilterQuery<IPackagingPersistence & Document> );
         try {
             if(PackagingDocument === null) {
@@ -64,12 +64,13 @@ export default class PackagingRepo implements IPackagingRepo {
     }
 
     public async getPackagingById(id: string): Promise<Packaging> {
-        const query = { PackagingID: id};
+        const query = { packagingID: id};
         const PackagingDocument = await this.PackagingSchema.findOne( query as FilterQuery<IPackagingPersistence & Document> );
         if(PackagingDocument === null) {
             return null;
         }
         else{
+            
             return PackagingMap.toDomain(PackagingDocument);
         }
     }

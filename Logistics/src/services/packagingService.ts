@@ -36,11 +36,16 @@ export default class PackagingService implements IPackagingService {
     
     public async createPackaging(packagingDTO: IPackagingDTO): Promise<Result<IPackagingDTO>> {
         try {
-            const packaging = await this.packagingRepo.getPackagingById(packagingDTO.packagingID);
-            if(packaging !== null)
-                return Result.fail<IPackagingDTO>("Packaging already exists");
             
+            const packaging = await this.packagingRepo.getPackagingById(packagingDTO.packagingID);
+            
+            if(packaging !== null){
+                
+                return Result.fail<IPackagingDTO>("Packaging already exists");
+            }
+                
             const packagingOrError = Packaging.create(packagingDTO);
+            
             if (packagingOrError.isFailure) {
                 return Result.fail<IPackagingDTO>(packagingOrError.error);
             }

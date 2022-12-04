@@ -75,7 +75,7 @@ export class Packaging extends AggregateRoot<PackagingProps> {
 
   public static create (PackagingDTO:IPackagingDTO , id?: UniqueEntityID): Result<Packaging> {
 
-      
+         
 
       try {
         const packaging = new Packaging({

@@ -40,11 +40,14 @@ export class TripMap extends Mapper<Trip> {
     }
 
     public static toPersistence(trip: Trip): any{
-
+        // string array
+        
         let pathToStringList :string[] = [];
         trip.pathIDlist.forEach(pathID => {
             pathToStringList.push(pathID.id);
         });
+        console.log("pathToStringList", pathToStringList);
+        
         return {
             id: trip.id.toString(),
             tripID: trip.tripID.id,

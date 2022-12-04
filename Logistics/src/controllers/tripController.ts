@@ -44,6 +44,7 @@ export default class TripController implements ITripController{
     public async getAllTrips(req: Request, res: Response ,next: NextFunction) {
         try {
             const trips = await this.tripService.getAllTrips();
+            console.log("trips: ", trips);
             if(trips.isFailure)
             return res.status(404).send("Trip not found");
 
@@ -57,6 +58,7 @@ export default class TripController implements ITripController{
 
     public async createTrip(req: Request, res: Response, next: NextFunction) {
       try{
+        
         if(req.body.tripID == null)
             return res.status(400).send("TripID is required");
             
@@ -75,14 +77,14 @@ export default class TripController implements ITripController{
                 return res.status(404).send("Packaging not found");
             }
 
-
+            
             const tripOrError = await this.tripService.createTrip(req.body as ITripDTO) as Result<ITripDTO>;
             if(tripOrError.isFailure){
                 return res.status(409).send("Trip already exists");
             }
-
+            console.log("tripOrError: ", tripOrError);
             const tripDTO = tripOrError.getValue();
-
+            console.log("tripDTO: ", tripDTO);
             return res.status(201).json(tripDTO);
 
 
