@@ -18,6 +18,9 @@ export default (app: Router) => {
         ctrl.getAllDeliveries(req,res,next)
     });
 
+    route.post("/getDeliveryDestination",(req,res,next)=>{
+        ctrl.getDeliveryDestination(req,res,next)
+    })
     route.get('/allProlog', (req,res,next)=>
     {
         ctrl.getAllDeliveriesProlog(req,res,next)

@@ -1,0 +1,81 @@
+<p>truck-planning-component works!</p>
+<div class="main-div">
+    <mat-card class="matCardCreate">
+            <mat-card-header>
+
+                <mat-card-title class="tituloForm">
+                    <h2>Getting a truck plan</h2>
+                    <h4 class="animation a2">Please enter the information in the fields below</h4>
+                </mat-card-title>
+               
+            </mat-card-header>
+            <form [formGroup]="formPlanning" (ngSubmit)="onSubmit()">
+                <mat-form-field>
+                    <mat-label>Truck</mat-label>
+                    
+                    <select matNativeControl name="truck" [(ngModel)]="truck" formControlName="truckName">
+                    <option value="" selected disabled></option>
+                    <option [value]="truck" >
+                        eTruck01
+                    </option>
+                    </select>
+                </mat-form-field>
+            <br>
+                
+            <br>
+                <mat-form-field class="planDate" appearance="fill">
+
+                    <mat-label>Choose a date</mat-label>
+
+                    <input matInput [matDatepicker]="picker" formControlName="planDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+
+                    <mat-datepicker-toggle class="datePickerIcon" matIconSuffix [for]="picker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                </mat-form-field>
+             
+            </form> 
+            
+        </mat-card>
+
+    <div class="row">
+        <div class="col-3 col-s-3 menu">
+          <ul>
+            <li (click)="getBestPath()"> Find best path</li>
+            <li (click)="getHighestMassFirst()">Highest Mass first path</li>
+            <li (click)="getClosestWarehouse()"> Closest warehouse path</li>
+            <li (click)="getCheapestPath()">Cheapest Mass/Distance path</li>
+          </ul>
+        
+    </div>
+   
+    <div class="col-3 col-s-12">
+        <div class="aside">
+            <img src="./assets/truck_gif_2.gif">
+        </div>
+     </div>
+
+    
+     <div class="print-info">
+        <mat-card class="planinfo-card" *ngIf="showPlan">
+            <mat-card-title>Plan information</mat-card-title>
+            
+            <mat-card-content>
+              <p>Truck Name: {{showPlan.truck}}</p>
+
+              <div *ngFor="let info of infoList">
+                <br>
+                <p> Warehouse:{{info.warehouse}}</p>
+                <p> Delivery:{{info.delivery}}</p>
+                <br>
+              </div>
+              
+              <button mat-button (click)="savePlan()">Save</button>
+            </mat-card-content>
+        </mat-card>                
+
+    </div>
+    
+</div>

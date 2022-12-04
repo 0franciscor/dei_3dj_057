@@ -70,11 +70,12 @@ export class Trip extends AggregateRoot<TripProps> {
         try{
 
             let list:PathID[]=[];
-
-            tripDTO.pathIDlist.forEach(element => {
-                list.push(PathID.create(element).getValue(),)
-                      
-            });
+            console.log("tripDTO.pathIDlist: ", tripDTO.pathIDlist);
+            if(tripDTO.pathIDlist)
+                tripDTO.pathIDlist.forEach(element => {
+                    list.push(PathID.create(element).getValue())
+                        
+                });
 
             const trip = new Trip({
                 tripID: TripID.create(tripDTO.tripID).getValue(),

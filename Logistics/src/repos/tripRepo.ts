@@ -28,17 +28,21 @@ export default class TripRepo implements ITripRepo {
     }
 
     public async save(trip: Trip): Promise<Trip> {
+        
         const query = { tripID: trip.tripID.id };
         
         const tripDocument = await this.tripSchema.findOne( query as FilterQuery<ITripPersistence & Document>);
-       
+        
         try {
             
             if(tripDocument === null) {
                 const rawTrip: any = TripMap.toPersistence(trip);
+                console.log("rawTrip", rawTrip);
                 const tripCreated = await this.tripSchema.create(rawTrip);
                 console.log("tripCreated", tripCreated);
-                return TripMap.toDomain(tripCreated);
+                const tripCreatedDomain = TripMap.toDomain(tripCreated);
+                console.log("tripCreatedDomain", tripCreatedDomain);
+                return tripCreatedDomain;
             }
             else{
 
@@ -93,6 +97,7 @@ export default class TripRepo implements ITripRepo {
 
     public async getAllTrips(): Promise<Trip[]> {
         const tripDocument = await this.tripSchema.find();
+        
         let trips: Trip[] = [];
         tripDocument.forEach(trip => {
             trips.push(TripMap.toDomain(trip));

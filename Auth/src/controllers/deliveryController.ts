@@ -152,5 +152,74 @@ export default class DeliveryController implements IDeliveryController {
         return res.json(info);
     }
 
-    
+    public async getDeliveryDestination(req: Request, res: Response, next: NextFunction){
+        let deliveredWarehouseList :any[]=[]
+        let deliveriesMoved : any[]=[]
+        
+
+        let plan = {
+            truck : "eTruck01",
+            info:[]
+            
+        }
+        
+        const httpAgent = new http.Agent({ rejectUnauthorized: false });
+       //GET DELIVERIES
+        const address = 'https://localhost:5001/api/deliveries/GetAll';
+
+        const responseDeliveries = await fetch(address, {
+            method: 'GET',
+            agent: httpAgent
+        });
+
+        if (responseDeliveries.status != 200) {
+            res.status(responseDeliveries.status);
+            return res.json({ message: "Error Getting Deliveries" });
+        }
+        const deliveries = await responseDeliveries.json();
+
+        // GET WAREHOUSES
+        const warehousesAddress = 'https://localhost:5001/api/warehouses/GetAll'
+        const responseWarehouse = await fetch(warehousesAddress, {
+            method: 'GET',
+            agent: httpAgent
+        });
+        if (responseWarehouse.status != 200) {
+            res.status(responseWarehouse.status);
+            return res.json({ message: "Error Getting Warehouses" });
+        }
+        const warehouses= await responseWarehouse.json()
+        for(let j=0; j< req.body.pathList.length; j++)
+            for(let i=0;i< warehouses.length; i++ ){
+                if(warehouses[i].city == req.body.pathList[j]){
+                    deliveredWarehouseList.push(warehouses[i]);
+                }
+            }
+            
+          
+            for(let x =0 ;x< req.body.pathList.length; x++){
+                for( let y=0; y< deliveries.length ;y++){
+                   let firstsplit= deliveries[y].deliveryDate.split('T');
+                   
+                    let secondSplit= firstsplit[0].split('-');
+                    if( secondSplit[2].charAt(0)=='0'){
+                        secondSplit[2]= secondSplit[2].charAt(1)
+                    }
+                    if(deliveries[y].destination == req.body.pathList[x] && req.body.date== secondSplit[0]+secondSplit[1]+secondSplit[2]){
+                        
+                        deliveriesMoved.push(deliveries[y])
+                    }
+                }
+        }
+        
+        for(let l=1; l<deliveredWarehouseList.length-1; l++){
+            plan.info.push({
+                warehouse: deliveredWarehouseList[l].id,
+                delivery: deliveriesMoved[l-1].deliveryID
+            })
+        }
+        // console.log(plan)
+        res.status(200);
+        return res.json(plan);
+    }
 }

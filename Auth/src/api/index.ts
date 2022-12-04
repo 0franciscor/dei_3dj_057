@@ -6,6 +6,7 @@ import warehouseRoute from './routes/warehouseRoute';
 import deliveryRoute from './routes/deliveryRoute';
 import truckRoute from './routes/truckRoute';
 import planningRoute from './routes/planningRoute';
+import tripRoute from './routes/tripRoute';
 
 export default () => {
 	const app = Router();
@@ -16,6 +17,6 @@ export default () => {
 	deliveryRoute(app);
 	roleRoute(app)
 	planningRoute(app);
-	
+	tripRoute(app)
     return app;
 }

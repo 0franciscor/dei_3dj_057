@@ -32,6 +32,7 @@ import { EditDeliveryComponent } from './components/WarehouseManagement/delivery
 import { EditWarehouseComponent, EditWarehouseComponentDialog} from './components/WarehouseManagement/warehouse/edit-warehouse/edit-warehouse.component';
 import { CreateWarehouseComponent, CreateWarehouseComponentDialog } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
 import { GetWarehousesComponent } from './components/WarehouseManagement/warehouse/get-warehouses/get-warehouses.component';
+import { TruckPlanningComponent } from './components/Logistics/truck-planning/truck-planning/truck-planning.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { GetWarehousesComponent } from './components/WarehouseManagement/warehou
     EditWarehouseComponentDialog,
     CreateWarehouseComponent,
     CreateWarehouseComponentDialog,
-    GetWarehousesComponent
+    GetWarehousesComponent,
+    TruckPlanningComponent
   ],
   imports: [
     BrowserModule,

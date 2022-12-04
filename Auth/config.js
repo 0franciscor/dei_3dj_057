@@ -68,6 +68,10 @@ export default {
     planning:{
       name:"planningController",
       path:"../controllers/planningController"
+    },
+    trip:{
+      name:"tripController",
+      path:"../controllers/tripController"
     }
   },
 

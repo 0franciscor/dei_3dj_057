@@ -10,7 +10,6 @@ const TripSchema = new mongoose.Schema(
 
         tripID: {
             type: String,
-            unique: true,
             required: true
 
         },
@@ -20,8 +19,8 @@ const TripSchema = new mongoose.Schema(
             required: true
         },
 
-        pathIDlist: {
-            type: Array,
+        pathIDList: {
+            type: [String],
             required: true
         },
 

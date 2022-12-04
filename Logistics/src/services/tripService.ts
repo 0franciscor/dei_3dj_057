@@ -33,7 +33,7 @@ export default class TripService implements ITripService {
 
     public async createTrip(tripDTO: ITripDTO): Promise<Result<ITripDTO>> {
         try{
-            console.log(tripDTO);
+            
             const trip = await this.tripRepo.getTripById(tripDTO.tripID);
             
             if(trip !== null)
@@ -43,7 +43,9 @@ export default class TripService implements ITripService {
             if(tripOrError.isFailure) {
                 return Result.fail<ITripDTO>(tripOrError.error);
             }
+            console.log(tripOrError);
             const tripResult = tripOrError.getValue();
+            console.log("tripResult", tripResult);
             const test = await this.tripRepo.save(tripResult);
             console.log("test", test);
             const tripDTOResult = TripMap.toDTO(tripResult) as ITripDTO;
