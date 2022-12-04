@@ -136,10 +136,10 @@ describe('DeliveryService', () => {
       }
     };
 
-    const fetcgSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
     const deliveries = await service.getDeliveries();
-    expect(fetcgSpy).toHaveBeenCalled();
+    expect(fetchSpy).toHaveBeenCalled();
     expect(deliveries).toEqual(response);
   });
 
