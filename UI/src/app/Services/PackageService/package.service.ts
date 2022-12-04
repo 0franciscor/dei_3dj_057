@@ -23,15 +23,18 @@ export class PackagingService {
   }
 
   async createPackage(packageL:any){
-    const url= 'http://localhost:3001/api/packaging/'
+    const url= 'http://localhost:3000/api/packaging/'
     const data = packageL;
-    console.log(data)
-    fetch(url, {
+    console.log(data);
+    console.log(JSON.stringify(data));
+    const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json'
         },
  })
+
+ return response;
 }
 }

@@ -23,11 +23,13 @@ async createPackage(req: Request, res:Response, next: NextFunction) {
     })
     if(response.status != 201){
       res.status(response.status);
-      return res.json({message: "Error creating truck"});
+      return res.json({message: "Error creating Package"});
     }
     const info = await response.json();
     res.status(201);
+    console.log(info);
     return res.json(info);
+
 
   };
 

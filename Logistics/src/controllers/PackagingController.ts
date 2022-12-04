@@ -80,6 +80,8 @@ export default class PackagingController implements IPackagingController {
             }
 
             const packagingDTO = packagingOrError.getValue();
+
+            console.log(packagingDTO);
             
             return res.status(201).json( packagingDTO );
 
