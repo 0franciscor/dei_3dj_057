@@ -8,6 +8,7 @@
       <button mat-raised-button color="warn" style="width: 10em; height: 10em;"  aria-label="Example icon button with a home icon" (click)="goToCreatePath()">
         Create Path
       </button>
+      
       <!--Select path by WH id's-->
       <div class="Search-paths-form">
         <form [formGroup]="formSelectWarehouse"(ngSubmit)="onSubmit()" >
@@ -26,6 +27,9 @@
           </div>
         </form>
       </div>
+      <button mat-raised-button color="warn" style="width: 10em; height: 10em; left: 72.5em; "  aria-label="Example icon button with a home icon" (click)="goToCreatePackage()">
+        Create Package
+      </button>
     </div>
         <!--display selectedPath info-->
          <div class="pathTable">
@@ -53,19 +57,24 @@
             </table>
          </div>
       
-
+        <div class ="Truck-planning-btn">
+          <button mat-raised-button color="primary" style="left: 80.5em ;top: -10em " (click)="goToPackageList()" >
+            See Packages created
+          </button>
+        </div>
+      
       <!--Road network button-->
       <div class ="road-network-btn">
         <button mat-raised-button (click)="goToRoadNetwork()" color="primary">
             See Road Network
         </button>
-    </div>
+      </div>
 
     <!--Truck Planning button-->
-    <div class ="Truck-planning-btn">
-      <button mat-raised-button (click)="goToTruckPlanning()" color="primary">
-          Truck planning
-      </button>
-  </div>
+      <div class ="Truck-planning-btn">
+        <button mat-raised-button (click)="goToTruckPlanning()" color="primary">
+            Truck planning
+        </button>
+      </div>
     </mat-card-actions>
   </mat-card>

@@ -42,7 +42,8 @@ export default class PackagingController implements IPackagingController {
             if (packaging.isFailure)
                 return res.status(404).send("Packaging not found");
 
-            res.status(200).json(packaging);
+            res.status(200).json(packaging.getValue());
+            
         } catch (e) {
             next(e);
         }
@@ -82,6 +83,8 @@ export default class PackagingController implements IPackagingController {
             }
 
             const packagingDTO = packagingOrError.getValue();
+
+            console.log(packagingDTO);
             
             return res.status(201).json( packagingDTO );
 

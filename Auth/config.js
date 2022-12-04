@@ -72,6 +72,10 @@ export default {
     trip:{
       name:"tripController",
       path:"../controllers/tripController"
+    },
+    package: {
+      name: "packageController",
+      path: "../controllers/packageController"
     }
   },
 
