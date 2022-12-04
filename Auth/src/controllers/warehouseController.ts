@@ -8,18 +8,33 @@ const http = require('https');
 export default class WarehouseController implements IWarehouseController {
   constructor() {}
 
+  private async fetch(url : string, method: string, body: any, agent: any = null){
+   
+    if(body)
+      return await fetch(url,{
+        method : method,
+        body : JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        agent: agent
+      });
+    else
+      return await fetch(url,{
+        method : method,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        agent: agent
+      });
+  }
 
   public async getAllWarehouse(req: Request, res: Response, next: NextFunction){
     
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const address = 'https://localhost:5001/api/warehouses/GetAll';
 
-    
-    const response = await fetch(address, {
-        method: 'GET',
-        agent: httpAgent
-    });
-    
+    const response = await this.fetch(address, 'GET', null, httpAgent); 
     
     if (response.status != 200) {
       res.status(response.status);
@@ -37,11 +52,7 @@ export default class WarehouseController implements IWarehouseController {
     const address = 'https://localhost:5001/api/warehouses/GetAllCities';
 
     
-    const response = await fetch(address, {
-        method: 'GET',
-        agent: httpAgent
-    });
-    
+    const response = await this.fetch(address, 'GET', null, httpAgent); 
     
     if (response.status != 200) {
       res.status(response.status);
@@ -58,21 +69,18 @@ export default class WarehouseController implements IWarehouseController {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const address = 'https://localhost:5001/api/warehouses/CreateWarehouse';
 
-      const response = await fetch(address,{
-          method: 'POST',
-          body: JSON.stringify(req.body),
-          headers: { 'Content-Type': 'application/json' },
-          agent: httpAgent
-      });
+    const data = req.body;
 
-      if(response.status != 200){
-        res.status(response.status);
-        return res.json({message: "Error creating warehouse"});
-      }
+    const response = await this.fetch(address, 'POST', data, httpAgent); 
 
-      const info = await response.json();
-      res.status(201);
-      return res.json(info);
+    if(response.status != 200){
+      res.status(response.status);
+      return res.json({message: "Error creating warehouse"});
+    }
+
+    const info = await response.json();
+    res.status(201);
+    return res.json(info);
   }
 
     public async createWarehouseProlog(req: Request, res: Response, next: NextFunction){
@@ -81,14 +89,11 @@ export default class WarehouseController implements IWarehouseController {
 
       const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
 
-      const response_prolog = await fetch(address_prolog,{
-          method: 'POST',
-          body: JSON.stringify(req.body),
-          headers: { 'Content-Type': 'application/json' },
-          agent: httpAgent
-      });
+      const data = req.body;
 
-      const info = await response_prolog.json();
+      const response = await this.fetch(address_prolog, 'POST', data, httpAgent); 
+
+      const info = await response.json();
       res.status(201);
       return res.json(info);
     }
@@ -98,13 +103,8 @@ export default class WarehouseController implements IWarehouseController {
 
     const url = 'https://localhost:5001/api/warehouses/GetById/'+req.params.id;
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-      agent: httpAgent
-    });
+    const response = await this.fetch(url, 'GET', null, httpAgent);
+
     if(response.status != 200){
       res.status(response.status);
       return res.json({message: "Error getting warehouse"});
@@ -120,30 +120,12 @@ export default class WarehouseController implements IWarehouseController {
 
     const url = 'https://localhost:5001/api/warehouses/Update';
     
-    const response = await fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(req.body),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      agent: httpAgent
-    })
+    const response = await this.fetch(url, 'PUT', null, httpAgent);
 
     if(response.status != 200){
       res.status(response.status);
       return res.json({message: "Error updating warehouse"});
     }
-
-    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
-    
-    const response_prolog = await fetch(url_prolog, {
-      method: 'PUT',
-      body: JSON.stringify(req.body),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      agent: httpAgent
-    })
 
     const info = await response.json();
     res.status(200);
@@ -155,20 +137,13 @@ export default class WarehouseController implements IWarehouseController {
 
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
     
-    const response_prolog = await fetch(url_prolog, {
-      method: 'PUT',
-      body: JSON.stringify(req.body),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      agent: httpAgent
-    })
+    const response = await this.fetch(url_prolog, 'PUT', null, httpAgent);
 
-    if(response_prolog.status != 200){
-      res.status(response_prolog.status);
+    if(response.status != 200){
+      res.status(response.status);
       return res.json({message: "Error updating warehouse"});
     }
-    const info = await response_prolog.json();
+    const info = await response.json();
     res.status(200);
     return res.json(info);
   }
