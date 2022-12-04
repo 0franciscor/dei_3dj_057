@@ -1,0 +1,90 @@
+@startuml updateDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<Container(C4)>>\n       User Interface" #LightYellow
+participant GetDeliveriesComponent as getDeliveriesComponent <<Component(C4)>>
+participant EditDeliveryComponent as editDeliveryComponent <<Component(C4)>>
+participant DeliveryService as deliveryService <<Component(C4)>>
+end box
+
+box "<<System(C4)>>\n   System" #Grey
+participant Auth as auth <<Container(C4)>>
+box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+participant DeliveryController as  CTL <<Component(C4)>>
+participant DeliveryService as  SV <<Component(C4)>>
+participant "Delivery : Delivery" as  delivery <<Component(C4)>>
+participant "DeliveryDTO : DeliveryDTO" as  DTO <<Component(C4)>>
+participant DeliveryRepository as  DR <<Component(C4)>>
+end box
+
+activate admin
+
+admin -> getDeliveriesComponent: I want to update a Delivery
+activate getDeliveriesComponent
+
+getDeliveriesComponent -> editDeliveryComponent: Navigates to the Edit Delivery page
+activate editDeliveryComponent
+
+editDeliveryComponent --> admin : lists the delivery details
+
+
+admin -> editDeliveryComponent: inserts the information about the new Delivery
+
+
+editDeliveryComponent -> deliveryService: updateDelivery(delivery)
+activate deliveryService
+
+deliveryService -> auth: PATCH updateDelivery(delivery)
+
+activate auth
+
+alt If the Delivery exists in the system
+auth -> CTL: PATCH Patch(DeliveryDTO)
+activate CTL
+CTL -> SV : UpdatingDelivery(DeliveryDto)
+activate SV
+
+SV -> DR: GetByID(DeliveryId)
+activate DR
+DR --> SV: Delivery
+deactivate DR
+
+SV -> delivery : Update(DeliveryDTO)
+activate delivery
+delivery --> SV : delivery 
+deactivate delivery
+
+SV -> DR : commit()
+activate DR
+
+SV --> CTL : toDeliveryDTO()
+deactivate DR
+deactivate SV
+CTL --> auth : DeliveryDto
+
+CTL --> auth: 200 OK
+deactivate CTL
+
+auth --> deliveryService: 200 OK
+deactivate auth
+
+deliveryService --> editDeliveryComponent: 200 OK
+deactivate deliveryService
+
+editDeliveryComponent --> admin: informs about the success of the operation
+
+editDeliveryComponent --> getDeliveriesComponent: Navigates to the Get Deliveries page
+deactivate editDeliveryComponent
+
+deactivate getDeliveriesComponent
+deactivate admin
+
+@enduml

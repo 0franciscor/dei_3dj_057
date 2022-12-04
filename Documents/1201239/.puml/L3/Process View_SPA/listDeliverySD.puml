@@ -1,0 +1,73 @@
+@startuml listDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<Container(C4)>>\n       User Interface" #LightYellow
+participant WarehouseManagerComponent as whComponent <<Component(C4)>>
+participant GetDeliveriesComponent as getDeliveriesComponent <<Component(C4)>>
+participant DeliveryService as deliveryService <<Component(C4)>>
+end box
+
+box "<<System(C4)>>\n   System" #Grey
+participant Auth as auth <<Container(C4)>>
+box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+participant DeliveryController as  CTL <<Component(C4)>>
+participant DeliveryService as  SV <<Component(C4)>>
+participant "Delivery : Delivery" as  delivery <<Component(C4)>>
+participant "DeliveryDTO : DeliveryDTO" as  DTO <<Component(C4)>>
+participant DeliveryRepository as  DR <<Component(C4)>>
+end box
+
+activate admin
+
+admin -> whComponent: I want to see all available deliveries on the system
+activate whComponent
+
+whComponent -> getDeliveriesComponent: Navigates to the Consult Deliveries page
+activate getDeliveriesComponent
+
+getDeliveriesComponent -> deliveryService: getDeliveries()
+activate deliveryService
+
+deliveryService -> auth : getDeliveries()
+activate auth
+
+auth -> CTL: GET GetAll()
+activate CTL
+CTL -> SV : GetDeliveries()
+activate SV
+
+SV -> DR : GetAll()
+activate DR
+
+DR --> SV : deliveryList
+deactivate DR
+
+
+SV --> CTL : deliveryList.toDTO()
+deactivate DR
+
+deactivate SV
+
+CTL --> auth: 200 OK
+deactivate CTL
+
+auth --> deliveryService: 200 OK 
+deactivate auth
+
+deliveryService --> getDeliveriesComponent: displays the deliveries
+
+getDeliveriesComponent --> admin : lists the deliveries
+deactivate getDeliveriesComponent
+
+deactivate whComponent
+deactivate admin
+
+@enduml
