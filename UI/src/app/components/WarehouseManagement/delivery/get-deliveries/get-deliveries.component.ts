@@ -21,6 +21,11 @@ export class GetDeliveriesComponent implements OnInit {
 
     this.deliveryService.getDeliveries().then((data) => {
       this.deliveryList = data;
+      this.deliveryList.forEach((delivery) => {
+        if(delivery.deliveryID == "" || delivery.deliveryID == null) {
+          delivery.deliveryID = "N/A";
+        }
+      });
       this.dataSource = this.deliveryList;
     });
   }
@@ -31,5 +36,4 @@ export class GetDeliveriesComponent implements OnInit {
   goToEditDelivery(deliveryID : string) {
     this.router.navigate(['WarehouseManagement/Delivery/EditDelivery', deliveryID]);
   }
-  
 }
