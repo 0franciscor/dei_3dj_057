@@ -96,4 +96,8 @@ export class LogisticsManagerComponent implements OnInit {
     this.router.navigate(['/Logistics/RoadNetwork']);
   }
 
+  goToTruckPlanning(){
+    this.router.navigate(['/Logistics/TruckPlanning']);
+  }
+
 }

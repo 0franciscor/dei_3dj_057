@@ -15,7 +15,7 @@ import { EditDeliveryComponent } from './components/WarehouseManagement/delivery
 import { EditWarehouseComponent } from './components/WarehouseManagement/warehouse/edit-warehouse/edit-warehouse.component';
 import { CreateWarehouseComponent } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
 import { GetWarehousesComponent } from './components/WarehouseManagement/warehouse/get-warehouses/get-warehouses.component';
-
+import { TruckPlanningComponent } from './components/Logistics/truck-planning/truck-planning/truck-planning.component';
 
 
 const routes: Routes = [
@@ -33,6 +33,7 @@ const routes: Routes = [
   { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent},
   { path: 'WarehouseManagement/Delivery/EditDelivery/:id', component: EditDeliveryComponent},
   { path: 'WarehouseManagement/Warehouse/EditWarehouse/:id', component: EditWarehouseComponent},
+  { path: 'Logistics/TruckPlanning',component: TruckPlanningComponent},
 
 ];
 
