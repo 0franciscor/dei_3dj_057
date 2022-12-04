@@ -1,0 +1,59 @@
+name: Angular Testing and Deployment
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+    AZURE_WEBAPP_NAME: eletricgo57
+    NODE_PATH: './UI'
+    CACHE_PATH: './UI/package-lock.json'
+    NODE_VERSION: '16.17.1'
+
+jobs:
+  BuildAndTestUI:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ${{ env.NODE_PATH }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_PATH }}
+
+      - name: Install
+        run: npm i
+
+      - name: Test
+        run: npm test --if-present
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: node-app
+          path: ${{ env.NODE_PATH }}
+      
+  Deployment:
+    runs-on: windows-latest
+    needs: [BuildAndTestUI]
+    environment:
+      name: 'production'
+      url: ${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net
+
+    defaults:
+      run:
+        working-directory: ${{ env.NODE_PATH }}
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_UI_PUBLISH_PROFILE }}
+          package: ${{ env.NODE_PATH }}
