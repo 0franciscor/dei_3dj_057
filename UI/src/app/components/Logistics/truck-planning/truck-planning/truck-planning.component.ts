@@ -2,6 +2,7 @@ import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { PlanningService } from '../../../../Services/PlanningService/planning-service.service';
 import { Router } from '@angular/router';
+import { TripService } from 'src/app/Services/TripService/trip.service';
 
 @Component({
   selector: 'app-truck-planning',
@@ -18,7 +19,7 @@ export class TruckPlanningComponent implements OnInit {
 
 
   public truck : any;
-  constructor(private fb: FormBuilder, private router: Router, private planningService:PlanningService) { }
+  constructor(private fb: FormBuilder, private router: Router, private planningService:PlanningService, private tripService:TripService) { }
 
   selectedPlan={
     truckName: "",
@@ -96,5 +97,18 @@ export class TruckPlanningComponent implements OnInit {
         day = '0' + day;
 
     return [year, month, day].join('/');
-}
+  }
+  savePlan(){
+    
+    const savePlan = {
+      truckName: this.formPlanning.value.truckName,
+      planDate: this.finaldate,
+      infoList: this.infoList
+    }
+    
+    
+    console.log(savePlan)
+    this.tripService.createTrip(savePlan);
+    
+  }
 }

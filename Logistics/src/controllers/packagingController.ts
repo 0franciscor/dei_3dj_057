@@ -38,6 +38,7 @@ export default class PackagingController implements IPackagingController {
         try {
             
             const packaging = await this.packagingService.getAllPackagings();
+
             if (packaging.isFailure)
                 return res.status(404).send("Packaging not found");
 
@@ -51,6 +52,7 @@ export default class PackagingController implements IPackagingController {
     
     public async createPackaging(req: Request, res: Response, next: NextFunction) {
         try {
+           
             if(req.body.packagingID == null)
                 return res.status(400).send("PackagingID is required");
             const httpAgent = new http.Agent({ rejectUnauthorized: false });
@@ -74,6 +76,7 @@ export default class PackagingController implements IPackagingController {
 
 
             const packagingOrError = await this.packagingService.createPackaging(req.body as IPackagingDTO) as Result<IPackagingDTO>;
+            
             if (packagingOrError.isFailure) {
                 return res.status(409).send("Packaging already exists");
             }

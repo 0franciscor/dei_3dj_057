@@ -61,6 +61,11 @@ export default async({expressApp})=>{
         path: config.controllers.planning.path
     }
 
+    const tripController = {
+        name: config.controllers.trip.name,
+        path: config.controllers.trip.path
+    }
+
 
 
     const userService = {
@@ -91,7 +96,8 @@ export default async({expressApp})=>{
             warehouseController,
             deliveryController,
             truckController,
-            planningController
+            planningController,
+            tripController
         ],
         repos:[
             userRepo,

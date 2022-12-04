@@ -155,7 +155,7 @@ export default class DeliveryController implements IDeliveryController {
     public async getDeliveryDestination(req: Request, res: Response, next: NextFunction){
         let deliveredWarehouseList :any[]=[]
         let deliveriesMoved : any[]=[]
-        console.log(req.body.pathList)
+        
 
         let plan = {
             truck : "eTruck01",
@@ -206,18 +206,19 @@ export default class DeliveryController implements IDeliveryController {
                         secondSplit[2]= secondSplit[2].charAt(1)
                     }
                     if(deliveries[y].destination == req.body.pathList[x] && req.body.date== secondSplit[0]+secondSplit[1]+secondSplit[2]){
+                        
                         deliveriesMoved.push(deliveries[y])
                     }
                 }
         }
-
+        
         for(let l=1; l<deliveredWarehouseList.length-1; l++){
             plan.info.push({
                 warehouse: deliveredWarehouseList[l].id,
                 delivery: deliveriesMoved[l-1].deliveryID
             })
         }
-        console.log(plan)
+        // console.log(plan)
         res.status(200);
         return res.json(plan);
     }
