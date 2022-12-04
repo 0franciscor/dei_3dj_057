@@ -44,7 +44,7 @@ export class DeliveryService {
 
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'PUT', data);
+    const response = await this.sendFetch(url, 'PATCH', data);
 
     return response;
   }

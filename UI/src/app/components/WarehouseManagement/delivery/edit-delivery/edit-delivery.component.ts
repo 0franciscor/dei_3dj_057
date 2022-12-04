@@ -31,6 +31,10 @@ export class EditDeliveryComponent implements OnInit {
     deliveryMass: undefined,
   }
 
+  goBack(){
+    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+  }
+
   ngOnInit(): void {
     const deliveryID = this.route.snapshot.paramMap.get('id');
     this.formEditDelivery = this.fb.group({
@@ -61,7 +65,7 @@ export class EditDeliveryComponent implements OnInit {
     let message = "Delivery Edited successfully";
 
     if (answer.status == 200)
-      this.deliveryService.updateDeliveryProlog(answer.json());
+      this.deliveryService.updateDeliveryProlog(this.formEditDelivery.value);
     else
       message = "Error updating Delivery";
 
@@ -91,6 +95,8 @@ export class EditDeliveryComponentDialog {
     public dialogRef: MatDialogRef<EditDeliveryComponentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
+
+  ngOnInit(): void {}
 
   onOk(): void {
     this.dialogRef.close();
