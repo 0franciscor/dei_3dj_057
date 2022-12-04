@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EletricGo.Domain.Cities;
+using EletricGo.Domain.Cities.DTO;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
 using EletricGo.Services;
@@ -28,6 +29,15 @@ namespace EletricGo.Controllers
         {
             List<WarehouseDto> dto = await _warehouseService.GetWarehouses();
             if (dto == null) return NotFound("Warehouses not found");
+            
+            return dto;
+        }
+
+        [HttpGet("GetAllCities")]
+        public async Task<ActionResult<List<CityDto>>> GetCities()
+        {
+            List<CityDto> dto = await _warehouseService.GetCities();
+            if (dto == null) return NotFound("Cities not found");
             
             return dto;
         }

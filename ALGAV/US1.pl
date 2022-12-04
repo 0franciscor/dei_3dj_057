@@ -4,6 +4,8 @@
 
 :-dynamic infoTime/2.
 
+infoTime(100000000000000000,_).
+
 allPaths(L, LF) :-((checkIfCityExist(L),!,findMatosinhos(M1),deleteMatosinhos(M1,L,L2),findall(LAux,permutation(L2,LAux),L3),appendMatosinhos([M1],L3,LF)); write('One of the entered coordinates does not correspond to a warehouse that is in the system.')).
 
 deleteMatosinhos(A,L,L1):- ((member(A,L),!,delete(L,A,L1)); L1=L).
@@ -13,7 +15,6 @@ checkIfCityExist([H|T]):- ((idArmazem(_,H),!,checkIfCityExist(T));false).
 
 appendMatosinhos(_,[],[]):-!.
 appendMatosinhos(A,[L|LL],[L2|T]):- appendMatosinhos(A,LL,T), append(A,L,L1), append(L1,A,L2).
-
 
 findMatosinhos(M):-idArmazem('Matosinhos',M).
 
@@ -97,14 +98,17 @@ checkIfCharges(IDTRUCK,DL,BW,[H|_],TRUCKE,FENERGY,CHARGETIME):- energy(IDTRUCK,B
 %compares best time of all paths
 
 comparePaths([],_,_):-!.
-comparePaths([H|T],IDTRUCK,DL):-comparePaths(T,IDTRUCK,DL),carateristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME),
-    createPathsWithEnergy(H,TIME).
-
-createPathsWithEnergy(H,T):-assert(infoTime(H,T)).
-
-getAllInfoTimes(infoTime(L,T)):- setof(T,infoTime(L,T),[T|_]).
+comparePaths([H|T],IDTRUCK,DL):-comparePaths(T,IDTRUCK,DL),carateristicasCam(IDTRUCK,_,_,BAT,_,_), TOTALTIME is 0,analisePath(H,IDTRUCK,DL,BAT,TOTALTIME,TIME), infoTime(TAux, _), ((TAux > TIME,!, retract(infoTime(TAux,_)),assert(infoTime(TIME,H))); true).
 
 appendDelivery(L,L1):- append([1], L, L2), append(L2,[1],L1).
 
 %append to list
-quickestPath(IDTRUCK,DELL,T):-appendDelivery(DELL,DL),findAllPaths(DL,AP), comparePaths(AP,IDTRUCK,DL),getAllInfoTimes(infoTime(T,_)).
+getAllDeliveriesInADay(DATE, LDFinal):- findall(X, entrega(X,DATE,_,_,_,_), LD), delete(LD,1,LDFinal).
+
+
+quickestPath(IDTRUCK,DATE,L,T):-!,
+get_time(Ti),
+getAllDeliveriesInADay(DATE,DELL),retract(infoTime(_,_)),assert(infoTime(100000,_)),appendDelivery(DELL,DL),findAllPaths(DL,AP),comparePaths(AP,IDTRUCK,DL),!,infoTime(T,L),
+get_time(Tf),
+TSol is Tf - Ti,
+write(TSol).

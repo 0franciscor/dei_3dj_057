@@ -12,6 +12,7 @@ import { PathDistance } from "../domain/path/PathDistance";
 import { PathTravelTime } from "../domain/path/PathTravelTime";
 import { WastedEnergy } from "../domain/path/WastedEnergy";
 import { ExtraTravelTime } from "../domain/path/ExtraTravelTime";
+import path from "node:path/win32";
 
 
 @Service()
@@ -37,6 +38,13 @@ export default class PathService implements IPathService{
             const path = await this.pathRepo.getPathById(pathDTO.pathID);
             if(path !== null)
                 return Result.fail<IPathDTO>("Path already exists");
+            
+            const paths= await this.pathRepo.getAllPaths(pathDTO.startWHId, pathDTO.destinationWHId)
+            
+            if(paths.length != 0){
+                return Result.fail<IPathDTO>("Path with this Start WH and Destination WH already exists")
+            }
+
             const pathOrError = Path.create(pathDTO);
             
             if(pathOrError.isFailure){
@@ -75,6 +83,7 @@ export default class PathService implements IPathService{
             throw e;
         }
     } 
+
 
     public async updatePath(pathDTO: IPathDTO): Promise<Result<IPathDTO>> {
         try{

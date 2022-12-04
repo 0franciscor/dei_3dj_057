@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
+import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogData } from '../create-delivery/create-delivery.component';
 
 @Component({
   selector: 'app-edit-delivery',
@@ -13,7 +15,7 @@ export class EditDeliveryComponent implements OnInit {
   formEditDelivery!: FormGroup;
   minDate: Date;
 
-  constructor(private route: ActivatedRoute, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) { 
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDate();
@@ -27,6 +29,10 @@ export class EditDeliveryComponent implements OnInit {
     unloadTime: undefined,
     destination: undefined,
     deliveryMass: undefined,
+  }
+
+  goBack(){
+    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
   }
 
   ngOnInit(): void {
@@ -56,14 +62,43 @@ export class EditDeliveryComponent implements OnInit {
 
   async onSubmit() {
     let answer = await this.deliveryService.updateDelivery(this.formEditDelivery.value);
-    let message!: string;
-    
-    if (answer.status != 200)
-      message = "Error updating Delivery";
+    let message = "Delivery Edited successfully";
 
     if (answer.status == 200)
-      this.router.navigate(['WarehouseManagement/Delivery/GetDelivery']);
+      this.deliveryService.updateDeliveryProlog(this.formEditDelivery.value);
+    else
+      message = "Error updating Delivery";
 
+    const dialogRef = this.dialog.open(EditDeliveryComponentDialog, {
+      width: '250px',
+      data: {
+        name: this.formEditDelivery.value.deliveryID,
+        message: message
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (answer.status == 200)
+        this.router.navigate(['WarehouseManagement/Delivery/GetDelivery']);
+
+    });
   }
 
+}
+
+@Component({
+  selector: 'app-create-delivery',
+  templateUrl: 'edit-delivery.dialog.component.html',
+})
+export class EditDeliveryComponentDialog {
+  constructor(
+    public dialogRef: MatDialogRef<EditDeliveryComponentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) { }
+
+  ngOnInit(): void {}
+
+  onOk(): void {
+    this.dialogRef.close();
+  }
 }

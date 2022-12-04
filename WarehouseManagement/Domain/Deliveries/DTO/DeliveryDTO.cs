@@ -11,5 +11,7 @@ namespace EletricGo.Domain.Deliveries
         public string destination { get; set; }
         public float deliveryMass { get; set; }
 
+        public string deliveryDateProlog {get; set;}
+
     }    
 }

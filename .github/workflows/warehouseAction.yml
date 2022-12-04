@@ -1,0 +1,66 @@
+﻿name: WarehouseManagement Testing and Deployment
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+    AZURE_WEBAPP_NAME: WhManagement57
+    AZURE_WEBAPP_PACKAGE_PATH: './published' 
+    DOTNET_PATH: 'WarehouseManagement'
+    DOTNET_TEST_PATH: 'WarehouseManagementTest'
+    DOTNET_VERSION: '6.0'
+
+jobs:
+  BuildAndTestWarehouseAPI:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.DOTNET_TEST_PATH }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0'
+          
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+      - name: Code Coverage Calculation
+        run: dotnet test --collect:"XPlat Code Coverage"
+
+  Deployment:
+    name: Build and Deploy
+    needs: [BuildAndTestWarehouseAPI]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.DOTNET_PATH }}
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up .NET Core SDK ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Publish
+        run: dotnet publish --configuration Release  --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: 'WarehouseManagement/published'

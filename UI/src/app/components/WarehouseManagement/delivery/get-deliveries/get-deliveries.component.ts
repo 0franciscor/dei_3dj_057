@@ -14,13 +14,18 @@ export class GetDeliveriesComponent implements OnInit {
 
   public deliveryList: any[] = [];
 
-  displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass', 'edit'];
+  displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass', 'Actions'];
   dataSource = this.deliveryList;
 
   constructor(private deliveryService: DeliveryService, private router: Router) {
 
     this.deliveryService.getDeliveries().then((data) => {
       this.deliveryList = data;
+      this.deliveryList.forEach((delivery) => {
+        if(delivery.deliveryID == "" || delivery.deliveryID == null) {
+          delivery.deliveryID = "N/A";
+        }
+      });
       this.dataSource = this.deliveryList;
     });
   }
@@ -31,5 +36,4 @@ export class GetDeliveriesComponent implements OnInit {
   goToEditDelivery(deliveryID : string) {
     this.router.navigate(['WarehouseManagement/Delivery/EditDelivery', deliveryID]);
   }
-  
 }

@@ -8,6 +8,7 @@ import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-net
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { animate } from '@angular/animations';
+import { Scene } from 'three';
 
  @Component({
   selector: 'app-road-network',
@@ -73,35 +74,47 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       warehouses = data;
     });
     let paths: any[] = [];
-    
+    let limitPerWarehouse = 2;
     for( const warehouse of warehouses){
-
+      let amountPathOfWarehouse = 0;
       await rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
         
         if(data != null){
-          for (const element of data) {
-            paths.push({startWHId:element.startWHId, destinationWHId:element.destinationWHId, roadWidth:this.getRandomNumber()});
+          
+          while(amountPathOfWarehouse < limitPerWarehouse){
+            let randomPath = data[Math.floor(Math.random() * data.length)];
+            
+            if(!paths.includes(randomPath)){
+              paths.push({startWHId:randomPath.startWHId, destinationWHId:randomPath.destinationWHId, roadWidth:this.getRandomNumber()});
+              amountPathOfWarehouse++;
+            }
           }
+          
   
         }
       });
 
     }
-    
+      
 
 
     let positions = roadNetworkTemplate.calculatePositions(warehouses);
     this.roadNetwork = new roadNetworkTemplate({positions:positions,
       paths:paths});
 
-      
+    
+    
     
 
    
     //Scene
     this.scene = new THREE.Scene();
     //const scene1 = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x000000);
+    //i want to define a backgroud image for the scene
+    const loader = new THREE.TextureLoader();
+    loader.load('assets/sky.jpg', (texture) => {
+      this.scene.background = texture;
+    });
     this.scene.add(this.roadNetwork.object);
     
 
@@ -167,6 +180,20 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     this.renderer.render(this.scene,this.camera);
   }
  */
+  
+  
+  private lastwindowWidth: number = window.innerWidth;
+  private lastwindowHeight: number = window.innerHeight;
+  private onWindowResize() {
+    if(this.lastwindowWidth != window.innerWidth || this.lastwindowHeight != window.innerHeight){
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.lastwindowWidth = window.innerWidth;
+      this.lastwindowHeight = window.innerHeight;
+    }
+    
+  }
 
   private startRenderingLoop() {
     //Renderer
@@ -179,6 +206,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     (function render() {
       requestAnimationFrame(render);
       component.animateCircle();
+      component.onWindowResize();
       component.renderer.render(component.scene, component.camera);
     }());
 

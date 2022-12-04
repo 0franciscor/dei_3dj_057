@@ -1,6 +1,23 @@
-.main-div{
-    height: 100vh;
+.animated-form{
+    overflow: hidden;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
-  }
+    animation-name: left;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-delay: 1s;
+    width: fit-content;
+    margin: auto;
+}
+
+.form-header{
+    width: fit-content;
+    margin: auto;
+}
+
+.sec-div{
+    width: fit-content;
+    margin: auto;
+}

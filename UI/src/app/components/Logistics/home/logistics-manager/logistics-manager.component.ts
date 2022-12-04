@@ -77,10 +77,11 @@ export class LogisticsManagerComponent implements OnInit {
        test = this.pathList.find(element=>element.startWHId == this.selectedPathOption && element.destinationWHId == this.selectedPathOption)
     }
     
-    this.pathService.getPath(this.formSelectWarehouse.value).then((data)=>{
+    this.pathService.getAllPaths(this.formSelectWarehouse.value).then((data)=>{
       for(let i=0;i<data.length;i++){
         this.selectedPathOption[i]= data[i];
       }
+      
       console.log(this.selectedPathOption)
       this.selectedPathOption = data;
       });
@@ -99,6 +100,10 @@ export class LogisticsManagerComponent implements OnInit {
 
   goToRoadNetwork() {
     this.router.navigate(['/Logistics/RoadNetwork']);
+  }
+
+  goToTruckPlanning(){
+    this.router.navigate(['/Logistics/TruckPlanning']);
   }
 
   goToPackageList() {

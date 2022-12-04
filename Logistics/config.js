@@ -55,9 +55,9 @@ export default {
       path: "../controllers/packagingController"
     },
 
-    route: {
-      name: "RouteController",
-      path: "../controllers/routeController"
+    trip: {
+      name: "TripController",
+      path: "../controllers/tripController"
     }
 
   },
@@ -75,9 +75,9 @@ export default {
       name: "PackagingRepo",
       path: "../repos/packagingRepo"
     },
-    route: {
-      name: "RouteRepo",
-      path: "../repos/routeRepo"
+    trip: {
+      name: "TripRepo",
+      path: "../repos/tripRepo"
     }
   },
 
@@ -94,9 +94,9 @@ export default {
       name:"PackagingService",
       path: "../services/packagingService"
     },
-    routes: {
-      name: "RouteService",
-      path: "../services/routeService"
+    trip: {
+      name: "TripService",
+      path: "../services/tripService"
     }
   }
 };

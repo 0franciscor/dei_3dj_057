@@ -89,7 +89,7 @@ describe('PathService Unit Tests', () =>{
         };
 
         let pathRepoInstance = Container.get("PathRepo");
-
+        sinon.stub(pathRepoInstance,'getAllPaths').returns(Promise.resolve([]));
         sinon.stub(pathRepoInstance,"getPathById").returns(Promise.resolve(null));
         sinon.stub(pathRepoInstance,"save").returns(Promise.resolve(body));
         const pathService = new PathService(pathRepoInstance as IPathRepo);
@@ -421,6 +421,7 @@ describe('PathService + PathRepo Integration tests',()=>{
         }as IPathPersistance;
 
         let pathSchemaInstance = Container.get("pathSchema");
+        sinon.stub(pathSchemaInstance,'find').returns(Promise.resolve([]));
         sinon.stub(pathSchemaInstance,'findOne').returns(Promise.resolve(null));
         sinon.stub(pathSchemaInstance,'create').returns(Promise.resolve(body2 as IPathPersistance));
 

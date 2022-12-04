@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { DeliveryService } from "src/app/Services/DeliveryService/delivery.service";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
+import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+export interface DialogData {
+  name: string;
+  message: string;
+}
 @Component({
   selector: 'app-create-delivery',
   templateUrl: './create-delivery.component.html',
@@ -13,11 +19,20 @@ export class CreateDeliveryComponent implements OnInit {
   formCreateDelivery!: FormGroup;
   minDate: Date;
 
-  constructor(private deliveryService: DeliveryService, private fb: FormBuilder) {
+  constructor(private dialog: MatDialog, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDate();
     this.minDate = new Date(currentYear, currentMonth, currentDay);
+  }
+
+  selectedDelivery = {
+    deliveryID: "",
+    deliveryDate: undefined,
+    loadTime: undefined,
+    unloadTime: undefined,
+    destination: undefined,
+    deliveryMass: undefined,
   }
 
   ngOnInit(): void {
@@ -31,9 +46,27 @@ export class CreateDeliveryComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    console.log(this.formCreateDelivery.value);
-    this.deliveryService.createDelivery(this.formCreateDelivery.value);
+  async onSubmit() {
+    let answer = await this.deliveryService.createDelivery(this.formCreateDelivery.value);
+    let message = "Delivery created successfully";
+    if (answer.status == 201)
+      this.deliveryService.createDeliveryProlog(this.formCreateDelivery.value);
+    else
+      message = "Delivery creation failed";
+
+    const dialogRef = this.dialog.open(CreateDeliveryComponentDialog, {
+      width: '250px',
+      data: {
+        name: this.formCreateDelivery.value.deliveryID,
+        message: message
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (answer.status == 201)
+        this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+
+    });
   }
 
   get deliveryID() {
@@ -58,5 +91,22 @@ export class CreateDeliveryComponent implements OnInit {
 
   get deliveryMass() {
     return this.formCreateDelivery.get('deliveryMass');
+  }
+}
+
+@Component({
+  selector: 'app-create-delivery',
+  templateUrl: 'create-delivery.dialog.component.html',
+})
+export class CreateDeliveryComponentDialog {
+  constructor(
+    public dialogRef: MatDialogRef<CreateDeliveryComponentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) { }
+
+  ngOnInit(): void {}
+
+  onOk(): void {
+    this.dialogRef.close();
   }
 }

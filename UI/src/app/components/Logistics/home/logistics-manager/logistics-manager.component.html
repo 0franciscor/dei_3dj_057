@@ -3,47 +3,35 @@
     <mat-card-subtitle>Manager of Logic</mat-card-subtitle>
     <mat-card-actions>
       
-     
+    <div class="CreatePath-Page">
       <!--Create path button-->
       <button mat-raised-button color="warn" style="width: 10em; height: 10em;"  aria-label="Example icon button with a home icon" (click)="goToCreatePath()">
         Create Path
       </button>
+      
+      <!--Select path by WH id's-->
+      <div class="Search-paths-form">
+        <form [formGroup]="formSelectWarehouse"(ngSubmit)="onSubmit()" >
+          <mat-form-field appearance = "fill">
+            <mat-label>Starting Warehouse</mat-label>
+            <input matInput type ="text" formControlName="startWHId">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance = "fill">
+            <mat-label>Destination Warehouse</mat-label>
+            <input matInput type ="text" formControlName="destinationWHId">
+          </mat-form-field>
+          <br>
+          <div class="Search-btn">
+            <button mat-raised-button color="primary" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
       <button mat-raised-button color="warn" style="width: 10em; height: 10em; left: 72.5em; "  aria-label="Example icon button with a home icon" (click)="goToCreatePackage()">
         Create Package
       </button>
-      <!--Select path by WH id's-->
-      <form [formGroup]="formSelectWarehouse"(ngSubmit)="onSubmit()" >
-        <mat-form-field appearance = "fill">
-          <mat-label>Starting Warehouse</mat-label>
-          <input matInput type ="text" formControlName="startWHId">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance = "fill">
-          <mat-label>Destination Warehouse</mat-label>
-          <input matInput type ="text" formControlName="destinationWHId">
-        </mat-form-field>
-        <br>
-        <button mat-raised-button color="primary" type="submit">Search</button>
-      </form>
-
-      <button mat-raised-button color="primary" style="left: 80.5em ;top: -10em " (click)="goToPackageList()" >
-        See Packages created
-      </button>
-    
+    </div>
         <!--display selectedPath info-->
-
-        <!-- <mat-card *ngIf="selectedPathOption"> -->
-          <!-- <table>
-            <thead>
-              <th>Path</th>
-              <th>Information</th>
-            </thead>
-            <tbody>
-              <tr *ngFor ="let path of selectedPathOption">
-                <td>{{path}}</td>
-              </tr>
-            </tbody>
-          </table> -->
          <div class="pathTable">
             <table *ngIf="selectedPathOption.length>0" class="table-of-paths">
               <thead>
@@ -68,30 +56,25 @@
               </tbody>
             </table>
          </div>
-
-          
-        
-        <!-- <mat-card-content>
-          <p>Start warehouse ID: {{selectedPath.startWHId}}</p>
-          <p>Destination warehouse ID:{{selectedPath.destinationWHId}}</p>
-          <p>Path Distance in KM:{{selectedPath.pathDistance}}</p>
-          <p>Path Travel time in min: {{selectedPath.pathTravelTime}}</p>
-          <p>Wasted truck energy kw/h:{{selectedPath.wastedEnergy}}</p>        
-          <p>Extra travel Time: {{selectedPath.extraTravelTime}}</p>
-        </mat-card-content> -->
       
+        <div class ="Truck-planning-btn">
+          <button mat-raised-button color="primary" style="left: 80.5em ;top: -10em " (click)="goToPackageList()" >
+            See Packages created
+          </button>
+        </div>
       
-
       <!--Road network button-->
-      <button mat-raised-button style (click)="goToRoadNetwork()" color="primary">
-          See Road Network
-      </button>
+      <div class ="road-network-btn">
+        <button mat-raised-button (click)="goToRoadNetwork()" color="primary">
+            See Road Network
+        </button>
+      </div>
 
-  
-        
-
-
-
-
+    <!--Truck Planning button-->
+      <div class ="Truck-planning-btn">
+        <button mat-raised-button (click)="goToTruckPlanning()" color="primary">
+            Truck planning
+        </button>
+      </div>
     </mat-card-actions>
   </mat-card>

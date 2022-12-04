@@ -1,0 +1,102 @@
+@startuml deleteTruckSD
+
+autonumber
+!pragma teoz true
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+box "<<Container(C4)>>\n           UI" #SandyBrown
+participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
+participant "TruckService" as TruckService <<Component(C4)>>
+end box
+
+box "<<System(C4)>>\n       System" #LightGray
+participant Auth as  Auth <<Container(C4)>>
+box "<<Container(C4)>>\n       Logistics" #LightCyan
+participant TruckRoute as Route <<Component(C4)>>
+participant TruckController as Controller <<Component(C4)>>
+participant TruckService as Service <<Component(C4)>>
+participant TruckRepository as Repository <<Component(C4)>>
+participant Persistance as Persistance <<Component(C4)>>
+end box
+
+
+
+activate manager
+
+manager -> FleetManagerComponent: Asks to delete Truck
+activate FleetManagerComponent
+FleetManagerComponent -> manager: Asks for Truck ID
+
+manager ->FleetManagerComponent: Inserts Truck ID
+
+FleetManagerComponent -> TruckService: deleteTruck(Truck ID)
+activate TruckService
+TruckService -> Auth: DELETE deleteTruck(Truck ID)
+activate Auth
+Auth -> Route: DELETE deleteTruck(truckID)
+activate Route
+Route -> Controller :DELETE deleteTruck(truckID)
+activate Controller
+
+
+
+Controller -> Service: deleteTruck(truckInfo)
+activate Service
+
+Service -> Repository: getTruckById(TruckInfo.id)
+activate Repository
+Repository -> Persistance: findOne(TruckInfo.id)
+activate Persistance
+
+alt Truck exists
+
+Persistance -> Repository: truckInfo
+Repository->Service: truckInfo
+
+Service -> Repository: delete(truckID)
+Repository -> Persistance:deleteOne(truckInfo)
+
+Persistance->Repository: true
+
+Repository->Service: TruckInfo
+
+Service->Controller: TruckInfo
+Controller->Route: 200 OK + TruckInfo
+Route->Auth: 200 OK truckInfo
+
+Auth->TruckService: 200 OK + truckInfo
+TruckService->FleetManagerComponent: 200 OK + truckInfo
+FleetManagerComponent->manager: Informs that Truck was deleted
+
+else Truck doesn't exist
+
+Service -> Repository: getTruckById(TruckInfo.id)
+
+Repository -> Persistance: findOne(TruckInfo.id)
+
+Persistance->Repository: null
+deactivate Repository
+Repository->Service: null
+deactivate Repository
+Service->Controller: error, Truck doesn't exist
+deactivate Service
+Controller->Route: 404 NOT FOUND, Truck doesn't exist
+deactivate Controller
+Route->Auth: 404 NOT FOUND, Truck doesn't exist
+deactivate Route
+
+Auth->TruckService: 404 NOT FOUND, Truck doesn't exist
+deactivate Auth
+TruckService->FleetManagerComponent: 404 NOT FOUND, Truck doesn't exist
+deactivate TruckService
+FleetManagerComponent->manager: Informs about deletion failure
+deactivate FleetManagerComponent
+
+
+@enduml

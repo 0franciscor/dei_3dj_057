@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LogInComponent } from './components/log-in/log-in.component';
@@ -24,14 +23,16 @@ import { LogisticsManagerComponent } from './components/Logistics/home/logistics
 import { WarehouseManagerComponent } from './components/WarehouseManagement/home/warehouse-manager/warehouse-manager.component';
 import { RoadNetworkComponent } from './components/Logistics/road-network/road-network.component';
 import { CreatePathComponent } from './components/Logistics/path/create-path/create-path.component';
-import { WarehouseComponent } from './components/WarehouseManagement/warehouse/warehouse.component';
 import { CreateDeliveryComponent } from './components/WarehouseManagement/delivery/create-delivery/create-delivery.component';
-import { WarehouseByIdComponent } from './components/WarehouseManagement/warehouse/getById/warehouse-by-id/warehouse-by-id.component';
 import { GetDeliveriesComponent } from './components/WarehouseManagement/delivery/get-deliveries/get-deliveries.component';
 import { EditTruckComponent, EditTruckComponentDialog } from './components/Logistics/truck/edit-truck/edit-truck.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditDeliveryComponent } from './components/WarehouseManagement/delivery/edit-delivery/edit-delivery.component';
+import { EditWarehouseComponent, EditWarehouseComponentDialog} from './components/WarehouseManagement/warehouse/edit-warehouse/edit-warehouse.component';
+import { CreateWarehouseComponent, CreateWarehouseComponentDialog } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
+import { GetWarehousesComponent } from './components/WarehouseManagement/warehouse/get-warehouses/get-warehouses.component';
+import { TruckPlanningComponent } from './components/Logistics/truck-planning/truck-planning/truck-planning.component';
 import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
 import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
 
@@ -47,15 +48,20 @@ import { PackageListComponent } from './components/Logistics/packaging/package-l
     WarehouseManagerComponent,
     RoadNetworkComponent,
     CreatePathComponent,
-    WarehouseComponent,
+    CreateWarehouseComponent,
     CreateDeliveryComponent,
-    WarehouseByIdComponent,
     GetDeliveriesComponent,
     EditTruckComponent,
     EditTruckComponentDialog,
     DeleteTruckComponentDialog,
     CreateTruckComponentDialog,
     EditDeliveryComponent,
+    EditWarehouseComponent,
+    EditWarehouseComponentDialog,
+    CreateWarehouseComponent,
+    CreateWarehouseComponentDialog,
+    GetWarehousesComponent,
+    TruckPlanningComponent,
     CreatePackageComponent,
     PackageListComponent
   ],
@@ -76,7 +82,7 @@ import { PackageListComponent } from './components/Logistics/packaging/package-l
     MatDialogModule,
     MatButtonModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

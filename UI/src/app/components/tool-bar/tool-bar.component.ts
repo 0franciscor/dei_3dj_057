@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router'
+
 @Component({
   selector: 'app-tool-bar',
   templateUrl: './tool-bar.component.html',
@@ -14,7 +15,7 @@ export class ToolBarComponent implements OnInit {
   }
 
   goHome(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   goToFMHome(): void {

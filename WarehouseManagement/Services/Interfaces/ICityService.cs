@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EletricGo.Domain.Cities;
 using EletricGo.Domain.Cities.DTO;
@@ -14,6 +15,5 @@ public interface ICityService
     Task<City> CityExists(string name);
 
     Task<CityDto> CreateCity(CityDto dto);
-
-
+    Task<List<CityDto>> GetAllCities();
 }

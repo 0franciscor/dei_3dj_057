@@ -128,7 +128,7 @@ namespace WarehouseManagementTest.Unit.Services
             });
         }
 
-        [Test]
+        /*[Test]
         public async Task UpdateWarehouseTest()
         {
             var warehouseId = new WarehouseId(id + "1");
@@ -155,7 +155,7 @@ namespace WarehouseManagementTest.Unit.Services
             var getDel = await service.UpdateWarehouse(warehouseDto);
 
             Assert.That(warehouseExpected.Altitude.altitude, Is.EqualTo(warehouseDto.Altitude));
-        }
+        }*/
 
 
         [Test]

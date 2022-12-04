@@ -2,7 +2,7 @@ import { Router } from 'express';
 import truck from './routes/truckRoute';
 import path from './routes/pathRoute';
 import packaging from './routes/packagingRoute';
-import route from './routes/routeRoute';
+import trip from './routes/tripRoute';
 
 export default () => {
 	const app = Router();
@@ -11,7 +11,7 @@ export default () => {
 	
 	path(app);
 	packaging(app);
-	route(app);
+	trip(app);
 	
 	return app
 }

@@ -6,46 +6,60 @@ import fetch from 'node-fetch';
 })
 export class PathService{
 
+    public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
     constructor(){}
 
-    async getPath(warehouses:any){
+    async getAllPaths(warehouses:any){
         if(warehouses.startWHId == ''){
             warehouses.startWHId = "undefined"
         }else if(warehouses.destinationWHId ==''){
             warehouses.destinationWHId = "undefined"
         };
-
-        const url = 'http://localhost:3000/api/path/all/'+warehouses.startWHId +"/"+warehouses.destinationWHId;
+        let paths = []
+        const url = this.urlOrigin+'api/path/all/'+warehouses.startWHId +"/"+warehouses.destinationWHId;
         let test : any[]=[];
         const data = warehouses
-        console.log(data)
-        try {
-            await fetch(url,{
-                method:'GET',
-                headers:{
-                    'Accept': 'application/json'
-                }
-            }).then(res => res.json().then(data=>{test=data;}));
-        } catch (error) {
-            
+        const response= await this.sendFetch(url,'GET',null)
+        console.log(response)
+        if(response.status != 200){
+         console.log("No paths found")
         }
-        
-        console.log(test)
-        return test;
+        paths= await response.json();
+        return paths;
     }
 
     async createPath(path:any){
-        const url= 'http://localhost:3000/api/path/'
-
+        const url= this.urlOrigin+'api/path/'
         const data = path;
-        console.log(data)
+        
 
-        fetch(url,{
-            method: 'POST',
+      const response = await this.sendFetch(url,'POST',data);
+      return response;
+    }
+
+    async createPathProlog(path:any){
+      const url= this.urlOrigin+'api/path/prolog'
+      const data = path;
+      
+      const response = await this.sendFetch(url,'POST',data);
+      return response;
+    }
+
+    async sendFetch(url: string, method: string, data: any) {
+        if(data)
+          return fetch(url, {
+            method: method,
             body: JSON.stringify(data),
-            headers:{
-                'Content-Type': 'application/json'
+            headers: {
+              'Content-Type': 'application/json'
             },
-        })
+          })
+        else
+          return fetch(url, {
+            method: method,
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
     }
 }
