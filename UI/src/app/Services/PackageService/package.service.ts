@@ -8,9 +8,9 @@ import fetch from 'node-fetch';
 export class PackagingService {
 
   constructor() { }
-
+  public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
   async getPackage() {
-    const url = 'http://localhost:3001/api/packaging/all';
+    const url = this.urlOrigin+'api/packaging/all';
     const response = await fetch(url, {
       method: 'GET',
       headers:{
@@ -23,7 +23,7 @@ export class PackagingService {
   }
 
   async createPackage(packageL:any){
-    const url= 'http://localhost:3000/api/packaging/'
+    const url= this.urlOrigin+'api/packaging/'
     const data = packageL;
     console.log(data);
     console.log(JSON.stringify(data));
