@@ -5,33 +5,33 @@ import NodeTemplate from './RoadNetworkJS/node-template';
 import roadNetworkTemplate from './RoadNetworkJS/road-network';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { animate } from '@angular/animations';
 import { Scene } from 'three';
 
- @Component({
+@Component({
   selector: 'app-road-network',
   templateUrl: './RoadNetworkJS/road-network.component.html',
   styleUrls: ['./road-network.component.css']
 })
 
 
-  
+
 
 export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
-  
-  @ViewChild('canvas') 
+
+  @ViewChild('canvas')
   private canvasRef!: ElementRef;
 
   // Cube properties
   @Input() public rotationSpeedX: number = 0.001;
 
   @Input() public rotationSpeedY: number = 0.005;
-  
+
   @Input() public size: number = 200;
-  
+
   @Input() public texture: string = "";
 
 
@@ -40,9 +40,9 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   @Input() public cameraZ: number = 8000;
 
   @Input() public fieldOfView: number = 1;
-  
+
   @Input('nearClipping') public nearClippingPlane: number = 1;
-  
+
   @Input('farClipping') public farClippingPlane: number = 100000;
 
 
@@ -56,15 +56,15 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
 
 
- 
+
 
   private renderer!: THREE.WebGLRenderer;
 
   private scene!: THREE.Scene;
 
   private roadNetwork !: roadNetworkTemplate;
-  
-  
+
+
 
   private async createScene() {
 
@@ -75,38 +75,40 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     });
     let paths: any[] = [];
     let limitPerWarehouse = 2;
-    for( const warehouse of warehouses){
+    for (const warehouse of warehouses) {
       let amountPathOfWarehouse = 0;
       await rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
-        
-        if(data != null){
-          
-          while(amountPathOfWarehouse < limitPerWarehouse){
+
+        if (data != null) {
+
+          while (amountPathOfWarehouse < limitPerWarehouse) {
             let randomPath = data[Math.floor(Math.random() * data.length)];
-            
-            if(!paths.includes(randomPath)){
-              paths.push({startWHId:randomPath.startWHId, destinationWHId:randomPath.destinationWHId, roadWidth:this.getRandomNumber()});
+
+            if (!paths.includes(randomPath)) {
+              paths.push({ startWHId: randomPath.startWHId, destinationWHId: randomPath.destinationWHId, roadWidth: this.getRandomNumber() });
               amountPathOfWarehouse++;
             }
           }
-          
-  
+
+
         }
       });
 
     }
-      
+
 
 
     let positions = roadNetworkTemplate.calculatePositions(warehouses);
-    this.roadNetwork = new roadNetworkTemplate({positions:positions,
-      paths:paths});
+    this.roadNetwork = new roadNetworkTemplate({
+      positions: positions,
+      paths: paths
+    });
 
-    
-    
-    
 
-   
+
+
+
+
     //Scene
     this.scene = new THREE.Scene();
     //const scene1 = new THREE.Scene();
@@ -116,7 +118,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       this.scene.background = texture;
     });
     this.scene.add(this.roadNetwork.object);
-    
+
 
 
     /* //load road model
@@ -164,43 +166,59 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       this.farClippingPlane
     );
 
+    const listener = new THREE.AudioListener();
+    
+
+    // create a global audio source
+    const sound = new THREE.Audio(listener);
+
+    // load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load('./assets/audio.mp3', function (buffer) {
+      sound.setBuffer(buffer);
+      sound.setLoop(true);
+      sound.setVolume(0.5);
+      sound.play();
+    });
+
+    this.camera.add(listener);
     this.camera.position.z = this.cameraZ;
 
-  
+
   }
 
   private animateCircle() {
     // this.roadNetwork.object.rotation.x += this.rotationSpeedX;
     // this.roadNetwork.object.rotation.y += this.rotationSpeedY; 
   }
-/* 
-  //Animate road
-  private animateRoad(){
-    requestAnimationFrame(animate)
-    this.renderer.render(this.scene,this.camera);
-  }
- */
-  
-  
+  /* 
+    //Animate road
+    private animateRoad(){
+      requestAnimationFrame(animate)
+      this.renderer.render(this.scene,this.camera);
+    }
+   */
+
+
   private lastwindowWidth: number = window.innerWidth;
   private lastwindowHeight: number = window.innerHeight;
   private onWindowResize() {
-    if(this.lastwindowWidth != window.innerWidth || this.lastwindowHeight != window.innerHeight){
+    if (this.lastwindowWidth != window.innerWidth || this.lastwindowHeight != window.innerHeight) {
       this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.lastwindowWidth = window.innerWidth;
       this.lastwindowHeight = window.innerHeight;
     }
-    
+
   }
 
   private startRenderingLoop() {
     //Renderer
-    
+
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight-64);
+    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight - 64);
 
     let component: RoadNetworkComponent = this;
     (function render() {
@@ -210,7 +228,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       component.renderer.render(component.scene, component.camera);
     }());
 
-    new OrbitControls(this.camera,this.canvas);
+    new OrbitControls(this.camera, this.canvas);
   }
 
 
@@ -223,11 +241,11 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
 
   }
-  
+
 
   private getRandomNumber() {
     //return random number between 0.1 and 0.8
     return Math.random() * (0.8 - 0.1) + 0.1;
-}
+  }
 
 }
