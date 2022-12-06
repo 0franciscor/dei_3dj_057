@@ -1,0 +1,127 @@
+@startuml createDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+
+box "<<Container(C4)>>\n       User Interface" #LightYellow
+participant WarehouseManagerComponent as whComponent <<Component(C4)>>
+participant CreateDeliveryComponent as createDeliveryComponent <<Component(C4)>>
+participant DeliveryService as deliveryService <<Component(C4)>>
+end box
+
+box "<<System(C4)>>\n   System" #Grey
+participant Auth as auth <<Container(C4)>>
+box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+participant DeliveryController as  CTL <<Component(C4)>>
+participant DeliveryService as  SV <<Component(C4)>>
+participant "Delivery : Delivery" as  delivery <<Component(C4)>>
+participant "DeliveryDTO : DeliveryDTO" as  DTO <<Component(C4)>>
+participant DeliveryRepository as  DR <<Component(C4)>>
+end box
+
+activate admin
+
+admin -> whComponent : Asks to create a delivery
+activate whComponent
+
+whComponent -> createDeliveryComponent : Navigates to the CreateDeliveryComponent
+activate createDeliveryComponent
+
+createDeliveryComponent --> admin: asks for the details on the new Delivery
+
+admin -> createDeliveryComponent: inserts the information about the new Delivery
+
+createDeliveryComponent -> deliveryService : createDelivery(delivery)
+activate deliveryService
+
+deliveryService -> auth : POST createDelivery(delivery)
+activate auth
+
+
+
+alt If the Delivery doesn't exist in the system 
+auth -> CTL: POST Post(DeliveryDto)
+activate CTL
+CTL -> SV : CreateDelivery(DeliveryDto)
+activate SV
+
+SV -> delivery : Create(DeliveryDto)
+activate delivery
+delivery --> SV : Delivery 
+deactivate delivery
+
+SV -> DR : save(Delivery)
+activate DR
+DR --> SV : true 
+deactivate DR
+
+SV -> delivery : toDeliveryDTO()
+activate delivery
+delivery --> SV : DeliveryDto
+deactivate delivery
+SV --> CTL : DeliveryDto
+deactivate SV
+CTL --> auth : DeliveryDto
+
+CTL --> auth: 201 OK
+deactivate CTL
+
+
+auth --> deliveryService: 201 CREATED
+
+deliveryService --> createDeliveryComponent: 201 CREATED
+
+
+
+createDeliveryComponent --> admin: Informs about the success of the operation
+
+createDeliveryComponent -->  whComponent: Navigates to the WarehouseManagerComponent
+
+
+
+else If a Delivery already exists with the id entered
+
+
+
+
+CTL -> SV : CreateDelivery(DeliveryDto)
+activate CTL
+activate SV
+
+SV -> delivery : Create(DeliveryDto)
+activate delivery
+delivery --> SV : Delivery 
+deactivate delivery
+
+SV -> DR : save(Delivery)
+activate DR
+DR --> SV : false
+deactivate DR
+SV --> CTL : BadRequestException
+deactivate SV
+
+CTL --> auth: 400 BAD REQUEST
+deactivate CTL
+
+
+auth --> deliveryService: 400 BAD REQUEST
+
+deliveryService --> createDeliveryComponent: 400 BAD REQUEST
+
+createDeliveryComponent --> admin: Informs about the fail of the operation
+end
+
+deactivate auth
+deactivate deliveryService
+deactivate createDeliveryComponent
+deactivate whComponent
+
+deactivate admin
+
+@enduml

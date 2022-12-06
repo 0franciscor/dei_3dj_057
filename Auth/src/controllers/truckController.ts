@@ -29,9 +29,10 @@ export default class TruckController implements ITruckController {
   }
 
   async createTruck(req: Request, res: Response, next: NextFunction) {
-    const url = 'http://localhost:3000/api/truck/';
+    let url = 'http://localhost:3000/api/truck/';
     const data = req.body;
-
+    if(req.get('host').includes("azure"))
+      url = 'https://logistics57.azurewebsites.net/api/truck/';
     const response = await this.fetch(url, 'POST', data); 
     
     if(response.status != 201){
@@ -64,7 +65,11 @@ export default class TruckController implements ITruckController {
   }
 
   async getAllTruck(req: Request, res: Response, next: NextFunction) {
-    const url = 'http://localhost:3000/api/truck/all';
+    let url = 'http://localhost:3000/api/truck/all';
+    console.log(req.get('host'));
+    console.log(req.get('host').includes("azure"));
+    if(req.get('host').includes("azure"))
+      url = 'https://logistics57.azurewebsites.net/api/truck/all';
     const response = await this.fetch(url, 'GET', null);
 
     if(response.status != 200){
@@ -77,7 +82,9 @@ export default class TruckController implements ITruckController {
   }
 
   async getTruck(req: Request, res: Response, next: NextFunction) {
-    const url = 'http://localhost:3000/api/truck/id/'+req.body.truckId;
+    let url = 'http://localhost:3000/api/truck/id/'+req.body.truckId;
+    if(req.get('host').includes("azure"))
+      url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.body.truckId;
     const response = await this.fetch(url, 'GET', null);
     if(response.status != 200){
       res.status(response.status);
@@ -90,8 +97,9 @@ export default class TruckController implements ITruckController {
   }
 
   async editTruck(req: Request, res: Response, next: NextFunction) {
-    const url = 'http://localhost:3000/api/truck/';
-    
+    let url = 'http://localhost:3000/api/truck/';
+    if(req.get('host').includes("azure"))
+      url = 'https://logistics57.azurewebsites.net/api/truck/';
     const data = req.body;
     const response = await this.fetch(url, 'PATCH', data);
     if(response.status != 200){
@@ -123,8 +131,9 @@ export default class TruckController implements ITruckController {
   }
 
   async deleteTruck(req: Request, res: Response, next: NextFunction) {
-    const url = 'http://localhost:3000/api/truck/id/'+req.params.id;
-
+    let url = 'http://localhost:3000/api/truck/id/'+req.params.id;
+    if(req.get('host').includes("azure"))
+      url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.params.id;
     const response = await this.fetch(url, 'DELETE', null);
 
     if(response.status != 200){

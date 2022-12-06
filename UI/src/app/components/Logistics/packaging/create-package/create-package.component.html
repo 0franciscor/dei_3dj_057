@@ -1,0 +1,45 @@
+
+<div class="left">
+    <mat-card >
+      <mat-card-header>
+        <mat-card-title class="header">
+          <h2 class="animation a1">Create Package</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content >
+        <form class="form" [formGroup]="formCreatePackage" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="standard">
+            <mat-label>Packaging ID</mat-label>
+            <input matInput type="text" formControlName="packagingID">
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>Truck ID</mat-label>
+            <input matInput type="text" formControlName="truckID">
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>Delivery ID</mat-label>
+            <input matInput type="text" formControlName="deliveryID">
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>x Position</mat-label>
+            <input matInput type="number" formControlName="xPosition">
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>y Position</mat-label>
+            <input matInput type="number" formControlName="yPosition">
+          </mat-form-field>
+  
+          <mat-form-field appearance="standard">
+            <mat-label>z Position</mat-label>
+            <input matInput type="number" formControlName="zPosition">
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" type="submit" >Create</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

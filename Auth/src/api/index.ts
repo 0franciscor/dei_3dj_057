@@ -7,6 +7,7 @@ import deliveryRoute from './routes/deliveryRoute';
 import truckRoute from './routes/truckRoute';
 import planningRoute from './routes/planningRoute';
 import tripRoute from './routes/tripRoute';
+import packageRoute from './routes/packageRoute';
 
 export default () => {
 	const app = Router();
@@ -17,6 +18,7 @@ export default () => {
 	deliveryRoute(app);
 	roleRoute(app)
 	planningRoute(app);
+	packageRoute(app);
 	tripRoute(app)
     return app;
 }
