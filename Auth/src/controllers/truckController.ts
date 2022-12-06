@@ -64,7 +64,8 @@ export default class TruckController implements ITruckController {
   }
 
   async getAllTruck(req: Request, res: Response, next: NextFunction) {
-    const url = 'http://localhost:3000/api/truck/all';
+    // const url = 'http://localhost:3000/api/truck/all';
+    const url = 'https://logistics57.azurewebsites.net/api/truck/all';
     const response = await this.fetch(url, 'GET', null);
 
     if(response.status != 200){
