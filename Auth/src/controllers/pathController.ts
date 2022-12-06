@@ -17,7 +17,10 @@ export default class PathController implements IPathController {
 
   public async getAllPaths(req: Request, res: Response, next: NextFunction){
     
-    const address = 'http://localhost:3000/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
+    let address = 'http://localhost:3000/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
+    
+    if(req.get('host').includes("azure"))
+      address = 'https://logistics57.azurewebsites.net/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
     
     const response = await fetch(address, {
         method: 'GET',
@@ -34,7 +37,9 @@ export default class PathController implements IPathController {
   }
 
   async createPath(req:Request,res:Response,next:NextFunction){
-    const url = 'http://localhost:3000/api/path/'
+    let url = 'http://localhost:3000/api/path/'
+    if(req.get('host').includes("azure"))
+      url = 'https://logistics57.azurewebsites.net/api/path/'
     const data = req.body;
     const response = await fetch(url,{
       method: 'POST',

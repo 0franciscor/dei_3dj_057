@@ -9,7 +9,10 @@ export class DeliveryService {
   constructor() { }
 
   async getDeliveries() {
-    const url = this.urlOrigin + 'api/delivery/all';
+    let url = this.urlOrigin + 'api/delivery/all';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/delivery/all';
+    }
 
     const response = await this.sendFetch(url, 'GET', null);
 
@@ -19,8 +22,10 @@ export class DeliveryService {
   }
 
   async getDelivery(deliveryID: string) {
-    const url = this.urlOrigin + 'api/delivery/' + deliveryID;
-
+    let url = this.urlOrigin + 'api/delivery/' + deliveryID;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/delivery/'+deliveryID;
+    }
     const response = await this.sendFetch(url, 'GET', null);
 
     const data = await response.json();
@@ -29,8 +34,10 @@ export class DeliveryService {
   }
 
   async createDelivery(delivery: any) {
-    const url = this.urlOrigin + 'api/delivery/create';
-
+    let url = this.urlOrigin + 'api/delivery/create';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/delivery/create';
+    }
     const data = delivery;
 
     const response = await this.sendFetch(url, 'POST', data);
@@ -40,8 +47,10 @@ export class DeliveryService {
   }
 
   async updateDelivery(delivery: any) {
-    const url = this.urlOrigin + 'api/delivery/update';
-
+    let url = this.urlOrigin + 'api/delivery/update';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/delivery/update';
+    }
     const data = delivery;
 
     const response = await this.sendFetch(url, 'PATCH', data);
@@ -50,8 +59,10 @@ export class DeliveryService {
   }
 
   async createDeliveryProlog(delivery: any) {
-    const url = this.urlOrigin + 'api/delivery/createProlog';
-
+    let url = this.urlOrigin + 'api/delivery/createProlog';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/delivery/createProlog';
+    }
     const data = delivery;
 
     const response = await this.sendFetch(url, 'POST', data);
@@ -60,7 +71,10 @@ export class DeliveryService {
   }
 
   async updateDeliveryProlog(delivery: any) {
-    const url = this.urlOrigin + 'api/delivery/updateProlog';
+    let url = this.urlOrigin + 'api/delivery/updateProlog';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/delivery/updateProlog';
+    }
 
     const data = delivery;
 

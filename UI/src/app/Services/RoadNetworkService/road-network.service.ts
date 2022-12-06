@@ -10,7 +10,10 @@ export class RoadNetworkService {
 
 
   async getAllWarehouses() {
-    const url = this.urlOrigin+"api/warehouse/all";
+    let url = this.urlOrigin+"api/warehouse/all";
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/all';
+    }
     const response = await fetch(url, {
       method: 'GET'
     });
@@ -22,7 +25,10 @@ export class RoadNetworkService {
 
   async getPathBetweenWarehouses(warehouse1: string) {
 
-    const url = this.urlOrigin+"api/path/all/" + warehouse1+"/undefined";
+    let url = this.urlOrigin+"api/path/all/" + warehouse1+"/undefined";
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/path/all/'+warehouse1+"/undefined";
+    }
    
     const response = await fetch(url, {
       method: 'GET'

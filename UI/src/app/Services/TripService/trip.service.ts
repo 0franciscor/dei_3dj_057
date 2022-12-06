@@ -10,8 +10,10 @@ export class TripService {
   constructor() {}
 
   async createTrip(savePlan: any) {
-    const url = this.urlOrigin+'api/trip/';
-  
+    let url = this.urlOrigin+'api/trip/';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/trip/';
+    }
     const response = await this.sendFetch(url, 'POST', savePlan);
     const data = await response.json();
 

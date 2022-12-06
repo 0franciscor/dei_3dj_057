@@ -16,7 +16,10 @@ export class PathService{
             warehouses.destinationWHId = "undefined"
         };
         let paths = []
-        const url = this.urlOrigin+'api/path/all/'+warehouses.startWHId +"/"+warehouses.destinationWHId;
+        let url = this.urlOrigin+'api/path/all/'+warehouses.startWHId +"/"+warehouses.destinationWHId;
+        if(this.urlOrigin.includes("azure")){
+          url = 'https://auth57.azurewebsites.net/api/path/all'+warehouses.startWHId +"/"+warehouses.destinationWHId;
+        }
         let test : any[]=[];
         const data = warehouses
         const response= await this.sendFetch(url,'GET',null)
@@ -29,7 +32,10 @@ export class PathService{
     }
 
     async createPath(path:any){
-        const url= this.urlOrigin+'api/path/'
+        let url= this.urlOrigin+'api/path/'
+        if(this.urlOrigin.includes("azure")){
+          url = 'https://auth57.azurewebsites.net/api/path/';
+        }
         const data = path;
         
 
@@ -38,7 +44,10 @@ export class PathService{
     }
 
     async createPathProlog(path:any){
-      const url= this.urlOrigin+'api/path/prolog'
+      let url= this.urlOrigin+'api/path/prolog'
+      if(this.urlOrigin.includes("azure")){
+        url = 'https://auth57.azurewebsites.net/api/path/prolog';
+      }
       const data = path;
       
       const response = await this.sendFetch(url,'POST',data);
