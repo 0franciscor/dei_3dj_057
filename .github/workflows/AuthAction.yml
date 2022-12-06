@@ -29,9 +29,6 @@ jobs:
       - name: Install
         run: npm i
 
-      - name: Test
-        run: npm test --if-present
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
