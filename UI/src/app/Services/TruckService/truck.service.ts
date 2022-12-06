@@ -11,8 +11,10 @@ export class TruckService {
   constructor() {}
 
   async getTruck(truckID:string) {
-    const url = this.urlOrigin+'api/truck/id/'+truckID;
-  
+    let url = this.urlOrigin+'api/truck/id/'+truckID;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/id/'+truckID;
+    }
     const response = await this.sendFetch(url, 'GET', null);
     const data = await response.json();
 
@@ -22,7 +24,10 @@ export class TruckService {
   }
   
   async getAllTruck() {
-    const url = this.urlOrigin+'api/truck/all';
+    let url = this.urlOrigin+'api/truck/all';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/all';
+    }
     const response = await this.sendFetch(url, 'GET', null);
     const data = await response.json();
     return data;
@@ -30,8 +35,10 @@ export class TruckService {
   }
 
   async createTruck(truck: any) {
-    const url = this.urlOrigin+'api/truck/';
-    
+    let url = this.urlOrigin+'api/truck/';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/';
+    }
 
     const data = truck;
  
@@ -43,8 +50,10 @@ export class TruckService {
   }
 
   async createTruckProlog(truck: any) {
-    const url = this.urlOrigin+'api/truck/prolog';
-    
+    let url = this.urlOrigin+'api/truck/prolog';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/prolog';
+    }
 
     const data = truck;
  
@@ -56,8 +65,10 @@ export class TruckService {
 
   async updateTruck(truck: any) {
 
-    const url = this.urlOrigin+'api/truck/';
-
+    let url = this.urlOrigin+'api/truck/';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/';
+    }
     const data = truck;
     const response = await this.sendFetch(url, 'PATCH', data);
       
@@ -68,8 +79,10 @@ export class TruckService {
 
   async updateTruckProlog(truck: any) {
 
-    const url = this.urlOrigin+'api/truck/prolog';
-
+    let url = this.urlOrigin+'api/truck/prolog';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/prolog';
+    }
     const data = truck;
     const response = await this.sendFetch(url, 'PATCH', data);
       
@@ -79,16 +92,20 @@ export class TruckService {
   }
 
   async deleteTruck(truckID: string) {
-    const url = this.urlOrigin+'api/truck/id/'+truckID;
-
+    let url = this.urlOrigin+'api/truck/id/'+truckID;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/id/'+truckID;
+    }
     const response = await this.sendFetch(url, 'DELETE', null);
 
     return response;
   }
 
   async deleteTruckProlog(truckID: string) {
-    const url = this.urlOrigin+'api/truck/idProlog/'+truckID;
-
+    let url = this.urlOrigin+'api/truck/idProlog/'+truckID;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/idProlog/'+truckID;
+    }
     const response = await this.sendFetch(url, 'DELETE', null);
 
     return response;

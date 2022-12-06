@@ -32,8 +32,9 @@ export default class WarehouseController implements IWarehouseController {
   public async getAllWarehouse(req: Request, res: Response, next: NextFunction){
     
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
-    const address = 'https://localhost:5001/api/warehouses/GetAll';
-
+    let address = 'https://localhost:5001/api/warehouses/GetAll';
+    if(req.get('host').includes("azure"))
+      address = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetAll/';
     const response = await this.fetch(address, 'GET', null, httpAgent); 
     
     if (response.status != 200) {
@@ -49,7 +50,9 @@ export default class WarehouseController implements IWarehouseController {
   public async getAllCities(req: Request, res: Response, next: NextFunction){
     
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
-    const address = 'https://localhost:5001/api/warehouses/GetAllCities';
+    let address = 'https://localhost:5001/api/warehouses/GetAllCities';
+    if(req.get('host').includes("azure"))
+      address = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetAllCities/';
 
     
     const response = await this.fetch(address, 'GET', null, httpAgent); 
@@ -67,7 +70,9 @@ export default class WarehouseController implements IWarehouseController {
   public async createWarehouse(req: Request, res: Response, next: NextFunction){
 
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
-    const address = 'https://localhost:5001/api/warehouses/CreateWarehouse';
+    let address = 'https://localhost:5001/api/warehouses/CreateWarehouse';
+    if(req.get('host').includes("azure"))
+      address = 'https://whmanagement57.azurewebsites.net/api/warehouses/CreateWarehouse/';
 
     const data = req.body;
 
@@ -101,7 +106,10 @@ export default class WarehouseController implements IWarehouseController {
   async getWarehouse(req: Request, res: Response, next: NextFunction) {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
-    const url = 'https://localhost:5001/api/warehouses/GetById/'+req.params.id;
+    let url = 'https://localhost:5001/api/warehouses/GetById/'+req.params.id;
+    
+    if(req.get('host').includes("azure"))
+      url = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetById/'+req.params.id;
 
     const response = await this.fetch(url, 'GET', null, httpAgent);
 
@@ -118,7 +126,9 @@ export default class WarehouseController implements IWarehouseController {
   async editWarehouse(req: Request, res: Response, next: NextFunction) {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
-    const url = 'https://localhost:5001/api/warehouses/Update';
+    let url = 'https://localhost:5001/api/warehouses/Update';
+    if(req.get('host').includes("azure"))
+      url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Update/';
     
     const response = await this.fetch(url, 'PUT', null, httpAgent);
 

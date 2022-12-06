@@ -12,9 +12,12 @@ export default class TripController implements ITripController {
 
     async createTrip(req: Request, res: Response, next: NextFunction) {
         console.log(req.body);
-        const tripURL = 'http://localhost:3000/api/trip/';
-        const packagingURL = 'http://localhost:3000/api/packaging/';
-        
+        let tripURL = 'http://localhost:3000/api/trip/';
+        let packagingURL = 'http://localhost:3000/api/packaging/';
+        if(req.get('host').includes("azure")){
+          tripURL = 'https://logistics57.azurewebsites.net/api/packaging/';
+          packagingURL = 'https://logistics57.azurewebsites.net/api/packaging/';
+        }
         const packagingID = req.body.infoList[0].delivery + req.body.truckName;
         req.body.infoList.forEach(async info => {
           const deliveryID = info.delivery;
@@ -40,7 +43,9 @@ export default class TripController implements ITripController {
         let pathIDlist: any[] = [];
 
         for (let index = 0; index < req.body.infoList.length-1; index++) {
-          const url = 'http://localhost:3000/api/path/all/'+req.body.infoList[index].warehouse+'/'+req.body.infoList[index+1].warehouse;
+          let url = 'http://localhost:3000/api/path/all/'+req.body.infoList[index].warehouse+'/'+req.body.infoList[index+1].warehouse;
+          if(req.get('host').includes("azure"))
+            url= 'https://logistics57.azurewebsites.net/api/path/all/'+req.body.infoList[index].warehouse+'/'+req.body.infoList[index+1].warehouse;
           const response = await this.fetch(url, 'GET', null);
           const jsonResponse = await response.json();
           pathIDlist.push(jsonResponse[0].pathID);
@@ -55,7 +60,7 @@ export default class TripController implements ITripController {
         }
 
         const response = await this.fetch(tripURL, 'POST', trip);
-        console.log(response);
+       
        
 
        

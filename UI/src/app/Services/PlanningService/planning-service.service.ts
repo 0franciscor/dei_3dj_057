@@ -9,7 +9,10 @@ export class PlanningService{
   constructor() { }
 
   async getBestPath(TruckName: any, date: any){
-    const url = this.urlOrigin+'api/planning/bestPath'
+    let url = this.urlOrigin+'api/planning/bestPath'
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/packaging/all';
+    }
     const data={
       truck: TruckName,
       date: date, 
@@ -30,7 +33,10 @@ export class PlanningService{
   }
 
   async getHighestMassFirst(date: any){
-    const url = this.urlOrigin+'api/planning/heuristicMass'
+    let url = this.urlOrigin+'api/planning/heuristicMass'
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/planning/heursiticMass';
+    }
     const data={
       date: date, 
     }
@@ -41,7 +47,10 @@ export class PlanningService{
     console.log(pathlist.bestRoute)
 
    
-      const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      let url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      if(this.urlOrigin.includes("azure")){
+        url2 = 'https://auth57.azurewebsites.net/api/delivery/getDeliveryDestination';
+      }
       const body= {pathList:pathlist.bestRoute, date:date}
       const plan = await this.sendFetch(url2,'POST',body)
     
@@ -50,7 +59,10 @@ export class PlanningService{
   }
 
   async getClosestWarehouse(date: any){
-    const url = this.urlOrigin+'api/planning/heuristicClosestWarehouse'
+    let url = this.urlOrigin+'api/planning/heuristicClosestWarehouse'
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/planning/heuristicClosestWarehouse';
+    }
     const data={
       date: date,
     }
@@ -60,7 +72,10 @@ export class PlanningService{
     console.log(pathlist)
 
    
-      const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      let url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      if(this.urlOrigin.includes("azure")){
+        url = 'https://auth57.azurewebsites.net/api/delivery/getDeliveryDestination';
+      }
       const body= {pathList:pathlist.bestRoute, date:date}
       const plan = await this.sendFetch(url2,'POST',body)
     
@@ -69,7 +84,10 @@ export class PlanningService{
   }
 
   async getCheapestPath(date: any){
-    const url = this.urlOrigin+'api/planning/heuristicMassAndDistance'
+    let url = this.urlOrigin+'api/planning/heuristicMassAndDistance'
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/planning/heuristicMassAndDistance';
+    }
     const data={
       date: date,
     }
@@ -78,7 +96,10 @@ export class PlanningService{
     console.log(pathlist)
 
    
-      const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      let url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      if(this.urlOrigin.includes("azure")){
+        url2 = 'https://auth57.azurewebsites.net/api/delivery/getDeliveryDestination';
+      }
       const body= {pathList:pathlist.bestRoute, date:date}
       const plan = await this.sendFetch(url2,'POST',body)
     

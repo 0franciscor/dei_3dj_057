@@ -15,4 +15,3 @@ Tested and functional\
 All business rules applied\
 All group members are aware of the task dimension\
 Design documents updated
-	

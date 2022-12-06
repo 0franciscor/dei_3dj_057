@@ -14,7 +14,9 @@ export default class DeliveryController implements IDeliveryController {
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
 
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
-        const address = 'https://localhost:5001/api/deliveries/GetAll';
+        let address = 'https://localhost:5001/api/deliveries/GetAll';
+        if(req.get('host').includes("azure"))
+          address = 'https://whmanagement57.azurewebsites.net/api/deliveries/GetAll/';
 
         const response = await fetch(address, {
             method: 'GET',
@@ -51,7 +53,9 @@ export default class DeliveryController implements IDeliveryController {
 
     public async getDelivery(req: Request, res: Response, next: NextFunction) {
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
-        const address = 'https://localhost:5001/api/deliveries/GetByID/' + req.params.id;
+        let address = 'https://localhost:5001/api/deliveries/GetByID/' + req.params.id;
+        if(req.get('host').includes("azure"))
+          address = 'https://whmanagement57.azurewebsites.net/api/deliveries/GetByID/'+ req.params.id;
 
         const response = await fetch(address, {
             method: 'GET',
@@ -69,8 +73,10 @@ export default class DeliveryController implements IDeliveryController {
 
     public async createDelivery(req: Request, res: Response, next: NextFunction) {
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
-        const address = 'https://localhost:5001/api/deliveries/CreateDelivery';
+        let address = 'https://localhost:5001/api/deliveries/CreateDelivery';
 
+        if(req.get('host').includes("azure"))
+            address = 'https://whmanagement57.azurewebsites.net/api/deliveries/CreateDelivery/';
         const response = await fetch(address, {
             method: 'POST',
             body: JSON.stringify(req.body),
@@ -111,7 +117,9 @@ export default class DeliveryController implements IDeliveryController {
 
     public async updateDelivery(req: Request, res: Response, next: NextFunction) {
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
-        const address = 'https://localhost:5001/api/deliveries/Update';
+        let address = 'https://localhost:5001/api/deliveries/Update';
+        if(req.get('host').includes("azure"))
+          address = 'https://whmanagement57.azurewebsites.net/api/deliveries/Update/';
 
         const response = await fetch(address, {
             method: 'PATCH',
@@ -165,7 +173,9 @@ export default class DeliveryController implements IDeliveryController {
         
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
        //GET DELIVERIES
-        const address = 'https://localhost:5001/api/deliveries/GetAll';
+        let address = 'https://localhost:5001/api/deliveries/GetAll';
+        if(req.get('host').includes("azure"))
+          address = 'https://whmanagement57.azurewebsites.net/api/deliveries/GetAll/';
 
         const responseDeliveries = await fetch(address, {
             method: 'GET',

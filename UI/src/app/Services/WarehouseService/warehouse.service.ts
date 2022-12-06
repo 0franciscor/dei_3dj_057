@@ -11,8 +11,10 @@ export class WarehouseService {
   constructor() { }
 
   async getWarehouse(WarehouseId:string) {
-    const url = this.urlOrigin+'api/warehouse/'+ WarehouseId;
- 
+    let url = this.urlOrigin+'api/warehouse/'+ WarehouseId;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/'+ WarehouseId;
+    }
     const response = await this.sendFetch(url,'GET',null);
     const data = await response.json();
 
@@ -21,8 +23,10 @@ export class WarehouseService {
   }
 
   async createWarehouse(warehouse: any) {
-    const url = this.urlOrigin+'api/warehouse/create';
-    
+    let url = this.urlOrigin+'api/warehouse/create';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/create';
+    }
     const data = warehouse;
     const response = await this.sendFetch(url, 'POST', data);
 
@@ -31,8 +35,10 @@ export class WarehouseService {
   }
 
   async createWarehouseProlog(warehouse: any) {
-    const url = this.urlOrigin+'api/warehouse/createProlog';
-    
+    let url = this.urlOrigin+'api/warehouse/createProlog';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/createProlog';
+    }
     const data = warehouse;
     const response = await this.sendFetch(url, 'POST', data);
 
@@ -41,8 +47,10 @@ export class WarehouseService {
   }
 
   async getAllWarehouses() {
-    const url = this.urlOrigin+'api/warehouse/all';
-
+    let url = this.urlOrigin+'api/warehouse/all';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/all';
+    }
     const response = await this.sendFetch(url, 'GET', null);
     const data = await response.json();
 
@@ -52,8 +60,10 @@ export class WarehouseService {
 
   async updateWarehouse(warehouse: any) {
 
-    const url = this.urlOrigin+'api/warehouse/update';
-    
+    let url = this.urlOrigin+'api/warehouse/update';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/update';
+    }
     const data = warehouse;
     const response = await this.sendFetch(url, 'PUT', data);
     
@@ -63,8 +73,10 @@ export class WarehouseService {
 
   async updateWarehouseProlog(warehouse: any) {
 
-    const url = this.urlOrigin+'api/warehouse/updateProlog';
-    
+    let url = this.urlOrigin+'api/warehouse/updateProlog';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/updateProlog';
+    }
     const data = warehouse;
     const response = await this.sendFetch(url, 'PUT', data);
     
