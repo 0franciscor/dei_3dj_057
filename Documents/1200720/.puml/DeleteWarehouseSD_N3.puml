@@ -2,9 +2,14 @@
 autonumber
 
 actor "Warehouse Manager" as admin
-box "<<System(C4)>>\n       EletricGo" #LightYellow
-participant SPA as ui <<Container(C4)>>
-box "<<Container(C4)>>\n    Warehouse Management" #LightGreen
+
+
+box "<<System(C4)>>\n          UI" #LightYellow
+participant DeleteWarehouseComponent as uiComponent <<Container(C4)>>
+participant DeleteWarehouseService as uiService <<Container(C4)>>
+box "<<Container(C4)>>\n           Auth" #LightBlue
+participant WarehouseController as authController <<Container(C4)>>
+box "     <<Container(C4)>>\nWarehouse Management" #LightGreen
 participant WarehouseRoute as  WM <<Component(C4)>>
 participant WarehouseController as  CTL <<Component(C4)>>
 participant WarehouseService as  SV <<Component(C4)>>
@@ -13,30 +18,36 @@ participant "warehouseDto : WarehouseDTO" as  DTO <<Component(C4)>>
 participant WarehouseRepository as  WR <<Component(C4)>>
 end box
 end box 
-admin -> ui: I want to delete a warehouse
-activate ui
+admin -> uiComponent: I want to delete a warehouse
+activate uiComponent
 
-ui --> admin: asks for the ID of the warehouse
-deactivate ui
+uiComponent --> admin: asks for the ID of the warehouse
+deactivate uiComponent
 
-admin -> ui: inserts the ID of the warehouse
-activate ui
+admin -> uiComponent: inserts the ID of the warehouse
+activate uiComponent
 
-ui --> admin: asks for the confirmation of the deletion
-deactivate ui
+uiComponent --> admin: asks for the confirmation of the deletion
+deactivate uiComponent
 
 
-admin -> ui: confirms the deletion
-activate ui
+admin -> uiComponent: confirms the deletion
+activate uiComponent
 
-ui -> WM : DELETE DeleteWarehouse(id)
-activate WM
-alt If there is a warehouse in the system with the id entered
-
+uiComponent -> uiService : deleteWarehouse(id)
+activate uiService
+uiService -> WM : deleteWarehouse(id)
+activate WM 
 WM -> CTL : DELETE Delete(id)
 activate CTL
 CTL -> SV : DeleteWarehouse(id)
 activate SV 
+deactivate WM
+deactivate uiService
+
+alt If there is a warehouse in the system with the id entered
+
+
 SV -> WR : GetById(id)
 activate WR 
 WR --> SV : warehouse
@@ -54,18 +65,21 @@ deactivate W
 SV --> CTL : warehouseDto
 deactivate SV
 CTL --> WM : warehouseDto
+activate WM
 deactivate CTL
-WM --> ui : 200 OK 
+WM --> authController : warehouseDto
+activate authController
+authController --> uiService : warehouseDto
+activate uiService
+uiService --> uiComponent : 200 OK
+deactivate uiService
+deactivate authController 
 deactivate WM
-ui --> admin: informs about the successful deletion
-deactivate ui
+uiComponent --> admin: informs about the successful deletion
+deactivate uiComponent
 
 else If there is no warehouse in the system with the id entered
 
-WM -> CTL : DELETE Delete(id)
-activate WM
-activate CTL
-CTL -> SV : DeleteWarehouse(id)
 activate SV 
 SV -> WR : GetById(id)
 activate WR 
@@ -73,17 +87,26 @@ WR --> SV : null
 deactivate WR
 
 SV --> CTL : null
+activate CTL
 deactivate SV
 CTL --> WM : null
+activate WM
+WM -> authController : null
+activate authController
+
+authController --> uiService : null 
+activate uiService
+uiService --> uiComponent : 404 NOT FOUND
+deactivate uiService
+deactivate authController
+deactivate WM
 deactivate CTL
 
-WM --> ui : 404 NOT FOUND 
-deactivate WM
-activate ui
+activate uiComponent
 
-ui --> admin : informs about the fail of the operation
+uiComponent --> admin : informs about the fail of the operation
 
-deactivate ui
+deactivate uiComponent
 
 
 end 

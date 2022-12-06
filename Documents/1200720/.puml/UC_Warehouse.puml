@@ -3,11 +3,7 @@
 skinparam actorStyle awesome
 "Warehouse Manager" as Admin
 
-"Create Warehouses" as (US1)
-"Update Warehouses" as (US2)
-"List Warehouses" as (US5)
+"Delete a warehouse" as (US1)
 
 Admin --> (US1)
-Admin --> (US2)
-Admin --> (US5)
 @enduml
