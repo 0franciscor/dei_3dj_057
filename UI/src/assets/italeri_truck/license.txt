@@ -1,0 +1,11 @@
+Model Information:
+* title:	Italeri Truck
+* source:	https://sketchfab.com/3d-models/italeri-truck-efdce2d230764de599cd574f5a20b55c
+* author:	H.A.K_Niazi (https://sketchfab.com/hasnatahmedkhan216)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Italeri Truck" (https://sketchfab.com/3d-models/italeri-truck-efdce2d230764de599cd574f5a20b55c) by H.A.K_Niazi (https://sketchfab.com/hasnatahmedkhan216) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

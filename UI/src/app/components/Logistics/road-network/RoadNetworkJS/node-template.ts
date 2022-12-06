@@ -171,5 +171,27 @@ export default class NodeTemplate {
         
         this.object.add(warehouseTexture);
 
+
+        const lightTruck = new THREE.AmbientLight(0xffffff, 1);
+        //q: what are the ideal coordinates for the light?
+        light.position.set(40,10,1200);
+        this.object.add(lightTruck);
+
+        const truckTexture = new THREE.Object3D();
+        const truckloader = new GLTFLoader();
+
+
+        truckloader.load(
+            './assets/italeri_truck/scene.gltf', 
+            (object) => {
+            object.scene.scale.set(0.003, 0.003, 0.003);
+            object.scene.position.set(pos.x + 1, pos.y + 1, pos.z + 0.2);
+            object.scene.rotateZ(Math.PI / 2);
+            object.scene.rotateX(Math.PI / 2);
+            truckTexture.add(object.scene);
+
+        });
+        this.object.add(truckTexture);
+
     }
 }
