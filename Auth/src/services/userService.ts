@@ -7,6 +7,8 @@ import { User } from "../domain/user/User";
 import config from "../../config";
 import { UserMap } from "../mappers/UserMap";
 import { UserEmail } from "../domain/user/UserEmail";
+import bcrypt from "bcrypt";
+import { resolve } from "path";
 
 
 @Service()
@@ -15,11 +17,36 @@ export default class UserService implements IUserService{
         @Inject(config.repos.user.name) private userRepo: IUserRepo 
     ){}
 
+
+    public async login(user: IUserDTO): Promise<Result<IUserDTO>> {
+        try {
+            const userOrError = await this.userRepo.findById(user.userId);
+            if(userOrError == null)
+                return Result.fail<IUserDTO>("User not found");
+            
+            const passwordMatch = await bcrypt.compare(user.password, userOrError.password.password);
+            
+            if(!passwordMatch)
+                return Result.fail<IUserDTO>("Invalid credentials");
+
+            const userDTO = UserMap.toDTO(userOrError) as IUserDTO;
+            return Result.ok<IUserDTO>(userDTO);
+        } catch (error) {
+            throw error;
+        }
+    }
+
     public async createUser(userDTO: IUserDTO): Promise<Result<IUserDTO>> {
         try {
             const user= await this.userRepo.findById(userDTO.userId);
             if(user != null)
                 return Result.fail<IUserDTO>("User already exists");
+
+            //encrypt password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(userDTO.password, salt);
+            userDTO.password= hashedPassword;
+            
             const userOrError = User.create(userDTO);
             if(userOrError.isFailure){
                 return Result.fail<IUserDTO>(userOrError.error);

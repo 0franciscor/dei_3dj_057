@@ -14,6 +14,9 @@ import { IUserDTO } from '../dto/IUserDTO';
 import { ServerCapabilities } from 'mongodb';
 import IUserController from './IControllers/IUserController';
 import IUserService from '../services/IServices/IUserService';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
+const jwt = require('jsonwebtoken');
 
 @Service()
 export default class UserController implements IUserController{
@@ -21,6 +24,30 @@ export default class UserController implements IUserController{
         @Inject(config.services.user.name)
         private userService: IUserService
     ) {}
+
+
+
+    public async login(req: Request, res: Response, next: NextFunction) {
+    
+        try {
+            const userOrError = await this.userService.login(req.body as IUserDTO);
+            if(userOrError.isFailure){
+                res.status(401);
+                return res.send("Invalid credentials");
+            }
+            const userDTO = userOrError.getValue();
+            const token = jwt.sign({id: userDTO.id.toString(),role:userDTO.role.toString()}, config.jwtSecret, {expiresIn: 86400});
+            res.status(200);
+            res.cookie('jwt', token, {httpOnly: true,maxAge: 86400000});
+            return res.send("Login successful");
+        } catch (error) {
+            next(error);
+        }
+
+
+        
+
+    }
 
     public async getUser(req: Request, res: Response, next: NextFunction){
         try{

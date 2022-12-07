@@ -39,7 +39,7 @@ export default class UserRepo implements IUserRepo {
       } else {
         userDocument.userId = user.userId.id;
         userDocument.firstName = user.firstName.firstName;
-        userDocument.lastName = user.lastname.lastName;
+        userDocument.lastName = user.lastName.lastName;
         userDocument.email = user.email.email;
         userDocument.password= user.password.password;
         userDocument.role= user.role.id;
@@ -65,7 +65,9 @@ export default class UserRepo implements IUserRepo {
 
   public async findById (userId:UserId): Promise<User> {
     const query = {userId: userId}
+    
     const userDocument = await this.userSchema.findOne(query as FilterQuery<IUserPersistence & Document>);
+    
     if(userDocument!=null){
       return UserMap.toDomain(userDocument);
     }

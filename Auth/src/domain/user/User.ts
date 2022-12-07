@@ -42,7 +42,7 @@ export class User extends AggregateRoot<UserProps>{
         return this.props.firstName
     }
 
-    get lastname(): LastName{
+    get lastName(): LastName{
         return this.props.lastName
     }
    

@@ -2,13 +2,42 @@ import { Request, Response, NextFunction } from 'express';
 import { Service } from 'typedi';
 import ITruckController from "./IControllers/ITruckController";
 import fetch from 'node-fetch';
+import config from '../../config';
 const http = require('https');
+const jwt = require('jsonwebtoken');
 @Service()
 export default class TruckController implements ITruckController {
   constructor() {}
 
+  //list of authorized roles
+  private roles = ["admin", "fltMan"];
+
+  isAuthenticated(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    if(!claims)
+        return false;
+    
+    return true;
+  }
+
+  isAuthorized(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    if(!claims)
+        return false;
+    if(claims.role in this.roles)
+      return false;
+    return true;
+  }
+
+
   private async fetch(url : string, method: string, body: any, agent: any = null){
-   
+    
     if(body)
       return await fetch(url,{
         method : method,
@@ -29,6 +58,14 @@ export default class TruckController implements ITruckController {
   }
 
   async createTruck(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     let url = 'http://localhost:3000/api/truck/';
     const data = req.body;
     if(req.get('host').includes("azure"))
@@ -49,7 +86,14 @@ export default class TruckController implements ITruckController {
   }
 
   async createTruckProlog(req: Request, res: Response, next: NextFunction) {
-
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_truck';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
     const response_prolog = await this.fetch(url_prolog, 'POST', req.body, httpAgent);
@@ -65,9 +109,17 @@ export default class TruckController implements ITruckController {
   }
 
   async getAllTruck(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+      
     let url = 'http://localhost:3000/api/truck/all';
-    console.log(req.get('host'));
-    console.log(req.get('host').includes("azure"));
+
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/all';
     const response = await this.fetch(url, 'GET', null);
@@ -82,6 +134,14 @@ export default class TruckController implements ITruckController {
   }
 
   async getTruck(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     let url = 'http://localhost:3000/api/truck/id/'+req.body.truckId;
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.body.truckId;
@@ -97,6 +157,14 @@ export default class TruckController implements ITruckController {
   }
 
   async editTruck(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     let url = 'http://localhost:3000/api/truck/';
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/';
@@ -116,6 +184,14 @@ export default class TruckController implements ITruckController {
   }
 
   async editTruckProlog(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
 
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_truck';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
@@ -131,6 +207,14 @@ export default class TruckController implements ITruckController {
   }
 
   async deleteTruck(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     let url = 'http://localhost:3000/api/truck/id/'+req.params.id;
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.params.id;
@@ -151,6 +235,14 @@ export default class TruckController implements ITruckController {
   }
 
   async deleteTruckProlog(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
   
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/delete_truck';

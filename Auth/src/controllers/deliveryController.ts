@@ -4,14 +4,29 @@ import { Service } from 'typedi';
 import IDeliveryController from "./IControllers/IDeliveryController";
 
 import fetch from 'node-fetch';
+import config from '../../config';
 
 const http = require('https');
 
+const jwt = require('jsonwebtoken');
 @Service()
 export default class DeliveryController implements IDeliveryController {
     constructor() { }
 
+    isAuthenticated(req: Request, res: Response, next: NextFunction) {
+       
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, config.jwtSecret);
+        if(!claims){
+            res.status(401);
+            return res.send("Unauthorized");
+        }
+        next();
+    }
+
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
+
+        this.isAuthenticated(req,res,next);
 
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/GetAll';
