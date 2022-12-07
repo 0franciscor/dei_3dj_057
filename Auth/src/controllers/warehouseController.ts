@@ -123,6 +123,26 @@ export default class WarehouseController implements IWarehouseController {
     return res.json(data);
   }
 
+  async activateWarehouse(req: Request, res: Response, next: NextFunction) {
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+
+    let url = 'https://localhost:5001/api/warehouses/Activate/'+req.params.id;
+    
+    if(req.get('host').includes("azure"))
+      url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Activate'+req.params.id;
+
+    const response = await this.fetch(url, 'PATCH', null, httpAgent);
+
+    if(response.status != 200){
+      res.status(response.status);
+      return res.json({message: "Error getting warehouse"});
+    }
+
+    const data = await response.json();
+    res.status(200)
+    return res.json(data);
+  }
+
   async editWarehouse(req: Request, res: Response, next: NextFunction) {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
