@@ -13,20 +13,41 @@ const jwt = require('jsonwebtoken');
 export default class DeliveryController implements IDeliveryController {
     constructor() { }
 
-    isAuthenticated(req: Request, res: Response, next: NextFunction) {
-       
+    private roles = ["admin"];
+
+    isAuthenticated(req: Request) {
+        if(req.cookies['jwt'] == undefined)
+        return false;
         const cookie = req.cookies['jwt'];
         const claims = jwt.verify(cookie, config.jwtSecret);
-        if(!claims){
-            res.status(401);
-            return res.send("Unauthorized");
-        }
-        next();
+        if(!claims)
+            return false;
+        
+        return true;
+    }
+
+    isAuthorized(req: Request) {
+        if(req.cookies['jwt'] == undefined)
+        return false;
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, config.jwtSecret);
+        if(!claims)
+            return false;
+        if(claims.role in this.roles)
+        return false;
+        return true;
     }
 
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
-
-        this.isAuthenticated(req,res,next);
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+          if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+          }
+        this.isAuthenticated(req);
 
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/GetAll';
@@ -48,7 +69,14 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getAllDeliveriesProlog(req: Request, res: Response, next: NextFunction) {
-
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+          if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+          }
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         const address = 'https://localhost:5001/api/deliveries/GetAllProlog';
 
@@ -67,6 +95,14 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getDelivery(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+          if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+          }
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/GetByID/' + req.params.id;
         if(req.get('host').includes("azure"))
@@ -87,6 +123,14 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async createDelivery(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+          if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+          }
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/CreateDelivery';
 
@@ -110,6 +154,14 @@ export default class DeliveryController implements IDeliveryController {
     };
 
     public async createDeliveryProlog(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+          if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+          }
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_delivery';
         const response_prolog = await fetch(address_prolog, {
@@ -131,6 +183,14 @@ export default class DeliveryController implements IDeliveryController {
 
 
     public async updateDelivery(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+          if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+          }
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/Update';
         if(req.get('host').includes("azure"))
@@ -154,6 +214,14 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async updateDeliveryProlog(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+          if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+          }
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
         const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_delivery';
@@ -176,6 +244,14 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getDeliveryDestination(req: Request, res: Response, next: NextFunction){
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+          if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+          }
         let deliveredWarehouseList :any[]=[]
         let deliveriesMoved : any[]=[]
         

@@ -2,11 +2,37 @@ import { Request, Response, NextFunction } from 'express';
 import { Inject, Service } from 'typedi';
 import IWarehouseController from "./IControllers/IWarehouseController";
 import fetch from 'node-fetch';
+import config from '../../config';
 const http = require('https');
-
+const jwt = require('jsonwebtoken');
 @Service()
 export default class WarehouseController implements IWarehouseController {
   constructor() {}
+
+  private roles = ["admin"];
+
+  isAuthenticated(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    if(!claims)
+        return false;
+    
+    return true;
+  }
+
+  isAuthorized(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    if(!claims)
+        return false;
+    if(claims.role in this.roles)
+      return false;
+    return true;
+  }
 
   private async fetch(url : string, method: string, body: any, agent: any = null){
    
@@ -30,7 +56,14 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async getAllWarehouse(req: Request, res: Response, next: NextFunction){
-    
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAll';
     if(req.get('host').includes("azure"))
@@ -48,7 +81,14 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async getAllCities(req: Request, res: Response, next: NextFunction){
-    
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAllCities';
     if(req.get('host').includes("azure"))
@@ -68,7 +108,14 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async createWarehouse(req: Request, res: Response, next: NextFunction){
-
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/CreateWarehouse';
     if(req.get('host').includes("azure"))
@@ -89,7 +136,14 @@ export default class WarehouseController implements IWarehouseController {
   }
 
     public async createWarehouseProlog(req: Request, res: Response, next: NextFunction){
-
+      if(!this.isAuthenticated(req)){
+        res.status(401);
+        return res.json({message: "Not authenticated"});
+      }
+      if(!this.isAuthorized(req)){
+        res.status(403);
+        return res.json({message: "Not authorized"});
+      }
       const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
       const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
@@ -104,6 +158,14 @@ export default class WarehouseController implements IWarehouseController {
     }
 
   async getWarehouse(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
     let url = 'https://localhost:5001/api/warehouses/GetById/'+req.params.id;
@@ -124,6 +186,14 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   async editWarehouse(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
     let url = 'https://localhost:5001/api/warehouses/Update';
@@ -143,6 +213,14 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   async editWarehouseProlog(req: Request, res: Response, next: NextFunction) {
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';

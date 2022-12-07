@@ -8,15 +8,45 @@ import { Result } from "../core/logic/Result";
 import fetch from 'node-fetch';
 
 const http = require('https');
-
+const jwt = require('jsonwebtoken');
 @Service()
 export default class PathController implements IPathController {
   constructor() {}
 
- 
+  private roles = ["admin"];
+
+  isAuthenticated(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    if(!claims)
+        return false;
+    
+    return true;
+  }
+
+  isAuthorized(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    if(!claims)
+        return false;
+    if(claims.role in this.roles)
+      return false;
+    return true;
+  }
 
   public async getAllPaths(req: Request, res: Response, next: NextFunction){
-    
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     let address = 'http://localhost:3000/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
     
     if(req.get('host').includes("azure"))
@@ -37,6 +67,14 @@ export default class PathController implements IPathController {
   }
 
   async createPath(req:Request,res:Response,next:NextFunction){
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     let url = 'http://localhost:3000/api/path/'
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/path/'
@@ -59,6 +97,14 @@ export default class PathController implements IPathController {
   }
 
   async createPathProlog(req:Request,res:Response,next:NextFunction){
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_path';
 
