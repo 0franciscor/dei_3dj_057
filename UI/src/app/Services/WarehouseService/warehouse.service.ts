@@ -84,6 +84,19 @@ export class WarehouseService {
      
   }
 
+  async activateWarehouse(warehouseId: string) {
+
+    let url = this.urlOrigin+'api/warehouse/active/'+ warehouseId;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/activate/'+ warehouseId;
+    }
+    const response = await this.sendFetch(url,'PATCH',null);
+    const data = await response.json();
+
+    return data;
+     
+  }
+
   async sendFetch(url: string, method: string, data: any) {
     if(data)
       return await fetch(url, {
@@ -94,6 +107,7 @@ export class WarehouseService {
         },
       })
     else
+      console.log(url);
       return await fetch(url, {
         method: method,
         headers: {
