@@ -161,7 +161,8 @@ namespace EletricGo.Services
             {
                 return null;
             }
-            _warehouseRepository.Delete(warehouse);
+            warehouse.Deactivate();
+
             await _unitOfWork.CommitAsync();
             return warehouse.ToWarehouseDto();
         }
@@ -170,6 +171,21 @@ namespace EletricGo.Services
         {
             return await _warehouseRepository.Find(new WarehouseId(warehouseDto.Id));
         }
+
+        public async Task<WarehouseDto> ActivateWarehouse(string id)
+        {
+            var warehouse = await _warehouseRepository.GetByID(new WarehouseId(id));
+
+            if (warehouse == null)
+            {
+                return null;
+            }
+            warehouse.Activate();
+
+            await _unitOfWork.CommitAsync();
+            return warehouse.ToWarehouseDto();
+        }
+
 
 
     }

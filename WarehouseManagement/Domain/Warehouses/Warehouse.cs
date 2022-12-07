@@ -14,8 +14,9 @@ namespace EletricGo.Domain.Warehouses
         public Altitude Altitude { get; set; }
         public Coordinates Coordinates{ get; set; }
         public Designation Designation { get; set; }
-
         public CityId cityId { get; set;}
+
+        public bool active { get; set; }
 
         public Warehouse() { }
 
@@ -28,6 +29,7 @@ namespace EletricGo.Domain.Warehouses
             this.Altitude = altitude;
             this.Coordinates = coordinates;
             this.Designation = designation;
+            this.active = true;
             
         }
         public Warehouse(EntityID id, Address address, Altitude altitude, Coordinates coordinates, Designation designation, CityId city)
@@ -39,6 +41,7 @@ namespace EletricGo.Domain.Warehouses
             this.Coordinates = coordinates;
             this.Designation = designation;
             this.cityId = city;
+            this.active = true;
         }
 
         public Warehouse(WarehouseDto dto)
@@ -66,12 +69,13 @@ namespace EletricGo.Domain.Warehouses
             this.Altitude = new Altitude(dto.Altitude);
             this.Coordinates = new Coordinates(dto.Latitude, dto.Longitude);
             this.Designation = new Designation(dto.Designation);
+            this.active = true;
 
         }
 
         public WarehouseDto ToWarehouseDto()
         {
-            return new WarehouseDto(){Id = this.Id.ToString(), Address = this.Address.fullAddress, Altitude = this.Altitude.AsInt(), Latitude = this.Coordinates.AsStringLatitude(), Longitude = this.Coordinates.AsStringLongitude(), Designation = this.Designation.AsString(), City = cityId.Id};
+            return new WarehouseDto(){Id = this.Id.ToString(), Address = this.Address.fullAddress, Altitude = this.Altitude.AsInt(), Latitude = this.Coordinates.AsStringLatitude(), Longitude = this.Coordinates.AsStringLongitude(), Designation = this.Designation.AsString(), City = cityId.Id, Active = this.active};
         }
 
         public void Update(WarehouseDto dto)
@@ -95,13 +99,27 @@ namespace EletricGo.Domain.Warehouses
             {
                 this.Designation = new Designation(dto.Designation);    
             }
-            
-            
+
+            if(dto.Active != default(bool))
+            {
+                this.active = dto.Active;
+            }
+                        
         }
 
         public void AssociateCityWithWarehouse(CityId city)
         {
             this.cityId = city;
+        }
+
+
+        public void Deactivate()
+        {
+            this.active = false;
+        }
+
+        public void Activate(){
+            this.active = true;
         }
 
     }
