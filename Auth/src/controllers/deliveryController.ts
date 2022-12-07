@@ -13,7 +13,7 @@ const jwt = require('jsonwebtoken');
 export default class DeliveryController implements IDeliveryController {
     constructor() { }
 
-    private roles = ["admin"];
+    private roles = ["admin","whMan"];
 
     isAuthenticated(req: Request) {
         if(req.cookies['jwt'] == undefined)
@@ -33,9 +33,9 @@ export default class DeliveryController implements IDeliveryController {
         const claims = jwt.verify(cookie, config.jwtSecret);
         if(!claims)
             return false;
-        if(claims.role in this.roles)
+        if(this.roles.indexOf(claims.role) > -1)
+            return true;
         return false;
-        return true;
     }
 
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
@@ -56,7 +56,12 @@ export default class DeliveryController implements IDeliveryController {
 
         const response = await fetch(address, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+            },
+            
         });
 
         if (response.status != 200) {
@@ -82,7 +87,11 @@ export default class DeliveryController implements IDeliveryController {
 
         const response = await fetch(address, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
         });
 
         if (response.status != 200) {
@@ -110,7 +119,11 @@ export default class DeliveryController implements IDeliveryController {
 
         const response = await fetch(address, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
         });
 
         if (response.status != 200) {
@@ -139,7 +152,10 @@ export default class DeliveryController implements IDeliveryController {
         const response = await fetch(address, {
             method: 'POST',
             body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
             agent: httpAgent
         });
 
@@ -167,7 +183,10 @@ export default class DeliveryController implements IDeliveryController {
         const response_prolog = await fetch(address_prolog, {
             method: 'POST',
             body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
             agent: httpAgent
         });
 
@@ -199,7 +218,10 @@ export default class DeliveryController implements IDeliveryController {
         const response = await fetch(address, {
             method: 'PATCH',
             body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
             agent: httpAgent
         });
 
@@ -229,7 +251,10 @@ export default class DeliveryController implements IDeliveryController {
         const response_prolog = await fetch(address_prolog, {
             method: 'PUT',
             body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
             agent: httpAgent
         });
 
@@ -270,7 +295,11 @@ export default class DeliveryController implements IDeliveryController {
 
         const responseDeliveries = await fetch(address, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
         });
 
         if (responseDeliveries.status != 200) {
@@ -283,7 +312,11 @@ export default class DeliveryController implements IDeliveryController {
         const warehousesAddress = 'https://localhost:5001/api/warehouses/GetAll'
         const responseWarehouse = await fetch(warehousesAddress, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
         });
         if (responseWarehouse.status != 200) {
             res.status(responseWarehouse.status);

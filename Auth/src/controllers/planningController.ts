@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 export default class PlanningController implements IPlanningController {
   constructor() {}
 
-  private roles = ["admin", "fltMan"];
+  private roles = ["admin", "logMan"];
 
   isAuthenticated(req: Request) {
     if(req.cookies['jwt'] == undefined)
@@ -30,19 +30,20 @@ export default class PlanningController implements IPlanningController {
     const claims = jwt.verify(cookie, config.jwtSecret);
     if(!claims)
         return false;
-    if(claims.role in this.roles)
-      return false;
-    return true;
+    if(this.roles.indexOf(claims.role) > -1)
+      return true;
+    return false;
   }
 
-  private async fetch(url : string, method: string, body: any, agent: any = null){
+  private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
    
     if(body)
       return await fetch(url,{
         method : method,
         body : JSON.stringify(body),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cookie': cookie
         },
         agent: agent
       });
@@ -90,7 +91,7 @@ export default class PlanningController implements IPlanningController {
     const httpAgent = new http.Agent({rejectUnauthorized: false});
 
     const data = req.body;
-    const response = await this.fetch(url_prolog, 'POST', data, httpAgent); 
+    const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie ,httpAgent); 
 
     const info = await response.json();
     res.status(200);
@@ -110,7 +111,7 @@ export default class PlanningController implements IPlanningController {
     const httpAgent = new http.Agent({rejectUnauthorized: false});
 
     const data = req.body;
-    const response = await this.fetch(url_prolog, 'POST', data, httpAgent); 
+    const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie, httpAgent); 
 
     const info = await response.json();
     res.status(200);
@@ -130,7 +131,7 @@ export default class PlanningController implements IPlanningController {
     const httpAgent = new http.Agent({rejectUnauthorized: false});
 
     const data = req.body;
-    const response = await this.fetch(url_prolog, 'POST', data, httpAgent); 
+    const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie, httpAgent); 
 
     const info = await response.json();
     res.status(200);

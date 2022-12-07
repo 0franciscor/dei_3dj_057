@@ -10,13 +10,15 @@ export default class packageController implements IPackageController {
 
 constructor() {}
 
-private roles = ["admin"];
+private roles = ["admin","logMan"];
 
   isAuthenticated(req: Request) {
     if(req.cookies['jwt'] == undefined)
       return false;
     const cookie = req.cookies['jwt'];
+    
     const claims = jwt.verify(cookie, config.jwtSecret);
+    
     if(!claims)
         return false;
     
@@ -28,11 +30,12 @@ private roles = ["admin"];
       return false;
     const cookie = req.cookies['jwt'];
     const claims = jwt.verify(cookie, config.jwtSecret);
+    
     if(!claims)
         return false;
-    if(claims.role in this.roles)
-      return false;
-    return true;
+    if(this.roles.indexOf(claims.role) > -1)
+      return true;
+    return false;
   }
 
   async createPackage(req: Request, res:Response, next: NextFunction) {
@@ -53,7 +56,8 @@ private roles = ["admin"];
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cookie': req.headers.cookie
         },
       })
       if(response.status != 201){
@@ -83,7 +87,8 @@ private roles = ["admin"];
         const response = await fetch(url, {
           method: 'GET',
           headers: {
-            'Accept': 'application/json'
+            'Content-Type': 'application/json',
+            'Cookie': req.headers.cookie
           }
         });
         if(response.status != 200){

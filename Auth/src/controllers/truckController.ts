@@ -17,6 +17,7 @@ export default class TruckController implements ITruckController {
       return false;
     const cookie = req.cookies['jwt'];
     const claims = jwt.verify(cookie, config.jwtSecret);
+    
     if(!claims)
         return false;
     
@@ -30,20 +31,21 @@ export default class TruckController implements ITruckController {
     const claims = jwt.verify(cookie, config.jwtSecret);
     if(!claims)
         return false;
-    if(claims.role in this.roles)
-      return false;
-    return true;
+    if(this.roles.indexOf(claims.role) > -1)
+      return true;
+    return false;
   }
 
 
-  private async fetch(url : string, method: string, body: any, agent: any = null){
+  private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
     
     if(body)
       return await fetch(url,{
         method : method,
         body : JSON.stringify(body),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cookie': cookie
         },
         agent: agent
       });
@@ -51,7 +53,8 @@ export default class TruckController implements ITruckController {
       return await fetch(url,{
         method : method,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cookie': cookie
         },
         agent: agent
       });
@@ -70,7 +73,7 @@ export default class TruckController implements ITruckController {
     const data = req.body;
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/';
-    const response = await this.fetch(url, 'POST', data); 
+    const response = await this.fetch(url, 'POST', data, req.headers.cookie); 
     
     if(response.status != 201){
       res.status(response.status);
@@ -78,7 +81,7 @@ export default class TruckController implements ITruckController {
     }
     const httpAgent = new http.Agent({rejectUnauthorized: false});
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_truck';
-    const response_prolog = await this.fetch(url_prolog, 'POST', data, httpAgent); 
+    const response_prolog = await this.fetch(url_prolog, 'POST', data,req.headers.cookie , httpAgent); 
     const info = await response.json();
     res.status(201);
     return res.json(info);
@@ -96,7 +99,7 @@ export default class TruckController implements ITruckController {
     }
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_truck';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
-    const response_prolog = await this.fetch(url_prolog, 'POST', req.body, httpAgent);
+    const response_prolog = await this.fetch(url_prolog, 'POST', req.body,req.headers.cookie, httpAgent);
 
     if(response_prolog.status != 201){
       res.status(response_prolog.status);
@@ -122,7 +125,7 @@ export default class TruckController implements ITruckController {
 
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/all';
-    const response = await this.fetch(url, 'GET', null);
+    const response = await this.fetch(url, 'GET', null, req.headers.cookie);
 
     if(response.status != 200){
       res.status(response.status);
@@ -145,7 +148,7 @@ export default class TruckController implements ITruckController {
     let url = 'http://localhost:3000/api/truck/id/'+req.body.truckId;
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.body.truckId;
-    const response = await this.fetch(url, 'GET', null);
+    const response = await this.fetch(url, 'GET', null, req.headers.cookie);
     if(response.status != 200){
       res.status(response.status);
       return res.json({message: "Error getting truck"});
@@ -169,7 +172,7 @@ export default class TruckController implements ITruckController {
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/';
     const data = req.body;
-    const response = await this.fetch(url, 'PATCH', data);
+    const response = await this.fetch(url, 'PATCH', data, req.headers.cookie);
     if(response.status != 200){
       res.status(response.status);
       return res.json({message: "Error editing truck"});
@@ -177,7 +180,7 @@ export default class TruckController implements ITruckController {
 
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_truck';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
-    const response_prolog = await this.fetch(url_prolog, 'PUT', data, httpAgent);
+    const response_prolog = await this.fetch(url_prolog, 'PUT', data,req.headers.cookie, httpAgent);
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -195,7 +198,7 @@ export default class TruckController implements ITruckController {
 
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_truck';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
-    const response_prolog = await this.fetch(url_prolog, 'PUT', req.body, httpAgent);
+    const response_prolog = await this.fetch(url_prolog, 'PUT', req.body,req.headers.cookie, httpAgent);
 
     if(response_prolog.status != 200){
       res.status(response_prolog.status);
@@ -218,7 +221,7 @@ export default class TruckController implements ITruckController {
     let url = 'http://localhost:3000/api/truck/id/'+req.params.id;
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.params.id;
-    const response = await this.fetch(url, 'DELETE', null);
+    const response = await this.fetch(url, 'DELETE',req.headers.cookie, null);
 
     if(response.status != 200){
       res.status(response.status);
@@ -227,7 +230,7 @@ export default class TruckController implements ITruckController {
  
     const httpAgent = new http.Agent({rejectUnauthorized: false});
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/delete_truck';
-    const response_prolog = await this.fetch(url_prolog, 'DELETE', null, httpAgent);
+    const response_prolog = await this.fetch(url_prolog, 'DELETE', null,req.headers.cookie, httpAgent);
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -247,7 +250,7 @@ export default class TruckController implements ITruckController {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/delete_truck';
 
-    const response_prolog = await this.fetch(url_prolog, 'DELETE', null, httpAgent);
+    const response_prolog = await this.fetch(url_prolog, 'DELETE', null,req.headers.cookie, httpAgent);
 
     if(response_prolog.status != 200){
       res.status(response_prolog.status);

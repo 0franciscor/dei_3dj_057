@@ -12,6 +12,10 @@ export class ToolBarComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    console.log(document.cookie)
+    if(document.cookie == ""){
+      this.router.navigate(['/login']);
+    }
   }
 
   goHome(): void {

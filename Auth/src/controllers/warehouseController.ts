@@ -3,13 +3,18 @@ import { Inject, Service } from 'typedi';
 import IWarehouseController from "./IControllers/IWarehouseController";
 import fetch from 'node-fetch';
 import config from '../../config';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
 const http = require('https');
 const jwt = require('jsonwebtoken');
 @Service()
 export default class WarehouseController implements IWarehouseController {
   constructor() {}
+  activateWarehouse(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) {
+    throw new Error('Method not implemented.');
+  }
 
-  private roles = ["admin"];
+  private roles = ["admin","whMan"];
 
   isAuthenticated(req: Request) {
     if(req.cookies['jwt'] == undefined)
@@ -29,19 +34,20 @@ export default class WarehouseController implements IWarehouseController {
     const claims = jwt.verify(cookie, config.jwtSecret);
     if(!claims)
         return false;
-    if(claims.role in this.roles)
-      return false;
-    return true;
+    if(this.roles.indexOf(claims.role) > -1)
+      return true;
+    return false;
   }
 
-  private async fetch(url : string, method: string, body: any, agent: any = null){
+  private async fetch(url : string, method: string, body: any,cookie:any, agent: any = null){
    
     if(body)
       return await fetch(url,{
         method : method,
         body : JSON.stringify(body),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cookie': cookie
         },
         agent: agent
       });
@@ -68,7 +74,7 @@ export default class WarehouseController implements IWarehouseController {
     let address = 'https://localhost:5001/api/warehouses/GetAll';
     if(req.get('host').includes("azure"))
       address = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetAll/';
-    const response = await this.fetch(address, 'GET', null, httpAgent); 
+    const response = await this.fetch(address, 'GET', null,req.headers.cookie, httpAgent); 
     
     if (response.status != 200) {
       res.status(response.status);
@@ -95,7 +101,7 @@ export default class WarehouseController implements IWarehouseController {
       address = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetAllCities/';
 
     
-    const response = await this.fetch(address, 'GET', null, httpAgent); 
+    const response = await this.fetch(address, 'GET', null,req.headers.cookie, httpAgent); 
     
     if (response.status != 200) {
       res.status(response.status);
@@ -123,7 +129,7 @@ export default class WarehouseController implements IWarehouseController {
 
     const data = req.body;
 
-    const response = await this.fetch(address, 'POST', data, httpAgent); 
+    const response = await this.fetch(address, 'POST', data,req.headers.cookie, httpAgent); 
 
     if(response.status != 200){
       res.status(response.status);
@@ -150,7 +156,7 @@ export default class WarehouseController implements IWarehouseController {
 
       const data = req.body;
 
-      const response = await this.fetch(address_prolog, 'POST', data, httpAgent); 
+      const response = await this.fetch(address_prolog, 'POST', data,req.headers.cookie, httpAgent); 
 
       const info = await response.json();
       res.status(201);
@@ -173,7 +179,7 @@ export default class WarehouseController implements IWarehouseController {
     if(req.get('host').includes("azure"))
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetById/'+req.params.id;
 
-    const response = await this.fetch(url, 'GET', null, httpAgent);
+    const response = await this.fetch(url, 'GET', null,req.headers.cookie, httpAgent);
 
     if(response.status != 200){
       res.status(response.status);
@@ -200,7 +206,7 @@ export default class WarehouseController implements IWarehouseController {
     if(req.get('host').includes("azure"))
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Update/';
     
-    const response = await this.fetch(url, 'PUT', null, httpAgent);
+    const response = await this.fetch(url, 'PUT', null,req.headers.cookie, httpAgent);
 
     if(response.status != 200){
       res.status(response.status);
@@ -225,7 +231,7 @@ export default class WarehouseController implements IWarehouseController {
 
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
     
-    const response = await this.fetch(url_prolog, 'PUT', null, httpAgent);
+    const response = await this.fetch(url_prolog, 'PUT', null,req.headers.cookie, httpAgent);
 
     if(response.status != 200){
       res.status(response.status);

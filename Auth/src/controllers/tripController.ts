@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 export default class TripController implements ITripController {
   constructor() {}
 
-  private roles = ["admin"];
+  private roles = ["admin", "logMan"];
 
   isAuthenticated(req: Request) {
     if(req.cookies['jwt'] == undefined)
@@ -31,9 +31,9 @@ export default class TripController implements ITripController {
     const claims = jwt.verify(cookie, config.jwtSecret);
     if(!claims)
         return false;
-    if(claims.role in this.roles)
-      return false;
-    return true;
+    if(this.roles.indexOf(claims.role) > -1)
+      return true;
+    return false;
   }
 
     async createTrip(req: Request, res: Response, next: NextFunction) {
@@ -68,7 +68,7 @@ export default class TripController implements ITripController {
             yPosition: y,
             zPosition: z
           }
-          const response = await this.fetch(packagingURL, 'POST', packaging);
+          const response = await this.fetch(packagingURL, 'POST', packaging, req.headers.cookie);
   
         });
 
@@ -79,7 +79,7 @@ export default class TripController implements ITripController {
           let url = 'http://localhost:3000/api/path/all/'+req.body.infoList[index].warehouse+'/'+req.body.infoList[index+1].warehouse;
           if(req.get('host').includes("azure"))
             url= 'https://logistics57.azurewebsites.net/api/path/all/'+req.body.infoList[index].warehouse+'/'+req.body.infoList[index+1].warehouse;
-          const response = await this.fetch(url, 'GET', null);
+          const response = await this.fetch(url, 'GET', null, req.headers.cookie);
           const jsonResponse = await response.json();
           pathIDlist.push(jsonResponse[0].pathID);
         }
@@ -92,21 +92,22 @@ export default class TripController implements ITripController {
           packagingID: packagingID
         }
 
-        const response = await this.fetch(tripURL, 'POST', trip);
+        const response = await this.fetch(tripURL, 'POST', trip, req.headers.cookie);
        
        
 
        
     }
 
-    private async fetch(url : string, method: string, body: any, agent: any = null){
+    private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
    
       if(body)
         return await fetch(url,{
           method : method,
           body : JSON.stringify(body),
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Cookie': cookie
           },
           agent: agent
         });
@@ -114,7 +115,8 @@ export default class TripController implements ITripController {
         return await fetch(url,{
           method : method,
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Cookie': cookie
           },
           agent: agent
         });

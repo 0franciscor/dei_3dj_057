@@ -13,7 +13,7 @@ const jwt = require('jsonwebtoken');
 export default class PathController implements IPathController {
   constructor() {}
 
-  private roles = ["admin"];
+  private roles = ["admin","logMan"];
 
   isAuthenticated(req: Request) {
     if(req.cookies['jwt'] == undefined)
@@ -33,9 +33,9 @@ export default class PathController implements IPathController {
     const claims = jwt.verify(cookie, config.jwtSecret);
     if(!claims)
         return false;
-    if(claims.role in this.roles)
-      return false;
-    return true;
+    if(this.roles.indexOf(claims.role) > -1)
+      return true;
+    return false;
   }
 
   public async getAllPaths(req: Request, res: Response, next: NextFunction){
@@ -54,6 +54,10 @@ export default class PathController implements IPathController {
     
     const response = await fetch(address, {
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cookie': req.headers.cookie
+        },
     });
     
     if (response.status == 404){
@@ -82,8 +86,9 @@ export default class PathController implements IPathController {
     const response = await fetch(url,{
       method: 'POST',
       body:JSON.stringify(data),
-      headers:{
-        'Content-Type': 'application/json'
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': req.headers.cookie
       },
     })
 
@@ -112,7 +117,8 @@ export default class PathController implements IPathController {
       method: 'POST',
       body: JSON.stringify(req.body),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Cookie': req.headers.cookie
       },
       agent: httpAgent
     })
