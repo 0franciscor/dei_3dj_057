@@ -91,9 +91,9 @@ export class WarehouseService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/activate/'+ warehouseId;
     }
     const response = await this.sendFetch(url,'PATCH',null);
-    const data = await response.json();
+    
 
-    return data;
+    return response;
      
   }
 
@@ -104,9 +104,8 @@ export class WarehouseService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/deactivate/'+ warehouseId;
     }
     const response = await this.sendFetch(url,'DELETE',null);
-    const data = await response.json();
 
-    return data;
+    return response;
      
   }
 

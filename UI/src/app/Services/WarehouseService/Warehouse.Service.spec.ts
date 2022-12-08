@@ -111,6 +111,30 @@ describe('WarehouseService', () => {
     expect(trucks).toEqual(response);
   });
 
+  it('should activate a warehouse', async () => {
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.activateWarehouse('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+  });
+
+  it('should deactivate a warehouse', async () => {
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.activateWarehouse('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+  });
+
   it('should send a fetch without data', async () => {
 
     const status = await service.sendFetch('test', 'GET', null);
