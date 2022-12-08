@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { data, Event, event } from 'cypress/types/jquery';
 import { WarehouseService } from 'src/app/Services/WarehouseService/warehouse.service';
 
 export interface DialogData {
