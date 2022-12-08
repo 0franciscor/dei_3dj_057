@@ -64,7 +64,64 @@
 
 ### 3.3.1 Testes Unitários
 
-**TEST**
+**WarehouseService.spec.ts**
+
+    it('should activate a warehouse', async () => {
+        const response = {
+        "status": 200,
+        };
+
+        const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+        const status = await service.activateWarehouse('TH1');
+        expect(fetchSpy).toHaveBeenCalled();
+        expect(status.status).toEqual(200);
+    });
+
+    it('should deactivate a warehouse', async () => {
+        const response = {
+        "status": 200,
+        };
+
+        const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+        const status = await service.activateWarehouse('TH1');
+        expect(fetchSpy).toHaveBeenCalled();
+        expect(status.status).toEqual(200);
+    });
+
+### 3.3.1 Testes End To End 
+
+    it('should get the button edit in warehouses active', () => {
+
+        cy.get('#active').then($active => {
+        if($active){
+            cy.get('button').contains('Edit');
+        }
+        })
+    })
+
+    it('should get the button activate in warehouses deactivated', () => {
+
+        cy.get('#active').then($active => {
+        if(!$active){
+            cy.get('button').contains('Activate').click();
+            cy.visit('http://localhost:4200/WarehouseManagement/Home/WarehouseManager');
+        }
+
+        })
+    })
+
+    it('should get the button deactivate in warehouses activated', () => {
+
+        cy.get('#active').then($active => {
+        if($active){
+            cy.get('button').contains('Deactivate').click();
+            cy.visit('http://localhost:4200/WarehouseManagement/Home/WarehouseManager');
+        }
+
+        })
+    })
 
 # 4. Implementação
 

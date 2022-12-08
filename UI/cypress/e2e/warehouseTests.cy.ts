@@ -197,6 +197,42 @@ describe('Create Warehouse Success', () => {
       cy.get('th').contains('Longitude');
       cy.get('th').contains('Designation');
       cy.get('th').contains('City Id');
+      cy.get('th').contains('Active');
+      cy.get('th').contains('Actions');
+    })
+
+  
+    
+    it('should get the button edit in warehouses active', () => {
+
+      cy.get('#active').then($active => {
+        if($active){
+          cy.get('button').contains('Edit');
+        }
+
+      })
+    })
+
+    it('should get the button activate in warehouses deactivated', () => {
+
+      cy.get('#active').then($active => {
+        if(!$active){
+          cy.get('button').contains('Activate').click();
+          cy.visit('http://localhost:4200/WarehouseManagement/Home/WarehouseManager');
+        }
+
+      })
+    })
+
+    it('should get the button deactivate in warehouses activated', () => {
+
+      cy.get('#active').then($active => {
+        if($active){
+          cy.get('button').contains('Deactivate').click();
+          cy.visit('http://localhost:4200/WarehouseManagement/Home/WarehouseManager');
+        }
+
+      })
     })
 
   })
