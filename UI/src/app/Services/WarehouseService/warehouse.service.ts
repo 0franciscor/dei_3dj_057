@@ -97,6 +97,19 @@ export class WarehouseService {
      
   }
 
+  async deactivateWarehouse(warehouseId: string) {
+
+    let url = this.urlOrigin+'api/warehouse/deactivate/'+ warehouseId;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/deactivate/'+ warehouseId;
+    }
+    const response = await this.sendFetch(url,'DELETE',null);
+    const data = await response.json();
+
+    return data;
+     
+  }
+
   async sendFetch(url: string, method: string, data: any) {
     if(data)
       return await fetch(url, {

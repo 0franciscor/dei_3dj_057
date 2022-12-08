@@ -47,9 +47,12 @@ export default (app: Router) => {
         ctrl.getWarehouse(req,res,next)
     });
 
-    route.patch('active/:id',(req,res,next)=>{
-        console.log("activate");
+    route.patch('/active/:id',(req,res,next)=>{
         ctrl.activateWarehouse(req,res,next)
+    });
+
+    route.delete('/deactivate/:id',(req,res,next)=>{
+        ctrl.deactivateWarehouse(req,res,next)
     });
 
 };
