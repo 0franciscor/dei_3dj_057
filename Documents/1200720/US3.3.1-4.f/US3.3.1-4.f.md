@@ -64,15 +64,147 @@
 
 ### 3.3.1 Testes Unitários
 
-**TEST**
+**WarehouseService.spec.ts**
+
+    it('should activate a warehouse', async () => {
+        const response = {
+        "status": 200,
+        };
+
+        const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+        const status = await service.activateWarehouse('TH1');
+        expect(fetchSpy).toHaveBeenCalled();
+        expect(status.status).toEqual(200);
+    });
+
+    it('should deactivate a warehouse', async () => {
+        const response = {
+        "status": 200,
+        };
+
+        const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+        const status = await service.activateWarehouse('TH1');
+        expect(fetchSpy).toHaveBeenCalled();
+        expect(status.status).toEqual(200);
+    });
+
+### 3.3.1 Testes End To End 
+
+    it('should get the button edit in warehouses active', () => {
+
+        cy.get('#active').then($active => {
+        if($active){
+            cy.get('button').contains('Edit');
+        }
+        })
+    })
+
+    it('should get the button activate in warehouses deactivated', () => {
+
+        cy.get('#active').then($active => {
+        if(!$active){
+            cy.get('button').contains('Activate').click();
+            cy.visit('http://localhost:4200/WarehouseManagement/Home/WarehouseManager');
+        }
+
+        })
+    })
+
+    it('should get the button deactivate in warehouses activated', () => {
+
+        cy.get('#active').then($active => {
+        if($active){
+            cy.get('button').contains('Deactivate').click();
+            cy.visit('http://localhost:4200/WarehouseManagement/Home/WarehouseManager');
+        }
+
+        })
+    })
 
 # 4. Implementação
 
 - Conforme o ‘design’ feito e com o agregado em questão apara o desenvolvimento desse caso de uso, os sequintes excertos de código abaixo servem para confirmar a veracidade do 'design' proposto.
 
-### Component 
+### WarehouseController.cs
+
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult<WarehouseDto>> Delete(string id)
+        {
+            var deletedObject = await _warehouseService.DeleteWarehouse(id);
+            
+            if (deletedObject == null)
+            {
+                return NotFound("The requested delete was not performed.");
+            }
+
+            return Ok(deletedObject);
+            
+            
+        }
+
+        [HttpPatch("Activate/{id}")]
+        public async Task<ActionResult<WarehouseDto>> Activate(string id)
+        {
+            var ActivatedObject = await _warehouseService.ActivateWarehouse(id);
+            
+            if (ActivatedObject == null)
+            {
+                return NotFound("The requested ofr activate was not performed.");
+            }
+
+            return Ok(ActivatedObject);
+            
+        }
+
+## WarehouseService.ts
+
+    async activateWarehouse(warehouseId: string) {
+
+        let url = this.urlOrigin+'api/warehouse/active/'+ warehouseId;
+        if(this.urlOrigin.includes("azure")){
+        url = 'https://auth57.azurewebsites.net/api/warehouse/activate/'+ warehouseId;
+        }
+        const response = await this.sendFetch(url,'PATCH',null);
+        const data = await response.json();
+
+        return data;
+    
+    }
+
+    async deactivateWarehouse(warehouseId: string) {
+
+            let url = this.urlOrigin+'api/warehouse/deactivate/'+ warehouseId;
+            if(this.urlOrigin.includes("azure")){
+            url = 'https://auth57.azurewebsites.net/api/warehouse/deactivate/'+ warehouseId;
+            }
+            const response = await this.sendFetch(url,'DELETE',null);
+            const data = await response.json();
+
+            return data;
+        
+    }
+
+## Warehouse.cs 
+
+    public void Deactivate()
+    {
+        this.active = false;
+    }
+    
+    public void Activate(){
+        this.active = true;
+    }
 
 
 # 5. Demonstração da funcionalidade 
 
+- Para demostrar essa funcionalidade iremos a página 'Consult Warehouse', ao entrar nessa página serão mostradas todos os armazéns que encontram-se no sistema, e se estão ativos ou não.
+![img.png](resources/img.png)
+![img.png](resources/img_3.png)
 
+- Caso o armazém encontre-se ativo, aparecerá a opção de desativar o armazém, caso contrário aparecerá a opção de ativar o armazém.
+- Para demostração, iremos ativar o armazém de id "WH1" e desativar o armazém de id "WH2".
+![img_1.png](resources/img_1.png)
+![img_2.png](resources/img_2.png)

@@ -17,11 +17,11 @@ export class GetWarehousesComponent implements OnInit {
   
   public warehouseList: any[] = [];
 
-  displayedColumns: string[] = ['warehouseID', 'address', 'altitude', 'latitude', 'longitude', 'description','cityId', 'active' ,'edit', 'activate'];
+  displayedColumns: string[] = ['warehouseID', 'address', 'altitude', 'latitude', 'longitude', 'description','cityId', 'active' ,'edit'];
   dataSource = this.warehouseList;
 
   
-  constructor(private loginService:LoginService,private warehouseService: WarehouseService, private router: Router) { 
+  constructor(private loginService:LoginService,private warehouseService: WarehouseService, private router: Router){ 
     
     this.warehouseService.getAllWarehouses().then((data) => {
       this.warehouseList = data;
@@ -52,6 +52,15 @@ export class GetWarehousesComponent implements OnInit {
 
   goToActiveWarehouse(warehouseID : string) {
     this.warehouseService.activateWarehouse(warehouseID)
+    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+
   }
+
+  goToDeactiveWarehouse(warehouseID : string) {
+    this.warehouseService.deactivateWarehouse(warehouseID)
+    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+
+  }
+
 
 }

@@ -1,28 +1,48 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { LoginService } from "src/app/Services/LoginService/login.service";
 import { PackagingService } from "src/app/Services/PackageService/package.service";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 
+interface Package {
+  packagingID: string;
+  truckID: string;
+  deliveryID: string;
+  xPosition: number;
+  yPosition: number;
+  zPosition: number;
+}
 
 @Component({
-    selector: 'app-package-list',
-    templateUrl: './package-list.component.html',
-    styleUrls: ['./package-list.component.css']
-  })
+  selector: 'app-package-list',
+  templateUrl: './package-list.component.html',
+  styleUrls: ['./package-list.component.css']
+})
 
+export class PackageListComponent implements OnInit {
+
+  constructor(private loginService: LoginService,private packageService: PackagingService, private router: Router) {
+    this.loadPackages();
+  }
+  packageList: Package[] = [];
+
+  displayedColumns: string[] = ['packagingID', 'truckID', 'deliveryID', 'xPosition', 'yPosition', 'zPosition', 'edit'];
+
+  dataSource!: MatTableDataSource<Package>;
+
+  @ViewChild('paginator', {static: false})
+  set paginator(value: MatPaginator) {
+    if(this.dataSource){
+      this.dataSource.paginator = value;
+    }
+  }
   
-  export class PackageListComponent implements OnInit {
 
-   public packageList: any[] = [];
-
-   displayedColumns: string[] = ['packagingID','truckID','deliveryID','xPosition','yPosition','zPosition','edit'];
-   dataSource = this.packageList;
-
-   constructor(private loginService:LoginService,private packageService: PackagingService, private router: Router){
-
+  loadPackages() {
     this.packageService.getPackage().then((data) => {
       this.packageList = data;
-      this.dataSource = this.packageList;
+      this.dataSource = new MatTableDataSource(this.packageList);
     });
 
 
@@ -46,5 +66,6 @@ import { PackagingService } from "src/app/Services/PackageService/package.servic
      this.isAuth = await this.isAuthenticated();
   }
 
+ 
 
-  }
+}

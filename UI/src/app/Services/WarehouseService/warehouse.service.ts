@@ -91,11 +91,25 @@ export class WarehouseService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/activate/'+ warehouseId;
     }
     const response = await this.sendFetch(url,'PATCH',null, document.cookie);
-    const data = await response.json();
+    
 
-    return data;
+    return response;
      
   }
+
+  async deactivateWarehouse(warehouseId: string) {
+
+    let url = this.urlOrigin+'api/warehouse/deactivate/'+ warehouseId;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/warehouse/deactivate/'+ warehouseId;
+    }
+    const response = await this.sendFetch(url,'DELETE',null, document);
+
+    return response;
+     
+  }
+
+
 
   async sendFetch(url: string, method: string, data: any, cookie: any) {
     if(data)

@@ -40,7 +40,6 @@ export class EditWarehouseComponent implements OnInit {
     latitude: undefined,
     longitude: undefined,
     designation: undefined,
-    active: undefined
   }
 
   goBack(){
@@ -70,7 +69,6 @@ export class EditWarehouseComponent implements OnInit {
       latitude: this.selectedWarehouse.latitude,
       longitude: this.selectedWarehouse.longitude,
       designation: this.selectedWarehouse.designation,
-      active: this.selectedWarehouse.designation
     });
 
 
@@ -84,9 +82,8 @@ export class EditWarehouseComponent implements OnInit {
           latitude: this.selectedWarehouse.latitude,
           longitude: this.selectedWarehouse.longitude,
           designation: this.selectedWarehouse.designation,
-          active: this.selectedWarehouse.designation
+          
         });
-        console.log(this.selectedWarehouse.active);
       });
     
   }
@@ -111,26 +108,7 @@ export class EditWarehouseComponent implements OnInit {
       
     });
   }
-
-  unlockAttributes() : void{
-    this.formEditWarehouse.get('address')?.enable();
-    this.formEditWarehouse.get('altitude')?.enable();
-    this.formEditWarehouse.get('latitude')?.enable();
-    this.formEditWarehouse.get('longitude')?.enable();
-    this.formEditWarehouse.get('designation')?.enable();
-  }
-
-  lockAttributes() : void{
-    this.formEditWarehouse.get('address')?.disable();
-    this.formEditWarehouse.get('altitude')?.disable();
-    this.formEditWarehouse.get('latitude')?.disable();
-    this.formEditWarehouse.get('longitude')?.disable();
-    this.formEditWarehouse.get('designation')?.disable();
-  }
-
 }
-
-
 
 @Component({
   selector: 'app-edit-warehouse',

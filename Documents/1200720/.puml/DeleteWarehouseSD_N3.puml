@@ -52,11 +52,11 @@ SV -> WR : GetById(id)
 activate WR 
 WR --> SV : warehouse
 deactivate WR
-SV -> WR : Delete(warehouse)
-activate WR
+SV -> W : deactivateWarehouse()
+activate W
 
-WR --> SV : true 
-deactivate WR
+W --> SV : true 
+deactivate W
 
 SV -> W : toWarehouseDto()
 activate W

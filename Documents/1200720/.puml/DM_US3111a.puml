@@ -19,7 +19,9 @@ package "<<aggregate>> WarehouseManagement"{
 }
 
 
-entity Warehouse <<entity>> <<Root>>
+entity Warehouse <<entity>> <<Root>>{
+  active : boolean
+}
 class WarehouseIndentifier <<(V,#FF8B40) value object>>
 class WarehouseDesignation <<(V,#FF8B40) value object>>
 class WarehouseAddress <<(V,#FF8B40) value object>>
