@@ -27,9 +27,8 @@ interface warehouse{
 })
 export class EditWarehouseComponent implements OnInit {
 
-  formEditWarehouse!: FormGroup;
-
-
+  formEditWarehouse!: FormGroup
+  
   constructor(private loginService:LoginService,public dialog: MatDialog,private route: ActivatedRoute, private warehouseService: WarehouseService, private fb: FormBuilder, private router: Router) { 
     
   }
@@ -41,6 +40,7 @@ export class EditWarehouseComponent implements OnInit {
     latitude: undefined,
     longitude: undefined,
     designation: undefined,
+    active: undefined
   }
 
   goBack(){
@@ -69,28 +69,29 @@ export class EditWarehouseComponent implements OnInit {
       address: this.selectedWarehouse.address,
       latitude: this.selectedWarehouse.latitude,
       longitude: this.selectedWarehouse.longitude,
-      designation: this.selectedWarehouse.designation
+      designation: this.selectedWarehouse.designation,
+      active: this.selectedWarehouse.designation
     });
 
 
     if (warehouseID)
       this.warehouseService.getWarehouse(warehouseID).then((data) => {
-        this.selectedWarehouse = data;
-        console.log(data);
+        this.selectedWarehouse = data
         this.formEditWarehouse = this.fb.group({
           id: this.selectedWarehouse.id,
           altitude: this.selectedWarehouse.altitude,
           address: this.selectedWarehouse.address,
           latitude: this.selectedWarehouse.latitude,
           longitude: this.selectedWarehouse.longitude,
-          designation: this.selectedWarehouse.designation
+          designation: this.selectedWarehouse.designation,
+          active: this.selectedWarehouse.designation
         });
-        console.log(this.formEditWarehouse.value);
+        console.log(this.selectedWarehouse.active);
       });
+    
   }
 
   async onSubmit() {
-    console.log(this.formEditWarehouse.value);
     let answer = await this.warehouseService.updateWarehouse(this.formEditWarehouse.value);
     let message = "Warehouse updated successfully";
 
@@ -104,11 +105,27 @@ export class EditWarehouseComponent implements OnInit {
         message: message},
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(_result => {
       if(answer.status == 200)
         this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
       
     });
+  }
+
+  unlockAttributes() : void{
+    this.formEditWarehouse.get('address')?.enable();
+    this.formEditWarehouse.get('altitude')?.enable();
+    this.formEditWarehouse.get('latitude')?.enable();
+    this.formEditWarehouse.get('longitude')?.enable();
+    this.formEditWarehouse.get('designation')?.enable();
+  }
+
+  lockAttributes() : void{
+    this.formEditWarehouse.get('address')?.disable();
+    this.formEditWarehouse.get('altitude')?.disable();
+    this.formEditWarehouse.get('latitude')?.disable();
+    this.formEditWarehouse.get('longitude')?.disable();
+    this.formEditWarehouse.get('designation')?.disable();
   }
 
 }

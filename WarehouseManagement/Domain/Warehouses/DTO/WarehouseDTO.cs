@@ -12,6 +12,8 @@ namespace EletricGo.Domain.Warehouses.DTO
 		public string Designation { get; set; }
 		
 		public string City { get; set; }
+
+		public bool Active { get; set; }
 		
 
 	}

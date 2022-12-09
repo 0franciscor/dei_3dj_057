@@ -35,3 +35,9 @@
     width: fit-content;
     margin: auto;
   }
+
+  .mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    margin-left: 16px;
+  }
+
+

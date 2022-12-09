@@ -10,9 +10,6 @@ const jwt = require('jsonwebtoken');
 @Service()
 export default class WarehouseController implements IWarehouseController {
   constructor() {}
-  activateWarehouse(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) {
-    throw new Error('Method not implemented.');
-  }
 
   private roles = ["admin","whMan"];
 
@@ -195,6 +192,37 @@ export default class WarehouseController implements IWarehouseController {
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetById/'+req.params.id;
 
     const response = await this.fetch(url, 'GET', null,req.headers.cookie, httpAgent);
+
+    if(response.status != 200){
+      res.status(response.status);
+      return res.json({message: "Error getting warehouse"});
+    }
+
+    const data = await response.json();
+    res.status(200)
+    return res.json(data);
+  }
+
+  async activateWarehouse(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+
+    let url = 'https://localhost:5001/api/warehouses/Activate/'+req.params.id;
+    
+    if(req.get('host').includes("azure"))
+      url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Activate'+req.params.id;
+
+    const response = await this.fetch(url, 'PATCH', null,req.headers.cookie, httpAgent);
 
     if(response.status != 200){
       res.status(response.status);

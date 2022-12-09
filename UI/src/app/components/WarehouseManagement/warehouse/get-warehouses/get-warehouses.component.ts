@@ -17,7 +17,7 @@ export class GetWarehousesComponent implements OnInit {
   
   public warehouseList: any[] = [];
 
-  displayedColumns: string[] = ['warehouseID', 'address', 'altitude', 'latitude', 'longitude', 'description','cityId', 'edit'];
+  displayedColumns: string[] = ['warehouseID', 'address', 'altitude', 'latitude', 'longitude', 'description','cityId', 'active' ,'edit', 'activate'];
   dataSource = this.warehouseList;
 
   
@@ -48,6 +48,10 @@ export class GetWarehousesComponent implements OnInit {
 
   goToEditWarehouse(warehouseID : string) {
     this.router.navigate(['WarehouseManagement/Warehouse/EditWarehouse', warehouseID]);
+  }
+
+  goToActiveWarehouse(warehouseID : string) {
+    this.warehouseService.activateWarehouse(warehouseID)
   }
 
 }

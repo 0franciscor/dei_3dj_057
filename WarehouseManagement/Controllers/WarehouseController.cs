@@ -110,6 +110,20 @@ namespace EletricGo.Controllers
             
         }
 
+        [HttpPatch("Activate/{id}")]
+        public async Task<ActionResult<WarehouseDto>> Activate(string id)
+        {
+            var ActivatedObject = await _warehouseService.ActivateWarehouse(id);
+            
+            if (ActivatedObject == null)
+            {
+                return NotFound("The requested ofr activate was not performed.");
+            }
+
+            return Ok(ActivatedObject);
+            
+        }
+
         [HttpGet("Exists/{id}")]
         public async Task<ActionResult<bool>> Exists (string id)
         {

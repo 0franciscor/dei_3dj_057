@@ -35,6 +35,7 @@ import { GetWarehousesComponent } from './components/WarehouseManagement/warehou
 import { TruckPlanningComponent } from './components/Logistics/truck-planning/truck-planning/truck-planning.component';
 import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
 import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
+import {MatRadioModule} from '@angular/material/radio';
 import { DefaultHomeComponent } from './components/defaultHome/default-home/default-home.component';
 
 @NgModule({
@@ -85,6 +86,7 @@ import { DefaultHomeComponent } from './components/defaultHome/default-home/defa
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

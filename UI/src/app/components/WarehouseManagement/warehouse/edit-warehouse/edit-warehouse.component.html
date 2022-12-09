@@ -18,40 +18,72 @@
 
                 <mat-form-field appearance="fill">
                     <mat-label>Address</mat-label>
-                    <input matInput type="text" formControlName="address">
+                    <input matInput type="text" id="address" formControlName="address">
                 </mat-form-field>
 
                 <br>
 
                 <mat-form-field appearance="fill">
                     <mat-label>Altitude</mat-label>
-                    <input matInput type="number" formControlName="altitude">
+                    <input matInput type="number" id="altitude" formControlName="altitude">
                 </mat-form-field>
 
                 <br>
 
                 <mat-form-field appearance="fill">
                     <mat-label>Latitude</mat-label>
-                    <input matInput type="text" formControlName="latitude">
+                    <input matInput type="text" id="latitude" formControlName="latitude">
                 </mat-form-field>
 
                 <br>
 
                 <mat-form-field appearance="fill">
                     <mat-label>Longitude</mat-label>
-                    <input matInput type="text" formControlName="longitude">
+                    <input matInput type="text" id="longitude" formControlName="longitude">
                 </mat-form-field>
 
                 <br>
 
                 <mat-form-field appearance="fill">
-                    <mat-label>Desigantion</mat-label>
-                    <input matInput type="text" formControlName="designation">
+                    <mat-label>Designation</mat-label>
+                    <input matInput type="text" id="designation" formControlName="designation">
                 </mat-form-field>
+
                 <br>
+
+                <!-- <div>
+                    <input id="activated" type="radio" class="custom-control-input" value="activated" name="active" formControlName="active" 
+                    [checked]="selectedWarehouse.active"
+                    (change)="unlockAttributes()">
+                    <label class="custom-control-label" for="activated">Activated</label>
+                 </div>
+
+                 <div>
+                    <input id="deactivated" type="radio" class="custom-control-input" value="deactivated" name="active" formControlName="active"
+                    [checked]="!selectedWarehouse.active"
+                    (change)="lockAttributes()">
+                    <label class="custom-control-label" for="deactivated">Deactivated</label>
+                 </div> -->
+               
+                <!-- <div>
+                    <mat-radio-button class="mat-mdc-radio-button" color="primary" name="active" id="activated"
+                    [checked]="selectedWarehouse.active"
+                    (change)="unlockAttributes()">Activated</mat-radio-button>
+
+                    <mat-radio-button class="mat-mdc-radio-button" color="primary" name="active" id="deactivated"
+                    [checked]="selectedWarehouse.active"
+                    (change)="lockAttributes()">Deactivated</mat-radio-button>
+
+                </div> -->
+                
+
+                <br>
+                <br>
+
                 <div class="createButtonDiv">
                     <button mat-raised-button color="primary" type="submit">Edit</button>
                 </div>
+
             </form>
         </mat-card-content>
     </mat-card>
