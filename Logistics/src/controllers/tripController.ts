@@ -16,7 +16,7 @@ import { StartWHId } from '../domain/path/StartWHId';
 import { PathID } from '../domain/path/PathID';
 
 const http = require('https');
-
+const jwt = require('jsonwebtoken');
 
 @Service()
 export default class TripController implements ITripController{
@@ -28,7 +28,41 @@ export default class TripController implements ITripController{
         @Inject(config.services.packaging.name) private packagingService: IPackagingService
     ) { }
 
+    private roles = ["admin", "logMan"];
+
+    isAuthenticated(req: Request) {
+        if(req.cookies['jwt'] == undefined)
+        return false;
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, config.jwtSecret);
+        
+        if(!claims)
+            return false;
+        
+        return true;
+    }
+
+    isAuthorized(req: Request) {
+        if(req.cookies['jwt'] == undefined)
+        return false;
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, config.jwtSecret);
+        if(!claims)
+            return false;
+        if(this.roles.indexOf(claims.role) > -1)
+        return true;
+        return false;
+    }
+
     public async getTrip(req: Request, res: Response, next: NextFunction ) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try{
             const trip = await this.tripService.getTrip(req.body.tripID);
             if(trip.isFailure){
@@ -42,6 +76,14 @@ export default class TripController implements ITripController{
     }
 
     public async getAllTrips(req: Request, res: Response ,next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             const trips = await this.tripService.getAllTrips();
             console.log("trips: ", trips);
@@ -57,6 +99,14 @@ export default class TripController implements ITripController{
     }
 
     public async createTrip(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
       try{
         
         if(req.body.tripID == null)
@@ -94,6 +144,14 @@ export default class TripController implements ITripController{
     }
 
     public async updateTrip(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             if(req.body.tripID == null)
                 return res.status(400).send("TripID is required");
@@ -118,6 +176,14 @@ export default class TripController implements ITripController{
     
 
     public async deleteTrip(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             const tripResult = await this.tripService.deleteTrip(req.body.tripID);
             if(tripResult.isFailure){
@@ -130,14 +196,6 @@ export default class TripController implements ITripController{
         }catch(e){
             next(e);
         }       
-    }
-
-    private async fetch(address : string){
-        const httpAgent = new http.Agent({rejectUnauthorized: false});
-        return await fetch(address, {
-            method: 'GET',
-            agent: httpAgent
-        });
     }
 
     

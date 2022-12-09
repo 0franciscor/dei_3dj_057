@@ -8,15 +8,48 @@ import { Result } from "../core/logic/Result";
 import fetch from 'node-fetch';
 
 const http = require('https');
-
+const jwt = require('jsonwebtoken');
 @Service()
 export default class PathController implements IPathController {
   constructor() {}
 
- 
+  private roles = ["admin","logMan"];
+
+  isAuthenticated(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    if(!claims)
+        return false;
+    
+    return true;
+  }
+
+  isAuthorized(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    if(!claims)
+        return false;
+    if(this.roles.indexOf(claims.role) > -1)
+      return true;
+    return false;
+  }
 
   public async getAllPaths(req: Request, res: Response, next: NextFunction){
-    
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     let address = 'http://localhost:3000/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
     
     if(req.get('host').includes("azure"))
@@ -24,6 +57,10 @@ export default class PathController implements IPathController {
     
     const response = await fetch(address, {
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cookie': req.headers.cookie
+        },
     });
     
     if (response.status == 404){
@@ -37,6 +74,17 @@ export default class PathController implements IPathController {
   }
 
   async createPath(req:Request,res:Response,next:NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     let url = 'http://localhost:3000/api/path/'
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/path/'
@@ -44,8 +92,9 @@ export default class PathController implements IPathController {
     const response = await fetch(url,{
       method: 'POST',
       body:JSON.stringify(data),
-      headers:{
-        'Content-Type': 'application/json'
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': req.headers.cookie
       },
     })
 
@@ -59,6 +108,17 @@ export default class PathController implements IPathController {
   }
 
   async createPathProlog(req:Request,res:Response,next:NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_path';
 
@@ -66,7 +126,8 @@ export default class PathController implements IPathController {
       method: 'POST',
       body: JSON.stringify(req.body),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Cookie': req.headers.cookie
       },
       agent: httpAgent
     })

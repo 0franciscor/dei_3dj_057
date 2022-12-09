@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { elementAt } from 'rxjs';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { PackagingService } from 'src/app/Services/PackageService/package.service';
 
 import{ PathService } from 'src/app/Services/PathService/path.service';
@@ -29,7 +30,7 @@ export class LogisticsManagerComponent implements OnInit {
   public pathList: any[]=[];
 
   formSelectWarehouse!: FormGroup;
-  constructor(private router: Router,private pathService: PathService,private fb: FormBuilder,private packageService: PackagingService) {
+  constructor(private loginService:LoginService,private router: Router,private pathService: PathService,private fb: FormBuilder,private packageService: PackagingService) {
     this.selectedPath={
       pathID:"",
       startWHId: undefined,
@@ -41,8 +42,21 @@ export class LogisticsManagerComponent implements OnInit {
     }
   }
 
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["logMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     this.formSelectWarehouse = this.fb.group({
       startWHId: [''],
       destinationWHId:['']

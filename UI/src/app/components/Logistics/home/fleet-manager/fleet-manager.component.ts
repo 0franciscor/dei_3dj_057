@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 
@@ -36,7 +37,7 @@ export class FleetManagerComponent implements OnInit {
   displayedColumns: string[] = ['TruckID', 'Tare', 'Capacity', 'Maximum Battery Capacity', 'Autonomy', 'Fast Charge Time', "Actions"];
   dataSource = this.truckList;
   
-  constructor(public dialog: MatDialog,private truckService: TruckService, private router: Router) { 
+  constructor(private loginService:LoginService,public dialog: MatDialog,private truckService: TruckService, private router: Router) { 
     this.truckService.getAllTruck().then((data) => {
       this.truckList = data;
       this.dataSource = this.truckList;
@@ -51,9 +52,21 @@ export class FleetManagerComponent implements OnInit {
     }
   }
 
-  
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["fltMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     
   }
 

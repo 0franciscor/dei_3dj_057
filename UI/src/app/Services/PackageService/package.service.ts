@@ -18,7 +18,8 @@ export class PackagingService {
     const response = await fetch(url, {
       method: 'GET',
       headers:{
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        "authorization": document.cookie,
       }
     });
 
@@ -34,14 +35,16 @@ export class PackagingService {
     const data = packageL;
     console.log(data);
     console.log(JSON.stringify(data));
+    const cookie:any = document.cookie;
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "authorization": document.cookie,
         },
- })
+    })
 
- return response;
-}
+    return response;
+  }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {WarehouseService} from "../../../../Services/WarehouseService/warehouse.service";
 import { DeliveryService } from "src/app/Services/DeliveryService/delivery.service";
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 
 @Component({
   selector: 'app-warehouse-manager',
@@ -10,11 +11,25 @@ import { DeliveryService } from "src/app/Services/DeliveryService/delivery.servi
 })
 export class WarehouseManagerComponent implements OnInit {
 
-  constructor(private warehouseService: WarehouseService, private deliveryService : DeliveryService, private router: Router) {
+  constructor(private loginService:LoginService,private warehouseService: WarehouseService, private deliveryService : DeliveryService, private router: Router) {
 
   }
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["whMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
   }
 
   goToCreateWarehouse(){

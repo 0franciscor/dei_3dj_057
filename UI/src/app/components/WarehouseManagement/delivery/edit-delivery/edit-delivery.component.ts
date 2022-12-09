@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from '../create-delivery/create-delivery.component';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 
 @Component({
   selector: 'app-edit-delivery',
@@ -15,7 +16,7 @@ export class EditDeliveryComponent implements OnInit {
   formEditDelivery!: FormGroup;
   minDate: Date;
 
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
+  constructor(private loginService:LoginService,private dialog: MatDialog, private route: ActivatedRoute, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDate();
@@ -35,7 +36,21 @@ export class EditDeliveryComponent implements OnInit {
     this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
   }
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["whMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     const deliveryID = this.route.snapshot.paramMap.get('id');
     this.formEditDelivery = this.fb.group({
       deliveryID: this.selectedDelivery.deliveryID,

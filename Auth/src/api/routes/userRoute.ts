@@ -8,9 +8,12 @@ import IUserController from '../../controllers/IControllers/IUserController';
 const route = Router();
 
 export default (app: Router) => {
-    app.use('/SPA', route);
+    app.use('/user', route);
 
     const ctrl = Container.get(config.controllers.user.name) as IUserController;
+
+    //login
+    route.post('/login', (req,res,next) => ctrl.login(req,res,next));
 
     route.get ('/id/:id',(req,res,next)=>
     {

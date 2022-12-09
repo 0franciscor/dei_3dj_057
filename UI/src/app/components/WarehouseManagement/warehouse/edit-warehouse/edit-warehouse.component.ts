@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { WarehouseService } from 'src/app/Services/WarehouseService/warehouse.service';
 
 export interface DialogData {
@@ -28,7 +29,7 @@ export class EditWarehouseComponent implements OnInit {
 
   formEditWarehouse!: FormGroup
   
-  constructor(public dialog: MatDialog,private route: ActivatedRoute, private warehouseService: WarehouseService, private fb: FormBuilder, private router: Router) { 
+  constructor(private loginService:LoginService,public dialog: MatDialog,private route: ActivatedRoute, private warehouseService: WarehouseService, private fb: FormBuilder, private router: Router) { 
     
   }
 
@@ -45,7 +46,21 @@ export class EditWarehouseComponent implements OnInit {
     this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
   }
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["whMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     const warehouseID = this.route.snapshot.paramMap.get('id');
     this.formEditWarehouse = this.fb.group({
       id: this.selectedWarehouse.id,

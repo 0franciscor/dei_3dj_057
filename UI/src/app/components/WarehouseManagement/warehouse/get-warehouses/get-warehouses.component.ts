@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { WarehouseService } from 'src/app/Services/WarehouseService/warehouse.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class GetWarehousesComponent implements OnInit {
   dataSource = this.warehouseList;
 
   
-  constructor(private warehouseService: WarehouseService, private router: Router){ 
+  constructor(private loginService:LoginService,private warehouseService: WarehouseService, private router: Router){ 
     
     this.warehouseService.getAllWarehouses().then((data) => {
       this.warehouseList = data;
@@ -28,7 +29,21 @@ export class GetWarehousesComponent implements OnInit {
     });
   }
   
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["whMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
   }
 
   goToEditWarehouse(warehouseID : string) {

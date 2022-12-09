@@ -14,7 +14,7 @@ export class TripService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/trip/';
     }
-    const response = await this.sendFetch(url, 'POST', savePlan);
+    const response = await this.sendFetch(url, 'POST', savePlan, document.cookie);
     const data = await response.json();
 
     return data;
@@ -24,20 +24,22 @@ export class TripService {
 
   }
 
-  async sendFetch(url: string, method: string, data: any) {
+  async sendFetch(url: string, method: string, data: any, cookie: any) {
     if(data)
       return await fetch(url, {
         method: method,
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "authorization": cookie,
         },
       })
     else
       return await fetch(url, {
         method: method,
         headers: {
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          "authorization": cookie,
         }
       })
   }

@@ -36,6 +36,7 @@ import { TruckPlanningComponent } from './components/Logistics/truck-planning/tr
 import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
 import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { DefaultHomeComponent } from './components/defaultHome/default-home/default-home.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import {MatRadioModule} from '@angular/material/radio';
     GetWarehousesComponent,
     TruckPlanningComponent,
     CreatePackageComponent,
-    PackageListComponent
+    PackageListComponent,
+    DefaultHomeComponent
   ],
   imports: [
     BrowserModule,

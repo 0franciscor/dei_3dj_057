@@ -17,11 +17,12 @@ import { IUserPersistence } from '../dataschema/IUserPersistence';
 export class UserMap extends Mapper<User> {
 
   public static toDTO( user: User): IUserDTO {
+    
     return {
       id: user.id.toString(),
       userId:user.userId.id,
       firstName: user.firstName.firstName,
-      lastName: user.lastname.lastName,
+      lastName: user.lastName.lastName,
       email: user.email.email,
       password: user.password.password,
       role: user.role.id,
@@ -33,23 +34,7 @@ export class UserMap extends Mapper<User> {
   }
 
   public static  toDomain (user: any| Model<IUserPersistence & Document>): User {
-   /*  const userEmailOrError = UserEmail.create(raw.email);
-    const userPasswordOrError = UserPassword.create({value: raw.password, hashed: true});
-    const repo = Container.get(RoleRepo);
-    const role = await repo.findByDomainId(raw.role);
-
-    const userOrError = User.create({
-      userId: raw.userId,  
-      firstName: raw.firstName,
-      lastName: raw.lastName,
-      email: userEmailOrError.getValue(),
-      password: userPasswordOrError.getValue(),
-      role: role,
-    }, new UniqueEntityID(raw.domainId))
-
-    userOrError.isFailure ? console.log(userOrError.error) : '';
-    
-    return userOrError.isSuccess ? userOrError.getValue() : null; */
+  
     const userOrError = User.create(
       user,
       new UniqueEntityID(user._id),
@@ -65,7 +50,7 @@ export class UserMap extends Mapper<User> {
       email: user.email.email,
       password: user.password.password,
       firstName: user.firstName.firstName,
-      lastName: user.lastname.lastName,
+      lastName: user.lastName.lastName,
       role: user.role.id,
     }
     console.log(a)

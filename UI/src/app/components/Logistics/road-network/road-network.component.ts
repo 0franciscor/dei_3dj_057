@@ -9,6 +9,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { animate } from '@angular/animations';
 import { Scene } from 'three';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 
 @Component({
   selector: 'app-road-network',
@@ -20,6 +22,8 @@ import { Scene } from 'three';
 
 
 export class RoadNetworkComponent implements OnInit, AfterViewInit {
+
+  constructor(private loginService:LoginService,private router: Router) { }
 
 
   @ViewChild('canvas')
@@ -238,7 +242,21 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["logMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
 
   }
 

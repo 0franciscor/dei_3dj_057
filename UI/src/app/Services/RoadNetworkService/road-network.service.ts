@@ -15,7 +15,11 @@ export class RoadNetworkService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/all';
     }
     const response = await fetch(url, {
-      method: 'GET'
+      method: 'GET',
+      headers:{
+        'Accept': 'application/json',
+        "authorization": document.cookie,
+      }
     });
     
     let data = await response.json();
@@ -29,9 +33,13 @@ export class RoadNetworkService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/path/all/'+warehouse1+"/undefined";
     }
-   
+    
     const response = await fetch(url, {
-      method: 'GET'
+      method: 'GET',
+      headers:{
+        'Accept': 'application/json',
+        "authorization": document.cookie,
+      }
     });
     
     if(response.status == 404){
