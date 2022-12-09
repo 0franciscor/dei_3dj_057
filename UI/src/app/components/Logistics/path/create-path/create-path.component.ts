@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog,MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { PathService } from 'src/app/Services/PathService/path.service';
 
 
@@ -20,9 +21,23 @@ export class CreatePathComponent implements OnInit {
  
   formCreatePath!: FormGroup;
 
-  constructor(public dialog:MatDialog,private pathService: PathService, private fb: FormBuilder,private router: Router) { }
+  constructor(private loginService:LoginService,public dialog:MatDialog,private pathService: PathService, private fb: FormBuilder,private router: Router) { }
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["logMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     this.formCreatePath= new FormGroup({
       pathID: new FormControl('', [Validators.required]),
       startWHId: new FormControl('', [Validators.required]),

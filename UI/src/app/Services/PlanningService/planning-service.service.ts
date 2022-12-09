@@ -19,14 +19,14 @@ export class PlanningService{
     }
     console.log(data)
 
-    const response = await this.sendFetch(url,'POST',data);
+    const response = await this.sendFetch(url,'POST',data, document.cookie);
     const pathlist=await response.json();
     console.log(pathlist.bestPath[1])
 
    
       const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
       const body= {pathList:pathlist.bestPath, date:date}
-      const plan = await this.sendFetch(url2,'POST',body)
+      const plan = await this.sendFetch(url2,'POST',body, document.cookie)
     
     
     return plan 
@@ -42,7 +42,7 @@ export class PlanningService{
     }
     console.log(data)
 
-    const response = await this.sendFetch(url,'POST',data);
+    const response = await this.sendFetch(url,'POST',data, document.cookie);
     const pathlist=await response.json();
     console.log(pathlist.bestRoute)
 
@@ -52,7 +52,7 @@ export class PlanningService{
         url2 = 'https://auth57.azurewebsites.net/api/delivery/getDeliveryDestination';
       }
       const body= {pathList:pathlist.bestRoute, date:date}
-      const plan = await this.sendFetch(url2,'POST',body)
+      const plan = await this.sendFetch(url2,'POST',body, document.cookie)
     
     
     return plan 
@@ -67,7 +67,7 @@ export class PlanningService{
       date: date,
     }
 
-    const response = await this.sendFetch(url,'POST',data);
+    const response = await this.sendFetch(url,'POST',data, document.cookie);
     const pathlist=await response.json();
     console.log(pathlist)
 
@@ -77,7 +77,7 @@ export class PlanningService{
         url = 'https://auth57.azurewebsites.net/api/delivery/getDeliveryDestination';
       }
       const body= {pathList:pathlist.bestRoute, date:date}
-      const plan = await this.sendFetch(url2,'POST',body)
+      const plan = await this.sendFetch(url2,'POST',body, document.cookie)
     
     
     return plan 
@@ -91,7 +91,7 @@ export class PlanningService{
     const data={
       date: date,
     }
-    const response = await this.sendFetch(url,'POST',data);
+    const response = await this.sendFetch(url,'POST',data, document.cookie);
     const pathlist=await response.json();
     console.log(pathlist)
 
@@ -101,26 +101,28 @@ export class PlanningService{
         url2 = 'https://auth57.azurewebsites.net/api/delivery/getDeliveryDestination';
       }
       const body= {pathList:pathlist.bestRoute, date:date}
-      const plan = await this.sendFetch(url2,'POST',body)
+      const plan = await this.sendFetch(url2,'POST',body, document.cookie)
     
     
     return plan 
   }
 
-  async sendFetch(url: string, method: string, data: any) {
+  async sendFetch(url: string, method: string, data: any, cookie: any) {
     if(data)
       return fetch(url, {
         method: method,
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "authorization": cookie,
         },
       })
     else
       return fetch(url, {
         method: method,
         headers: {
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          "authorization": cookie,
         }
       })
 }

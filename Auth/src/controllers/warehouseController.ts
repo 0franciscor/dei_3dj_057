@@ -62,6 +62,8 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async getAllWarehouse(req: Request, res: Response, next: NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -70,6 +72,7 @@ export default class WarehouseController implements IWarehouseController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAll';
     if(req.get('host').includes("azure"))
@@ -87,6 +90,8 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async getAllCities(req: Request, res: Response, next: NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -95,6 +100,7 @@ export default class WarehouseController implements IWarehouseController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAllCities';
     if(req.get('host').includes("azure"))
@@ -114,6 +120,8 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async createWarehouse(req: Request, res: Response, next: NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -122,6 +130,7 @@ export default class WarehouseController implements IWarehouseController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/CreateWarehouse';
     if(req.get('host').includes("azure"))
@@ -141,29 +150,9 @@ export default class WarehouseController implements IWarehouseController {
     return res.json(info);
   }
 
-    public async createWarehouseProlog(req: Request, res: Response, next: NextFunction){
-      if(!this.isAuthenticated(req)){
-        res.status(401);
-        return res.json({message: "Not authenticated"});
-      }
-      if(!this.isAuthorized(req)){
-        res.status(403);
-        return res.json({message: "Not authorized"});
-      }
-      const httpAgent = new http.Agent({ rejectUnauthorized: false });
-
-      const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
-
-      const data = req.body;
-
-      const response = await this.fetch(address_prolog, 'POST', data,req.headers.cookie, httpAgent); 
-
-      const info = await response.json();
-      res.status(201);
-      return res.json(info);
-    }
-
-  async getWarehouse(req: Request, res: Response, next: NextFunction) {
+  public async createWarehouseProlog(req: Request, res: Response, next: NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -172,6 +161,32 @@ export default class WarehouseController implements IWarehouseController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+
+    const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';
+
+    const data = req.body;
+
+    const response = await this.fetch(address_prolog, 'POST', data,req.headers.cookie, httpAgent); 
+
+    const info = await response.json();
+    res.status(201);
+    return res.json(info);
+  }
+
+  async getWarehouse(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
     let url = 'https://localhost:5001/api/warehouses/GetById/'+req.params.id;
@@ -192,6 +207,8 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   async editWarehouse(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -200,6 +217,7 @@ export default class WarehouseController implements IWarehouseController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
     let url = 'https://localhost:5001/api/warehouses/Update';
@@ -219,6 +237,8 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   async editWarehouseProlog(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -227,6 +247,7 @@ export default class WarehouseController implements IWarehouseController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_warehouse';

@@ -1,80 +1,80 @@
-<mat-card>
-    <mat-card-title>Logistics Manager</mat-card-title>
-    <mat-card-subtitle>Manager of Logic</mat-card-subtitle>
-    <mat-card-actions>
-      
-    <div class="CreatePath-Page">
-      <!--Create path button-->
-      <button mat-raised-button color="warn" style="width: 10em; height: 10em;"  aria-label="Example icon button with a home icon" (click)="goToCreatePath()">
-        Create Path
-      </button>
-      
-      <!--Select path by WH id's-->
-      <div class="Search-paths-form">
-        <form [formGroup]="formSelectWarehouse"(ngSubmit)="onSubmit()" >
-          <mat-form-field appearance = "fill">
-            <mat-label>Starting Warehouse</mat-label>
-            <input matInput type ="text" formControlName="startWHId">
-          </mat-form-field>
-          <br>
-          <mat-form-field appearance = "fill">
-            <mat-label>Destination Warehouse</mat-label>
-            <input matInput type ="text" formControlName="destinationWHId">
-          </mat-form-field>
-          <br>
-          <div class="Search-btn">
-            <button mat-raised-button color="primary" type="submit">Search</button>
-          </div>
-        </form>
+<mat-card *ngIf="isAuth">
+  <mat-card-title>Logistics Manager</mat-card-title>
+  <mat-card-subtitle>Manager of Logic</mat-card-subtitle>
+  <mat-card-actions>
+    
+  <div class="CreatePath-Page">
+    <!--Create path button-->
+    <button mat-raised-button color="warn" style="width: 10em; height: 10em;"  aria-label="Example icon button with a home icon" (click)="goToCreatePath()">
+      Create Path
+    </button>
+    
+    <!--Select path by WH id's-->
+    <div class="Search-paths-form">
+      <form [formGroup]="formSelectWarehouse"(ngSubmit)="onSubmit()" >
+        <mat-form-field appearance = "fill">
+          <mat-label>Starting Warehouse</mat-label>
+          <input matInput type ="text" formControlName="startWHId">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance = "fill">
+          <mat-label>Destination Warehouse</mat-label>
+          <input matInput type ="text" formControlName="destinationWHId">
+        </mat-form-field>
+        <br>
+        <div class="Search-btn">
+          <button mat-raised-button color="primary" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+    <button mat-raised-button color="warn" style="width: 10em; height: 10em; left: 72.5em; "  aria-label="Example icon button with a home icon" (click)="goToCreatePackage()">
+      Create Package
+    </button>
+  </div>
+      <!--display selectedPath info-->
+        <div class="pathTable">
+          <table *ngIf="selectedPathOption.length>0" class="table-of-paths">
+            <thead>
+              <tr>
+                <th>Start Warehouse</th>
+                <th>Destination warehouse</th>
+                <th>Path distance</th>
+                <th>Travel time</th>
+                <th>Wasted energy</th>
+                <th>Extra Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let path of selectedPathOption">
+                <td>{{path.startWHId}}</td>
+                <td>{{path.destinationWHId}}</td>
+                <td>{{path.pathDistance}}</td>
+                <td>{{path.pathTravelTime}}</td>
+                <td>{{path.wastedEnergy}}</td>
+                <td>{{path.extraTravelTime}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    
+      <div class ="Truck-planning-btn">
+        <button mat-raised-button color="primary" style="left: 80.5em ;top: -10em " (click)="goToPackageList()" >
+          See Packages created
+        </button>
       </div>
-      <button mat-raised-button color="warn" style="width: 10em; height: 10em; left: 72.5em; "  aria-label="Example icon button with a home icon" (click)="goToCreatePackage()">
-        Create Package
+    
+    <!--Road network button-->
+    <div class ="road-network-btn">
+      <button mat-raised-button (click)="goToRoadNetwork()" color="primary">
+          See Road Network
       </button>
     </div>
-        <!--display selectedPath info-->
-         <div class="pathTable">
-            <table *ngIf="selectedPathOption.length>0" class="table-of-paths">
-              <thead>
-                <tr>
-                  <th>Start Warehouse</th>
-                  <th>Destination warehouse</th>
-                  <th>Path distance</th>
-                  <th>Travel time</th>
-                  <th>Wasted energy</th>
-                  <th>Extra Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let path of selectedPathOption">
-                  <td>{{path.startWHId}}</td>
-                  <td>{{path.destinationWHId}}</td>
-                  <td>{{path.pathDistance}}</td>
-                  <td>{{path.pathTravelTime}}</td>
-                  <td>{{path.wastedEnergy}}</td>
-                  <td>{{path.extraTravelTime}}</td>
-                </tr>
-              </tbody>
-            </table>
-         </div>
-      
-        <div class ="Truck-planning-btn">
-          <button mat-raised-button color="primary" style="left: 80.5em ;top: -10em " (click)="goToPackageList()" >
-            See Packages created
-          </button>
-        </div>
-      
-      <!--Road network button-->
-      <div class ="road-network-btn">
-        <button mat-raised-button (click)="goToRoadNetwork()" color="primary">
-            See Road Network
-        </button>
-      </div>
 
-    <!--Truck Planning button-->
-      <div class ="Truck-planning-btn">
-        <button mat-raised-button (click)="goToTruckPlanning()" color="primary">
-            Truck planning
-        </button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
+  <!--Truck Planning button-->
+    <div class ="Truck-planning-btn">
+      <button mat-raised-button (click)="goToTruckPlanning()" color="primary">
+          Truck planning
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DeliveryService } from "src/app/Services/DeliveryService/delivery.service";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 
 export interface DialogData {
   name: string;
@@ -19,7 +20,7 @@ export class CreateDeliveryComponent implements OnInit {
   formCreateDelivery!: FormGroup;
   minDate: Date;
 
-  constructor(private dialog: MatDialog, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
+  constructor(private loginService:LoginService,private dialog: MatDialog, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDate();
@@ -35,7 +36,21 @@ export class CreateDeliveryComponent implements OnInit {
     unloadTime: undefined,
   }
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["whMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     this.formCreateDelivery = this.fb.group({
       deliveryID: new FormControl('', [Validators.required]),
       deliveryDate: new FormControl('', [Validators.required]),

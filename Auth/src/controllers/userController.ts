@@ -38,16 +38,15 @@ export default class UserController implements IUserController{
             const userDTO = userOrError.getValue();
             const token = jwt.sign({id: userDTO.id.toString(),role:userDTO.role.toString()}, config.jwtSecret, {expiresIn: 86400});
             res.status(200);
-            res.cookie('jwt', token, {httpOnly: true,maxAge: 86400000});
-            return res.send("Login successful");
+            res.cookie('jwt', token, {maxAge: 86400000});
+            
+            return res.json({userId:userDTO.userId.toString(),role:userDTO.role.toString() ,token: token});
         } catch (error) {
             next(error);
         }
-
-
-        
-
     }
+
+  
 
     public async getUser(req: Request, res: Response, next: NextFunction){
         try{

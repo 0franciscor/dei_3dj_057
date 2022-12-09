@@ -39,6 +39,8 @@ export default class PathController implements IPathController {
   }
 
   public async getAllPaths(req: Request, res: Response, next: NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -47,6 +49,7 @@ export default class PathController implements IPathController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     let address = 'http://localhost:3000/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
     
     if(req.get('host').includes("azure"))
@@ -71,6 +74,8 @@ export default class PathController implements IPathController {
   }
 
   async createPath(req:Request,res:Response,next:NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -79,6 +84,7 @@ export default class PathController implements IPathController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     let url = 'http://localhost:3000/api/path/'
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/path/'
@@ -102,6 +108,8 @@ export default class PathController implements IPathController {
   }
 
   async createPathProlog(req:Request,res:Response,next:NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -110,6 +118,7 @@ export default class PathController implements IPathController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_path';
 

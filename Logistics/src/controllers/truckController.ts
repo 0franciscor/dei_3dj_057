@@ -22,8 +22,9 @@ export default class TruckController implements ITruckController {
     private roles = ["admin", "fltMan"];
 
     isAuthenticated(req: Request) {
+        
         if(req.cookies['jwt'] == undefined)
-        return false;
+            return false;
         const cookie = req.cookies['jwt'];
         const claims = jwt.verify(cookie, config.jwtSecret);
         

@@ -37,14 +37,17 @@ export default class TripController implements ITripController {
   }
 
     async createTrip(req: Request, res: Response, next: NextFunction) {
-        if(!this.isAuthenticated(req)){
-          res.status(401);
-          return res.json({message: "Not authenticated"});
-        }
-        if(!this.isAuthorized(req)){
-          res.status(403);
-          return res.json({message: "Not authorized"});
+      if(req.headers.authorization!=undefined)
+        req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+      if(!this.isAuthenticated(req)){
+        res.status(401);
+        return res.json({message: "Not authenticated"});
       }
+      if(!this.isAuthorized(req)){
+        res.status(403);
+        return res.json({message: "Not authorized"});
+      }
+      req.headers.cookie = "jwt="+req.cookies["jwt"];
         let tripURL = 'http://localhost:3000/api/trip/';
         let packagingURL = 'http://localhost:3000/api/packaging/';
         if(req.get('host').includes("azure")){

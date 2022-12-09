@@ -39,15 +39,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
-        if(!this.isAuthenticated(req)){
-            res.status(401);
-            return res.json({message: "Not authenticated"});
-          }
-          if(!this.isAuthorized(req)){
-            res.status(403);
-            return res.json({message: "Not authorized"});
-          }
-        this.isAuthenticated(req);
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
 
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/GetAll';
@@ -74,14 +76,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getAllDeliveriesProlog(req: Request, res: Response, next: NextFunction) {
-        if(!this.isAuthenticated(req)){
-            res.status(401);
-            return res.json({message: "Not authenticated"});
-          }
-          if(!this.isAuthorized(req)){
-            res.status(403);
-            return res.json({message: "Not authorized"});
-          }
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         const address = 'https://localhost:5001/api/deliveries/GetAllProlog';
 
@@ -104,14 +109,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getDelivery(req: Request, res: Response, next: NextFunction) {
-        if(!this.isAuthenticated(req)){
-            res.status(401);
-            return res.json({message: "Not authenticated"});
-          }
-          if(!this.isAuthorized(req)){
-            res.status(403);
-            return res.json({message: "Not authorized"});
-          }
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/GetByID/' + req.params.id;
         if(req.get('host').includes("azure"))
@@ -136,14 +144,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async createDelivery(req: Request, res: Response, next: NextFunction) {
-        if(!this.isAuthenticated(req)){
-            res.status(401);
-            return res.json({message: "Not authenticated"});
-          }
-          if(!this.isAuthorized(req)){
-            res.status(403);
-            return res.json({message: "Not authorized"});
-          }
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/CreateDelivery';
 
@@ -170,14 +181,17 @@ export default class DeliveryController implements IDeliveryController {
     };
 
     public async createDeliveryProlog(req: Request, res: Response, next: NextFunction) {
-        if(!this.isAuthenticated(req)){
-            res.status(401);
-            return res.json({message: "Not authenticated"});
-          }
-          if(!this.isAuthorized(req)){
-            res.status(403);
-            return res.json({message: "Not authorized"});
-          }
+      if(req.headers.authorization!=undefined)
+        req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+      if(!this.isAuthenticated(req)){
+        res.status(401);
+        return res.json({message: "Not authenticated"});
+      }
+      if(!this.isAuthorized(req)){
+        res.status(403);
+        return res.json({message: "Not authorized"});
+      }
+      req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_delivery';
         const response_prolog = await fetch(address_prolog, {
@@ -202,14 +216,17 @@ export default class DeliveryController implements IDeliveryController {
 
 
     public async updateDelivery(req: Request, res: Response, next: NextFunction) {
-        if(!this.isAuthenticated(req)){
-            res.status(401);
-            return res.json({message: "Not authenticated"});
-          }
-          if(!this.isAuthorized(req)){
-            res.status(403);
-            return res.json({message: "Not authorized"});
-          }
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/Update';
         if(req.get('host').includes("azure"))
@@ -236,14 +253,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async updateDeliveryProlog(req: Request, res: Response, next: NextFunction) {
-        if(!this.isAuthenticated(req)){
-            res.status(401);
-            return res.json({message: "Not authenticated"});
-          }
-          if(!this.isAuthorized(req)){
-            res.status(403);
-            return res.json({message: "Not authorized"});
-          }
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
         const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_delivery';
@@ -269,14 +289,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getDeliveryDestination(req: Request, res: Response, next: NextFunction){
-        if(!this.isAuthenticated(req)){
-            res.status(401);
-            return res.json({message: "Not authenticated"});
-          }
-          if(!this.isAuthorized(req)){
-            res.status(403);
-            return res.json({message: "Not authorized"});
-          }
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         let deliveredWarehouseList :any[]=[]
         let deliveriesMoved : any[]=[]
         

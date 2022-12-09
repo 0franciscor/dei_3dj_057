@@ -22,7 +22,7 @@ export class PathService{
         }
         let test : any[]=[];
         const data = warehouses
-        const response= await this.sendFetch(url,'GET',null)
+        const response= await this.sendFetch(url,'GET',null, document.cookie)
         console.log(response)
         if(response.status != 200){
          console.log("No paths found")
@@ -39,7 +39,7 @@ export class PathService{
         const data = path;
         
 
-      const response = await this.sendFetch(url,'POST',data);
+      const response = await this.sendFetch(url,'POST',data, document.cookie);
       return response;
     }
 
@@ -50,24 +50,26 @@ export class PathService{
       }
       const data = path;
       
-      const response = await this.sendFetch(url,'POST',data);
+      const response = await this.sendFetch(url,'POST',data, document.cookie);
       return response;
     }
 
-    async sendFetch(url: string, method: string, data: any) {
+    async sendFetch(url: string, method: string, data: any, cookie:any) {
         if(data)
           return fetch(url, {
             method: method,
             body: JSON.stringify(data),
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              "authorization": cookie,
             },
           })
         else
           return fetch(url, {
             method: method,
             headers: {
-              'Accept': 'application/json'
+              'Accept': 'application/json',
+              "authorization": cookie,
             }
           })
     }

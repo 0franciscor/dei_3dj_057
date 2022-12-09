@@ -15,28 +15,31 @@ import { EditDeliveryComponent } from './components/WarehouseManagement/delivery
 import { EditWarehouseComponent } from './components/WarehouseManagement/warehouse/edit-warehouse/edit-warehouse.component';
 import { CreateWarehouseComponent } from './components/WarehouseManagement/warehouse/create-warehouse/create-warehouse.component';
 import { GetWarehousesComponent } from './components/WarehouseManagement/warehouse/get-warehouses/get-warehouses.component';
-import { TruckPlanningComponent } from './components/Logistics/truck-planning/truck-planning/truck-planning.component';import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
+import { TruckPlanningComponent } from './components/Logistics/truck-planning/truck-planning/truck-planning.component';
+import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
 import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
+import { DefaultHomeComponent } from './components/defaultHome/default-home/default-home.component';
 
 const routes: Routes = [
+  { path: '', component: DefaultHomeComponent },
   { path: 'login', component: LogInComponent },
   { path: 'Logistics/Truck/CreateTruck', component: CreateTruckComponent },
   { path: 'Logistics/Truck/EditTruck/:id', component: EditTruckComponent},
   { path: 'Logistics/Path/CreatePath', component: CreatePathComponent},
   { path: 'Logistics/Home/FleetManager', component: FleetManagerComponent},
   { path: 'Logistics/Home/LogisticsManager', component: LogisticsManagerComponent},
-  { path: 'WarehouseManagement/Home/WarehouseManager', component: WarehouseManagerComponent},
+  { path: 'Logistics/TruckPlanning',component: TruckPlanningComponent},
+  { path: 'Logistics/Packaging/CreatePackage', component: CreatePackageComponent},
+  { path: 'Logistics/Packaging/ListPackage', component: PackageListComponent},
   { path: 'Logistics/RoadNetwork', component: RoadNetworkComponent},
+  { path: 'WarehouseManagement/Home/WarehouseManager', component: WarehouseManagerComponent},
   { path: 'WarehouseManagement/Warehouse/CreateWarehouse', component: CreateWarehouseComponent},
   { path: 'WarehouseManagement/Warehouse/GetWarehouseById', component: GetWarehousesComponent},
   { path: 'WarehouseManagement/Delivery/CreateDelivery', component: CreateDeliveryComponent},
   { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent},
   { path: 'WarehouseManagement/Delivery/EditDelivery/:id', component: EditDeliveryComponent},
-  { path: 'WarehouseManagement/Warehouse/EditWarehouse/:id', component: EditWarehouseComponent},
-  { path: 'Logistics/TruckPlanning',component: TruckPlanningComponent},
+  { path: 'WarehouseManagement/Warehouse/EditWarehouse/:id', component: EditWarehouseComponent}
 
-  { path: 'Logistics/Packaging/CreatePackage', component: CreatePackageComponent},
-  { path: 'Logistics/Packaging/ListPackage', component: PackageListComponent}
 ];
 
 @NgModule({

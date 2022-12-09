@@ -35,6 +35,8 @@ export default class PlanningController implements IPlanningController {
     return false;
   }
 
+ 
+
   private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
    
     if(body)
@@ -59,6 +61,8 @@ export default class PlanningController implements IPlanningController {
 
 
   async findAllBestPath(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -67,10 +71,12 @@ export default class PlanningController implements IPlanningController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/bestPath_findAll';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
 
     const data = req.body;
+    console.log(data)
     const response = await this.fetch(url_prolog, 'POST', data, httpAgent); 
 
     const info = await response.json();
@@ -79,6 +85,8 @@ export default class PlanningController implements IPlanningController {
   }
 
   async heuristicMass(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -87,6 +95,7 @@ export default class PlanningController implements IPlanningController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/heuristic_mass';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
 
@@ -99,6 +108,8 @@ export default class PlanningController implements IPlanningController {
   }
 
   async heuristicClosestWarehouse(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -107,6 +118,7 @@ export default class PlanningController implements IPlanningController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/heuristic_closestWarehouse';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
 
@@ -119,6 +131,8 @@ export default class PlanningController implements IPlanningController {
   }
 
   async heuristicMassAndDistance(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -127,6 +141,7 @@ export default class PlanningController implements IPlanningController {
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/heuristic_massAndDistance';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
 

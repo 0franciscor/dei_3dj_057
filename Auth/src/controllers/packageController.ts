@@ -39,6 +39,8 @@ private roles = ["admin","logMan"];
   }
 
   async createPackage(req: Request, res:Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -47,6 +49,7 @@ private roles = ["admin","logMan"];
       res.status(403);
       return res.json({message: "Not authorized"});
     }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
     let url = 'http://localhost:3000/api/packaging/';
     if(req.get('host').includes("azure"))
         url = 'https://logistics57.azurewebsites.net/api/packaging/';
@@ -73,6 +76,8 @@ private roles = ["admin","logMan"];
     };
 
     async getAllPackage(req: Request, res: Response, next: NextFunction) {
+      if(req.headers.authorization!=undefined)
+        req.cookies["jwt"]=req.headers.authorization.split("=")[1];
       if(!this.isAuthenticated(req)){
         res.status(401);
         return res.json({message: "Not authenticated"});
@@ -81,6 +86,7 @@ private roles = ["admin","logMan"];
         res.status(403);
         return res.json({message: "Not authorized"});
       }
+      req.headers.cookie = "jwt="+req.cookies["jwt"];
         let url = 'http://localhost:3000/api/packaging/all';
         if(req.get('host').includes("azure"))
           url = 'https://logistics57.azurewebsites.net/api/packaging/all/';

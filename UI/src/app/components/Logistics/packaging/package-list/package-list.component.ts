@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { LoginService } from "src/app/Services/LoginService/login.service";
 import { PackagingService } from "src/app/Services/PackageService/package.service";
 
 
@@ -17,7 +18,7 @@ import { PackagingService } from "src/app/Services/PackageService/package.servic
    displayedColumns: string[] = ['packagingID','truckID','deliveryID','xPosition','yPosition','zPosition','edit'];
    dataSource = this.packageList;
 
-   constructor(private packageService: PackagingService, private router: Router){
+   constructor(private loginService:LoginService,private packageService: PackagingService, private router: Router){
 
     this.packageService.getPackage().then((data) => {
       this.packageList = data;
@@ -28,7 +29,21 @@ import { PackagingService } from "src/app/Services/PackageService/package.servic
 
    }
 
-  ngOnInit(): void {
+   isAuth: boolean = false;
+  authorizedRoles: string[] = ["logMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+ 
+   async ngOnInit() {
+     this.isAuth = await this.isAuthenticated();
   }
 
 

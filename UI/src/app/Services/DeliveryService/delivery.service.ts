@@ -13,8 +13,7 @@ export class DeliveryService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/delivery/all';
     }
-
-    const response = await this.sendFetch(url, 'GET', null);
+    const response = await this.sendFetch(url, 'GET', null, document.cookie);
 
     const data = await response.json();
 
@@ -26,7 +25,7 @@ export class DeliveryService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/delivery/'+deliveryID;
     }
-    const response = await this.sendFetch(url, 'GET', null);
+    const response = await this.sendFetch(url, 'GET', null, document.cookie);
 
     const data = await response.json();
 
@@ -40,7 +39,7 @@ export class DeliveryService {
     }
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'POST', data);
+    const response = await this.sendFetch(url, 'POST', data, document.cookie);
 
     return response;
 
@@ -53,7 +52,7 @@ export class DeliveryService {
     }
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'PATCH', data);
+    const response = await this.sendFetch(url, 'PATCH', data, document.cookie);
 
     return response;
   }
@@ -65,7 +64,7 @@ export class DeliveryService {
     }
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'POST', data);
+    const response = await this.sendFetch(url, 'POST', data, document.cookie);
 
     return response;
   }
@@ -78,25 +77,27 @@ export class DeliveryService {
 
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'PUT', data);
+    const response = await this.sendFetch(url, 'PUT', data, document.cookie);
 
     return response;
   }
 
-  async sendFetch(url: string, method: string, data: any) {
+  async sendFetch(url: string, method: string, data: any, cookie:any) {
     if (data)
       return await fetch(url, {
         method: method,
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "authorization": cookie,
         },
       })
     else
       return await fetch(url, {
         method: method,
         headers: {
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          "authorization": cookie,
         }
       })
   }
