@@ -65,7 +65,8 @@ export class FleetManagerComponent implements OnInit {
         capacity: undefined,
         maxBatteryCapacity: undefined,
         autonomy: undefined,
-        fastChargeTime: undefined
+        fastChargeTime: undefined,
+        active: undefined
       }
     }
   }
@@ -85,10 +86,10 @@ export class FleetManagerComponent implements OnInit {
     this.router.navigate(['Logistics/Truck/EditTruck', truckID]);
     
   } 
-  async deleteTruck(truckID:string) {
+  async toggleActiveTruck(truckID:string) {
     
 
-    let answer = await this.truckService.deleteTruck(truckID);
+    let answer = await this.truckService.toggleActiveTruck(truckID);
     let message = "Truck Deleted Successfully";
     if(answer.status != 200){
       message = "Truck Deletion Failed";
@@ -105,6 +106,11 @@ export class FleetManagerComponent implements OnInit {
         this.router.navigate(['Logistics/Truck/FleetManager']);
       
     });
+    this.truckService.getAllTruck().then((data) => {
+      this.truckList = data;
+      this.dataSource = this.truckList;
+    });
+    
   }
 
   toggleSeeAll(){

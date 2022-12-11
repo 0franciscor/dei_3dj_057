@@ -2,6 +2,7 @@ import { AggregateRoot } from "../../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 import { Result } from "../../core/logic/Result";
 import { ITruckDTO } from "../../dto/ITruckDTO";
+import { Active } from "./Active";
 import { Autonomy } from "./Autonomy";
 import { Capacity } from "./Capacity";
 import { FastChargeTime } from "./FastChargeTime";
@@ -17,7 +18,7 @@ interface TruckProps {
   maxBatteryCapacity: MaxBatteryCapacity;
   autonomy: Autonomy;
   fastChargeTime: FastChargeTime;
-
+  active: Active;
 }
 
 export class Truck extends AggregateRoot<TruckProps> {
@@ -48,6 +49,10 @@ export class Truck extends AggregateRoot<TruckProps> {
   get tare (): Tare {
     return this.props.tare;
   }
+
+  get active (): Active {
+    return this.props.active;
+  }
   
 
   set tare (tare: Tare) {
@@ -69,6 +74,10 @@ export class Truck extends AggregateRoot<TruckProps> {
   set fastChargeTime (fastChargeTime: FastChargeTime) {
     this.props.fastChargeTime = fastChargeTime;
   }
+
+  set active (active: Active) {
+    this.props.active = active;
+  }
   
 
 
@@ -86,7 +95,8 @@ export class Truck extends AggregateRoot<TruckProps> {
         capacity:Capacity.create(truckDTO.capacity).getValue(),
         maxBatteryCapacity:MaxBatteryCapacity.create(truckDTO.maxBatteryCapacity).getValue(),
         autonomy:Autonomy.create(truckDTO.autonomy).getValue(),
-        fastChargeTime:FastChargeTime.create(truckDTO.fastChargeTime).getValue()
+        fastChargeTime:FastChargeTime.create(truckDTO.fastChargeTime).getValue(),
+        active:Active.create(truckDTO.active).getValue()
       }, id);
   
       return Result.ok<Truck>(truck);

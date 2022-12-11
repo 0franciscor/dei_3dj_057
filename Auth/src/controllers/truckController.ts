@@ -245,7 +245,7 @@ export default class TruckController implements ITruckController {
     let url = 'http://localhost:3000/api/truck/id/'+req.params.id;
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.params.id;
-    const response = await this.fetch(url, 'DELETE',req.headers.cookie, null);
+    const response = await this.fetch(url, 'DELETE', null,req.headers.cookie);
 
     if(response.status != 200){
       res.status(response.status);
