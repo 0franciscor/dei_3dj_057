@@ -2,3 +2,11 @@
     width: 100%;
   }
 
+  .mat-green {
+    background-color: green;
+    color: #fff;
+} 
+ .mat-red {
+    background-color: red;
+    color: #fff;
+}

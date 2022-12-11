@@ -98,6 +98,7 @@ export default class TruckController implements ITruckController {
             return res.json({message: "Not authorized"});
         }
         try {
+
             const truckOrError = await this.truckService.createTruck(req.body as ITruckDTO);
             if (truckOrError.isFailure) {
                 res.status(409);
@@ -149,7 +150,6 @@ export default class TruckController implements ITruckController {
             return res.json({message: "Not authorized"});
         }
         try {
-
             const truckResult = await this.truckService.deleteTruck(req.body.truckID);
             if(truckResult.isFailure){
                 res.status(404);

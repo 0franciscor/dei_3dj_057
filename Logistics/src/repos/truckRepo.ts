@@ -43,6 +43,7 @@ export default class TruckRepo implements ITruckRepo {
                 truckDocument.capacity = truck.capacity.capacity;
                 truckDocument.maxBatteryCapacity = truck.maxBatteryCapacity.capacity;
                 truckDocument.fastChargeTime = truck.fastChargeTime.time;
+                truckDocument.active = truck.active.active;
                 await truckDocument.save();
                 return truck;
             }

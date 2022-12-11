@@ -107,7 +107,7 @@ export class TruckService {
   
   }
 
-  async deleteTruck(truckID: string) {
+  async toggleActiveTruck(truckID: string) {
     let url = this.urlOrigin+'api/truck/id/'+truckID;
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/truck/id/'+truckID;
@@ -117,15 +117,15 @@ export class TruckService {
     return response;
   }
 
-  async deleteTruckProlog(truckID: string) {
-    let url = this.urlOrigin+'api/truck/idProlog/'+truckID;
-    if(this.urlOrigin.includes("azure")){
-      url = 'https://auth57.azurewebsites.net/api/truck/idProlog/'+truckID;
-    }
-    const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
+  // async deleteTruckProlog(truckID: string) {
+  //   let url = this.urlOrigin+'api/truck/idProlog/'+truckID;
+  //   if(this.urlOrigin.includes("azure")){
+  //     url = 'https://auth57.azurewebsites.net/api/truck/idProlog/'+truckID;
+  //   }
+  //   const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
 
-    return response;
-  }
+  //   return response;
+  // }
 
   async sendFetch(url: string, method: string, data: any, cookie: any) {
     if(data)
