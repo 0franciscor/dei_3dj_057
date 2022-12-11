@@ -10,6 +10,20 @@ export class PackagingService {
   constructor() { }
   public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
   
+  getJwt() {
+    const cookies = document.cookie.split(';');
+    
+    let jwt = "";
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name.trim() === "jwt"){
+        jwt = value;
+      }
+    }
+    const cookie = "jwt=" + jwt;
+    return cookie;
+  }
+
   async getPackage() {
     let url = this.urlOrigin+'api/packaging/all';
     if(this.urlOrigin.includes("azure")){
@@ -19,7 +33,7 @@ export class PackagingService {
       method: 'GET',
       headers:{
         'Accept': 'application/json',
-        "authorization": document.cookie,
+        "authorization": this.getJwt(),
       }
     });
 
@@ -35,13 +49,12 @@ export class PackagingService {
     const data = packageL;
     console.log(data);
     console.log(JSON.stringify(data));
-    const cookie:any = document.cookie;
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
-            "authorization": document.cookie,
+            "authorization": this.getJwt(),
         },
     })
 

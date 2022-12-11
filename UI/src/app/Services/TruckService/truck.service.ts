@@ -10,6 +10,20 @@ export class TruckService {
   private cookieName = "jwt";
   constructor() {}
 
+  getJwt() {
+    const cookies = document.cookie.split(';');
+    
+    let jwt = "";
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name.trim() === "jwt"){
+        jwt = value;
+      }
+    }
+    const cookie = "jwt=" + jwt;
+    return cookie;
+  }
+
   async getTruck(truckID:string) {
     let url = this.urlOrigin+'api/truck/id/'+truckID;
     if(this.urlOrigin.includes("azure")){
@@ -30,7 +44,7 @@ export class TruckService {
     }
     
 
-    const response = await this.sendFetch(url, 'GET', null, document.cookie);
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
     const data = await response.json();
     return data;
     
@@ -44,7 +58,7 @@ export class TruckService {
 
     const data = truck;
  
-    const response = await this.sendFetch(url, 'POST', data, document.cookie);
+    const response = await this.sendFetch(url, 'POST', data, this.getJwt());
     console.log("response", response);
     return response;
     
@@ -59,7 +73,7 @@ export class TruckService {
 
     const data = truck;
  
-    const response = await this.sendFetch(url, 'POST', data, document.cookie);
+    const response = await this.sendFetch(url, 'POST', data, this.getJwt());
     return response;
     
 
@@ -72,7 +86,7 @@ export class TruckService {
       url = 'https://auth57.azurewebsites.net/api/truck/';
     }
     const data = truck;
-    const response = await this.sendFetch(url, 'PATCH', data, document.cookie);
+    const response = await this.sendFetch(url, 'PATCH', data, this.getJwt());
       
     
     return response;
@@ -86,7 +100,7 @@ export class TruckService {
       url = 'https://auth57.azurewebsites.net/api/truck/prolog';
     }
     const data = truck;
-    const response = await this.sendFetch(url, 'PATCH', data, document.cookie);
+    const response = await this.sendFetch(url, 'PATCH', data, this.getJwt());
       
     
     return response;
@@ -98,7 +112,7 @@ export class TruckService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/truck/id/'+truckID;
     }
-    const response = await this.sendFetch(url, 'DELETE', null, document.cookie);
+    const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
 
     return response;
   }
@@ -108,7 +122,7 @@ export class TruckService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/truck/idProlog/'+truckID;
     }
-    const response = await this.sendFetch(url, 'DELETE', null, document.cookie);
+    const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
 
     return response;
   }

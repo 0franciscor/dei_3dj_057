@@ -9,12 +9,26 @@ export class TripService {
    
   constructor() {}
 
+  getJwt() {
+    const cookies = document.cookie.split(';');
+    
+    let jwt = "";
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name.trim() === "jwt"){
+        jwt = value;
+      }
+    }
+    const cookie = "jwt=" + jwt;
+    return cookie;
+  }
+
   async createTrip(savePlan: any) {
     let url = this.urlOrigin+'api/trip/';
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/trip/';
     }
-    const response = await this.sendFetch(url, 'POST', savePlan, document.cookie);
+    const response = await this.sendFetch(url, 'POST', savePlan, this.getJwt());
     const data = await response.json();
 
     return data;

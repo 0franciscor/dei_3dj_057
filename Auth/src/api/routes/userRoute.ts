@@ -13,6 +13,7 @@ export default (app: Router) => {
     const ctrl = Container.get(config.controllers.user.name) as IUserController;
 
     //login
+    route.post('/loginWithGoogle', (req,res,next) => ctrl.loginWithGoogle(req,res,next));
     route.post('/login', (req,res,next) => ctrl.login(req,res,next));
 
     route.get ('/id/:id',(req,res,next)=>

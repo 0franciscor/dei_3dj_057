@@ -20,7 +20,7 @@
       </button>
     </div>
 
-    <button mat-icon-button color="secondary" (click)="logout()" >
+    <button mat-icon-button color="secondary" (click)="logout()" *ngIf="isLoggedIn">
       <mat-icon>logout</mat-icon>
     </button>
     

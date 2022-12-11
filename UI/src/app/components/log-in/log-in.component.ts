@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone  } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
+import { CredentialResponse, PromptMomentNotification } from 'google-one-tap';
+
 
 @Component({
   selector: 'app-log-in',
@@ -10,7 +12,7 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 })
 export class LogInComponent implements OnInit {
   hide = true;
-  constructor(private loginService:LoginService, private router:Router) { }
+  constructor(private loginService:LoginService, private router:Router, private _ngZone: NgZone) { }
   formLogin!: FormGroup;
 
   isAuth: boolean = true;
@@ -36,8 +38,11 @@ export class LogInComponent implements OnInit {
     
   }
 
+  clientId = "598640220043-j4v51sbat7nft28jqi165dltsq2dlrm9.apps.googleusercontent.com";
+
   async ngOnInit() {
-    this.isAuth = await this.isAuthenticated();
+    this.isAuth = false;
+    
     //TODO: check if admin, if so, redirect to admin page
    
     this.formLogin = new FormGroup({
@@ -45,6 +50,35 @@ export class LogInComponent implements OnInit {
       password: new FormControl('', [Validators.required]),
     });
 
+
+     // @ts-ignore
+     window.onGoogleLibraryLoad = () => {
+      
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id: this.clientId,
+        callback: this.handleCredentialResponse.bind(this),
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+      // @ts-ignore
+      google.accounts.id.renderButton(
+      // @ts-ignore
+      document.getElementById("googleButtonDiv"),
+        { theme: "outline", size: "large", width: "100%" } 
+      );
+      // @ts-ignore
+      google.accounts.id.prompt((notification: PromptMomentNotification) => {});
+    };
+
+  }
+
+  async handleCredentialResponse(response: CredentialResponse) {
+    if (response.credential) {
+      await this.loginService.loginWithGoogle(response.credential)
+      window.location.reload();
+      this.router.navigate(['/']);
+    } 
   }
   
   async onSubmit() {

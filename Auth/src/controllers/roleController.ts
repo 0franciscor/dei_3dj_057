@@ -52,6 +52,7 @@ export default class RoleController implements IRoleController /* TODO: extends 
 
   public async getRole(req: Request, res: Response, next: NextFunction){
     try {
+      
       const role = await  this.roleServiceInstance.getRole(req.body.roleId);
       if(role.isFailure){
         res.status(404);
@@ -90,7 +91,6 @@ export default class RoleController implements IRoleController /* TODO: extends 
   }
 
   public async currentRole(req: Request, res: Response, next: NextFunction) {
-    
     try {
       if(req.headers.authorization!=undefined)
         req.cookies["jwt"]=req.headers.authorization.split("=")[1];
@@ -99,7 +99,9 @@ export default class RoleController implements IRoleController /* TODO: extends 
         return res.send("Unauthorized");
       }
       const cookie = req.cookies['jwt'];
+      
       const claims = jwt.verify(cookie, config.jwtSecret);
+      
       if(!claims){
         res.status(401);
         return res.send("Unauthorized");

@@ -1,6 +1,8 @@
+import { IfStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router'
+import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 
 @Component({
@@ -10,12 +12,12 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 })
 export class ToolBarComponent implements OnInit {
 
-  constructor(private loginService:LoginService,private router: Router) {}
+  constructor(private cookieService:CookieService,private loginService:LoginService,private router: Router) {}
 
   
 
   isAdmn: boolean = false;
-
+  isLoggedIn: boolean = false;
   async isAdmin() {
     const role = await this.loginService.getRole();
     if(role=="admin"){
@@ -28,9 +30,21 @@ export class ToolBarComponent implements OnInit {
 
   async ngOnInit() {
     this.isAdmn = await this.isAdmin();
-    if(document.cookie == ""||document.cookie.includes("null")){
-      this.router.navigate(['/login']);
+    for (let cookie of document.cookie.split(';')) {
+      const cookieName = cookie.split("=")[0].trim();
+      if(cookieName == "jwt"){
+        if(cookie.split("=")[1] == undefined){
+          this.isLoggedIn = false;
+          this.router.navigate(['/login']);
+        }
+        else{
+          this.isLoggedIn = true;
+          break;
+        }
+      }
     }
+    if(!this.isLoggedIn)
+      this.router.navigate(['/login']);
   }
 
   async goHome() {
@@ -55,8 +69,13 @@ export class ToolBarComponent implements OnInit {
   }
 
   logout() {
+    const cookies = document.cookie.split(';');
+
+    for (let cookie of cookies) {
+      const cookieName = cookie.split("=")[0].trim();
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`
+    }
     window.location.reload();
-    this.loginService.logout();
     this.router.navigate(['/']);
   }
 

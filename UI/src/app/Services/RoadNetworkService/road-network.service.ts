@@ -8,6 +8,20 @@ export class RoadNetworkService {
   public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
   constructor() {}
 
+  getJwt() {
+    const cookies = document.cookie.split(';');
+    
+    let jwt = "";
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name.trim() === "jwt"){
+        jwt = value;
+      }
+    }
+    const cookie = "jwt=" + jwt;
+    return cookie;
+  }
+
 
   async getAllWarehouses() {
     let url = this.urlOrigin+"api/warehouse/all";
@@ -18,7 +32,7 @@ export class RoadNetworkService {
       method: 'GET',
       headers:{
         'Accept': 'application/json',
-        "authorization": document.cookie,
+        "authorization": this.getJwt(),
       }
     });
     
@@ -38,7 +52,7 @@ export class RoadNetworkService {
       method: 'GET',
       headers:{
         'Accept': 'application/json',
-        "authorization": document.cookie,
+        "authorization": this.getJwt(),
       }
     });
     

@@ -37,20 +37,7 @@ export class FleetManagerComponent implements OnInit {
   displayedColumns: string[] = ['TruckID', 'Tare', 'Capacity', 'Maximum Battery Capacity', 'Autonomy', 'Fast Charge Time', "Actions"];
   dataSource = this.truckList;
   
-  constructor(private loginService:LoginService,public dialog: MatDialog,private truckService: TruckService, private router: Router) { 
-    this.truckService.getAllTruck().then((data) => {
-      this.truckList = data;
-      this.dataSource = this.truckList;
-    });
-    this.selectedTruck= {
-      truckID: "",
-      tare: undefined,
-      capacity: undefined,
-      maxBatteryCapacity: undefined,
-      autonomy: undefined,
-      fastChargeTime: undefined
-    }
-  }
+  constructor(private loginService:LoginService,public dialog: MatDialog,private truckService: TruckService, private router: Router) {}
 
   isAuth: boolean = false;
   authorizedRoles: string[] = ["fltMan","admin"];
@@ -67,7 +54,20 @@ export class FleetManagerComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
-    
+    if(this.isAuth){
+      this.truckService.getAllTruck().then((data) => {
+        this.truckList = data;
+        this.dataSource = this.truckList;
+      });
+      this.selectedTruck= {
+        truckID: "",
+        tare: undefined,
+        capacity: undefined,
+        maxBatteryCapacity: undefined,
+        autonomy: undefined,
+        fastChargeTime: undefined
+      }
+    }
   }
 
   onTruckSelected($event: any){

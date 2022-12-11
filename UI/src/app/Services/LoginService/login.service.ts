@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { EMPTY } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
   public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
-  constructor() { }
+  constructor(private cookieService: CookieService) { }
 
   async login(loginInfo: any) {
     let url = this.urlOrigin+'api/user/login/';
@@ -15,7 +17,9 @@ export class LoginService {
     }
     
     const data = loginInfo;
-    const response = await this.sendFetch(url, 'POST', data);
+    console.log("data:",data)
+
+    const response = await this.sendFetch(url, 'POST', data, "");
 
     const jsonResponse = await response.json();
 
@@ -28,13 +32,18 @@ export class LoginService {
     return response;
   }
 
-  logout() {
-    console.log(document.cookie)
-    document.cookie = "jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-    console.log(document.cookie)
-    localStorage.clear();
-  }
+  async loginWithGoogle(credentials: string) {
+    // const header = new HttpHeaders().set('Content-type', 'application/json');
+    // return this.httpClient.post(this.urlOrigin + "loginWithGoogle", JSON.stringify(credentials), { headers: header });
+    const data = {credentials:credentials};
+    console.log(data)
+    const response = await this.sendFetch(this.urlOrigin + "api/user/loginWithGoogle", 'POST', data, "");
+    const jsonResponse = await response.json();
 
+    const cookie = jsonResponse.token;
+    localStorage.setItem('jwt', cookie);
+    document.cookie = "jwt=" + cookie + "; path=/";
+  }
 
   async getRole() {
     let url = this.urlOrigin+'api/role/currentRole';
@@ -42,16 +51,30 @@ export class LoginService {
       url = 'https://auth57.azurewebsites.net/api/role/currentRole';
 
     }
-    const response = await this.sendFetch(url, 'GET', null);
+    const cookies = document.cookie.split(';');
+    
+    let jwt = "";
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name.trim() === "jwt"){
+        jwt = value;
+      }
+    }
+    if(jwt === ""){
+      return "401";
+    }
+    const cookie = "jwt=" + jwt;
+    const response = await this.sendFetch(url, 'GET', null, cookie );
     if(response.status == 401){
       return "401";
     }
+    
     const jsonResponse = await response.json();
     return jsonResponse;
   }
 
 
-  async sendFetch(url: string, method: string, data: any) {
+  async sendFetch(url: string, method: string, data: any, cookie:string) {
     if(data)
       return await fetch(url, {
         method: method,
@@ -60,7 +83,7 @@ export class LoginService {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Access-Control-Allow-Credentials': 'true',
-          "authorization": document.cookie,
+          "authorization": cookie,
         },
       })
     else
@@ -70,8 +93,8 @@ export class LoginService {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Credentials': 'true',
-          "authorization": document.cookie,
-        }
+          "authorization": cookie,
+        },
       })
   }
 }

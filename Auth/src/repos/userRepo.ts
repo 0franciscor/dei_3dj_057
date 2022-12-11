@@ -31,6 +31,7 @@ export default class UserRepo implements IUserRepo {
     const userDocument = await this.userSchema.findOne( query as FilterQuery<IUserPersistence & Document> );
     try {
       if (userDocument === null ) {
+        
         const rawUser: any = UserMap.toPersistence(user);
 
         const userCreated = await this.userSchema.create(rawUser);
@@ -54,6 +55,7 @@ export default class UserRepo implements IUserRepo {
 
   public async findByEmail (email: UserEmail | string): Promise<User> {
     const query = { email: email.toString() };
+
     const userRecord = await this.userSchema.findOne( query );
 
     if( userRecord != null) {

@@ -18,6 +18,9 @@ export default class UserService implements IUserService{
     ){}
 
 
+    
+
+
     public async login(user: IUserDTO): Promise<Result<IUserDTO>> {
         try {
             const userOrError = await this.userRepo.findById(user.userId);
@@ -48,13 +51,13 @@ export default class UserService implements IUserService{
             userDTO.password= hashedPassword;
             
             const userOrError = User.create(userDTO);
+            
             if(userOrError.isFailure){
                 return Result.fail<IUserDTO>(userOrError.error);
             }
             const userResult= userOrError.getValue();
-            
             await this.userRepo.save(userResult);
-
+           
             const userDTOresult = UserMap.toDTO(userResult)as IUserDTO;
             return Result.ok<IUserDTO>(userDTOresult)
         } catch (error) {
@@ -100,6 +103,19 @@ export default class UserService implements IUserService{
             return Result.ok<IUserDTO>(userDTOresult);
         } catch (error) {
             throw error
+        }
+    }
+
+    public async getUserByEmail(email: string): Promise<Result<IUserDTO>> {
+        try {
+            const userOrError = await this.userRepo.findByEmail(email);
+            if(userOrError == null)
+                return Result.fail<IUserDTO>("User not found");
+
+            const userDTO = UserMap.toDTO(userOrError) as IUserDTO;
+            return Result.ok<IUserDTO>(userDTO);
+        } catch (error) {
+            throw error;
         }
     }
 

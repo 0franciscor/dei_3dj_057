@@ -37,7 +37,8 @@ import { CreatePackageComponent } from './components/Logistics/packaging/create-
 import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { DefaultHomeComponent } from './components/defaultHome/default-home/default-home.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,8 +88,11 @@ import { DefaultHomeComponent } from './components/defaultHome/default-home/defa
     MatTableModule,
     MatPaginatorModule,
     MatRadioModule,
+    HttpClientModule,
+    
+    
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

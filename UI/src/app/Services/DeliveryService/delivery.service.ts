@@ -8,12 +8,26 @@ export class DeliveryService {
   public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
   constructor() { }
 
+  getJwt() {
+    const cookies = document.cookie.split(';');
+    
+    let jwt = "";
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name.trim() === "jwt"){
+        jwt = value;
+      }
+    }
+    const cookie = "jwt=" + jwt;
+    return cookie;
+  }
+
   async getDeliveries() {
     let url = this.urlOrigin + 'api/delivery/all';
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/delivery/all';
     }
-    const response = await this.sendFetch(url, 'GET', null, document.cookie);
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
 
     const data = await response.json();
 
@@ -25,7 +39,7 @@ export class DeliveryService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/delivery/'+deliveryID;
     }
-    const response = await this.sendFetch(url, 'GET', null, document.cookie);
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
 
     const data = await response.json();
 
@@ -39,7 +53,7 @@ export class DeliveryService {
     }
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'POST', data, document.cookie);
+    const response = await this.sendFetch(url, 'POST', data, this.getJwt());
 
     return response;
 
@@ -52,7 +66,7 @@ export class DeliveryService {
     }
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'PATCH', data, document.cookie);
+    const response = await this.sendFetch(url, 'PATCH', data, this.getJwt());
 
     return response;
   }
@@ -64,7 +78,7 @@ export class DeliveryService {
     }
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'POST', data, document.cookie);
+    const response = await this.sendFetch(url, 'POST', data, this.getJwt());
 
     return response;
   }
@@ -77,7 +91,7 @@ export class DeliveryService {
 
     const data = delivery;
 
-    const response = await this.sendFetch(url, 'PUT', data, document.cookie);
+    const response = await this.sendFetch(url, 'PUT', data, this.getJwt());
 
     return response;
   }
