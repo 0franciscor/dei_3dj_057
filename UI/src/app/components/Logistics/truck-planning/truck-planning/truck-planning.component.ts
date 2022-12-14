@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms"
 import { PlanningService } from '../../../../Services/PlanningService/planning-service.service';
 import { Router } from '@angular/router';
 import { TripService } from 'src/app/Services/TripService/trip.service';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 
 @Component({
   selector: 'app-truck-planning',
@@ -19,7 +20,7 @@ export class TruckPlanningComponent implements OnInit {
 
 
   public truck : any;
-  constructor(private fb: FormBuilder, private router: Router, private planningService:PlanningService, private tripService:TripService) { }
+  constructor(private loginService:LoginService ,private fb: FormBuilder, private router: Router, private planningService:PlanningService, private tripService:TripService) { }
 
   selectedPlan={
     truckName: "",
@@ -31,7 +32,22 @@ export class TruckPlanningComponent implements OnInit {
    info:[]
   }
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["logMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
+    
     this.formPlanning = this.fb.group({
       truckName: new FormControl('',[Validators.required]),
       planDate: new FormControl('',[Validators.required]),

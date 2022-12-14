@@ -6,4 +6,7 @@ export default interface IUserController  {
   getUser(req: Request, res: Response, next: NextFunction);
   getAllUsers(req: Request, res: Response, next: NextFunction)
   deleteUser(req: Request, res: Response, next: NextFunction)
+  login(req: Request, res: Response, next: NextFunction);
+  loginWithGoogle(req: Request, res: Response, next: NextFunction);
+
 }

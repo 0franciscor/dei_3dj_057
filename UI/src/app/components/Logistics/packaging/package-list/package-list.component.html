@@ -1,42 +1,53 @@
-<table mat-table [dataSource]="dataSource" class="packageTable">
+<div *ngIf="isAuth">
+    <table mat-table [dataSource]="dataSource" class="packageTable">
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    <ng-container matColumnDef="packagingID">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let package of packageList"> {{package.packagingID}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="truckID">
-        <th mat-header-cell *matHeaderCellDef> Truck ID </th>
-        <td mat-cell *matCellDef="let package of packageList"> {{package.truckID}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="deliveryID">
-        <th mat-header-cell *matHeaderCellDef> Delivery ID </th>
-        <td mat-cell *matCellDef="let package of packageList"> {{package.deliveryID}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="xPosition">
-        <th mat-header-cell *matHeaderCellDef> X Position </th>
-        <td mat-cell *matCellDef="let package of packageList"> {{package.xPosition}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="yPosition">
-        <th mat-header-cell *matHeaderCellDef> Y Position </th>
-        <td mat-cell *matCellDef="let package of packageList"> {{package.yPosition}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="zPosition">
-        <th mat-header-cell *matHeaderCellDef> Z Position </th>
-        <td mat-cell *matCellDef="let package of packageList"> {{package.zPosition}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let package of packageList">
-            <button mat-button>Edit</button>
-        </td>
-    </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>    
+    
+        <ng-container matColumnDef="packagingID">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let package"> {{package.packagingID}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="truckID">
+            <th mat-header-cell *matHeaderCellDef> Truck ID </th>
+            <td mat-cell *matCellDef="let package"> {{package.truckID}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="deliveryID">
+            <th mat-header-cell *matHeaderCellDef> Delivery ID </th>
+            <td mat-cell *matCellDef="let package"> {{package.deliveryID}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="xPosition">
+            <th mat-header-cell *matHeaderCellDef> X Position </th>
+            <td mat-cell *matCellDef="let package"> {{package.xPosition}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="yPosition">
+            <th mat-header-cell *matHeaderCellDef> Y Position </th>
+            <td mat-cell *matCellDef="let package"> {{package.yPosition}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="zPosition">
+            <th mat-header-cell *matHeaderCellDef> Z Position </th>
+            <td mat-cell *matCellDef="let package"> {{package.zPosition}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let package">
+                <button mat-button>Edit</button>
+            </td>
+        </ng-container>
+    
 </table>
+
+</div>
+
+<mat-paginator
+        #paginator
+        [length] = "dataSource.data.length"
+        [pageSizeOptions]="[1, 5, 10]"
+        showFirstLastButtons
+></mat-paginator>

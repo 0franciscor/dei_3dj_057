@@ -1,4 +1,5 @@
-<div class="main-div">
+<div class="main-div" *ngIf="isAuth==false">
+    
     <mat-card >
             <mat-card-header>
                 <mat-card-title>
@@ -6,15 +7,15 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content class ="sec-div">
-                <form (ngSubmit)="onSubmit()">
+                <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
                     <mat-form-field appearance="fill">
                         <mat-label>Username</mat-label>
-                        <input matInput>
+                        <input matInput formControlName="userId">
                     </mat-form-field>
                     <br>
                     <mat-form-field appearance="fill">
                         <mat-label>Enter your password</mat-label>
-                        <input matInput [type]="hide ? 'password' : 'text'">
+                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
@@ -22,6 +23,8 @@
                     <br>
                     <button mat-raised-button color="primary" type="submit" >Log In</button>
                 </form>    
+                <div id="googleButtonDiv">   
+                </div>
             </mat-card-content>
     </mat-card>
 </div>

@@ -32,6 +32,10 @@ const TruckSchema = new mongoose.Schema (
         fastChargeTime: {
             type: Number,
             required: true
+        },
+        active: {
+            type: Boolean,
+            required: true
         }
 
     },

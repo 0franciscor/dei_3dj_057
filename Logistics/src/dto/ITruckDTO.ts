@@ -6,4 +6,5 @@ export interface ITruckDTO {
   maxBatteryCapacity: number;
   autonomy: number;
   fastChargeTime: number;
+  active: boolean;
 }

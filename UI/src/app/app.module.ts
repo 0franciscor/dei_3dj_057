@@ -36,7 +36,9 @@ import { TruckPlanningComponent } from './components/Logistics/truck-planning/tr
 import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
 import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
 import {MatRadioModule} from '@angular/material/radio';
-
+import { DefaultHomeComponent } from './components/defaultHome/default-home/default-home.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +66,8 @@ import {MatRadioModule} from '@angular/material/radio';
     GetWarehousesComponent,
     TruckPlanningComponent,
     CreatePackageComponent,
-    PackageListComponent
+    PackageListComponent,
+    DefaultHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -85,8 +88,11 @@ import {MatRadioModule} from '@angular/material/radio';
     MatTableModule,
     MatPaginatorModule,
     MatRadioModule,
+    HttpClientModule,
+    
+    
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

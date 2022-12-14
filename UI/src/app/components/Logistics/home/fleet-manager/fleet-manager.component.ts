@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 
@@ -36,25 +37,38 @@ export class FleetManagerComponent implements OnInit {
   displayedColumns: string[] = ['TruckID', 'Tare', 'Capacity', 'Maximum Battery Capacity', 'Autonomy', 'Fast Charge Time', "Actions"];
   dataSource = this.truckList;
   
-  constructor(public dialog: MatDialog,private truckService: TruckService, private router: Router) { 
-    this.truckService.getAllTruck().then((data) => {
-      this.truckList = data;
-      this.dataSource = this.truckList;
-    });
-    this.selectedTruck= {
-      truckID: "",
-      tare: undefined,
-      capacity: undefined,
-      maxBatteryCapacity: undefined,
-      autonomy: undefined,
-      fastChargeTime: undefined
+  constructor(private loginService:LoginService,public dialog: MatDialog,private truckService: TruckService, private router: Router) {}
+
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["fltMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
     }
+    else
+      return true;
+    
   }
 
-  
-
-  ngOnInit(): void {
-    
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
+    if(this.isAuth){
+      this.truckService.getAllTruck().then((data) => {
+        this.truckList = data;
+        this.dataSource = this.truckList;
+      });
+      this.selectedTruck= {
+        truckID: "",
+        tare: undefined,
+        capacity: undefined,
+        maxBatteryCapacity: undefined,
+        autonomy: undefined,
+        fastChargeTime: undefined,
+        active: undefined
+      }
+    }
   }
 
   onTruckSelected($event: any){
@@ -72,10 +86,10 @@ export class FleetManagerComponent implements OnInit {
     this.router.navigate(['Logistics/Truck/EditTruck', truckID]);
     
   } 
-  async deleteTruck(truckID:string) {
+  async toggleActiveTruck(truckID:string) {
     
 
-    let answer = await this.truckService.deleteTruck(truckID);
+    let answer = await this.truckService.toggleActiveTruck(truckID);
     let message = "Truck Deleted Successfully";
     if(answer.status != 200){
       message = "Truck Deletion Failed";
@@ -92,6 +106,11 @@ export class FleetManagerComponent implements OnInit {
         this.router.navigate(['Logistics/Truck/FleetManager']);
       
     });
+    this.truckService.getAllTruck().then((data) => {
+      this.truckList = data;
+      this.dataSource = this.truckList;
+    });
+    
   }
 
   toggleSeeAll(){

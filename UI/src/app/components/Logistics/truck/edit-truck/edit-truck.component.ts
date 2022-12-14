@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
 
 
@@ -26,7 +27,7 @@ export interface DialogData {
 })
 export class EditTruckComponent implements OnInit {
     formEditTruck!: FormGroup;
-  constructor(public dialog: MatDialog,public route: ActivatedRoute,private truckService: TruckService,private fb: FormBuilder,private router: Router) { }
+  constructor(private loginService:LoginService,public dialog: MatDialog,public route: ActivatedRoute,private truckService: TruckService,private fb: FormBuilder,private router: Router) { }
 
   selectedTruck = {
     truckID: "",
@@ -36,9 +37,23 @@ export class EditTruckComponent implements OnInit {
     autonomy: undefined,
     fastChargeTime: undefined
   }
-  
 
-  ngOnInit(): void {
+
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["fltMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     const truckID = this.route.snapshot.paramMap.get('id');
     this.formEditTruck = new FormGroup({
       truckID: new FormControl(this.selectedTruck.truckID, [Validators.required]),

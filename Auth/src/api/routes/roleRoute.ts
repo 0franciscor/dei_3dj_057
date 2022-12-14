@@ -17,6 +17,10 @@ export default (app: Router)=>{
         ctrl.getRole(req,res,next)
     });
 
+    route.get('/currentRole',(req,res,next)=>{
+        ctrl.currentRole(req,res,next)
+    })
+
     route.get('/all',(req,res,next)=>{
         ctrl.getAllRoles(req,res,next);
     });
@@ -44,6 +48,11 @@ export default (app: Router)=>{
     route.delete('/id/:id',(req,res,next)=>{
         req.body.roleId = req.params.id;
         ctrl.deleteRole(req,res,next)
+    });
+
+    route.get('/validate/:role',(req,res,next)=>{
+        
+        ctrl.validateRole(req,res,next)
     });
  
 

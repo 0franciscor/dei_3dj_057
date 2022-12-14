@@ -26,6 +26,8 @@ export default {
    */
   jwtSecret: process.env.JWT_SECRET || "my sakdfho2390asjod$%jl)!sdjas0i secret",
 
+  googleClientId: "598640220043-j4v51sbat7nft28jqi165dltsq2dlrm9.apps.googleusercontent.com",
+
   /**
    * Used by winston logger
    */

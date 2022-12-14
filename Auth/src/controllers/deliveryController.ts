@@ -4,14 +4,52 @@ import { Service } from 'typedi';
 import IDeliveryController from "./IControllers/IDeliveryController";
 
 import fetch from 'node-fetch';
+import config from '../../config';
 
 const http = require('https');
 
+const jwt = require('jsonwebtoken');
 @Service()
 export default class DeliveryController implements IDeliveryController {
     constructor() { }
 
+    private roles = ["admin","whMan"];
+
+    isAuthenticated(req: Request) {
+        if(req.cookies['jwt'] == undefined)
+        return false;
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, config.jwtSecret);
+        if(!claims)
+            return false;
+        
+        return true;
+    }
+
+    isAuthorized(req: Request) {
+        if(req.cookies['jwt'] == undefined)
+        return false;
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, config.jwtSecret);
+        if(!claims)
+            return false;
+        if(this.roles.indexOf(claims.role) > -1)
+            return true;
+        return false;
+    }
+
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
 
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/GetAll';
@@ -20,7 +58,12 @@ export default class DeliveryController implements IDeliveryController {
 
         const response = await fetch(address, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+            },
+            
         });
 
         if (response.status != 200) {
@@ -33,13 +76,27 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getAllDeliveriesProlog(req: Request, res: Response, next: NextFunction) {
-
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         const address = 'https://localhost:5001/api/deliveries/GetAllProlog';
 
         const response = await fetch(address, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
         });
 
         if (response.status != 200) {
@@ -52,6 +109,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getDelivery(req: Request, res: Response, next: NextFunction) {
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/GetByID/' + req.params.id;
         if(req.get('host').includes("azure"))
@@ -59,7 +127,11 @@ export default class DeliveryController implements IDeliveryController {
 
         const response = await fetch(address, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
         });
 
         if (response.status != 200) {
@@ -72,6 +144,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async createDelivery(req: Request, res: Response, next: NextFunction) {
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/CreateDelivery';
 
@@ -80,7 +163,10 @@ export default class DeliveryController implements IDeliveryController {
         const response = await fetch(address, {
             method: 'POST',
             body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
             agent: httpAgent
         });
 
@@ -95,12 +181,26 @@ export default class DeliveryController implements IDeliveryController {
     };
 
     public async createDeliveryProlog(req: Request, res: Response, next: NextFunction) {
+      if(req.headers.authorization!=undefined)
+        req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+      if(!this.isAuthenticated(req)){
+        res.status(401);
+        return res.json({message: "Not authenticated"});
+      }
+      if(!this.isAuthorized(req)){
+        res.status(403);
+        return res.json({message: "Not authorized"});
+      }
+      req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_delivery';
         const response_prolog = await fetch(address_prolog, {
             method: 'POST',
             body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
             agent: httpAgent
         });
 
@@ -116,6 +216,17 @@ export default class DeliveryController implements IDeliveryController {
 
 
     public async updateDelivery(req: Request, res: Response, next: NextFunction) {
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
         let address = 'https://localhost:5001/api/deliveries/Update';
         if(req.get('host').includes("azure"))
@@ -124,7 +235,10 @@ export default class DeliveryController implements IDeliveryController {
         const response = await fetch(address, {
             method: 'PATCH',
             body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
             agent: httpAgent
         });
 
@@ -139,6 +253,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async updateDeliveryProlog(req: Request, res: Response, next: NextFunction) {
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
         const address_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_delivery';
@@ -146,7 +271,10 @@ export default class DeliveryController implements IDeliveryController {
         const response_prolog = await fetch(address_prolog, {
             method: 'PUT',
             body: JSON.stringify(req.body),
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
             agent: httpAgent
         });
 
@@ -161,6 +289,17 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getDeliveryDestination(req: Request, res: Response, next: NextFunction){
+      if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
         let deliveredWarehouseList :any[]=[]
         let deliveriesMoved : any[]=[]
         
@@ -179,7 +318,11 @@ export default class DeliveryController implements IDeliveryController {
 
         const responseDeliveries = await fetch(address, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
         });
 
         if (responseDeliveries.status != 200) {
@@ -192,7 +335,11 @@ export default class DeliveryController implements IDeliveryController {
         const warehousesAddress = 'https://localhost:5001/api/warehouses/GetAll'
         const responseWarehouse = await fetch(warehousesAddress, {
             method: 'GET',
-            agent: httpAgent
+            agent: httpAgent,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': req.headers.cookie
+              },
         });
         if (responseWarehouse.status != 200) {
             res.status(responseWarehouse.status);

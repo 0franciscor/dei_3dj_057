@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { PackagingService } from 'src/app/Services/PackageService/package.service';
 
 
@@ -11,9 +13,23 @@ import { PackagingService } from 'src/app/Services/PackageService/package.servic
 export class CreatePackageComponent implements OnInit {
 
   formCreatePackage!: FormGroup;
-  constructor(private packagingService: PackagingService,private fb: FormBuilder) {}
+  constructor(private loginService:LoginService,private packagingService: PackagingService,private fb: FormBuilder, private router:Router) {}
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["logMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     this.formCreatePackage = this.fb.group({
       packagingID: [''],
       truckID: [''],

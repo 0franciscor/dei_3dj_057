@@ -10,12 +10,26 @@ export class WarehouseService {
   public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
   constructor() { }
 
+  getJwt() {
+    const cookies = document.cookie.split(';');
+    
+    let jwt = "";
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name.trim() === "jwt"){
+        jwt = value;
+      }
+    }
+    const cookie = "jwt=" + jwt;
+    return cookie;
+  }
+
   async getWarehouse(WarehouseId:string) {
     let url = this.urlOrigin+'api/warehouse/'+ WarehouseId;
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/warehouse/'+ WarehouseId;
     }
-    const response = await this.sendFetch(url,'GET',null);
+    const response = await this.sendFetch(url,'GET',null, this.getJwt());
     const data = await response.json();
 
     return data;
@@ -28,7 +42,7 @@ export class WarehouseService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/create';
     }
     const data = warehouse;
-    const response = await this.sendFetch(url, 'POST', data);
+    const response = await this.sendFetch(url, 'POST', data, this.getJwt());
 
     return response;
           
@@ -40,7 +54,7 @@ export class WarehouseService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/createProlog';
     }
     const data = warehouse;
-    const response = await this.sendFetch(url, 'POST', data);
+    const response = await this.sendFetch(url, 'POST', data, this.getJwt());
 
     return response;
           
@@ -51,7 +65,7 @@ export class WarehouseService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/warehouse/all';
     }
-    const response = await this.sendFetch(url, 'GET', null);
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
     const data = await response.json();
 
     return data;
@@ -65,7 +79,7 @@ export class WarehouseService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/update';
     }
     const data = warehouse;
-    const response = await this.sendFetch(url, 'PUT', data);
+    const response = await this.sendFetch(url, 'PUT', data, this.getJwt());
     
     return response;
      
@@ -78,7 +92,7 @@ export class WarehouseService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/updateProlog';
     }
     const data = warehouse;
-    const response = await this.sendFetch(url, 'PUT', data);
+    const response = await this.sendFetch(url, 'PUT', data, this.getJwt());
     
     return response;
      
@@ -90,7 +104,7 @@ export class WarehouseService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/warehouse/activate/'+ warehouseId;
     }
-    const response = await this.sendFetch(url,'PATCH',null);
+    const response = await this.sendFetch(url,'PATCH',null, this.getJwt());
     
 
     return response;
@@ -103,20 +117,20 @@ export class WarehouseService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/warehouse/deactivate/'+ warehouseId;
     }
-    const response = await this.sendFetch(url,'DELETE',null);
+    const response = await this.sendFetch(url,'DELETE',null, this.getJwt());
 
     return response;
      
   }
 
   async sendFetch(url: string, method: string, data: any) {
-
-    if(data){
+    if(data)
       return await fetch(url, {
         method: method,
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "authorization": cookie,
         },
       })
     }
@@ -125,7 +139,8 @@ export class WarehouseService {
       return await fetch(url, {
         method: method,
         headers: {
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          "authorization": cookie,
         }
       })
     }
@@ -133,4 +148,3 @@ export class WarehouseService {
   }
 
 
-}

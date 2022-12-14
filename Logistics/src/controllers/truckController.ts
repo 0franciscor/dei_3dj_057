@@ -8,6 +8,8 @@ import { ITruckDTO } from '../dto/ITruckDTO';
 
 import { Result } from '../core/logic/Result';
 
+const jwt = require('jsonwebtoken');
+
 
 
 @Service()
@@ -17,7 +19,42 @@ export default class TruckController implements ITruckController {
         @Inject(config.services.truck.name) private truckService: ITruckService,
     ) { }
 
+    private roles = ["admin", "fltMan"];
+
+    isAuthenticated(req: Request) {
+        
+        if(req.cookies['jwt'] == undefined)
+            return false;
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, config.jwtSecret);
+        
+        if(!claims)
+            return false;
+        
+        return true;
+    }
+
+    isAuthorized(req: Request) {
+        if(req.cookies['jwt'] == undefined)
+            return false;
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, config.jwtSecret);
+        if(!claims)
+            return false;
+        if(this.roles.indexOf(claims.role) > -1)
+            return true;
+        return false;
+    }
+
     public async getTruck(req: Request, res: Response, next: NextFunction){
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             const truck = await this.truckService.getTruck(req.body.truckID);
             if (truck.isFailure){
@@ -34,6 +71,14 @@ export default class TruckController implements ITruckController {
     }
 
     public async getAllTrucks(req: Request, res: Response, next: NextFunction){
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             const trucks = await this.truckService.getAllTrucks();
             res.status(200);
@@ -44,7 +89,16 @@ export default class TruckController implements ITruckController {
     }
 
     public async createTruck(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
+
             const truckOrError = await this.truckService.createTruck(req.body as ITruckDTO);
             if (truckOrError.isFailure) {
                 res.status(409);
@@ -63,6 +117,14 @@ export default class TruckController implements ITruckController {
     }
 
     public async updateTruck(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             const truckOrError = await this.truckService.updateTruck(req.body as ITruckDTO) as Result<ITruckDTO>;
             if (truckOrError.isFailure) {
@@ -79,8 +141,15 @@ export default class TruckController implements ITruckController {
     }
 
     public async deleteTruck(req: Request, res: Response, next: NextFunction){
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
-
             const truckResult = await this.truckService.deleteTruck(req.body.truckID);
             if(truckResult.isFailure){
                 res.status(404);

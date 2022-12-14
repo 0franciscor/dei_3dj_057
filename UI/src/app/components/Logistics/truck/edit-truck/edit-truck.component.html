@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="isAuth">
     <mat-card-title>{{selectedTruck.truckID}}</mat-card-title>
     <mat-card-subtitle>Truck Information</mat-card-subtitle>
     <mat-card-content>

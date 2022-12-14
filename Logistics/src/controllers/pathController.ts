@@ -7,7 +7,7 @@ import { IPathDTO } from "../dto/IPathDTO";
 import { Result } from "../core/logic/Result";
 import fetch from 'node-fetch'
 const http = require ('https');
-
+const jwt = require('jsonwebtoken');
 
 
 
@@ -15,8 +15,42 @@ const http = require ('https');
 export default class PathController implements IPathController{
     constructor(
         @Inject (config.services.path.name) private pathService: IPathService,) {}
+
+        private roles = ["admin", "logMan"];
+
+        isAuthenticated(req: Request) {
+            if(req.cookies['jwt'] == undefined)
+            return false;
+            const cookie = req.cookies['jwt'];
+            const claims = jwt.verify(cookie, config.jwtSecret);
+            
+            if(!claims)
+                return false;
+            
+            return true;
+        }
+    
+        isAuthorized(req: Request) {
+            if(req.cookies['jwt'] == undefined)
+            return false;
+            const cookie = req.cookies['jwt'];
+            const claims = jwt.verify(cookie, config.jwtSecret);
+            if(!claims)
+                return false;
+            if(this.roles.indexOf(claims.role) > -1)
+            return true;
+            return false;
+        }
     
     public async getPath(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             const path = await this.pathService.getPath(req.body.pathID);
             if (path.isFailure){
@@ -31,7 +65,14 @@ export default class PathController implements IPathController{
     }
 
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
-        
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             if(req.params.startWHId == "undefined"){
                 req.params.startWHId="";
@@ -59,12 +100,20 @@ export default class PathController implements IPathController{
     }
 
     public async createPath(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try{
         
            
             const address_start = 'https://localhost:5001/api/warehouses/Exists/' + req.body.startWHId;
 
-            const response_start = await this.fetch(address_start)
+            const response_start = await this.fetch(address_start, req.headers.cookie)
 
             if(response_start.status!= 200){
                 res.status(404)
@@ -73,7 +122,7 @@ export default class PathController implements IPathController{
                 
             
             const address_destination ='https://localhost:5001/api/warehouses/Exists/' + req.body.destinationWHId;
-           const response_destination = await this.fetch(address_destination)
+           const response_destination = await this.fetch(address_destination, req.headers.cookie)
 
 
            if (response_destination.status != 200){
@@ -99,6 +148,14 @@ export default class PathController implements IPathController{
     }
 
     public async updatePath(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             if(req.body.pathID == null){
                 res.status(400);
@@ -124,6 +181,14 @@ export default class PathController implements IPathController{
     }
 
     public async deletePath(req: Request, res: Response, next: NextFunction) {
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req)){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
         try {
             const pathResult = await this.pathService.deletePath(req.body.id);
             if(pathResult.isFailure){
@@ -137,11 +202,15 @@ export default class PathController implements IPathController{
         }
     }
 
-    private async fetch(address : string ){
+    private async fetch(address : string, cookie:any ){
         const httpAgent = new http.Agent({rejectUnauthorized: false});
         return await fetch(address,{
         method : 'GET',
-        agent: httpAgent
+        agent: httpAgent,
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+        }
         });
     }
 }

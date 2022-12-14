@@ -8,12 +8,15 @@ import IRoleDTO from '../dto/IRoleDTO';
 
 import { Result } from "../core/logic/Result";
 import RoleService from '../services/roleService';
-
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
+const jwt = require('jsonwebtoken');
 @Service()
 export default class RoleController implements IRoleController /* TODO: extends ../core/infra/BaseController */ {
   constructor(
       @Inject(config.services.role.name) private roleServiceInstance : IRoleService
   ) {}
+  
 
   public async createRole(req: Request, res: Response, next: NextFunction) {
     try {
@@ -49,6 +52,7 @@ export default class RoleController implements IRoleController /* TODO: extends 
 
   public async getRole(req: Request, res: Response, next: NextFunction){
     try {
+      
       const role = await  this.roleServiceInstance.getRole(req.body.roleId);
       if(role.isFailure){
         res.status(404);
@@ -85,4 +89,55 @@ export default class RoleController implements IRoleController /* TODO: extends 
       next(error)
     }
   }
+
+  public async currentRole(req: Request, res: Response, next: NextFunction) {
+    try {
+      if(req.headers.authorization!=undefined)
+        req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+      if(req.cookies['jwt'] == undefined){
+        res.status(401);
+        return res.send("Unauthorized");
+      }
+      const cookie = req.cookies['jwt'];
+      
+      const claims = jwt.verify(cookie, config.jwtSecret);
+      
+      if(!claims){
+        res.status(401);
+        return res.send("Unauthorized");
+      }
+      res.status(200);
+      return res.json(claims.role);
+    } catch (error) {
+      next(error)
+    }
+   
+  }
+
+  public async validateRole(req: Request, res: Response, next: NextFunction){
+    try {
+      if(req.headers.authorization!=undefined)
+        req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+      if(req.cookies['jwt'] == undefined){
+        res.status(401);
+        return res.send("Unauthorized");
+      }
+      const cookie = req.cookies['jwt'];
+      const claims = jwt.verify(cookie, config.jwtSecret);
+      if(!claims){
+        res.status(401);
+        return res.send("Unauthorized");
+      }
+      if(claims.role == req.params.role){
+        res.status(200);
+        return res.send("Authorized");
+      }
+      res.status(403);
+      return res.send("Forbidden");
+     
+    } catch (error) {
+      next(error)
+    }
+  }
+
 }

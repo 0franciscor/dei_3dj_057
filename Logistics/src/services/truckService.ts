@@ -13,6 +13,7 @@ import { Tare } from '../domain/truck/Tare';
 import { Capacity } from '../domain/truck/Capacity';
 import { MaxBatteryCapacity } from '../domain/truck/MaxBatteryCapacity';
 import { FastChargeTime } from '../domain/truck/FastChargeTime';
+import { Active } from '../domain/truck/Active';
 
 
 
@@ -42,6 +43,7 @@ export default class TruckService implements ITruckService {
             const truck = await this.truckRepo.getTruckById(truckDTO.truckID);
             if(truck !== null)
                 return Result.fail<ITruckDTO>("Truck already exists");
+            truckDTO.active = true;
             const truckOrError = Truck.create(truckDTO);
 
             if (truckOrError.isFailure) {
@@ -120,7 +122,12 @@ export default class TruckService implements ITruckService {
             if(truck === null)
                 return Result.fail<ITruckDTO>("Truck not found");
 
-            await this.truckRepo.delete(truck);
+            if(!truck.active.active)
+                truck.active = Active.create(true).getValue();
+            else
+                truck.active = Active.create(false).getValue();
+
+            await this.truckRepo.save(truck);
 
             const truckDTOResult = TruckMap.toDTO(truck) as ITruckDTO;
             return Result.ok<ITruckDTO>(truckDTOResult);

@@ -1,9 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CreateTruckComponentDialog } from 'src/app/components/Logistics/truck/create-truck/create-truck.component';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { WarehouseService } from 'src/app/Services/WarehouseService/warehouse.service';
 import { DialogData } from '../edit-warehouse/edit-warehouse.component';
 
@@ -17,9 +16,23 @@ import { DialogData } from '../edit-warehouse/edit-warehouse.component';
 export class CreateWarehouseComponent implements OnInit {
 
   formCreateWarehouse!: FormGroup;
-  constructor(public dialog: MatDialog, private warehouseService: WarehouseService, private fb: FormBuilder, private router:Router) { }
+  constructor(private loginService:LoginService,public dialog: MatDialog, private warehouseService: WarehouseService, private fb: FormBuilder, private router:Router) { }
 
-  ngOnInit(): void {
+  isAuth: boolean = false;
+  authorizedRoles: string[] = ["whMan","admin"];
+  async isAuthenticated() {
+    const role= await this.loginService.getRole();
+    if(!this.authorizedRoles.includes(role)){
+      this.router.navigate(['/']);
+      return false
+    }
+    else
+      return true;
+    
+  }
+
+  async ngOnInit() {
+    this.isAuth = await this.isAuthenticated();
     this.formCreateWarehouse = this.fb.group({
       Id: new FormControl('', [Validators.required, Validators.minLength(3),Validators.maxLength(3)]),
       Address:new FormControl('', [Validators.required]),
