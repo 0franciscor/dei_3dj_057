@@ -99,11 +99,6 @@ namespace EletricGo.Domain.Warehouses
             {
                 this.Designation = new Designation(dto.Designation);    
             }
-
-            if(dto.Active != default(bool))
-            {
-                this.active = dto.Active;
-            }
                         
         }
 

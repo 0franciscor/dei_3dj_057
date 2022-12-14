@@ -110,7 +110,8 @@ export class WarehouseService {
   }
 
   async sendFetch(url: string, method: string, data: any) {
-    if(data)
+
+    if(data){
       return await fetch(url, {
         method: method,
         body: JSON.stringify(data),
@@ -118,14 +119,17 @@ export class WarehouseService {
           'Content-Type': 'application/json'
         },
       })
-    else
-      console.log(url);
+    }
+
+    else{
       return await fetch(url, {
         method: method,
         headers: {
           'Accept': 'application/json'
         }
       })
+    }
+      
   }
 
 

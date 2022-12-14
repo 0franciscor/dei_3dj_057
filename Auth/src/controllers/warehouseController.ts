@@ -168,9 +168,9 @@ export default class WarehouseController implements IWarehouseController {
 
     let url = 'https://localhost:5001/api/warehouses/Update';
     if(req.get('host').includes("azure"))
-      url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Update/';
+      url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Update';
     
-    const response = await this.fetch(url, 'PUT', null, httpAgent);
+    const response = await this.fetch(url, 'PUT', req.body, httpAgent);
 
     if(response.status != 200){
       res.status(response.status);
