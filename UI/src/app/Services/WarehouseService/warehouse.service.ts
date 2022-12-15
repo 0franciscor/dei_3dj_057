@@ -123,19 +123,23 @@ export class WarehouseService {
      
   }
 
-  async sendFetch(url: string, method: string, data: any) {
+  async sendFetch(url: string, method: string, data: any, cookie: any) {
     if(data)
+    //send cookie with request
       return await fetch(url, {
         method: method,
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
           "authorization": cookie,
-        },
-      })
-    }
+          
 
-    else{
+        },
+        
+        
+      })
+    else
       return await fetch(url, {
         method: method,
         headers: {
@@ -143,7 +147,7 @@ export class WarehouseService {
           "authorization": cookie,
         }
       })
-    }
+  }
       
   }
 
