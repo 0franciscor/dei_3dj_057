@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { elementAt } from 'rxjs';
@@ -6,6 +6,10 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { PackagingService } from 'src/app/Services/PackageService/package.service';
 
 import{ PathService } from 'src/app/Services/PathService/path.service';
+import { Path } from 'three';
+
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from '@angular/material/paginator';
 
 interface path{
   startWHId: string;
@@ -28,6 +32,17 @@ export class LogisticsManagerComponent implements OnInit {
   public selectedPath: any;
 
   public pathList: any[]=[];
+
+   dataSource!: MatTableDataSource<path>; 
+
+  @ViewChild('paginator',{static:false})
+  set paginator(value:MatPaginator){
+    if(this.dataSource){
+      this.dataSource.paginator=value;
+    }
+  } 
+
+  displayedColumns: String[]=['startWHId', 'destinationWHId', 'pathDistance', 'pathTravelTime', 'wastedEnergy', 'extraTravelTime']
 
   formSelectWarehouse!: FormGroup;
   constructor(private loginService:LoginService,private router: Router,private pathService: PathService,private fb: FormBuilder,private packageService: PackagingService) {
@@ -82,6 +97,7 @@ export class LogisticsManagerComponent implements OnInit {
   }
 
   onSubmit(){
+    this.selectedPathOption=[];
     let test;
     if(this.formSelectWarehouse.value.startWHId == undefined){
       test= this.pathList.find(element => element.destinationWHId == this.selectedPathOption)
@@ -90,14 +106,17 @@ export class LogisticsManagerComponent implements OnInit {
     }else{
        test = this.pathList.find(element=>element.startWHId == this.selectedPathOption && element.destinationWHId == this.selectedPathOption)
     }
-    
+   
     this.pathService.getAllPaths(this.formSelectWarehouse.value).then((data)=>{
       for(let i=0;i<data.length;i++){
         this.selectedPathOption[i]= data[i];
+        this.dataSource = new MatTableDataSource(this.selectedPathOption);
       }
+      
       
       console.log(this.selectedPathOption)
       this.selectedPathOption = data;
+      
       });
     
     
