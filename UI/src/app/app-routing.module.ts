@@ -19,6 +19,7 @@ import { TruckPlanningComponent } from './components/Logistics/truck-planning/tr
 import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
 import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
 import { DefaultHomeComponent } from './components/defaultHome/default-home/default-home.component';
+import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 
 const routes: Routes = [
   { path: '', component: DefaultHomeComponent },
@@ -38,7 +39,8 @@ const routes: Routes = [
   { path: 'WarehouseManagement/Delivery/CreateDelivery', component: CreateDeliveryComponent},
   { path: 'WarehouseManagement/Delivery/GetDelivery', component: GetDeliveriesComponent},
   { path: 'WarehouseManagement/Delivery/EditDelivery/:id', component: EditDeliveryComponent},
-  { path: 'WarehouseManagement/Warehouse/EditWarehouse/:id', component: EditWarehouseComponent}
+  { path: 'WarehouseManagement/Warehouse/EditWarehouse/:id', component: EditWarehouseComponent},
+  { path: 'TermsAndConditions', component: TermsAndConditionsComponent},
 
 ];
 

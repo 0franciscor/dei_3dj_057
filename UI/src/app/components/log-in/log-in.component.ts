@@ -14,9 +14,10 @@ import { DialogData } from '../Logistics/truck/create-truck/create-truck.compone
 })
 export class LogInComponent implements OnInit {
   hide = true;
+  
   constructor(private loginService:LoginService, private router:Router,public dialog: MatDialog, private _ngZone: NgZone) { }
   formLogin!: FormGroup;
-
+  isDisabled = true;
   isAuth: boolean = true;
   
   async isAuthenticated() {
@@ -91,28 +92,19 @@ export class LogInComponent implements OnInit {
     }      
   }
 
-  async popUp(){
-    this.dialog.open(CreateRGPDComponentDialog, {
-      width: '600px',
-      data: {},
+ async isAvaiable(event : any){
+  
+    if (event.target.checked ) {
+      this.isDisabled = false;
+    }
+    else{
+      this.isDisabled = true;
+    }
+    console.log(this.isDisabled);
+ }
 
-    });
-  }
+
+
+  
 }
 
-@Component({
-  selector: 'app-log-in',
-  templateUrl: 'log-in.dialog.component.html',
-})
-export class CreateRGPDComponentDialog {
-  constructor(
-    public dialogRef: MatDialogRef<CreateRGPDComponentDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
-
-  ngOnInit(): void {}
-
-  onOk(): void {
-    this.dialogRef.close();
-  }
-}

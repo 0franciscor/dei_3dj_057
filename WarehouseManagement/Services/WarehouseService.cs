@@ -88,7 +88,7 @@ namespace EletricGo.Services
             
             try
             {
-                //await _cityService.ImportCitiesFromCsv("./cities.csv");
+                await _cityService.ImportCitiesFromCsv("./cities.csv");
                 var city = await _cityService.CityExists(warehouseDto.Designation);
 
                 if (city == null)

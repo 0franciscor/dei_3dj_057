@@ -18,7 +18,13 @@
       <button class="button" (click)="goToWMHome()">
         Warehouse Manager
       </button>
+
+
     </div>
+
+    <button class="button" (click)="goToTermsAndConditions()" *ngIf="!isLoggedIn">
+      Terms and Conditions
+    </button>
 
     <button mat-icon-button color="secondary" (click)="logout()" *ngIf="isLoggedIn">
       <mat-icon>logout</mat-icon>

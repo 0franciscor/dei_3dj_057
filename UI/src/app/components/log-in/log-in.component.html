@@ -22,12 +22,18 @@
                     </mat-form-field>
                     <br>
                     
-                    <button mat-raised-button color="primary" type="submit" >Log In</button>
+                    <label class="container">I agree with the terms and conditions
+                        <input type="checkbox" (change)="isAvaiable($event)">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <button class="button" *ngIf="!isDisabled" type="submit" >Log In</button>
+
                 </form>    
                 <div id="googleButtonDiv">   
                 </div>
             </mat-card-content>
-            <button mat-raised-button (click)="popUp()" color="primary" type="submit" >Terms and conditions</button>
+
     </mat-card>
 </div>
     

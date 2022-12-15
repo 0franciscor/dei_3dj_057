@@ -91,6 +91,10 @@ export class ToolBarComponent implements OnInit {
   goToFMHome(): void {
     this.router.navigate(['/Logistics/Home/FleetManager']);
   }
+
+  goToTermsAndConditions(): void {
+    this.router.navigate(['/TermsAndConditions']);
+  }
  
 
 }

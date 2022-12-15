@@ -16,6 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
 import { CreateTruckComponent, CreateTruckComponentDialog } from './components/Logistics/truck/create-truck/create-truck.component';
 import { FleetManagerComponent, DeleteTruckComponentDialog } from './components/Logistics/home/fleet-manager/fleet-manager.component';
@@ -39,6 +40,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { DefaultHomeComponent } from './components/defaultHome/default-home/default-home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,7 +69,8 @@ import { CookieService } from 'ngx-cookie-service';
     TruckPlanningComponent,
     CreatePackageComponent,
     PackageListComponent,
-    DefaultHomeComponent
+    DefaultHomeComponent,
+    TermsAndConditionsComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +92,8 @@ import { CookieService } from 'ngx-cookie-service';
     MatPaginatorModule,
     MatRadioModule,
     HttpClientModule,
+    MatCheckboxModule,
+    
     
     
   ],
