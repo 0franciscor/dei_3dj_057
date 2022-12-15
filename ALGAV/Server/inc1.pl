@@ -159,7 +159,10 @@ parse_deliveries([HDelivery|TDelivery]):-
         parse_deliveries(TDelivery).
 
 % ---------------------------------------------------------------------------
-add_city(Id, Name, CityJson):- \+idArmazem(_,Id), assertz(idArmazem(Name, Id)), cityprolog_tojson(Id, Name, CityJson).
+add_city(Id, Name, CityJson):- 
+		\+idArmazem(_,Id), 
+		assertz(idArmazem(Name, Id)), 
+		cityprolog_tojson(Id, Name, CityJson).
 
 update_city(Id, Name, CityJson):- check_sv(),idArmazem(_, Id), retract(idArmazem(_, Id)), assertz(idArmazem(Name, Id)), cityprolog_tojson(Id, Name, CityJson).
 
@@ -174,7 +177,9 @@ cityprolog_tojson(Id, Name, NoJson):-
 
 % ---------------------------------------------------------------------------
 create_truck(Id, Tare, Capacity, BateryCapacity, Autonomy,TimeToCharge, TruckJson):-
-	\+caracteristicasCam(Id, _, _, _, _, _), assertz(caracteristicasCam(Id, Tare, Capacity, BateryCapacity, Autonomy, TimeToCharge)), truckprolog_tojson(Id, Tare, Capacity, BateryCapacity, Autonomy, TimeToCharge, TruckJson).
+			\+caracteristicasCam(Id, _, _, _, _, _), 
+			assertz(caracteristicasCam(Id, Tare, Capacity, BateryCapacity, Autonomy, TimeToCharge)), 
+			truckprolog_tojson(Id, Tare, Capacity, BateryCapacity, Autonomy, TimeToCharge, TruckJson).
 
 update_truck(Id, Tare, Capacity, BateryCapacity, Autonomy,TimeToCharge, TruckJson):-
 	check_sv(), caracteristicasCam(Id, _, _, _, _, _), retract(caracteristicasCam(Id, _, _, _, _, _)), assertz(caracteristicasCam(Id, Tare, Capacity, BateryCapacity, Autonomy, TimeToCharge)), truckprolog_tojson(Id, Tare, Capacity, BateryCapacity, Autonomy, TimeToCharge, TruckJson).
@@ -191,7 +196,9 @@ truckprolog_tojson(Id, Tare, Capacity, BateryCapacity, Autonomy,TimeToCharge, No
 
 % ---------------------------------------------------------------------------
 create_delivery(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson):-
-	\+entrega(Id, _, _, _, _, _), assertz(entrega(Id, Date, Mass, Destination, LoadTime, UnloadTime)), deliveryprolog_tojson(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson).
+				\+entrega(Id, _, _, _, _, _), 
+				assertz(entrega(Id, Date, Mass, Destination, LoadTime, UnloadTime)), 
+				deliveryprolog_tojson(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson).
 
 update_delivery(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson):-
 	check_sv(),entrega(Id, _, _, _, _, _), retract(entrega(Id, _, _, _, _, _)), assertz(entrega(Id, Date, Mass, Destination, LoadTime, UnloadTime)), deliveryprolog_tojson(Id, Date, Mass, Destination, LoadTime, UnloadTime, DeliveryJson).
@@ -211,10 +218,11 @@ deliveryprolog_tojson(Id, Date, Mass, Destination, LoadTime, UnloadTime, NoJson)
 
 % ---------------------------------------------------------------------------
 create_path(Truck, CityDest, AditionalTime, PathTime, CityOrig, Energy, PathJson):-
-	\+dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _),
-	armazem(CityOrig,_,_,_,_,_,City),
-	armazem(CityDest,_,_,_,_,_,City1),
-	assertz(dadosCam_t_e_ta(Truck, City, City1, PathTime, Energy, AditionalTime)), pathprolog_tojson(Truck, City, City1, PathTime, Energy, AditionalTime, PathJson).
+			armazem(CityOrig,_,_,_,_,_,City),
+			armazem(CityDest,_,_,_,_,_,City1),
+			\+dadosCam_t_e_ta(_, City, City1, _, _, _),
+			assertz(dadosCam_t_e_ta(Truck, City, City1, PathTime, Energy, AditionalTime)), 			
+			pathprolog_tojson(Truck, City, City1, PathTime, Energy, AditionalTime, PathJson).
 
 update_path(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, PathJson):-
 	check_sv(),dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _), retract(dadosCam_t_e_ta(_, CityOrig, CityDest, _, _, _)), assertz(dadosCam_t_e_ta(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime)), pathprolog_tojson(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, PathJson).
@@ -234,7 +242,9 @@ pathprolog_tojson(Truck, CityOrig, CityDest, PathTime, Energy, AditionalTime, No
 
 % ---------------------------------------------------------------------------
 create_warehouse(Id, Address, Altitude, Latitude, Longitude, Designation, City, WarehouseJson):-
-	\+armazem(Id,_,_,_,_,_,_), assertz(armazem(Id, Address, Altitude, Latitude, Longitude, Designation, City)), warehouseprolog_tojson(Id, Address, Altitude, Latitude, Longitude, Designation, City, WarehouseJson).
+				\+armazem(Id,_,_,_,_,_,_), 
+				assertz(armazem(Id, Address, Altitude, Latitude, Longitude, Designation, City)), 
+				warehouseprolog_tojson(Id, Address, Altitude, Latitude, Longitude, Designation, City, WarehouseJson).
 
 update_warehouse(Id, Address, Altitude, Latitude, Longitude, Designation, City, WarehouseJson):-
 	check_sv(),armazem(Id,_,_,_,_,_,_), retract(armazem(Id,_,_,_,_,_,_)), assertz(armazem(Id, Address, Altitude, Latitude, Longitude, Designation, City)), warehouseprolog_tojson(Id, Address, Altitude, Latitude, Longitude, Designation, City, WarehouseJson).

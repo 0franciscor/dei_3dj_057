@@ -1,7 +1,6 @@
 @startuml DMWarehouseManagement
 
 
-
 package "<<aggregate>> WarehouseManagement"{
   entity Warehouse
   entity City

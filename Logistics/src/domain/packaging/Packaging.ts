@@ -67,8 +67,6 @@ export class Packaging extends AggregateRoot<PackagingProps> {
     this.props.zPosition = zPosition;
   }
   
-
-
   private constructor (props: PackagingProps, id?: UniqueEntityID) {
     super(props, id);
   }

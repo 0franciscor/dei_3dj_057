@@ -6,10 +6,14 @@ skinparam ArrowColor #222222
 
 package "<<aggregate>> Planning"{
     entity Route
-    entity Trail
-    class InitialPoint
-    class EndPoint
-    class Distance
+    entity Path
+    class PathID
+    class StartWHId
+    class DestinationWHId
+    class PathDistance
+    class PathTravelTime
+    class WastedEnergy
+    class ExtraTravelTime
 }
 
 package "<<aggregate>> Logistics"{
@@ -25,20 +29,27 @@ entity Route <<entity>> <<root>>{
 
 }
 
-entity Trail <<entity>> {
-    -Available
+entity Path <<entity>> {
+    -Active
 }
 
-class InitialPoint <<(V,#FF8B40) value object>>
-class EndPoint <<(V,#FF8B40) value object>>
-class Distance <<(V,#FF8B40) value object>>
+class PathID <<(V,#FF8B40) value object>>
+class StartWHId <<(V,#FF8B40) value object>>
+class DestinationWHId <<(V,#FF8B40) value object>>
+class PathDistance <<(V,#FF8B40) value object>>
+class PathTravelTime <<(V,#FF8B40) value object>>
+class WastedEnergy <<(V,#FF8B40) value object>>
+class ExtraTravelTime <<(V,#FF8B40) value object>>
 
 
-
-Route "1..*" -> "1..*" Trail : is composed 
+Route "1..*" -> "1..*" Path : is composed 
 Route "1" <-- "1" DeliveryPlan : follows     
 
-Trail --> "1" InitialPoint
-Trail --> "1" EndPoint
-Trail --> "1" Distance
+Path --> "1" ExtraTravelTime
+Path --> "1" WastedEnergy
+Path --> "1" PathTravelTime
+Path --> "1" PathDistance
+Path --> "1" DestinationWHId
+Path --> "1" StartWHId
+Path --> "1" PathID
 @enduml

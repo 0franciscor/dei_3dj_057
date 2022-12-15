@@ -90,6 +90,7 @@ export class EditWarehouseComponent implements OnInit {
 
   async onSubmit() {
     let answer = await this.warehouseService.updateWarehouse(this.formEditWarehouse.value);
+    console.log(answer);
     let message = "Warehouse updated successfully";
 
     if(answer.status != 200){

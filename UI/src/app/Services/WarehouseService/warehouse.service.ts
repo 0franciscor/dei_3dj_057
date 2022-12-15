@@ -123,9 +123,7 @@ export class WarehouseService {
      
   }
 
-
-
-  async sendFetch(url: string, method: string, data: any, cookie: any) {
+  async sendFetch(url: string, method: string, data: any) {
     if(data)
       return await fetch(url, {
         method: method,
@@ -135,8 +133,9 @@ export class WarehouseService {
           "authorization": cookie,
         },
       })
-    else
-      console.log(url);
+    }
+
+    else{
       return await fetch(url, {
         method: method,
         headers: {
@@ -144,7 +143,8 @@ export class WarehouseService {
           "authorization": cookie,
         }
       })
+    }
+      
   }
 
 
-}

@@ -14,7 +14,7 @@ package "<<aggregate>> Logistics"{
     class DeliveryMass
     class Destination
     class LoadTime
-    class DownloadTime
+    class UnloadTime
     class Tare
     class Capacity
     class MaximumBatteryCapacity
@@ -36,7 +36,7 @@ class DeliveryDate <<(V,#FF8B40) value object>>
 class DeliveryMass <<(V,#FF8B40) value object>>
 class Destination <<(V,#FF8B40) value object>>
 class LoadTime <<(V,#FF8B40) value object>>
-class DownloadTime <<(V,#FF8B40) value object>>
+class UnloadTime <<(V,#FF8B40) value object>>
 
 
 entity Truck <<entity>>{
@@ -57,7 +57,7 @@ Delivery --> "1" DeliveryIndentifier
 Delivery --> "1" DeliveryMass
 Delivery --> "1" Destination
 Delivery --> "1" LoadTime
-Delivery --->"1" DownloadTime
+Delivery --->"1" UnloadTime
 
 Truck --> "1" Tare
 Truck --> "1" Capacity 
