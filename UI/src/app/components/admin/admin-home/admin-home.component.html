@@ -1,0 +1,20 @@
+<div *ngIf="isAuth">
+    <mat-card>
+      <mat-card-title>Admin</mat-card-title>
+      <mat-card-subtitle>yes</mat-card-subtitle>
+      <mat-card-actions>
+        <!-- Create mat-fab button with size 10 -->
+        <div style="display: flex; flex-direction: row; gap:10px">
+    
+          <button mat-raised-button style="width: 10em; height: 10em;" (click)="goToCreateUser()" color="warn">
+            Create User
+          </button>      
+          
+          
+        </div>
+ 
+        
+      </mat-card-actions>
+    </mat-card>
+
+  </div>

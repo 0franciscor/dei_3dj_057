@@ -1,5 +1,3 @@
-import { Container } from 'typedi';
-
 import { Mapper } from "../core/infra/Mapper";
 
 import {IUserDTO} from "../dto/IUserDTO";
@@ -7,10 +5,7 @@ import {IUserDTO} from "../dto/IUserDTO";
 import { User } from "../domain/user/User";
 import { UniqueEntityID } from "../core/domain/UniqueEntityID";
 
-import { UserEmail } from "../domain/user/UserEmail";
-import { UserPassword } from "../domain/user/UserPassword";
 
-import RoleRepo from '../repos/roleRepo';
 import { Model, Document } from 'mongoose';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 
@@ -20,11 +15,11 @@ export class UserMap extends Mapper<User> {
     
     return {
       id: user.id.toString(),
-      userId:user.userId.id,
       firstName: user.firstName.firstName,
       lastName: user.lastName.lastName,
       email: user.email.email,
       password: user.password.password,
+      phoneNumber: user.phoneNumber.phoneNumber,
       role: user.role.id,
     } as IUserDTO;
   }
@@ -46,14 +41,14 @@ export class UserMap extends Mapper<User> {
   public static toPersistence (user: User): any {
     const a= {
       domainId: user.id.toString(),
-      userId: user.userId.id,
       email: user.email.email,
       password: user.password.password,
+      phoneNumber: user.phoneNumber.phoneNumber,
       firstName: user.firstName.firstName,
       lastName: user.lastName.lastName,
       role: user.role.id,
     }
-    console.log(a)
+
     return a
     
   }

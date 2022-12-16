@@ -80,19 +80,16 @@ export class LogisticsManagerComponent implements OnInit {
 
   onPathSelected($event: any) {
     let test = this.pathList.find(element => element.pathID == this.selectedPathOption);
-    console.log(test);
     this.selectedPath = test;
   }
 
   onStartWarehouseSelected($event:any){
     let test = this.pathList.find(element => element.startWHId == this.selectedPathOption);
-    console.log(test);
     this.selectedPath = test;
   }
 
   onDestinationWarehouseSelected($event: any){
     let test= this.pathList.find(element => element.destinationWHId == this.selectedPathOption);
-    console.log(test);
     this.selectedPath = test;
   }
 
@@ -113,8 +110,6 @@ export class LogisticsManagerComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.selectedPathOption);
       }
       
-      
-      console.log(this.selectedPathOption)
       this.selectedPathOption = data;
       
       });

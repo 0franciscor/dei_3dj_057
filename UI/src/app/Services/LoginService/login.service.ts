@@ -8,7 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginService {
   public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
-  constructor(private cookieService: CookieService) { }
+  constructor() { }
 
   async login(loginInfo: any) {
     let url = this.urlOrigin+'api/user/login/';
