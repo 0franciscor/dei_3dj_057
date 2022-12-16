@@ -1,36 +1,96 @@
 <div *ngIf="isAuth">
+    <div>
+        <mat-card padding="12px" >
+            <div class="flex-container">
+                <mat-form-field>
+                    <mat-label>ID</mat-label>
+                    <input matInput (keyup)="applyFilterID($event)" placeholder="ID">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>TruckID</mat-label>
+                    <input matInput (keyup)="applyFilterTruckID($event)" placeholder="TruckID">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>DeliveryID</mat-label>
+                    <input matInput (keyup)="applyFilterDeliveryID($event)" placeholder="DeliveryID">
+                </mat-form-field> 
+                <mat-form-field>
+                    <mat-label>Position X</mat-label>
+                    <input matInput (keyup)="applyFilterPositionX($event)" placeholder="Position X">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Position Y</mat-label>
+                    <input matInput (keyup)="applyFilterPositionY($event)" placeholder="Position Y">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Position Z</mat-label>
+                    <input matInput (keyup)="applyFilterPositionZ($event)" placeholder="Position Z">
+                </mat-form-field>
+            </div>
+            
+            <br>
+            <button mat-button (click)="resetOrder()">Reset</button>
+        </mat-card>
+    </div>
     <table mat-table [dataSource]="dataSource" class="packageTable">
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>    
     
         <ng-container matColumnDef="packagingID">
-            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <th mat-header-cell *matHeaderCellDef><button mat-button (click)="orderByID()"><div>
+                <div *ngIf="isIDOrder === 0">ID</div>
+                <div *ngIf="isIDOrder === 1">ID ^</div>
+                <div *ngIf="isIDOrder === 2">ID v</div>
+            </div></button></th>
             <td mat-cell *matCellDef="let package"> {{package.packagingID}} </td>
         </ng-container>
     
-        <ng-container matColumnDef="truckID">
-            <th mat-header-cell *matHeaderCellDef> Truck ID </th>
+        <ng-container matColumnDef="truckID" text-align=center>
+            <th mat-header-cell *matHeaderCellDef><button mat-button (click) = "orderByTruckID()">
+                <div>
+                    <div *ngIf="isTruckIDOrder === 0">Truck ID</div>
+                    <div *ngIf="isTruckIDOrder === 1">Truck ID ^</div>
+                    <div *ngIf="isTruckIDOrder === 2">Truck ID v</div>
+                </div>
+
+            </button></th>
             <td mat-cell *matCellDef="let package"> {{package.truckID}} </td>
         </ng-container>
     
         <ng-container matColumnDef="deliveryID">
-            <th mat-header-cell *matHeaderCellDef> Delivery ID </th>
+            <th mat-header-cell *matHeaderCellDef> <button mat-button (click)="orderByDeliveryID()">
+                <div *ngIf="isDeliveryIDOrder === 0">Delivery ID</div>
+                <div *ngIf="isDeliveryIDOrder === 1">Delivery ID ^</div>
+                <div *ngIf="isDeliveryIDOrder === 2">Delivery ID v</div>
+            </button></th>
             <td mat-cell *matCellDef="let package"> {{package.deliveryID}} </td>
         </ng-container>
     
         <ng-container matColumnDef="xPosition">
-            <th mat-header-cell *matHeaderCellDef> X Position </th>
+            <th mat-header-cell *matHeaderCellDef> <button mat-button (click)="orderByXPosition()">
+                <div *ngIf="isXPositionOrder === 0">X Position</div>
+                <div *ngIf="isXPositionOrder === 1">X Position ^</div>
+                <div *ngIf="isXPositionOrder === 2">X Position v</div>
+            </button> </th>
             <td mat-cell *matCellDef="let package"> {{package.xPosition}} </td>
         </ng-container>
     
         <ng-container matColumnDef="yPosition">
-            <th mat-header-cell *matHeaderCellDef> Y Position </th>
+            <th mat-header-cell *matHeaderCellDef> <button mat-button (click)="orderByYPosition()">
+                <div *ngIf="isYPositionOrder === 0">Y Position</div>
+                <div *ngIf="isYPositionOrder === 1">Y Position ^</div>
+                <div *ngIf="isYPositionOrder === 2">Y Position v</div>
+            </button> </th>
             <td mat-cell *matCellDef="let package"> {{package.yPosition}} </td>
         </ng-container>
     
         <ng-container matColumnDef="zPosition">
-            <th mat-header-cell *matHeaderCellDef> Z Position </th>
+            <th mat-header-cell *matHeaderCellDef> <button mat-button (click)="orderByZPosition()">
+                <div *ngIf="isZPositionOrder === 0">Z Position</div>
+                <div *ngIf="isZPositionOrder === 1">Z Position ^</div>
+                <div *ngIf="isZPositionOrder === 2">Z Position v</div>
+            </button> </th>
             <td mat-cell *matCellDef="let package"> {{package.zPosition}} </td>
         </ng-container>
     
@@ -42,12 +102,11 @@
         </ng-container>
     
 </table>
-
-</div>
-
-<mat-paginator
+<mat-paginator *ngIf="dataSource.data != undefined"
         #paginator
         [length] = "dataSource.data.length"
         [pageSizeOptions]="[1, 5, 10]"
         showFirstLastButtons
 ></mat-paginator>
+</div>
+
