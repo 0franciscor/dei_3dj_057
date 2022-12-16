@@ -48,12 +48,11 @@ export class ToolBarComponent implements OnInit {
   }
 
   async goHome() {
-    //TODO: check if admin, if so, redirect to admin page
     const role = await this.loginService.getRole();
-    // if(role == "admin"){
-    //   this.router.navigate(['/Admin/Home']);
-    // }
-    if(role == "whMan"){
+    if(role == "admin"){
+      this.router.navigate(['/Admin/Home']);
+    }
+    else if(role == "whMan"){
       this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']);
     }
     else if(role == "logMan"){

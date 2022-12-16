@@ -30,10 +30,10 @@ export default (app: Router) => {
     route.post('/',
         celebrate({
             body: Joi.object({
-                userId: Joi.string().required(),
                 firstName: Joi.string().required(),
                 lastName: Joi.string().required(),
                 email: Joi.string().required(), 
+                phoneNumber: Joi.string(),
                 password: Joi.string().required(),
                 role: Joi.string().required()
             })
@@ -49,6 +49,7 @@ export default (app: Router) => {
                 firstName: Joi.string(),
                 lastName: Joi.string(),
                 email: Joi.string(),
+                phoneNumber: Joi.string(),
                 password: Joi.string(),
                 role: Joi.string()
             })

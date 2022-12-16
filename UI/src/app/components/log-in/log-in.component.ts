@@ -22,8 +22,13 @@ export class LogInComponent implements OnInit {
   
   async isAuthenticated() {
     const role = await this.loginService.getRole();
+
+    if(role=="admin"){
+      this.router.navigate(['/Admin/Home/']);
+      return true;
+    }
     
-    if(role=="whMan" ){
+    else if(role=="whMan" ){
       this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']);
       return true;
     }
@@ -44,35 +49,38 @@ export class LogInComponent implements OnInit {
   clientId = "598640220043-j4v51sbat7nft28jqi165dltsq2dlrm9.apps.googleusercontent.com";
 
   async ngOnInit() {
-    this.isAuth = false;
+    this.isAuth = await this.isAuthenticated();
     
     //TODO: check if admin, if so, redirect to admin page
    
-    this.formLogin = new FormGroup({
-      userId: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-    });
-
-
-     // @ts-ignore
-     window.onGoogleLibraryLoad = () => {
-      
-      // @ts-ignore
-      google.accounts.id.initialize({
-        client_id: this.clientId,
-        callback: this.handleCredentialResponse.bind(this),
-        auto_select: false,
-        cancel_on_tap_outside: true
+    if(!this.isAuth){
+      this.formLogin = new FormGroup({
+        email: new FormControl('', [Validators.required]),
+        password: new FormControl('', [Validators.required]),
       });
-      // @ts-ignore
-      google.accounts.id.renderButton(
-      // @ts-ignore
-      document.getElementById("googleButtonDiv"),
-        { theme: "outline", size: "large", width: "100%" } 
-      );
-      // @ts-ignore
-      google.accounts.id.prompt((notification: PromptMomentNotification) => {});
-    };
+  
+  
+       // @ts-ignore
+       window.onGoogleLibraryLoad = () => {
+        
+        // @ts-ignore
+        google.accounts.id.initialize({
+          client_id: this.clientId,
+          callback: this.handleCredentialResponse.bind(this),
+          auto_select: false,
+          cancel_on_tap_outside: true
+        });
+        // @ts-ignore
+        google.accounts.id.renderButton(
+        // @ts-ignore
+        document.getElementById("googleButtonDiv"),
+          { theme: "outline", size: "large", width: "100%" } 
+        );
+        // @ts-ignore
+        google.accounts.id.prompt((notification: PromptMomentNotification) => {});
+      };
+    }
+    
 
   }
 
@@ -100,7 +108,6 @@ export class LogInComponent implements OnInit {
     else{
       this.isDisabled = true;
     }
-    console.log(this.isDisabled);
  }
 
 

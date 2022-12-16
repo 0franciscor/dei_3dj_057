@@ -41,6 +41,8 @@ import { DefaultHomeComponent } from './components/defaultHome/default-home/defa
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
+import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
+import { CreateUserComponent } from './components/admin/create-user/create-user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +72,9 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
     CreatePackageComponent,
     PackageListComponent,
     DefaultHomeComponent,
-    TermsAndConditionsComponent
+    TermsAndConditionsComponent,
+    AdminHomeComponent,
+    CreateUserComponent
   ],
   imports: [
     BrowserModule,

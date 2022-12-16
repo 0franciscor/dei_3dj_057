@@ -2,7 +2,7 @@ import { AggregateRoot } from "../../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 import { Role } from "../role/Role";
 import { UserEmail } from "./UserEmail";
-import { UserId } from "./UserId";
+
 import { UserPassword } from "./UserPassword";
 import { Result } from "../../core/logic/Result";
 import { Guard } from "../../core/logic/Guard";
@@ -10,13 +10,15 @@ import { FirstName } from "./FirstName"
 import { LastName } from "./LastName"
 import { IUserDTO } from "../../dto/IUserDTO";
 import { RoleId } from "../role/RoleId";
+import { PhoneNumber } from "./PhoneNumber";
 
 interface UserProps{
-    userId: UserId
+
     firstName: FirstName;
     lastName: LastName;
     email: UserEmail;
     password: UserPassword;
+    phoneNumber: PhoneNumber
     role: RoleId
 }
 
@@ -28,10 +30,6 @@ export class User extends AggregateRoot<UserProps>{
 
     private constructor (props: UserProps, id?: UniqueEntityID){
         super(props,id);
-    }
-
-    get userId(): UserId{
-        return this.props.userId;
     }
 
     get email(): UserEmail{
@@ -48,6 +46,10 @@ export class User extends AggregateRoot<UserProps>{
    
     get password (): UserPassword {
         return this.props.password;
+    }
+
+    get phoneNumber (): PhoneNumber {
+        return this.props.phoneNumber;
     }
     
     get role (): RoleId {
@@ -66,11 +68,11 @@ export class User extends AggregateRoot<UserProps>{
 
         try {
             const user= new User({
-                userId: UserId.create(userDTO.userId).getValue(),
                 firstName: FirstName.create(userDTO.firstName).getValue(),
                 lastName: LastName.create(userDTO.lastName).getValue(),
                 email: UserEmail.create(userDTO.email).getValue(),
                 password: UserPassword.create(userDTO.password).getValue(),
+                phoneNumber: PhoneNumber.create(userDTO.phoneNumber).getValue(),
                 role: RoleId.create(userDTO.role).getValue()
 
             },id)

@@ -23,7 +23,7 @@ export default class UserService implements IUserService{
 
     public async login(user: IUserDTO): Promise<Result<IUserDTO>> {
         try {
-            const userOrError = await this.userRepo.findById(user.userId);
+            const userOrError = await this.userRepo.findByEmail(user.email);
             if(userOrError == null)
                 return Result.fail<IUserDTO>("User not found");
             
@@ -41,7 +41,7 @@ export default class UserService implements IUserService{
 
     public async createUser(userDTO: IUserDTO): Promise<Result<IUserDTO>> {
         try {
-            const user= await this.userRepo.findById(userDTO.userId);
+            const user= await this.userRepo.findByEmail(userDTO.email);
             if(user != null)
                 return Result.fail<IUserDTO>("User already exists");
 
@@ -57,7 +57,6 @@ export default class UserService implements IUserService{
             }
             const userResult= userOrError.getValue();
             await this.userRepo.save(userResult);
-           
             const userDTOresult = UserMap.toDTO(userResult)as IUserDTO;
             return Result.ok<IUserDTO>(userDTOresult)
         } catch (error) {
@@ -77,7 +76,7 @@ export default class UserService implements IUserService{
 
     public async updateUser(userDTO: IUserDTO): Promise<Result<IUserDTO>> {
         try {  
-            const user = await this.userRepo.findById(userDTO.userId);
+            const user = await this.userRepo.findByEmail(userDTO.email);
             if(user===null){
                 return Result.fail<IUserDTO>("User not found");
             }else{
@@ -93,9 +92,9 @@ export default class UserService implements IUserService{
         }
     }
 
-    public async getUser(userId: string): Promise<Result<IUserDTO>> {
+    public async getUser(email: string): Promise<Result<IUserDTO>> {
         try {
-            const user= await this.userRepo.findById(userId);
+            const user= await this.userRepo.findByEmail(email);
             if(user==null){
                 return Result.fail<IUserDTO>("User not found");
             }
@@ -119,9 +118,9 @@ export default class UserService implements IUserService{
         }
     }
 
-    public async deleteUser(userId: string): Promise<Result<IUserDTO>> {
+    public async deleteUser(email: string): Promise<Result<IUserDTO>> {
         try {
-            const user = await this.userRepo.findById(userId);
+            const user = await this.userRepo.findByEmail(email);
             if(user===null){
                 return Result.fail<IUserDTO>("user not found");
             }

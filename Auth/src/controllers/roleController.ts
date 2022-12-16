@@ -17,8 +17,44 @@ export default class RoleController implements IRoleController /* TODO: extends 
       @Inject(config.services.role.name) private roleServiceInstance : IRoleService
   ) {}
   
+  private roles = ["admin"];
+
+  isAuthenticated(req: Request) {
+    if(req.cookies['jwt'] == undefined)
+      return false;
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, config.jwtSecret);
+    
+    if(!claims)
+        return false;
+    
+    return true;
+  }
+
+  isAuthorized(req: Request) {
+      if(req.cookies['jwt'] == undefined)
+        return false;
+      const cookie = req.cookies['jwt'];
+      const claims = jwt.verify(cookie, config.jwtSecret);
+      if(!claims)
+          return false;
+      if(this.roles.indexOf(claims.role) > -1)
+        return true;
+      return false;
+  }
+
 
   public async createRole(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     try {
       const roleOrError = await this.roleServiceInstance.createRole(req.body as IRoleDTO) as Result<IRoleDTO>;
         
@@ -35,6 +71,16 @@ export default class RoleController implements IRoleController /* TODO: extends 
   };
 
   public async updateRole(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     try {
       const roleOrError = await this.roleServiceInstance.updateRole(req.body as IRoleDTO) as Result<IRoleDTO>;
 
@@ -51,6 +97,16 @@ export default class RoleController implements IRoleController /* TODO: extends 
   };
 
   public async getRole(req: Request, res: Response, next: NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     try {
       
       const role = await  this.roleServiceInstance.getRole(req.body.roleId);
@@ -67,6 +123,16 @@ export default class RoleController implements IRoleController /* TODO: extends 
   }
 
   public async getAllRoles(req: Request, res: Response, next: NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     try {
       const roles = await this.roleServiceInstance.getAllRoles();
       res.status(200);
@@ -77,6 +143,16 @@ export default class RoleController implements IRoleController /* TODO: extends 
   }
 
   public async deleteRole(req: Request, res: Response, next: NextFunction){
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
     try {
       const roleResult = await this.roleServiceInstance.deleteRole(req.body.roleId);
       if(roleResult.isFailure){
@@ -115,6 +191,7 @@ export default class RoleController implements IRoleController /* TODO: extends 
   }
 
   public async validateRole(req: Request, res: Response, next: NextFunction){
+    
     try {
       if(req.headers.authorization!=undefined)
         req.cookies["jwt"]=req.headers.authorization.split("=")[1];

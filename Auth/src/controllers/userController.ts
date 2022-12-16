@@ -40,7 +40,6 @@ export default class UserController implements IUserController{
             if(userExists.isFailure){
                 
                 const userDTO = {
-                    userId: payload['email'],
                     firstName: payload['given_name'],
                     lastName: payload['family_name'],
                     email: payload['email'],
@@ -92,7 +91,7 @@ export default class UserController implements IUserController{
 
     public async getUser(req: Request, res: Response, next: NextFunction){
         try{
-            const user = await this.userService.getUser(req.body.userId);
+            const user = await this.userService.getUserByEmail(req.body.email);
             if(user.isFailure){
                 res.status(404);
                 return res.send("User not found");
@@ -125,6 +124,7 @@ export default class UserController implements IUserController{
             }
 
             const userDTO = userOrError.getValue();
+            
             res.status(201);
             return res.json(userDTO);
 
@@ -151,7 +151,7 @@ export default class UserController implements IUserController{
 
     public async deleteUser(req:Request,res:Response,next:NextFunction){
         try {
-            const userResult = await this.userService.deleteUser(req.body.userId);
+            const userResult = await this.userService.deleteUser(req.body.email);
             if(userResult.isFailure){
                 res.status(404);
                 return res.send("user not found");

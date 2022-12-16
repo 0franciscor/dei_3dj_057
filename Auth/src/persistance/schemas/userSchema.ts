@@ -8,12 +8,6 @@ const User = new mongoose.Schema(
       unique: true
     },
 
-    userId:{
-      type: String,
-      unique: true,
-      required: true
-    },
-
     firstName: {
       type: String,
       required: [true, 'Please enter first name'],
@@ -30,12 +24,15 @@ const User = new mongoose.Schema(
       type: String,
       lowercase: true,  
       unique: true,
-      
+      required: [true, 'Please enter email'],
     },
 
     password:  {type:String},
 
-    salt: String,
+    phoneNumber: {
+      type: String,
+      unique: true,
+    },
 
     role: {
       type: String,

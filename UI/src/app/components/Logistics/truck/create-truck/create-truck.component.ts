@@ -26,14 +26,15 @@ export class CreateTruckComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
-    this.formCreateTruck = new FormGroup({
-      truckID: new FormControl('', [Validators.required]),
-      tare: new FormControl('', [Validators.required]),
-      capacity: new FormControl('', [Validators.required]),
-      maxBatteryCapacity: new FormControl('', [Validators.required]),
-      autonomy: new FormControl('', [Validators.required]),
-      fastChargeTime: new FormControl('', [Validators.required])
-    });
+    if(this.isAuth)
+      this.formCreateTruck = new FormGroup({
+        truckID: new FormControl('', [Validators.required]),
+        tare: new FormControl('', [Validators.required]),
+        capacity: new FormControl('', [Validators.required]),
+        maxBatteryCapacity: new FormControl('', [Validators.required]),
+        autonomy: new FormControl('', [Validators.required]),
+        fastChargeTime: new FormControl('', [Validators.required])
+      });
   }
   
   isAuth: boolean = false;
