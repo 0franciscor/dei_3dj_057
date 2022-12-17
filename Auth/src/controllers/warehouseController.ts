@@ -72,7 +72,8 @@ export default class WarehouseController implements IWarehouseController {
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAll';
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       address = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetAll/';
     const response = await this.fetch(address, 'GET', null,req.headers.cookie, httpAgent); 
     
@@ -100,7 +101,8 @@ export default class WarehouseController implements IWarehouseController {
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAllCities';
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       address = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetAllCities/';
 
     
@@ -130,7 +132,8 @@ export default class WarehouseController implements IWarehouseController {
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/CreateWarehouse';
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       address = 'https://whmanagement57.azurewebsites.net/api/warehouses/CreateWarehouse/';
 
     const data = req.body;
@@ -187,8 +190,8 @@ export default class WarehouseController implements IWarehouseController {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
     let url = 'https://localhost:5001/api/warehouses/GetById/'+req.params.id;
-    
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/GetById/'+req.params.id;
 
     const response = await this.fetch(url, 'GET', null,req.headers.cookie, httpAgent);
@@ -219,7 +222,8 @@ export default class WarehouseController implements IWarehouseController {
 
     let url = 'https://localhost:5001/api/warehouses/Activate/'+req.params.id;
     
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Activate'+req.params.id;
 
     const response = await this.fetch(url, 'PATCH', null,req.headers.cookie, httpAgent);
@@ -239,7 +243,8 @@ export default class WarehouseController implements IWarehouseController {
 
     let url = 'https://localhost:5001/api/warehouses/Delete/'+req.params.id;
     
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Delete'+req.params.id;
 
     const response = await this.fetch(url, 'DELETE', null, httpAgent);
@@ -269,7 +274,8 @@ export default class WarehouseController implements IWarehouseController {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
 
     let url = 'https://localhost:5001/api/warehouses/Update';
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Update';
     
 

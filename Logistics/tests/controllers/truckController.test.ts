@@ -60,11 +60,14 @@ describe('TruckController Unit Tests', () => {
 
     
         let truckServiceInstance = Container.get("TruckService");
-  
+        
+        
+
         sinon.stub(truckServiceInstance, 'createTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
-
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.createTruck(<Request>req, <Response>res, <NextFunction>next);
 
@@ -109,6 +112,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'createTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck already exists")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.createTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -152,6 +157,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'getTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.getTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -192,6 +199,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'getTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.getTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -227,6 +236,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'getTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.getTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -258,6 +269,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'getTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.getTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -304,6 +317,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'getAllTrucks').returns(Promise.resolve(Result.ok<ITruckDTO[]>(body as ITruckDTO[])));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.getAllTrucks(<Request>req, <Response>res, <NextFunction>next);
@@ -351,6 +366,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'getAllTrucks').returns(Promise.resolve(Result.ok<ITruckDTO[]>(body as ITruckDTO[])));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.getAllTrucks(<Request>req, <Response>res, <NextFunction>next);
@@ -394,6 +411,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'deleteTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -435,6 +454,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'deleteTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -469,6 +490,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'deleteTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -501,6 +524,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'deleteTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -543,6 +568,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'updateTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.updateTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -581,6 +608,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'updateTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.updateTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -621,6 +650,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'updateTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.updateTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -659,6 +690,8 @@ describe('TruckController Unit Tests', () => {
         sinon.stub(truckServiceInstance, 'updateTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
         await truckController.updateTruck(<Request>req, <Response>res, <NextFunction>next);
@@ -731,6 +764,8 @@ describe("TruckController + TruckService Integration test", () => {
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'createTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.createTruck(<Request>req, <Response>res, <NextFunction>next);
         
@@ -775,6 +810,8 @@ describe("TruckController + TruckService Integration test", () => {
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'updateTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.updateTruck(<Request>req, <Response>res, <NextFunction>next);
         
@@ -796,7 +833,8 @@ describe("TruckController + TruckService Integration test", () => {
             capacity: 1,
             maxBatteryCapacity: 1,
             autonomy: 1,
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: true
         };
         let req: Partial<Request> = {};
             req.body=body;
@@ -811,12 +849,14 @@ describe("TruckController + TruckService Integration test", () => {
     
         let truckRepoInstance = Container.get("TruckRepo");
         sinon.stub(truckRepoInstance, 'getTruckById').returns(Promise.resolve(TruckMap.toDomain(body as ITruckDTO)));
-        sinon.stub(truckRepoInstance, 'delete').returns(Promise.resolve(TruckMap.toDomain(body as ITruckDTO)));
+        sinon.stub(truckRepoInstance, 'save').returns(Promise.resolve(TruckMap.toDomain(body as ITruckDTO)));
 
         let truckServiceInstance = Container.get("TruckService");
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'deleteTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
         
@@ -860,6 +900,8 @@ describe("TruckController + TruckService Integration test", () => {
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'getTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.getTruck(<Request>req, <Response>res, <NextFunction>next);
         
@@ -881,7 +923,8 @@ describe("TruckController + TruckService Integration test", () => {
             capacity: 1,
             maxBatteryCapacity: 1,
             autonomy: 1,
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: true
         },{
             id: "id2",
             truckID: "truckID2",
@@ -889,7 +932,8 @@ describe("TruckController + TruckService Integration test", () => {
             capacity: 1,
             maxBatteryCapacity: 1,
             autonomy: 1,
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: true
         },];
         let req: Partial<Request> = {};
             req.body = {
@@ -915,6 +959,8 @@ describe("TruckController + TruckService Integration test", () => {
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'getAllTrucks');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.getAllTrucks(<Request>req, <Response>res, <NextFunction>next);
         
@@ -998,6 +1044,8 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'createTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.createTruck(<Request>req, <Response>res, <NextFunction>next);
         
@@ -1054,6 +1102,8 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'updateTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.updateTruck(<Request>req, <Response>res, <NextFunction>next);
         
@@ -1074,7 +1124,8 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
             capacity: 1,
             maxBatteryCapacity: 1,
             autonomy: 1,
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: true
         };
         
         let body2 = {
@@ -1084,7 +1135,9 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
             capacity: 1,
             maxBatteryCapacity: 1,
             autonomy: 1,
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: true,
+            save() { return this; }
         }as ITruckPersistence;
         
         let req: Partial<Request> = {};
@@ -1098,17 +1151,19 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
 
         let truckSchemaInstance = Container.get("truckSchema");
         sinon.stub(truckSchemaInstance, 'findOne').returns(Promise.resolve(body2 as ITruckPersistence & Document<any, any, any>));
-        sinon.stub(truckSchemaInstance, 'deleteOne').returns(Promise.resolve(body2 as ITruckPersistence & Document<any, any, any>));
+        sinon.stub(truckSchemaInstance, 'create').returns(Promise.resolve(body2 as ITruckPersistence & Document<any, any, any>));
 
         
 
         let truckRepoInstance = Container.get("TruckRepo");
-        const truckRepoSpy = sinon.spy(truckRepoInstance, 'delete');
+        const truckRepoSpy = sinon.spy(truckRepoInstance, 'save');
 
         let truckServiceInstance = Container.get("TruckService");
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'deleteTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
         
@@ -1165,6 +1220,8 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'getTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.getTruck(<Request>req, <Response>res, <NextFunction>next);
         
@@ -1231,6 +1288,8 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
         const truckServiceSpy = sinon.spy(truckServiceInstance, 'getAllTrucks');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
         await truckController.getAllTrucks(<Request>req, <Response>res, <NextFunction>next);
         

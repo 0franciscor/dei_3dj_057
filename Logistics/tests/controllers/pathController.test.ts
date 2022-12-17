@@ -48,7 +48,12 @@ describe('PathController Unit Tests', ()=>{
             wastedEnergy: 30
         };
 
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            headers: {
+                cookie: "cookie"
+            }
+        };
+        
         req.body = body;
 
         let res: Partial<Response> = {
@@ -66,11 +71,13 @@ describe('PathController Unit Tests', ()=>{
         sinon.stub(pathServiceInstance,'createPath').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
         
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
-        sinon.stub(pathController,'fetch').returns({
+        sinon.stub(pathController,'fetch').returns(Promise.resolve({
             status: 200
-        });
+        }));
 
         //Act
         await pathController.createPath(<Request>req,<Response>res,<NextFunction>next);
@@ -103,7 +110,11 @@ describe('PathController Unit Tests', ()=>{
             wastedEnergy: 30
         };
 
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            headers: {
+                cookie: "cookie"
+            }
+        };
         req.body = body;
 
         let res: Partial<Response> = {
@@ -116,7 +127,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'createPath').returns(Promise.resolve(Result.fail<IPathDTO>("Path already exists")));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         
         sinon.stub(pathController,'fetch').returns({
@@ -162,6 +175,8 @@ describe('PathController Unit Tests', ()=>{
         sinon.stub(pathServiceInstance,'getPath').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
 
         const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act 
         await pathController.getPath(<Request>req, <Response>res, <NextFunction>next)
@@ -200,7 +215,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'getPath').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act 
         await pathController.getPath(<Request>req, <Response>res, <NextFunction>next);
@@ -230,7 +247,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'getPath').returns(Promise.resolve(Result.fail<IPathDTO>("Path not found")));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getPath(<Request>req,<Response>res,<NextFunction>next);
@@ -258,7 +277,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'getPath').returns(Promise.resolve(Result.fail<IPathDTO>("Path not found")));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getPath(<Request>req,<Response>res,<NextFunction>next);
@@ -304,7 +325,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'getAllPath').returns(Promise.resolve(Result.ok<IPathDTO[]>(body as IPathDTO[])));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);
@@ -351,7 +374,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'getAllPath').returns(Promise.resolve(Result.ok<IPathDTO[]>(body as IPathDTO[])));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);
@@ -397,7 +422,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'getAllPath').returns(Promise.resolve(Result.ok<IPathDTO[]>(body as IPathDTO[])));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);
@@ -444,7 +471,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'getAllPath').returns(Promise.resolve(Result.ok<IPathDTO[]>(body as IPathDTO[])));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);
@@ -491,7 +520,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'getAllPath').returns(Promise.resolve(Result.ok<IPathDTO[]>(body as IPathDTO[])));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);
@@ -530,7 +561,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'deletePath').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.deletePath(<Request>req, <Response>res, <NextFunction>next);
@@ -570,7 +603,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'deletePath').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.deletePath(<Request>req, <Response>res, <NextFunction>next);
@@ -610,7 +645,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'deletePath').returns(Promise.resolve(Result.fail<IPathDTO>("Path not found")));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.deletePath(<Request>req, <Response>res, <NextFunction>next);
@@ -641,7 +678,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'deletePath').returns(Promise.resolve(Result.fail<IPathDTO>("Path not found")));
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.deletePath(<Request>req, <Response>res, <NextFunction>next);
@@ -679,7 +718,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'updatePath').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
         
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.updatePath(<Request>req, <Response>res, <NextFunction>next);
@@ -716,7 +757,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'updatePath').returns(Promise.resolve(Result.ok<IPathDTO>(body as IPathDTO)));
         
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.updatePath(<Request>req, <Response>res, <NextFunction>next);
@@ -753,7 +796,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'updatePath').returns(Promise.resolve(Result.fail<IPathDTO>("Path not found")));
         
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.updatePath(<Request>req, <Response>res, <NextFunction>next);
@@ -790,7 +835,9 @@ describe('PathController Unit Tests', ()=>{
 
         sinon.stub(pathServiceInstance,'updatePath').returns(Promise.resolve(Result.fail<IPathDTO>("Path not found")));
         
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.updatePath(<Request>req, <Response>res, <NextFunction>next);
@@ -845,7 +892,11 @@ describe('PathController + PathService Integration tests ', () =>{
             wastedEnergy: 30
         };
 
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            headers: {
+                cookie: "cookie"
+            }
+        };
             req.body = body;
 
         let res: Partial<Response> = {
@@ -862,7 +913,9 @@ describe('PathController + PathService Integration tests ', () =>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'createPath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         sinon.stub(pathController,'fetch').returns({
             status: 200
@@ -908,7 +961,9 @@ describe('PathController + PathService Integration tests ', () =>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'updatePath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
         
         //Act
         await pathController.updatePath(<Request>req, <Response>res, <NextFunction>next);
@@ -950,7 +1005,9 @@ describe('PathController + PathService Integration tests ', () =>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'deletePath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.deletePath(<Request>req, <Response>res, <NextFunction>next);
@@ -993,7 +1050,9 @@ describe('PathController + PathService Integration tests ', () =>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'getPath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getPath(<Request>req, <Response>res, <NextFunction>next);
@@ -1051,7 +1110,9 @@ describe('PathController + PathService Integration tests ', () =>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'getAllPath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);
@@ -1116,7 +1177,11 @@ describe("PathController + PathService + PathRepo Integration tests", ()=>{
             wastedEnergy: 30
         } as IPathPersistance;
 
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            headers: {
+                cookie: "cookie"
+            }
+        };
             req.body=body;
 
         let res: Partial<Response> = {
@@ -1138,7 +1203,9 @@ describe("PathController + PathService + PathRepo Integration tests", ()=>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'createPath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         sinon.stub(pathController,'fetch').returns({
             status: 200
@@ -1196,7 +1263,9 @@ describe("PathController + PathService + PathRepo Integration tests", ()=>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'updatePath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.updatePath(<Request>req, <Response>res, <NextFunction>next);
@@ -1251,7 +1320,9 @@ describe("PathController + PathService + PathRepo Integration tests", ()=>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'deletePath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.deletePath(<Request>req, <Response>res, <NextFunction>next);
@@ -1304,7 +1375,9 @@ describe("PathController + PathService + PathRepo Integration tests", ()=>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'getPath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getPath(<Request>req, <Response>res, <NextFunction>next);
@@ -1376,7 +1449,9 @@ describe("PathController + PathService + PathRepo Integration tests", ()=>{
         let pathServiceInstance = Container.get("PathService");
         const pathServiceSpy = sinon.spy(pathServiceInstance,'getAllPath');
 
-        const pathController = new PathController(pathServiceInstance as IPathService);
+        const pathController = new PathController(pathServiceInstance as IPathService)
+        sinon.stub(pathController, 'isAuthenticated').returns(true);
+        sinon.stub(pathController, 'isAuthorized').returns(true);
 
         //Act
         await pathController.getAllPaths(<Request>req, <Response>res, <NextFunction>next);

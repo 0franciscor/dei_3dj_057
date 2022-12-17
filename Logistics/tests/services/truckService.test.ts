@@ -263,13 +263,14 @@ describe('TruckService Unit Tests', () => {
             maxBatteryCapacity: 1,
             autonomy: 1,
             fastChargeTime: 1,
+            active: true,
             id: "id"
         };
 
         let truckRepoInstance = Container.get("TruckRepo");
 
         sinon.stub(truckRepoInstance, "getTruckById").returns(TruckMap.toDomain(body));
-        sinon.stub(truckRepoInstance, "delete").returns(TruckMap.toDomain(body));
+        sinon.stub(truckRepoInstance, "save").returns(TruckMap.toDomain(body));
         const truckService = new TruckService(truckRepoInstance as ITruckRepo);
         const answer = await truckService.deleteTruck(body.truckID);
         expect(answer.getValue().truckID).to.equal(body.truckID);
@@ -513,7 +514,8 @@ describe("TruckService + TruckRepo Integration Test", () => {
             capacity: 1,
             maxBatteryCapacity: 1,
             autonomy: 1,
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: true
         };
 
         let body2 = {
@@ -523,16 +525,18 @@ describe("TruckService + TruckRepo Integration Test", () => {
             capacity: 1,
             maxBatteryCapacity: 1,
             autonomy: 1,
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: true,
+            save() { return this; }
         }as ITruckPersistence;
 
         let truckSchemaInstance = Container.get("truckSchema");
         sinon.stub(truckSchemaInstance, 'findOne').returns(Promise.resolve(body2 as ITruckPersistence & Document<any, any, any>));
-        sinon.stub(truckSchemaInstance, 'deleteOne').returns(Promise.resolve(body2 as ITruckPersistence & Document<any, any, any>));
+        sinon.stub(truckSchemaInstance, 'create').returns(Promise.resolve(body2 as ITruckPersistence & Document<any, any, any>));
 
 
         let truckRepoInstance = Container.get("TruckRepo");
-        const truckRepoSpy = sinon.spy(truckRepoInstance, 'delete');
+        const truckRepoSpy = sinon.spy(truckRepoInstance, 'save');
         
         const truckService = new TruckService(truckRepoInstance as ITruckRepo);
         const answer = await truckService.deleteTruck(body.truckID);

@@ -26,7 +26,19 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
+        
         req.body = body;
     
         let res: Partial<Response> = {
@@ -35,10 +47,13 @@ describe('TruckController Unit Tests', () => {
         };
     
         let next: Partial<NextFunction>= () => {};
-
-    
+        
         const truckController = new TruckController();
-    
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
+        
+
         sinon.stub(truckController,'fetch').returns({
             status: 201,
             json: () => {
@@ -63,7 +78,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -75,6 +101,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 201,
@@ -101,7 +130,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -113,6 +153,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 409,
@@ -138,7 +181,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -150,6 +204,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 409,
@@ -176,7 +233,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -188,6 +256,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 201,
@@ -213,7 +284,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -225,6 +307,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 201,
@@ -251,7 +336,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -263,6 +359,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 409,
@@ -288,7 +387,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -300,6 +410,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 409,
@@ -325,7 +438,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -337,6 +461,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -361,7 +488,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -373,6 +511,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -398,7 +539,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -410,6 +562,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -434,7 +589,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -446,6 +612,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -471,7 +640,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -483,6 +663,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -507,7 +690,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -519,6 +713,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -544,7 +741,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -556,6 +764,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -580,7 +791,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -592,6 +814,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -616,7 +841,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -628,6 +864,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -652,7 +891,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -664,6 +914,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -688,7 +941,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -700,6 +964,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -724,7 +991,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -736,6 +1014,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -761,7 +1042,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -773,6 +1065,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -797,7 +1092,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -809,6 +1115,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -833,7 +1142,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -845,6 +1165,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -869,7 +1192,18 @@ describe('TruckController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -881,6 +1215,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -906,7 +1243,18 @@ describe('TruckController Unit Tests', () => {
             id: "1"
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.params = params;
     
         let res: Partial<Response> = {
@@ -918,6 +1266,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -942,7 +1293,18 @@ describe('TruckController Unit Tests', () => {
             id: "1"
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.params = params;
     
         let res: Partial<Response> = {
@@ -954,6 +1316,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -978,7 +1343,18 @@ describe('TruckController Unit Tests', () => {
             id: "1"
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.params = params;
     
         let res: Partial<Response> = {
@@ -990,6 +1366,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -1014,7 +1393,18 @@ describe('TruckController Unit Tests', () => {
             id: "1"
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.params = params;
     
         let res: Partial<Response> = {
@@ -1026,6 +1416,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -1050,7 +1443,18 @@ describe('TruckController Unit Tests', () => {
             id: "1"
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.params = params;
     
         let res: Partial<Response> = {
@@ -1062,6 +1466,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -1086,7 +1493,18 @@ describe('TruckController Unit Tests', () => {
             id: "1"
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.params = params;
     
         let res: Partial<Response> = {
@@ -1098,6 +1516,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 200,
@@ -1122,7 +1543,18 @@ describe('TruckController Unit Tests', () => {
             id: "1"
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.params = params;
     
         let res: Partial<Response> = {
@@ -1134,6 +1566,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,
@@ -1158,7 +1593,18 @@ describe('TruckController Unit Tests', () => {
             id: "1"
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.params = params;
     
         let res: Partial<Response> = {
@@ -1170,6 +1616,9 @@ describe('TruckController Unit Tests', () => {
 
     
         const truckController = new TruckController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(truckController, 'isAuthenticated').returns(true);
+        sinon.stub(truckController, 'isAuthorized').returns(true);
     
         sinon.stub(truckController,'fetch').returns({
             status: 404,

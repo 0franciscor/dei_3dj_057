@@ -74,7 +74,8 @@ export default class TruckController implements ITruckController {
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     let url = 'http://localhost:3000/api/truck/';
     const data = req.body;
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/';
     
     const response = await this.fetch(url, 'POST', data, req.headers.cookie); 
@@ -134,9 +135,10 @@ export default class TruckController implements ITruckController {
 
     let url = 'http://localhost:3000/api/truck/all';
 
-    
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/all';
+ 
     const response = await this.fetch(url, 'GET', null, req.headers.cookie);
 
     if(response.status != 200){
@@ -161,8 +163,10 @@ export default class TruckController implements ITruckController {
     }
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     let url = 'http://localhost:3000/api/truck/id/'+req.body.truckId;
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.body.truckId;
+    
     const response = await this.fetch(url, 'GET', null, req.headers.cookie);
     if(response.status != 200){
       res.status(response.status);
@@ -187,8 +191,11 @@ export default class TruckController implements ITruckController {
     }
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     let url = 'http://localhost:3000/api/truck/';
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/';
+      
+    
     const data = req.body;
     const response = await this.fetch(url, 'PATCH', data, req.headers.cookie);
     if(response.status != 200){
@@ -243,7 +250,8 @@ export default class TruckController implements ITruckController {
     }
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     let url = 'http://localhost:3000/api/truck/id/'+req.params.id;
-    if(req.get('host').includes("azure"))
+    const host = req.get('host');
+    if (typeof host === 'string' && host.includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/truck/id/'+req.params.id;
     const response = await this.fetch(url, 'DELETE', null,req.headers.cookie);
 

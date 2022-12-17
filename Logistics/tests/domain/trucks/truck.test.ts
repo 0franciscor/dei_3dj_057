@@ -13,7 +13,8 @@ describe("Create Truck", () => {
             tare: 1,
             id: '',
             truckID: 'truckID',
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: true
         });
         expect(truck.getValue().autonomy.autonomy).to.equal(1);
         expect(truck.getValue().capacity.capacity).to.equal(1);
@@ -35,7 +36,8 @@ describe ("Create an invalid truck", () => {
                 tare: 1,
                 id: '',
                 truckID: 'truckID',
-                fastChargeTime: 1
+                fastChargeTime: 1,
+                active: true
             });
             expect(truck.isFailure).to.equal(true);
 
@@ -49,7 +51,8 @@ describe ("Create an invalid truck", () => {
                 tare: 1,
                 id: '',
                 truckID: 'truckID',
-                fastChargeTime: 1
+                fastChargeTime: 1,
+                active: true
             });
             expect(truck.isFailure).to.equal(true);
 
@@ -63,7 +66,8 @@ describe ("Create an invalid truck", () => {
                 tare: 1,
                 id: '',
                 truckID: 'truckID',
-                fastChargeTime: 1
+                fastChargeTime: 1,
+                active: true
             });
             expect(truck.isFailure).to.equal(true);
 
@@ -77,7 +81,8 @@ describe ("Create an invalid truck", () => {
                 tare: 0,
                 id: '',
                 truckID: 'truckID',
-                fastChargeTime: 1
+                fastChargeTime: 1,
+                active: true
             });
             expect(truck.isFailure).to.equal(true);
 
@@ -91,7 +96,8 @@ describe ("Create an invalid truck", () => {
                 tare: 1,
                 id: '',
                 truckID: '',
-                fastChargeTime: 1
+                fastChargeTime: 1,
+                active: true
             });
             expect(truck.isFailure).to.equal(true);
 
@@ -105,7 +111,8 @@ describe ("Create an invalid truck", () => {
                 tare: 1,
                 id: '',
                 truckID: 'truckID',
-                fastChargeTime: 0
+                fastChargeTime: 0,
+                active: true
             });
             expect(truck.isFailure).to.equal(true);
 

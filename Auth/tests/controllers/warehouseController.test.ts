@@ -25,7 +25,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -35,8 +46,12 @@ describe('WarehouseController Unit Tests', () => {
     
         let next: Partial<NextFunction>= () => {};
 
-    
+        
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
+
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 201,
@@ -62,7 +77,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -74,6 +100,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 201,
@@ -100,7 +129,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -112,6 +152,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 409,
@@ -137,7 +180,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -149,6 +203,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 409,
@@ -175,7 +232,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -187,6 +255,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 201,
@@ -212,7 +283,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -224,6 +306,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 201,
@@ -250,7 +335,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -262,6 +358,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 409,
@@ -287,7 +386,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -299,6 +409,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 201,
@@ -324,7 +437,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -336,6 +460,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 200,
@@ -360,7 +487,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -372,6 +510,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 200,
@@ -396,7 +537,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -408,6 +560,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 404,
@@ -432,7 +587,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -444,6 +610,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 404,
@@ -471,7 +640,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -483,6 +663,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 404,
@@ -507,7 +690,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -519,6 +713,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 200,
@@ -543,7 +740,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -555,6 +763,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 200,
@@ -580,7 +791,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -592,6 +814,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 200,
@@ -617,7 +842,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -629,6 +865,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 404,
@@ -654,7 +893,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -666,6 +916,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 200,
@@ -690,7 +943,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -702,6 +966,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 200,
@@ -726,7 +993,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -738,6 +1016,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 404,
@@ -762,7 +1043,18 @@ describe('WarehouseController Unit Tests', () => {
             
         };
     
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = {
+            cookies:{
+                jwt: 'token'
+            },
+            headers: {
+                authorization: 'Bearer token',
+                host: 'azure'                
+            },
+            get: function(header: string) {
+                return this.headers[header];
+            }
+        };
         req.body = body;
     
         let res: Partial<Response> = {
@@ -774,6 +1066,9 @@ describe('WarehouseController Unit Tests', () => {
 
     
         const warehouseController = new WarehouseController();
+        sinon.stub(req,'get').withArgs('host').returns(false)
+        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
+        sinon.stub(warehouseController, 'isAuthorized').returns(true);
     
         sinon.stub(warehouseController,'fetch').returns({
             status: 404,
