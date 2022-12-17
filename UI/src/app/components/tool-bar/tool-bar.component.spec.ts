@@ -1,4 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ToolBarComponent } from './tool-bar.component';
@@ -10,7 +18,7 @@ describe('ToolBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ToolBarComponent ],
-      imports:[RouterTestingModule.withRoutes(
+      imports:[MatToolbarModule,MatDialogModule,FormsModule,ReactiveFormsModule, BrowserAnimationsModule,MatCardModule,MatFormFieldModule,MatInputModule,MatIconModule,RouterTestingModule.withRoutes(
         [
           {path: 'Logistics/Home/FleetManager', redirectTo: ''},
           {path: 'Logistics/Home/LogisticsManager', redirectTo: ''},

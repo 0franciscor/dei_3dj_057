@@ -12,7 +12,7 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 })
 export class ToolBarComponent implements OnInit {
 
-  constructor(private cookieService:CookieService,private loginService:LoginService,private router: Router) {}
+  constructor(private loginService:LoginService,private router: Router) {}
 
   
 

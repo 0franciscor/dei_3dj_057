@@ -137,12 +137,12 @@ describe('WarehouseService', () => {
 
   it('should send a fetch without data', async () => {
 
-    const status = await service.sendFetch('test', 'GET', null);
+    const status = await service.sendFetch('test', 'GET', null, "cookie");
     expect(status.status).toEqual(404);
   });
 
   it('should send a fetch with data', async () => {
-    const status = await service.sendFetch('test', 'POST', "null");
+    const status = await service.sendFetch('test', 'POST', "null", "cookie");
     expect(status.status).toEqual(404);
   });
 

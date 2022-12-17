@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PathService } from 'src/app/Services/PathService/path.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -63,8 +63,13 @@ describe('LogisticsManagerComponent', () => {
 
     fixture = TestBed.createComponent(LogisticsManagerComponent);
     component = fixture.componentInstance;
+    let fb = new FormBuilder();
+    component.formSelectWarehouse = fb.group({
+      startWHId: [''],
+      destinationWHId:['']
+    });
     fixture.detectChanges();
-
+    
     dialogFixture = TestBed.createComponent(CreatePathComponentDialog);
     dialogComponent = dialogFixture.componentInstance;
     dialogFixture.detectChanges();
@@ -251,7 +256,7 @@ describe('PathService',()=>{
   });
  
   it('should send a fetch with no data', async () => {
-    const status = await service.sendFetch('test', 'POST', "null");
+    const status = await service.sendFetch('test', 'POST', "null","cookie");
     expect(status.status).toEqual(404);
   });
 })

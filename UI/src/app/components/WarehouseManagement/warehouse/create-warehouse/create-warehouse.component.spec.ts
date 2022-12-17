@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,6 +35,16 @@ describe('CreateWarehouseComponent', () => {
     TestBed.overrideProvider(WarehouseService, {useValue: fakeWarehouseService});
     fixture = TestBed.createComponent(CreateWarehouseComponent);
     component = fixture.componentInstance;
+    let fb = new FormBuilder();
+    component.formCreateWarehouse = fb.group({
+      Id: new FormControl('', [Validators.required, Validators.minLength(3),Validators.maxLength(3)]),
+      Address:new FormControl('', [Validators.required]),
+      Altitude:new FormControl('', [Validators.required, Validators.min(0),Validators.max(13000)]),
+      Latitude:new FormControl('', [Validators.required,Validators.maxLength(11)]),
+      Longitude:new FormControl('', [Validators.required,Validators.maxLength(12)]),
+      Designation:new FormControl('', [Validators.required, Validators.maxLength(50)])
+
+    });
     fixture.detectChanges();
     component.ngOnInit();
 
@@ -45,14 +55,27 @@ describe('CreateWarehouseComponent', () => {
   });
 
   it('should create', () => {
+    component.formCreateWarehouse.controls['Id'].setValue('TH1');
+    component.formCreateWarehouse.controls['Address'].setValue('Rua António Bernardino,47,4535-334,Porto');
+    component.formCreateWarehouse.controls['Altitude'].setValue(200);
+    component.formCreateWarehouse.controls['Latitude'].setValue('40.9321º N');
+    component.formCreateWarehouse.controls['Longitude'].setValue('8.2451º W');
+    component.formCreateWarehouse.controls['Designation'].setValue('Porto');
     expect(component).toBeTruthy();
   });
 
   it('should create dialog', () => {
+    component.formCreateWarehouse.controls['Id'].setValue('TH1');
+    component.formCreateWarehouse.controls['Address'].setValue('Rua António Bernardino,47,4535-334,Porto');
+    component.formCreateWarehouse.controls['Altitude'].setValue(200);
+    component.formCreateWarehouse.controls['Latitude'].setValue('40.9321º N');
+    component.formCreateWarehouse.controls['Longitude'].setValue('8.2451º W');
+    component.formCreateWarehouse.controls['Designation'].setValue('Porto');
     expect(dialogComponent).toBeTruthy();
   });
 
   it('onSubmit with invalid form', async () => {
+    component.formCreateWarehouse.controls['Id'].setValue('TH1');
     await component.onSubmit();
     expect(component.formCreateWarehouse.valid).toBeFalsy();
   });
@@ -65,6 +88,7 @@ describe('CreateWarehouseComponent', () => {
     component.formCreateWarehouse.controls['Latitude'].setValue('40.9321º N');
     component.formCreateWarehouse.controls['Longitude'].setValue('8.2451º W');
     component.formCreateWarehouse.controls['Designation'].setValue('Porto');
+    
     await component.onSubmit();
     expect(component.formCreateWarehouse.valid).toBeTruthy();
   });
@@ -204,12 +228,12 @@ describe('WarehouseService', () => {
 
   it('should send a fetch without data', async () => {
 
-    const status = await service.sendFetch('test', 'GET', null);
+    const status = await service.sendFetch('test', 'GET', null, "cookie");
     expect(status.status).toEqual(404);
   });
 
   it('should send a fetch with data', async () => {
-    const status = await service.sendFetch('test', 'POST', "null");
+    const status = await service.sendFetch('test', 'POST', "null", "cookie");
     expect(status.status).toEqual(404);
   });
 

@@ -97,7 +97,7 @@ export class FleetManagerComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteTruckComponentDialog, {
       width: '250px',
       data: {
-        name: this.selectedTruck.truckID,
+        name: truckID,
         message: message},
     });
 

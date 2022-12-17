@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { LogInComponent } from './log-in.component';
+const dialogMock={
+  close:()=>{}
+};
 
 describe('LogInComponent', () => {
   let component: LogInComponent;
@@ -8,7 +12,9 @@ describe('LogInComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LogInComponent ]
+      declarations: [ LogInComponent ],
+      imports: [MatDialogModule],
+      providers: [{provide: MatDialogRef, useValue: dialogMock},{ provide: MAT_DIALOG_DATA, useValue: {} },]
     })
     .compileComponents();
 

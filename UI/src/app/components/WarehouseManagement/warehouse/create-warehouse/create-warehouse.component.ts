@@ -33,6 +33,7 @@ export class CreateWarehouseComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
+    if(this.isAuth)
     this.formCreateWarehouse = this.fb.group({
       Id: new FormControl('', [Validators.required, Validators.minLength(3),Validators.maxLength(3)]),
       Address:new FormControl('', [Validators.required]),

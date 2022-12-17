@@ -38,6 +38,7 @@ export class CreatePathComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
+    if(this.isAuth)
     this.formCreatePath= new FormGroup({
       pathID: new FormControl('', [Validators.required]),
       startWHId: new FormControl('', [Validators.required]),
@@ -52,7 +53,7 @@ export class CreatePathComponent implements OnInit {
 
   async onSubmit(){
     this.formCreatePath.value.pathID ="path"+ this.formCreatePath.value.startWHId + this.formCreatePath.value.destinationWHId
-   // if(this.formCreatePath.valid){
+    if(this.formCreatePath.valid){
      
       let answer = await this.pathService.createPath(this.formCreatePath.value);
       
@@ -60,8 +61,8 @@ export class CreatePathComponent implements OnInit {
       if (answer.status != 201){
         message = "Error creating Path"
       }
-      
-      await this.pathService.createPathProlog(this.formCreatePath.value);
+      if(answer.status == 201)
+        await this.pathService.createPathProlog(this.formCreatePath.value);
 
       const dialogRef = this.dialog.open(CreatePathComponentDialog,{
         width: '350px',
@@ -76,7 +77,7 @@ export class CreatePathComponent implements OnInit {
           this.router.navigate(['Logistics/Home/Logistics Manager']);
         }
       });
-    //}
+    }
   
   }
 
@@ -90,7 +91,8 @@ export class CreatePathComponent implements OnInit {
 })
 export class CreatePathComponentDialog{
   constructor(
-    public dialogRef:MatDialogRef<CreatePathComponentDialog>,@Inject(MAT_DIALOG_DATA) public data: DialogData,
+    public dialogRef:MatDialogRef<CreatePathComponentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ){}
 
   ngOnInit(): void{}

@@ -51,6 +51,7 @@ export class CreateDeliveryComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
+    if(this.isAuth)
     this.formCreateDelivery = this.fb.group({
       deliveryID: new FormControl('', [Validators.required]),
       deliveryDate: new FormControl('', [Validators.required]),
@@ -62,26 +63,29 @@ export class CreateDeliveryComponent implements OnInit {
   }
 
   async onSubmit() {
-    let answer = await this.deliveryService.createDelivery(this.formCreateDelivery.value);
-    let message = "Delivery created successfully";
-    if (answer.status == 201)
-      this.deliveryService.createDeliveryProlog(this.formCreateDelivery.value);
-    else
-      message = "Delivery creation failed";
-
-    const dialogRef = this.dialog.open(CreateDeliveryComponentDialog, {
-      width: '250px',
-      data: {
-        name: this.formCreateDelivery.value.deliveryID,
-        message: message
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
+    if(this.formCreateDelivery.valid){
+      let answer = await this.deliveryService.createDelivery(this.formCreateDelivery.value);
+      let message = "Delivery created successfully";
       if (answer.status == 201)
-        this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
-
-    });
+        this.deliveryService.createDeliveryProlog(this.formCreateDelivery.value);
+      else
+        message = "Delivery creation failed";
+  
+      const dialogRef = this.dialog.open(CreateDeliveryComponentDialog, {
+        width: '250px',
+        data: {
+          name: this.formCreateDelivery.value.deliveryID,
+          message: message
+        },
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (answer.status == 201)
+          this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+  
+      });
+    }
+    
   }
 
   get deliveryID() {

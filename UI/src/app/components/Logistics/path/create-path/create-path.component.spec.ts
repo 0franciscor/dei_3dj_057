@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA  } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreatePathComponent, CreatePathComponentDialog } from './create-path.component';
@@ -28,7 +28,7 @@ describe('CreatePathComponent', () => {
     })
     .compileComponents();
 
-    fakePathService = jasmine.createSpyObj('PathService', ['createPath']);
+    fakePathService = jasmine.createSpyObj('PathService', ['createPath','createPathProlog']);
     fakePathService.createPath.and.returnValue(Promise.resolve({status:201}));
     
     TestBed.overrideProvider(PathService,{useValue:fakePathService});
@@ -36,6 +36,15 @@ describe('CreatePathComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.ngOnInit();
+    component.formCreatePath= new FormGroup({
+      pathID: new FormControl('', [Validators.required]),
+      startWHId: new FormControl('', [Validators.required]),
+      destinationWHId: new FormControl('', [Validators.required]),
+      pathDistance: new FormControl('', [Validators.required]),
+      pathTravelTime: new FormControl('', [Validators.required]),
+      wastedEnergy: new FormControl('', [Validators.required]),
+      extraTravelTime:new FormControl('', [Validators.required])
+    });
 
     dialogFixture = TestBed.createComponent(CreatePathComponentDialog);
     dialogComponent= dialogFixture.componentInstance;
@@ -47,6 +56,10 @@ describe('CreatePathComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should create dialog', () => {
+    expect(dialogComponent).toBeTruthy();
+  });
+
   it('onSubmit with valid form',async ()=>{
     component.formCreatePath.controls['pathID'].setValue('teste1');
     component.formCreatePath.controls['startWHId'].setValue('t1');
@@ -55,7 +68,7 @@ describe('CreatePathComponent', () => {
     component.formCreatePath.controls['pathTravelTime'].setValue(1);
     component.formCreatePath.controls['wastedEnergy'].setValue(1);
     component.formCreatePath.controls['extraTravelTime'].setValue(1);
-    component.onSubmit();
+    await component.onSubmit();
     expect(component.formCreatePath.valid).toBeTruthy();
   })
 
@@ -68,7 +81,7 @@ describe('CreatePathComponent', () => {
     component.formCreatePath.controls['wastedEnergy'].setValue(1);
     component.formCreatePath.controls['extraTravelTime'].setValue(1);
     fakePathService.createPath.and.returnValue(Promise.resolve({status:500}))
-    component.onSubmit();
+    await component.onSubmit();
     expect(component.formCreatePath.valid).toBeTruthy();
   })
 
@@ -79,6 +92,9 @@ describe('CreatePathComponent', () => {
     expect(dialogSpy).toHaveBeenCalled();
   });
 });
+
+
+
 
 describe('PathService',()=>{
   let service: PathService;
@@ -150,12 +166,12 @@ describe('PathService',()=>{
 
   it('should send a fetch without data', async () => {
 
-    const status = await service.sendFetch('test', 'GET', null);
+    const status = await service.sendFetch('test', 'GET', null,"cookie");
     expect(status.status).toEqual(404);
   });
 
   it('should send a fetch with data', async () => {
-    const status = await service.sendFetch('test', 'POST', "null");
+    const status = await service.sendFetch('test', 'POST', "null","cookie");
     expect(status.status).toEqual(404);
   });
 })

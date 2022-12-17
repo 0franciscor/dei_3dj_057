@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
 import { EditDeliveryComponent } from './edit-delivery.component';
@@ -56,6 +56,15 @@ describe('EditDeliveryComponent', () => {
     TestBed.overrideProvider(DeliveryService, { useValue: fakeDeliveryService });
     fixture = TestBed.createComponent(EditDeliveryComponent);
     component = fixture.componentInstance;
+    let fb = new FormBuilder();
+    component.formEditDelivery = fb.group({
+      deliveryID: new FormControl('', [Validators.required]),
+      deliveryDate: new FormControl('', [Validators.required]),
+      loadTime: new FormControl('', [Validators.required, Validators.min(0)]),
+      unloadTime: new FormControl('', [Validators.required, Validators.min(0)]),
+      destination: new FormControl('', [Validators.required]),
+      deliveryMass: new FormControl('', [Validators.required, Validators.min(0)]),
+    });
     fixture.detectChanges();
     component.ngOnInit();
 
@@ -154,7 +163,15 @@ describe('EditDeliveryComponent with null activated route', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.ngOnInit();
-
+    let fb = new FormBuilder();
+    component.formEditDelivery = fb.group({
+      deliveryID: new FormControl('', [Validators.required]),
+      deliveryDate: new FormControl('', [Validators.required]),
+      loadTime: new FormControl('', [Validators.required, Validators.min(0)]),
+      unloadTime: new FormControl('', [Validators.required, Validators.min(0)]),
+      destination: new FormControl('', [Validators.required]),
+      deliveryMass: new FormControl('', [Validators.required, Validators.min(0)]),
+    });
     dialogFixture = TestBed.createComponent(EditDeliveryComponentDialog);
     dialogComponent = dialogFixture.componentInstance;
     dialogFixture.detectChanges();
@@ -273,12 +290,12 @@ describe('DeliveryService', () => {
   });
 
   it('should send a fetch without data', async () => {
-    const status = await service.sendFetch('test', 'GET', null);
+    const status = await service.sendFetch('test', 'GET', null, "cookie");
     expect(status.status).toEqual(404);
   });
 
   it('should send a fetch with data', async () => {
-    const status = await service.sendFetch('test', 'POST', 'null');
+    const status = await service.sendFetch('test', 'POST', 'null', "cookie");
     expect(status.status).toEqual(404);
   });
 });

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
 import { CreateDeliveryComponent } from './create-delivery.component';
 import { CreateDeliveryComponentDialog } from './create-delivery.component';
@@ -34,9 +34,18 @@ describe('CreateDeliveryComponent', () => {
     TestBed.overrideProvider(DeliveryService, { useValue: fakeDeliveryService });
     fixture = TestBed.createComponent(CreateDeliveryComponent);
     component = fixture.componentInstance;
+    let fb = new FormBuilder();
+    component.formCreateDelivery = fb.group({
+      deliveryID: new FormControl('', [Validators.required]),
+      deliveryDate: new FormControl('', [Validators.required]),
+      loadTime: new FormControl('', [Validators.required, Validators.min(0)]),
+      unloadTime: new FormControl('', [Validators.required, Validators.min(0)]),
+      destination: new FormControl('', [Validators.required]),
+      deliveryMass: new FormControl('', [Validators.required, Validators.min(0)]),
+    });
     fixture.detectChanges();
     component.ngOnInit();
-
+    
     dialogFixture = TestBed.createComponent(CreateDeliveryComponentDialog);
     dialogComponent = dialogFixture.componentInstance;
     dialogFixture.detectChanges();
@@ -192,12 +201,12 @@ describe('DeliveryService', () => {
   });
 
   it('should send a fetch without data', async () => {
-    const status = await service.sendFetch('test', 'POST', 'null');
+    const status = await service.sendFetch('test', 'POST', 'null', "cookie");
     expect(status.status).toEqual(404);
   }); 
 
   it('should send a fetch with data', async () => {
-    const status = await service.sendFetch('test', 'POST', 'test');
+    const status = await service.sendFetch('test', 'POST', 'test', "cookie");
     expect(status.status).toEqual(404);
   });
   

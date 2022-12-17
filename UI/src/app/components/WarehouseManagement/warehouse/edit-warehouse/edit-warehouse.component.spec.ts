@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -58,6 +58,23 @@ describe('EditWarehouseComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.ngOnInit();
+    let selectedWarehouse = {
+      id: "",
+      address: undefined,
+      altitude: undefined,
+      latitude: undefined,
+      longitude: undefined,
+      designation: undefined,
+    }
+    let fb = new FormBuilder();
+    component.formEditWarehouse = fb.group({
+      Id: new FormControl('', [Validators.required, Validators.minLength(3),Validators.maxLength(3)]),
+      Address:new FormControl('', [Validators.required]),
+      Altitude:new FormControl('', [Validators.required, Validators.min(0),Validators.max(13000)]),
+      Latitude:new FormControl('', [Validators.required,Validators.maxLength(11)]),
+      Longitude:new FormControl('', [Validators.required,Validators.maxLength(12)]),
+      Designation:new FormControl('', [Validators.required, Validators.maxLength(50)])
+    });
     
     dialogFixture = TestBed.createComponent(EditWarehouseComponentDialog);
     dialogComponent = dialogFixture.componentInstance;
@@ -84,7 +101,12 @@ describe('EditWarehouseComponent', () => {
 
 
   it('component finishes on Submit', async () => {
-
+    component.formEditWarehouse.controls['Id'].setValue('TH1');
+    component.formEditWarehouse.controls['Address'].setValue('Rua António Bernardino,47,4535-334,Porto');
+    component.formEditWarehouse.controls['Altitude'].setValue(200);
+    component.formEditWarehouse.controls['Latitude'].setValue('40.9321º N');
+    component.formEditWarehouse.controls['Longitude'].setValue('8.2451º W');
+    component.formEditWarehouse.controls['Designation'].setValue('Porto');
     await component.onSubmit();
   });
 
@@ -102,7 +124,7 @@ describe('EditWarehouseComponent', () => {
  
   it('should call onSubmit with WarehouseID', async () => {
     spyOn(component, 'onSubmit');
-    component.formEditWarehouse.controls['id'].setValue('id');
+    component.formEditWarehouse.controls['Id'].setValue('id');
     await component.onSubmit();
     expect(component.onSubmit).toHaveBeenCalled();
   });
@@ -287,12 +309,12 @@ describe('WarehouseService', () => {
 
   it('should send a fetch without data', async () => {
 
-    const status = await service.sendFetch('test', 'GET', null);
+    const status = await service.sendFetch('test', 'GET', null, "cookie");
     expect(status.status).toEqual(404);
   });
 
   it('should send a fetch with data', async () => {
-    const status = await service.sendFetch('test', 'POST', "null");
+    const status = await service.sendFetch('test', 'POST', "null", "cookie");
     expect(status.status).toEqual(404);
   });
 
