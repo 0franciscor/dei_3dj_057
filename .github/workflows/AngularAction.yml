@@ -48,7 +48,8 @@ jobs:
       - run: |
           unzip node-app.zip
           rm node-app.zip
-      
+
+      - uses: actions/checkout@v2
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
