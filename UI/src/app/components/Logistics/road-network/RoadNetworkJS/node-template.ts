@@ -1,7 +1,4 @@
-import { elementAt } from "rxjs";
 import * as THREE from "three";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 
@@ -155,6 +152,7 @@ export default class NodeTemplate {
         const light = new THREE.AmbientLight(0xffffff, 1);
         //q: what are the ideal coordinates for the light?
         light.position.set(40,10,1200);
+        light.name = "light";
         this.object.add(light);
 
         
@@ -174,13 +172,10 @@ export default class NodeTemplate {
 
         });
         
+        warehouseTexture.name = pos.wh
         this.object.add(warehouseTexture);
 
 
-        const lightTruck = new THREE.AmbientLight(0xffffff, 1);
-        //q: what are the ideal coordinates for the light?
-        light.position.set(40,10,1200);
-        this.object.add(lightTruck);
 
         this.whAndWidth.wh = pos.wh;
         this.whAndWidth.width = largestWidth;

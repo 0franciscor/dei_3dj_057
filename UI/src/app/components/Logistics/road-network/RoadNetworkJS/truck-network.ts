@@ -17,11 +17,10 @@ export default class truckNetowrk {
       
         warehousePos.forEach((pos: any) => {
             
-         
-
             let truck = new Truck(pos, paths);
             this.object.add(truck.object);
             this.warehouseNames.push(truck.warehouseOG);
+    
         });
 
     

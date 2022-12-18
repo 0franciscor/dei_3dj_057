@@ -15,6 +15,7 @@ interface whAndWidth {
 export default class Truck {
     object: THREE.Group;
     warehouseOG: string;
+    mass = 8000;
 
     
     constructor(pos: posProps, paths:any) {
@@ -31,10 +32,7 @@ export default class Truck {
         truckloader.load(
             './assets/italeri_truck/scene.gltf', 
             (object) => {
-            // object.scene.scale.set(truckScale, truckScale, truckScale);
-            // object.scene.position.set(pos.x, pos.y - startPositonOffset, pos.z + 0.003);
-            // object.scene.rotateZ(Math.PI / 2);
-            // object.scene.rotateX(Math.PI / 2);
+
             truckTexture.add(object.scene);
 
         });
@@ -44,10 +42,7 @@ export default class Truck {
         truckTexture.position.set(pos.x, pos.y - startPositonOffset, pos.z + 0.003);
 
         this.object.add(truckTexture);
-        // this.object.position.set(pos.x, pos.y - startPositonOffset, pos.z + 0.003);
-        // this.object.rotateZ(Math.PI / 2);
-        // this.object.rotateX(Math.PI / 2);
-        // this.object.scale.set(truckScale, truckScale, truckScale);
+
         this.object.name = pos.wh + "Truck";
       
 

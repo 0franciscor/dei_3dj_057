@@ -1,16 +1,12 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import * as THREE from 'three';
-import NodeTemplate from './RoadNetworkJS/node-template';
-import roadNetworkTemplate from './RoadNetworkJS/road-network';
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
-import { animate } from '@angular/animations';
-import { Scene } from 'three';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
-import Truck from './RoadNetworkJS/truck';
+import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
+import * as THREE from 'three';
+import { Object3D, Raycaster } from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import Player from './RoadNetworkJS/player';
+import roadNetworkTemplate from './RoadNetworkJS/road-network';
 import truckNetowrk from './RoadNetworkJS/truck-network';
 
 
@@ -44,7 +40,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   //Stage properties
   @Input() public cameraZ: number = 8000;
 
-  @Input() public fieldOfView: number = 2;
+  @Input() public fieldOfView: number = 1;
 
   @Input('nearClipping') public nearClippingPlane: number = 0.1;
 
@@ -72,9 +68,10 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     return this.table.querySelector('select') as HTMLSelectElement;
   }
 
-
-
-
+  private player!: Player;
+  private closestWarehouse!: Object3D;
+  private roads: Object3D[] = [];
+  private warehouses: Object3D[] = [];
 
   private renderer!: THREE.WebGLRenderer;
 
@@ -93,6 +90,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       this.select.appendChild(opt);
     }
   }
+
+  private selectedTruck: any;
 
   private async createScene() {
 
@@ -140,18 +139,21 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       whOptions.push(wh.wh);
     });
 
-    
-    
+    this.roadNetwork.object.children.forEach(objectGroup => {
+      objectGroup.children.forEach(object => {
+        if(object.name==""){
+          this.roads.push(object);
+        }else if(object.name!="light"){
+          this.warehouses.push(object);
+        }
+      });
+       
+    });
 
-   
 
 
-
-
-    //Scene
     this.scene = new THREE.Scene();
-    //const scene1 = new THREE.Scene();
-    //i want to define a backgroud image for the scene
+
     const loader = new THREE.TextureLoader();
     loader.load('assets/sky.jpg', (texture) => {
       this.scene.background = texture;
@@ -173,22 +175,36 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
         
         
         let truck = this.scene.getObjectByName(truckName)?.children[0];
-        console.log(truck)
+        
         if(truck != undefined){
-          // this.camera.lookAt(truck.position);
-          // this.camera.position.set(truck.position.x-5,truck.position.y-5,truck.position.z+5);
-          this.camera.position.set(truck.position.x,truck.position.y,truck.position.z);
-          console.log(this.camera.position)
+   
+          this.camera.position.set(truck.position.x+0.1,truck.position.y+0.1,truck.position.z+100);
+          this.camera.rotation.z = THREE.MathUtils.degToRad(90);
+          this.selectedTruck = truck;
+          this.player = new Player(this.selectedTruck);
           
-          // this.camera.rotateX(Math.PI/2);
+
         }
       }
       
     });
+
+    
     
 
 
+    let closestWarehouseDistance = 100000;
+    
+    this.warehouses.forEach((warehouse) => {
+      console.log(warehouse.children)
+      // let distance = this.selectedTruck.position.distanceTo(warehouse.position);
+      // if(distance < closestWarehouseDistance){
+      //   closestWarehouseDistance = distance;
+      //   console.log(this.closestWarehouse)
+      //   this.closestWarehouse = warehouse;
+      // }
 
+    })
    
 
 
@@ -222,6 +238,24 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   }
 
   private animate() {
+   
+    //get selected truck in table
+    let selectedWH = this.select.value;
+    if (selectedWH != "Select Warehouse") {
+      let whIndex = this.roadNetwork.whAndWidths.findIndex((wh) => wh.wh == selectedWH);
+      let truckName = this.truckNetwork.object.children[whIndex].name
+      let truck = this.scene.getObjectByName(truckName)?.children[0];
+      if(truck != undefined){
+        
+        this.camera.position.set(truck.position.x+0.1,truck.position.y+0.1,truck.position.z+100);
+        this.selectedTruck = truck;
+      }
+    }
+    //get closeste warehouse to truck from warehouses array
+    
+
+    // this.checkCollision(this.selectedTruck,this.closestWarehouse);
+    
     
 
   }
@@ -296,6 +330,39 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     //return random number between 0.3 and 0.8
     return Math.random() * (0.8 - 0.3) + 0.3;
   }
+
+
+  private checkCollision(object1: THREE.Object3D,object2: THREE.Object3D) {
+    const raycaster = new Raycaster();
+
+    // Set the raycaster's origin and direction based on the positions of the objects
+    const origin = object1.position;
+    const direction = object2.position.clone().sub(object1.position);
+    raycaster.set(origin, direction);
+    const material = new THREE.LineBasicMaterial({
+      color: 0x0000ff
+    });
+    
+    const points = [];
+    points.push( origin );
+    points.push( direction );
+
+    
+    const geometry = new THREE.BufferGeometry().setFromPoints( points );
+    
+    const line = new THREE.Line( geometry, material );
+    this.scene.add( line );
+
+    // // Check if the ray intersects with the object
+    // const intersects = raycaster.intersectObject(testObject);
+    // // console.log(intersects)
+    // if (intersects.length > 0) {
+    //   console.log("Object is colliding with the ray!");
+    // }
+
+  }
+
+  
 
    
 
