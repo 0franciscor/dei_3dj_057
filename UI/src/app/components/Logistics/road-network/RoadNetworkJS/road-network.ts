@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { warehousePosition, warehouseConnections } from "./default-data";
 import NodeTemplate from "./node-template";
 
 

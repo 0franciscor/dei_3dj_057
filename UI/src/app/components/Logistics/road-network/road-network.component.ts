@@ -1,16 +1,10 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import * as THREE from 'three';
-import { nodeData, warehousePosition } from './RoadNetworkJS/default-data';
-import NodeTemplate from './RoadNetworkJS/node-template';
-import roadNetworkTemplate from './RoadNetworkJS/road-network';
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
-import { animate } from '@angular/animations';
-import { Scene } from 'three';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
+import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
+import * as THREE from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import roadNetworkTemplate from './RoadNetworkJS/road-network';
 
 @Component({
   selector: 'app-road-network',

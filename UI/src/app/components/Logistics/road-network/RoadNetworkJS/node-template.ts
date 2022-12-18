@@ -1,9 +1,5 @@
-import { elementAt } from "rxjs";
 import * as THREE from "three";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { warehousePosition, warehouseConnections } from "./default-data";
 
 interface posProps {
     wh: string,
