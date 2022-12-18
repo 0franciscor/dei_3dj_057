@@ -3,13 +3,18 @@ import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { warehousePosition, warehouseConnections } from "./default-data";
+
 
 interface posProps {
     wh: string,
     x: number,
     y: number,
     z: number
+}
+
+interface whAndWidth {
+    wh: string,
+    width: number
 }
 
 interface elementProps {
@@ -19,13 +24,14 @@ interface elementProps {
 }
 export default class NodeTemplate {
     object: THREE.Group;
+    whAndWidth: whAndWidth = { wh: "", width: 0 };
 
 
 
     constructor(pos: posProps, outGoingConnections: any[], incomingConnections: any[], allPositions: any[]) {
 
         this.object = new THREE.Group();
-
+        this.whAndWidth.width=0;
 
         let largestWidth = 0;
 
@@ -37,7 +43,6 @@ export default class NodeTemplate {
             if (element.roadWidth > largestWidth)
                 largestWidth = element.roadWidth;
         })
-        console.log("largestWidth", largestWidth);
         const circleConstant = 2;
         let circleRadius = (largestWidth * circleConstant) / 2;
 
@@ -143,7 +148,7 @@ export default class NodeTemplate {
         let material = new THREE.MeshBasicMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
 
         let circle: THREE.Mesh = new THREE.Mesh(geometry, material);
-        circle.position.set(pos.x, pos.y, pos.z + 0.1);
+        circle.position.set(pos.x, pos.y, pos.z + 0.001);
         this.object.add(circle);
 
         //Lighting
@@ -152,18 +157,18 @@ export default class NodeTemplate {
         light.position.set(40,10,1200);
         this.object.add(light);
 
-        let warehouseScale = largestWidth *0.05;
+        
 
         // Warehouse Texture
         const warehouseTexture = new THREE.Object3D();
         const gltfloader = new GLTFLoader();
 
-
+        const warehouseScale = largestWidth *0.035;
         gltfloader.load(
             './assets/farmhouse/scene.gltf', 
             (object) => {
             object.scene.scale.set(warehouseScale, warehouseScale, warehouseScale);
-            object.scene.position.set(pos.x, pos.y, pos.z + 0.2);
+            object.scene.position.set(pos.x, pos.y, pos.z + 0.002);
             object.scene.rotateX(Math.PI / 2);
             warehouseTexture.add(object.scene);
 
@@ -177,21 +182,9 @@ export default class NodeTemplate {
         light.position.set(40,10,1200);
         this.object.add(lightTruck);
 
-        const truckTexture = new THREE.Object3D();
-        const truckloader = new GLTFLoader();
-
-
-        truckloader.load(
-            './assets/italeri_truck/scene.gltf', 
-            (object) => {
-            object.scene.scale.set(0.003, 0.003, 0.003);
-            object.scene.position.set(pos.x + 1, pos.y + 1, pos.z + 0.2);
-            object.scene.rotateZ(Math.PI / 2);
-            object.scene.rotateX(Math.PI / 2);
-            truckTexture.add(object.scene);
-
-        });
-        this.object.add(truckTexture);
+        this.whAndWidth.wh = pos.wh;
+        this.whAndWidth.width = largestWidth;
+        
 
     }
 }
