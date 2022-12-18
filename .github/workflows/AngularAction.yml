@@ -26,13 +26,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.CACHE_PATH }}
 
-      - run: |
-          zip -r node-app.zip .
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: './UI/node-app.zip'
+          path: ${{ env.NODE_PATH }}
       
   Deployment:
     runs-on: ubuntu-latest
@@ -42,12 +40,9 @@ jobs:
       url: ${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: node-app
-      - run: |
-          unzip node-app.zip
-          rm node-app.zip
 
       - uses: actions/checkout@v2
       - name: 'Deploy to Azure Web App'
