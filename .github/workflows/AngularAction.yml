@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 env:
-    AZURE_WEBAPP_NAME: Eletricgo57
+    AZURE_WEBAPP_NAME: EletricGo57
     NODE_PATH: './UI'
     CACHE_PATH: './UI/package-lock.json'
     NODE_VERSION: '16.17.1'
