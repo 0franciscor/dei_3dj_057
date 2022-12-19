@@ -31,14 +31,6 @@ jobs:
           npm prune --production
           npm install
           npm run build --if-present
-      
-      - run: |
-          zip -r node-app.zip node_modules
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
-        with:
-          name: node-app
-          path: './UI/node-app.zip'
 
   Deployment:
     runs-on: ubuntu-latest
@@ -53,4 +45,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_UI_PUBLISH_PROFILE }}
-          package: ${{ env.NODE_PATH }}
+          package: './UI/dist/spa'
