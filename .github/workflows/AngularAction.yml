@@ -48,8 +48,8 @@ jobs:
 
     defaults:
       run:
-        working-directory: ${{ env.NODE_PATH }}
-        
+        working-directory: 'UI'
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
