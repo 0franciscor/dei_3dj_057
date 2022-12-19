@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Inject, Service } from 'typedi';
 import config from "../../config";
 
-import ITruckController from './IControllers/ITruckController';
-import ITruckService from '../services/IServices/ITruckService';
 import { ITruckDTO } from '../dto/ITruckDTO';
+import ITruckService from '../services/IServices/ITruckService';
+import ITruckController from './IControllers/ITruckController';
 
 import { Result } from '../core/logic/Result';
 

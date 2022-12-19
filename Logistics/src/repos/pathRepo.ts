@@ -1,15 +1,10 @@
-import { Document,FilterQuery,Model } from "mongoose";
+import { Document, FilterQuery, Model } from "mongoose";
 import { Inject, Service } from "typedi";
-import IPathRepo from './IRepos/IPathRepo'
 import { IPathPersistance } from "../dataschema/IPathPersistance";
 import { Path } from "../domain/path/Path";
 import { PathID } from '../domain/path/PathID';
 import { PathMap } from "../mappers/PathMap";
-import { start } from "repl";
-import { DestinationWHId } from "../domain/path/DestinationWHId";
-import { StartWHId } from "../domain/path/StartWHId";
-import { Result } from "../core/logic/Result";
-import path from "path";
+import IPathRepo from './IRepos/IPathRepo';
 
 
 @Service()

@@ -1,10 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import { Service } from 'typedi';
-import ITripController from "./IControllers/ITripController";
+import { NextFunction, Request, Response } from 'express';
 import fetch from 'node-fetch';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
+import { Service } from 'typedi';
 import config from '../../config';
+import ITripController from "./IControllers/ITripController";
 const http = require('https');
 const jwt = require('jsonwebtoken');
 @Service()

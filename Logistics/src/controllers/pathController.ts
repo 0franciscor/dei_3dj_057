@@ -1,11 +1,11 @@
-import config from "../../config";
+import { NextFunction, Request, Response } from "express";
+import fetch from 'node-fetch';
 import { Inject, Service } from "typedi";
-import  IPathController  from "./IControllers/IPathController"
-import IPathService from "../services/IServices/IPathService";
-import { Request, Response, NextFunction } from "express";
-import { IPathDTO } from "../dto/IPathDTO";
+import config from "../../config";
 import { Result } from "../core/logic/Result";
-import fetch from 'node-fetch'
+import { IPathDTO } from "../dto/IPathDTO";
+import IPathService from "../services/IServices/IPathService";
+import IPathController from "./IControllers/IPathController";
 const http = require ('https');
 const jwt = require('jsonwebtoken');
 

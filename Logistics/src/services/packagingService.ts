@@ -1,19 +1,15 @@
-import { Service, Inject } from 'typedi';
-import { Result } from "../core/logic/Result";
+import { Inject, Service } from 'typedi';
 import config from "../../config";
+import { Result } from "../core/logic/Result";
+import { Packaging } from "../domain/packaging/Packaging";
 import { IPackagingDTO } from "../dto/IPackagingDTO";
+import { PackagingMap } from '../mappers/PackagingMap';
 import IPackagingRepo from '../repos/IRepos/IPackagingRepo';
 import IPackagingService from './IServices/IPackagingService';
-import { Packaging } from "../domain/packaging/Packaging";
-import { PackagingMap } from '../mappers/PackagingMap';
 
-import { PackagingID } from '../domain/packaging/PackagingID';
-import { TruckID } from '../domain/truck/TruckID';
-import { DeliveryID } from '../domain/packaging/DeliveryID';
 import { XPosition } from '../domain/packaging/XPosition';
 import { YPosition } from '../domain/packaging/YPosition';
 import { ZPosition } from '../domain/packaging/ZPosition';
-import { Truck } from '../domain/truck/Truck';
 
 @Service()
 export default class PackagingService implements IPackagingService {

@@ -1,9 +1,9 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { PlanningService } from '../../../../Services/PlanningService/planning-service.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import { TripService } from 'src/app/Services/TripService/trip.service';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
+import { TripService } from 'src/app/Services/TripService/trip.service';
+import { PlanningService } from '../../../../Services/PlanningService/planning-service.service';
 
 @Component({
   selector: 'app-truck-planning',

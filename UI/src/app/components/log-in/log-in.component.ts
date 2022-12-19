@@ -1,10 +1,9 @@
-import { Component, OnInit, NgZone, Inject  } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { CredentialResponse, PromptMomentNotification } from 'google-one-tap';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DialogData } from '../Logistics/truck/create-truck/create-truck.component';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 
 
 @Component({

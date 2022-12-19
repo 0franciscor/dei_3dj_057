@@ -2,13 +2,11 @@ import { AggregateRoot } from "../../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 import { Result } from "../../core/logic/Result";
 import { ITripDTO } from "../../dto/ITripDTO";
-import { TripID } from "./TripID";
-import { Date } from "./Date"
+import { PackagingID } from "../packaging/PackagingID";
 import { PathID } from "../path/PathID";
 import { TruckID } from "../truck/TruckID";
-import { PackagingID } from "../packaging/PackagingID";
-import { StartWHId } from "../path/StartWHId";
-import { DestinationWHId } from "../path/DestinationWHId";
+import { Date } from "./Date";
+import { TripID } from "./TripID";
 
 
 interface TripProps {

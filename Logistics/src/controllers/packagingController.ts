@@ -1,15 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Inject, Service } from 'typedi';
-import querystring from 'querystring';
 import config from "../../config";
 
-import IPackagingController from './IControllers/IPackagingController';
+import { IPackagingDTO } from '../dto/IPackagingDTO';
 import IPackagingService from '../services/IServices/IPackagingService';
 import ITruckService from '../services/IServices/ITruckService';
-import { IPackagingDTO } from '../dto/IPackagingDTO';
+import IPackagingController from './IControllers/IPackagingController';
 
-import { Result } from '../core/logic/Result';
 import fetch from 'node-fetch';
+import { Result } from '../core/logic/Result';
 
 const http = require('https');
 const jwt = require('jsonwebtoken');

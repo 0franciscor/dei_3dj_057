@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import fetch from 'node-fetch';
-import * as http from "http";
 
 
 @Injectable({

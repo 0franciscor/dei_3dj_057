@@ -1,7 +1,6 @@
-import  config  from "../../../config";
 import { Router } from 'express';
 import { Container } from 'typedi';
-import { celebrate, Joi } from 'celebrate';
+import config from "../../../config";
 import ITripController from "../../controllers/IControllers/ITripController";
 
 

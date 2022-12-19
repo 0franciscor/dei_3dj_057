@@ -1,15 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Inject, Service } from 'typedi';
 import config from "../../config";
 
-import IRoleController from "./IControllers/IRoleController";
-import IRoleService from '../services/IServices/IRoleService';
 import IRoleDTO from '../dto/IRoleDTO';
+import IRoleService from '../services/IServices/IRoleService';
+import IRoleController from "./IControllers/IRoleController";
 
 import { Result } from "../core/logic/Result";
-import RoleService from '../services/roleService';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
 const jwt = require('jsonwebtoken');
 @Service()
 export default class RoleController implements IRoleController /* TODO: extends ../core/infra/BaseController */ {

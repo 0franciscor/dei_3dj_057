@@ -1,6 +1,6 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { Container } from 'typedi';
 import { celebrate, Joi } from 'celebrate';
+import { Router } from 'express';
+import { Container } from 'typedi';
 
 import config from "../../../config";
 import IUserController from '../../controllers/IControllers/IUserController';

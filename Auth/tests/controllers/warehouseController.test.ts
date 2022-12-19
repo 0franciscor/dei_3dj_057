@@ -1,10 +1,9 @@
-import "reflect-metadata";
-import {Response, Request, NextFunction} from 'express';
-import { Container } from 'typedi';
-import { Result }  from '../../src/core/logic/Result';
-import * as sinon from 'sinon';
-import WarehouseController from '../../src/controllers/warehouseController';
+import { NextFunction, Request, Response } from 'express';
 import 'mocha';
+import "reflect-metadata";
+import * as sinon from 'sinon';
+import { Container } from 'typedi';
+import WarehouseController from '../../src/controllers/warehouseController';
 
 describe('WarehouseController Unit Tests', () => {
     const sandbox = sinon.createSandbox();

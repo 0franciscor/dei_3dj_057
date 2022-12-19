@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { async } from 'rxjs';
 import { AdminService } from 'src/app/Services/AdminService/admin.service';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 

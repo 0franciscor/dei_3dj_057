@@ -1,5 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
-import { ParsedQs } from 'qs';
+import { NextFunction, Request, Response } from 'express';
 import { Inject, Service } from 'typedi';
 import config from "../../config";
 
@@ -10,10 +9,6 @@ import IPathService from '../services/IServices/IPathService';
 import ITripService from '../services/IServices/ITripService';
 import ITruckService from '../services/IServices/ITruckService';
 import ITripController from './IControllers/ITripController';
-import fetch from 'fetch';
-import { request } from 'http';
-import { StartWHId } from '../domain/path/StartWHId';
-import { PathID } from '../domain/path/PathID';
 
 const http = require('https');
 const jwt = require('jsonwebtoken');

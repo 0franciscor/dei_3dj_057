@@ -1,4 +1,3 @@
-import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 import { ValueObject } from "../../core/domain/ValueObject";
 import { Result } from "../../core/logic/Result";
 interface PathIDProps{

@@ -1,14 +1,13 @@
-import { Service, Inject } from 'typedi';
+import { Inject, Service } from 'typedi';
 
-import ITripRepo from './IRepos/ITripRepo';
-import { Trip } from '../domain/trip/Trip';
 import { ITripPersistence } from '../dataschema/ITripPersistence';
+import { Trip } from '../domain/trip/Trip';
 import { TripMap } from '../mappers/TripMap';
+import ITripRepo from './IRepos/ITripRepo';
 
 import { Document, FilterQuery, Model } from 'mongoose';
 
 import { TripID } from '../domain/trip/TripID';
-import { raw} from 'body-parser'; 
 
 @Service()
 export default class TripRepo implements ITripRepo {

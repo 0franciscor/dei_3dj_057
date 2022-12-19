@@ -1,16 +1,13 @@
-import "reflect-metadata";
-import { Container } from 'typedi';
-import * as sinon from 'sinon';
-import TruckRepo from "../../src/repos/truckRepo";
-import { ITruckDTO } from '../../src/dto/ITruckDTO';
+import { expect } from "chai";
 import 'mocha';
-import {expect} from "chai";
-import { TruckMap } from "../../src/mappers/TruckMap";
-import { Truck } from "../../src/domain/truck/Truck";
+import { Document } from 'mongoose';
+import "reflect-metadata";
+import * as sinon from 'sinon';
+import { Container } from 'typedi';
 import { ITruckPersistence } from "../../src/dataschema/ITruckPersistence";
-import mongoose from "mongoose";
-import { Document, FilterQuery, Model } from 'mongoose';
-import { execPath } from "node:process";
+import { ITruckDTO } from '../../src/dto/ITruckDTO';
+import { TruckMap } from "../../src/mappers/TruckMap";
+import TruckRepo from "../../src/repos/truckRepo";
 
 describe('TruckRepo Unit Tests', () => {
 

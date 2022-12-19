@@ -5,11 +5,11 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { WarehouseService } from 'src/app/Services/WarehouseService/warehouse.service';
 
-import { EditWarehouseComponent,EditWarehouseComponentDialog } from './edit-warehouse.component';
+import { EditWarehouseComponent, EditWarehouseComponentDialog } from './edit-warehouse.component';
 
 describe('EditWarehouseComponent', () => {
   let component: EditWarehouseComponent;

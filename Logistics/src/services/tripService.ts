@@ -1,16 +1,15 @@
 
 import { Inject, Service } from "typedi";
+import config from "../../config";
 import { Result } from "../core/logic/Result";
-import { Trip } from "../domain/trip/Trip";
+import { PackagingID } from "../domain/packaging/PackagingID";
 import { Date } from "../domain/trip/Date";
+import { Trip } from "../domain/trip/Trip";
+import { TruckID } from "../domain/truck/TruckID";
 import { ITripDTO } from "../dto/ITripDTO";
 import { TripMap } from "../mappers/TripMap";
 import ITripRepo from "./IRepos/ITripRepo";
 import ITripService from "./IServices/ITripService";
-import config from "../../config";
-import { Packaging } from "../domain/packaging/Packaging";
-import { PackagingID } from "../domain/packaging/PackagingID";
-import { TruckID } from "../domain/truck/TruckID";
 
 
 @Service()
