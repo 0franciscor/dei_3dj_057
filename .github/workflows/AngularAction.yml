@@ -45,11 +45,7 @@ jobs:
     environment:
       name: 'production'
       url: ${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net
-
-    defaults:
-      run:
-        working-directory: 'UI'
-
+      
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
