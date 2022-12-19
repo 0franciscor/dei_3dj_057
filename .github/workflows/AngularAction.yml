@@ -32,7 +32,8 @@ jobs:
           npm run build --if-present
       
       - run: |
-          zip -r node-app.zip /node_modules
+          ls
+          zip -r node-app.zip node_modules
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
