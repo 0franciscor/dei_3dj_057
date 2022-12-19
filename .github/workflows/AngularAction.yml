@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: './UI/node_app.zip'
+          path: './UI/node-app.zip'
 
   Deployment:
     runs-on: ubuntu-latest
