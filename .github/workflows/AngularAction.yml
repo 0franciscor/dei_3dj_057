@@ -30,7 +30,12 @@ jobs:
         run: |
           npm prune --production
           npm install
+          npm install -g @angular/cli@latest
           npm run build --if-present
+<<<<<<< HEAD
+=======
+          ng build
+>>>>>>> parent of 5bfa857 (Revert "final test")
 
   Deployment:
     runs-on: ubuntu-latest
@@ -40,6 +45,10 @@ jobs:
       url: ${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net
     
     steps:
+<<<<<<< HEAD
+=======
+      - uses: actions/checkout@v2
+>>>>>>> parent of 5bfa857 (Revert "final test")
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
