@@ -29,7 +29,7 @@ export default(app: Router) => {
             date: Joi.string().required(),
             pathIDlist: Joi.array().required(),
             truckID: Joi.string().required(),
-            packagingID: Joi.string().required()
+            deliveryIDlist: Joi.array().required()
         })
     }),
     
@@ -44,7 +44,7 @@ export default(app: Router) => {
             date: Joi.string(),
             pathIDlist: Joi.array(),
             truckID: Joi.string(),
-            packagingID: Joi.string()
+            deliveryIDlist: Joi.array()
         })
     }),
 

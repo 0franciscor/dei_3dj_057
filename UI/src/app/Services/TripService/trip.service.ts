@@ -32,9 +32,6 @@ export class TripService {
     const data = await response.json();
 
     return data;
-    
-   
-
 
   }
 

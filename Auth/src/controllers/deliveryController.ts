@@ -368,8 +368,7 @@ export default class DeliveryController implements IDeliveryController {
                     }
                 }
         }
-        console.log(deliveredWarehouseList)
-        console.log(deliveriesMoved)
+       
         // for(let l=1; l<deliveredWarehouseList.length-1; l++){
           
 

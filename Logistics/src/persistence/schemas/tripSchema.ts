@@ -20,7 +20,7 @@ const TripSchema = new mongoose.Schema(
         },
 
         pathIDList: {
-            type: [String],
+            type: [],
             required: true
         },
 
@@ -29,8 +29,8 @@ const TripSchema = new mongoose.Schema(
             required: true
         },
 
-        packagingID: {
-            type: String,
+        deliveryIDList: {
+            type: [],
             required: true
         },
     },

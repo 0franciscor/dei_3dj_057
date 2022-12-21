@@ -36,11 +36,11 @@ export default class TripRepo implements ITripRepo {
             
             if(tripDocument === null) {
                 const rawTrip: any = TripMap.toPersistence(trip);
-                console.log("rawTrip", rawTrip);
+              
                 const tripCreated = await this.tripSchema.create(rawTrip);
-                console.log("tripCreated", tripCreated);
+                
                 const tripCreatedDomain = TripMap.toDomain(tripCreated);
-                console.log("tripCreatedDomain", tripCreatedDomain);
+               
                 return tripCreatedDomain;
             }
             else{
@@ -50,11 +50,17 @@ export default class TripRepo implements ITripRepo {
                     pathToStringList.push(pathID.id);
                 });
 
+                let deliveryToStringList :string[] = [];
+                trip.deliveryIDlist.forEach(deliveryID => {
+                    deliveryToStringList.push(deliveryID.id);
+                });
+
                 tripDocument.tripID = trip.tripID.id;
                 tripDocument.date = trip.date.date;
                 tripDocument.pathIDlist= pathToStringList;
                 tripDocument.truckID = trip.truck.id;
-                tripDocument.packagingID = trip.packaging.id;
+                tripDocument.deliveryIDlist = deliveryToStringList;
+                console.log(tripDocument)
                 await tripDocument.save();
                 return trip;
             }

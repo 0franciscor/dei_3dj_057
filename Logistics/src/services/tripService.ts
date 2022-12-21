@@ -86,15 +86,7 @@ export default class TripService implements ITripService {
             if(trip === null)
                 return Result.fail<ITripDTO>("Trip not found");
 
-            if(tripDTO.packagingID !== trip.packaging.id && tripDTO.packagingID!=null){
-                const packagingOrError = PackagingID.create(tripDTO.packagingID);
-                if(packagingOrError.isFailure){
-                    return Result.fail<ITripDTO>(packagingOrError.error);
-                }
-
-                trip.packaging = packagingOrError.getValue();
-
-            }
+                //retirei update por package
                 
             if(tripDTO.truckID !== trip.truck.id && tripDTO.truckID!=null){
                 const truckOrError = TruckID.create(tripDTO.truckID);

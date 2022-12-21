@@ -12,16 +12,21 @@ export class TripMap extends Mapper<Trip> {
     
     public static toDTO(trip: Trip): ITripDTO {
         let pathToStringList :string[] = [];
+        let deliveryToStringList: string[]=[];
         trip.pathIDlist.forEach(pathID => {
             pathToStringList.push(pathID.id);
         });
+
+        trip.deliveryIDlist.forEach(deliveryID=>{
+            deliveryToStringList.push(deliveryID.id)
+        })
         return {
             id: trip.id.toString(),
             tripID: trip.tripID.id,
             date: trip.date.date,
             pathIDlist: pathToStringList,
             truckID: trip.truck.id,
-            packagingID: trip.packaging.id,
+            deliveryIDlist: deliveryToStringList,
         } as ITripDTO;
     }
     
@@ -46,6 +51,11 @@ export class TripMap extends Mapper<Trip> {
         trip.pathIDlist.forEach(pathID => {
             pathToStringList.push(pathID.id);
         });
+
+        let deliveryToStringList : string[]=[];
+        trip.pathIDlist.forEach(pathID => {
+            pathToStringList.push(pathID.id);
+        });
         console.log("pathToStringList", pathToStringList);
         
         return {
@@ -54,7 +64,7 @@ export class TripMap extends Mapper<Trip> {
             date: trip.date.date,
             pathIDlist: pathToStringList,
             truckID: trip.truck.id,
-            packagingID: trip.packaging.id,
+            deliveryIDlist: deliveryToStringList,
         };
     }
         

@@ -2,6 +2,7 @@ import { AggregateRoot } from "../../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 import { Result } from "../../core/logic/Result";
 import { ITripDTO } from "../../dto/ITripDTO";
+import { DeliveryID } from "../packaging/DeliveryID";
 import { PackagingID } from "../packaging/PackagingID";
 import { PathID } from "../path/PathID";
 import { TruckID } from "../truck/TruckID";
@@ -14,7 +15,7 @@ interface TripProps {
     date: Date;
     pathIDlist: PathID[];
     truckID: TruckID;
-    packagingID: PackagingID;
+    deliveryIDlist: DeliveryID[];
 }
 
 export class Trip extends AggregateRoot<TripProps> {
@@ -38,8 +39,8 @@ export class Trip extends AggregateRoot<TripProps> {
         return this.props.truckID;
     }
 
-    get packaging(): PackagingID {
-        return this.props.packagingID;
+    get deliveryIDlist(): DeliveryID[] {
+        return this.props.deliveryIDlist;
     }
     
     set date (date: Date){
@@ -54,8 +55,8 @@ export class Trip extends AggregateRoot<TripProps> {
         this.props.truckID= truck;
     }
 
-    set packaging (packaging: PackagingID){
-        this.props.packagingID = packaging;
+    set deliveryIDlist (deliveryIDlist: DeliveryID[]){
+        this.props.deliveryIDlist = deliveryIDlist;
     } 
 
     
@@ -80,7 +81,7 @@ export class Trip extends AggregateRoot<TripProps> {
                 date: Date.create(tripDTO.date).getValue(),
                 pathIDlist: list,
                 truckID: TruckID.create(tripDTO.truckID).getValue(),
-                packagingID: PackagingID.create(tripDTO.packagingID).getValue(),
+                deliveryIDlist: list,
             }, id);
             return Result.ok<Trip>(trip);
         }catch(error) {

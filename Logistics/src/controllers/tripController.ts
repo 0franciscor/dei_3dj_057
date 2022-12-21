@@ -10,6 +10,8 @@ import ITripService from '../services/IServices/ITripService';
 import ITruckService from '../services/IServices/ITruckService';
 import ITripController from './IControllers/ITripController';
 
+import fetch from 'node-fetch';
+
 const http = require('https');
 const jwt = require('jsonwebtoken');
 
@@ -20,7 +22,6 @@ export default class TripController implements ITripController{
         @Inject(config.services.trip.name) private tripService: ITripService,
         @Inject(config.services.truck.name) private truckService: ITruckService,
         @Inject(config.services.path.name) private pathService: IPathService,
-        @Inject(config.services.packaging.name) private packagingService: IPackagingService
     ) { }
 
     private roles = ["admin", "logMan"];
@@ -106,23 +107,31 @@ export default class TripController implements ITripController{
         
         if(req.body.tripID == null)
             return res.status(400).send("TripID is required");
-            
-        
 
-            const pathOrError = await this.pathService.exist(req.body.pathID);
+        console.log(req.body)
+            
+
+            req.body.pathIDlist.forEach(async pathID => {
+                const pathOrError = await this.pathService.exist(pathID);
+                if(pathOrError.getValue() ==false){
+                return res.status(404).send("Path not found");
+            }
+            });
+            
 
             const truckOrError = await this.truckService.exist(req.body.truckID);
             if(truckOrError.getValue() == false) {
                 return res.status(404).send("Truck not found");
             } 
 
+            /* req.body.deliveryIDlist.forEach(async deliveryID => {
+                if (req.body.deliveryID == null)
+                return res.status(400).send("DeliveryID is required");
             
-            const packagingOrError = await this.packagingService.exist(req.body.packagingID);
-            if(packagingOrError.getValue() == false) {
-                return res.status(404).send("Packaging not found");
-            }
+            const address ='https://localhost:5001/api/deliveries/Exists/' + req.body.deliveryID;
 
-            
+              this.fetch(address,req.headers.cookie)
+            }) */
             const tripOrError = await this.tripService.createTrip(req.body as ITripDTO) as Result<ITripDTO>;
             if(tripOrError.isFailure){
                 return res.status(409).send("Trip already exists");
@@ -158,7 +167,7 @@ export default class TripController implements ITripController{
                             return res.status(400).send(tripOrError.error);
                         if(tripOrError.error == "TruckID cannot be changed ")
                             return res.status(400).send(tripOrError.error);
-                        if(tripOrError.error == "PackagingID cannot be changed")
+                        if(tripOrError.error == "deliveryID cannot be changed")
                             return res.status(400).send(tripOrError.error);
                     }
                     const tripDTO = tripOrError.getValue();
@@ -191,8 +200,20 @@ export default class TripController implements ITripController{
         }catch(e){
             next(e);
         }       
+
+
     }
 
-    
+    private async fetch(address : string, cookie:any ){
+        const httpAgent = new http.Agent({rejectUnauthorized: false});
+        return await fetch(address,{
+        method : 'GET',
+        agent: httpAgent,
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+        }
+        });
+    }
 }
 
