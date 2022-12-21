@@ -124,7 +124,7 @@ export default class TripController implements ITripController{
                 return res.status(404).send("Truck not found");
             } 
 
-            /* req.body.deliveryIDlist.forEach(async deliveryID => {
+           /*  req.body.deliveryIDlist.forEach(async deliveryID => {
                 if (req.body.deliveryID == null)
                 return res.status(400).send("DeliveryID is required");
             
