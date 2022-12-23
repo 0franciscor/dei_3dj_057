@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { random } from 'cypress/types/lodash';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
 import * as THREE from 'three';
@@ -10,7 +11,16 @@ import roadNetworkTemplate from './RoadNetworkJS/road-network';
 import truckNetowrk from './RoadNetworkJS/truck-network';
 
 
-
+interface Warehouse {
+  id: string;
+  address: string;
+  altitude: number;
+  latitude: string;
+  longitude: string;
+  designation: string;
+  city: string;
+  active: boolean;
+}
 
 
 @Component({
@@ -93,34 +103,85 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   private selectedTruck: any;
 
+
+  private maxIncline = 25;
+
+  private calculateIncline(path:any,warehouses:Warehouse[],roadWidth:number){
+    let positions = roadNetworkTemplate.calculatePositions(warehouses);
+    let startWH: any;
+    let destinationWH:any;
+    positions.forEach((position) => {
+
+      if(position.wh==path.startWHId){
+        startWH = position;
+      }
+      if(position.wh==path.destinationWHId){
+        destinationWH = position;
+      }
+    });
+    const connectionConstant = 1;
+    const circleConstant = 2;
+    let connectionLength = connectionConstant * circleConstant;
+    if(startWH && destinationWH){
+      let angle = Math.sqrt(Math.pow((destinationWH.x - startWH.x), 2) + Math.pow((destinationWH.y - startWH.y), 2)) - connectionLength * 2;
+    
+      let incline = Math.abs(Math.atan2((destinationWH.z - startWH.z), angle))
+      let inclinePercentage = incline * 100;
+      if(inclinePercentage <= this.maxIncline){
+        return true
+      }
+    }
+    return false;
+  }
+
   private async createScene() {
 
     let rnService = new RoadNetworkService();
-    let warehouses: any[] = [];
+    let warehouses: Warehouse[] = [];
     await rnService.getAllWarehouses().then((data) => {
       warehouses = data;
     });
     let paths: any[] = [];
     let limitPerWarehouse = 2;
     for (const warehouse of warehouses) {
-      let amountPathOfWarehouse = 0;
-      await rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
+      if(warehouse.active){
+        let amountPathOfWarehouse = 0;
+        await rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
 
-        if (data != null) {
+          if (data != null) {
 
-          while (amountPathOfWarehouse < limitPerWarehouse) {
-            let randomPath = data[Math.floor(Math.random() * data.length)];
+            while (amountPathOfWarehouse < limitPerWarehouse) {
+              let randomNumList=[];
+              let randomPos = Math.floor(Math.random() * data.length)
+              let randomPath = data[randomPos];
+              randomNumList.push(randomPos);
+              
+              let thisRoadWidth = this.getRandomNumber();
+              let legalIncline = false; 
+              while(!legalIncline && randomNumList.length<=data.length){
 
-            if (!paths.includes(randomPath)) {
-              paths.push({ startWHId: randomPath.startWHId, destinationWHId: randomPath.destinationWHId, roadWidth: this.getRandomNumber() });
-              amountPathOfWarehouse++;
+                randomPos = Math.floor(Math.random() * data.length)
+                if(!randomNumList.includes(randomPos)){
+                  randomPath = data[randomPos];
+                  randomNumList.push(randomPath);
+                  
+                  legalIncline=this.calculateIncline(randomPath,warehouses,thisRoadWidth);
+                }
+              }
+              if(!legalIncline){
+                randomPath = data[Math.floor(Math.random() * data.length)];
+              }
+              if (!paths.includes(randomPath)) {
+                
+                paths.push({ startWHId: randomPath.startWHId, destinationWHId: randomPath.destinationWHId, roadWidth: thisRoadWidth });
+                amountPathOfWarehouse++;
+              }
             }
+
+
           }
-
-
-        }
-      });
-
+        });
+      }
     }
 
 
@@ -130,7 +191,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       positions: positions,
       paths: paths
     });
-    // console.log(this.roadNetwork.maxRoadWidths)
+
     this.truckNetwork = new truckNetowrk(positions,this.roadNetwork.whAndWidths);
 
     let whOptions:string[] = [];
@@ -195,16 +256,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
     let closestWarehouseDistance = 100000;
     
-    this.warehouses.forEach((warehouse) => {
-      console.log(warehouse.children)
-      // let distance = this.selectedTruck.position.distanceTo(warehouse.position);
-      // if(distance < closestWarehouseDistance){
-      //   closestWarehouseDistance = distance;
-      //   console.log(this.closestWarehouse)
-      //   this.closestWarehouse = warehouse;
-      // }
-
-    })
+  
    
 
 
@@ -353,12 +405,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     const line = new THREE.Line( geometry, material );
     this.scene.add( line );
 
-    // // Check if the ray intersects with the object
-    // const intersects = raycaster.intersectObject(testObject);
-    // // console.log(intersects)
-    // if (intersects.length > 0) {
-    //   console.log("Object is colliding with the ray!");
-    // }
 
   }
 

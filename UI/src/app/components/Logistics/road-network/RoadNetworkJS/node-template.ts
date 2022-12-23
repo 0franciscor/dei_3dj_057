@@ -22,7 +22,7 @@ interface elementProps {
 export default class NodeTemplate {
     object: THREE.Group;
     whAndWidth: whAndWidth = { wh: "", width: 0 };
-
+    roadInclination: number = 0;
 
 
     constructor(pos: posProps, outGoingConnections: any[], incomingConnections: any[], allPositions: any[]) {
@@ -120,12 +120,14 @@ export default class NodeTemplate {
                     Math.pow((roadEndY - roadBeginY), 2) + 
                     Math.pow(roadEndZ- roadBeginZ, 2));
 
-
+                
 
                 let angle = Math.sqrt(Math.pow((destination.x - pos.x), 2) + Math.pow((destination.y - pos.y), 2)) - connectionLength * 2;
+                let color = 0xA52A2A;
+                
 
                 let roadGeometry = new THREE.PlaneGeometry(element.roadWidth, roadLength, 32);
-                let roadMaterial = new THREE.MeshBasicMaterial({ color: 0xA52A2A, side: THREE.DoubleSide });
+                let roadMaterial = new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide });
                 let road = new THREE.Mesh(roadGeometry, roadMaterial);
                 road.position.set((pos.x + destination.x) / 2, (pos.y + destination.y) / 2, (pos.z + destination.z) / 2);
 
@@ -134,7 +136,7 @@ export default class NodeTemplate {
 
 
                 road.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.atan2((destination.z - pos.z), angle));
-
+                
                 this.object.add(road);
             }
 
