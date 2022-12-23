@@ -247,7 +247,7 @@ export default class WarehouseController implements IWarehouseController {
     if (typeof host === 'string' && host.includes("azure"))
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Delete'+req.params.id;
 
-    const response = await this.fetch(url, 'DELETE', null, httpAgent);
+    const response = await this.fetch(url, 'DELETE', null,req.headers.cookie, httpAgent);
 
     if(response.status != 200){
       res.status(response.status);
