@@ -150,16 +150,84 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  private async createTrucks() {
+  private async createTrucks(maxAmount:number) {
     let allTruckList = await this.rnService.getAllTrucks()
+    let activeTruckList: Truck[] = [];
     let truckList: Truck[] = [];
     allTruckList.forEach((truck:Truck) => {
       if(truck.active){
-        truckList.push(truck);
+        activeTruckList.push(truck);
       }
     });
+    if(activeTruckList.length>maxAmount){
+      //take random trucks without duplicates
+      let randomNumList=[];
+      let randomPos = Math.floor(Math.random() * activeTruckList.length)
+      let randomTruck = activeTruckList[randomPos];
+      randomNumList.push(randomPos);
+      truckList.push(randomTruck);
+      while(truckList.length<maxAmount){
+        randomPos = Math.floor(Math.random() * activeTruckList.length)
+        if(!randomNumList.includes(randomPos)){
+          randomTruck = activeTruckList[randomPos];
+          randomNumList.push(randomPos);
+          truckList.push(randomTruck);
+        }
+      }
+    }
+    else
+      truckList = activeTruckList;
     return truckList;
   }
+
+  private populatePaths(limitPerWarehouse:number,warehouses:Warehouse[],data:any[]){
+    let paths: any[] = [];
+    let amountPathOfWarehouse = 0;
+    while (amountPathOfWarehouse < limitPerWarehouse) {
+      let randomNumList=[];
+      let randomPos = Math.floor(Math.random() * data.length)
+      let randomPath = data[randomPos];
+      randomNumList.push(randomPos);
+      
+      let thisRoadWidth = this.getRandomNumber();
+      let legalIncline = false; 
+      while(!legalIncline && randomNumList.length<=data.length){
+
+        randomPos = Math.floor(Math.random() * data.length)
+        if(!randomNumList.includes(randomPos)){
+          randomPath = data[randomPos];
+          randomNumList.push(randomPath);
+          
+          legalIncline=this.calculateIncline(randomPath,warehouses,thisRoadWidth);
+        }
+      }
+      if(!legalIncline){
+        randomPath = data[Math.floor(Math.random() * data.length)];
+      }
+      if (!paths.includes(randomPath)) {
+        
+        paths.push({ startWHId: randomPath.startWHId, destinationWHId: randomPath.destinationWHId, roadWidth: thisRoadWidth });
+        amountPathOfWarehouse++;
+      }
+    }
+    return paths;
+  }
+
+  private async createPaths(warehouses: Warehouse[]) {
+    let paths: any[] = [];
+    let limitPerWarehouse = 2;
+    for (const warehouse of warehouses) {
+      if(warehouse.active){
+        await this.rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
+          if (data != null)
+            paths = paths.concat(this.populatePaths(limitPerWarehouse,warehouses,data));
+        });
+      }
+    }
+    return paths;
+  }
+
+
 
   private async createScene() {
 
@@ -168,63 +236,19 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     await this.rnService.getAllWarehouses().then((data) => {
       warehouses = data;
     });
-    let paths: any[] = [];
-    let limitPerWarehouse = 2;
-    for (const warehouse of warehouses) {
-      if(warehouse.active){
-        let amountPathOfWarehouse = 0;
-        await this.rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
-
-          if (data != null) {
-
-            while (amountPathOfWarehouse < limitPerWarehouse) {
-              let randomNumList=[];
-              let randomPos = Math.floor(Math.random() * data.length)
-              let randomPath = data[randomPos];
-              randomNumList.push(randomPos);
-              
-              let thisRoadWidth = this.getRandomNumber();
-              let legalIncline = false; 
-              while(!legalIncline && randomNumList.length<=data.length){
-
-                randomPos = Math.floor(Math.random() * data.length)
-                if(!randomNumList.includes(randomPos)){
-                  randomPath = data[randomPos];
-                  randomNumList.push(randomPath);
-                  
-                  legalIncline=this.calculateIncline(randomPath,warehouses,thisRoadWidth);
-                }
-              }
-              if(!legalIncline){
-                randomPath = data[Math.floor(Math.random() * data.length)];
-              }
-              if (!paths.includes(randomPath)) {
-                
-                paths.push({ startWHId: randomPath.startWHId, destinationWHId: randomPath.destinationWHId, roadWidth: thisRoadWidth });
-                amountPathOfWarehouse++;
-              }
-            }
-
-
-          }
-        });
-      }
-    }
-
-
+    let paths: any[] = await this.createPaths(warehouses);
 
     let positions = roadNetworkTemplate.calculatePositions(warehouses);
     this.roadNetwork = new roadNetworkTemplate({
       positions: positions,
       paths: paths
     });
-
-    let truckObjects = await this.createTrucks();
+    console.log(warehouses.length)
+    let truckObjects = await this.createTrucks(warehouses.length);
     this.truckNetwork = new TruckNetwork(positions,this.roadNetwork.whAndWidths, truckObjects);
 
     let truckOption:string[] = [];
     truckOption.push("Select Truck");
-    console.log(this.truckNetwork)
     this.truckNetwork.truckNames.forEach((truck) => {
       truckOption.push(truck);
     });

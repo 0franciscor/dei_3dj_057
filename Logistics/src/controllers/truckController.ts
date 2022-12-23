@@ -22,29 +22,44 @@ export default class TruckController implements ITruckController {
     private roles = ["admin", "fltMan"];
 
     isAuthenticated(req: Request) {
+        try {
+          if(req.cookies['jwt'] == undefined)
+            return false;
+          const cookie = req.cookies['jwt'];
         
-        if(req.cookies['jwt'] == undefined)
-            return false;
-        const cookie = req.cookies['jwt'];
-        const claims = jwt.verify(cookie, config.jwtSecret);
+          const claims = jwt.verify(cookie, config.jwtSecret);
         
-        if(!claims)
-            return false;
+          if(!claims)
+              return false;
+          
+          return true;
+        } catch (error) {
+          return false
+        }
         
-        return true;
-    }
-
-    isAuthorized(req: Request) {
-        if(req.cookies['jwt'] == undefined)
+      }
+    
+      isAuthorized(req: Request, specifiedRoles?: string[]) {
+        try {
+          if(req.cookies['jwt'] == undefined)
             return false;
-        const cookie = req.cookies['jwt'];
-        const claims = jwt.verify(cookie, config.jwtSecret);
-        if(!claims)
-            return false;
-        if(this.roles.indexOf(claims.role) > -1)
-            return true;
-        return false;
-    }
+          const cookie = req.cookies['jwt'];
+          const claims = jwt.verify(cookie, config.jwtSecret);
+          if(!claims)
+              return false;
+          if(specifiedRoles != undefined){
+              if(specifiedRoles.indexOf(claims.role) > -1)
+                  return true;
+              return false;
+          }
+          else if(this.roles.indexOf(claims.role) > -1)
+              return true;
+          return false;
+        } catch (error) {
+          return false;
+        }
+    
+      }
 
     public async getTruck(req: Request, res: Response, next: NextFunction){
         if(!this.isAuthenticated(req)){
@@ -140,7 +155,7 @@ export default class TruckController implements ITruckController {
         }
     }
 
-    public async deleteTruck(req: Request, res: Response, next: NextFunction){
+    public async softDeleteTruck(req: Request, res: Response, next: NextFunction){
         if(!this.isAuthenticated(req)){
             res.status(401);
             return res.json({message: "Not authenticated"});
@@ -150,7 +165,7 @@ export default class TruckController implements ITruckController {
             return res.json({message: "Not authorized"});
         }
         try {
-            const truckResult = await this.truckService.deleteTruck(req.body.truckID);
+            const truckResult = await this.truckService.softDeleteTruck(req.params.id);
             if(truckResult.isFailure){
                 res.status(404);
                 return res.send("Truck not found");
@@ -160,6 +175,29 @@ export default class TruckController implements ITruckController {
         } catch (e) {
             next(e);
         }
+    }
+
+    public async hardDeleteTruck(req: Request, res: Response, next: NextFunction){
+        if(!this.isAuthenticated(req)){
+            res.status(401);
+            return res.json({message: "Not authenticated"});
+          }
+        if(!this.isAuthorized(req,["admin"])){
+            res.status(403);
+            return res.json({message: "Not authorized"});
+        }
+        try {
+            const truckResult = await this.truckService.hardDeleteTruck(req.params.id);
+            if(truckResult.isFailure){
+                res.status(404);
+                return res.send("Truck not found");
+            }
+            res.status(200);
+            return res.json(truckResult.getValue());
+        } catch (e) {
+            next(e);
+        }
+
     }
 
 }

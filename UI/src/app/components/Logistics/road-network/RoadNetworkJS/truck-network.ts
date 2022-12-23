@@ -7,7 +7,6 @@ export default class TruckNetwork {
     truckNames: string[] = [];
     constructor(positions: any,paths: any, trucks: any[]) {
         this.object = new THREE.Group();
-        console.log("trucks", trucks)
         this.createTrucks(positions, paths, trucks);
 
     }
