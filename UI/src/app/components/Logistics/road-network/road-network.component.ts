@@ -8,7 +8,7 @@ import { Object3D, Raycaster } from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Player from './RoadNetworkJS/player';
 import roadNetworkTemplate from './RoadNetworkJS/road-network';
-import truckNetowrk from './RoadNetworkJS/truck-network';
+import TruckNetwork from './RoadNetworkJS/truck-network';
 
 
 interface Warehouse {
@@ -21,6 +21,18 @@ interface Warehouse {
   city: string;
   active: boolean;
 }
+
+interface Truck {
+  id: string;
+  truckID: string;
+  tare: number;
+  capacity: number;
+  maxBatteryCapacity: number;
+  autonomy: number;
+  fastChargeTime: number;
+  active: boolean;
+}
+  
 
 
 @Component({
@@ -60,6 +72,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   //Helper properties (private)
 
   private camera!: THREE.PerspectiveCamera;
+  
 
   private get container(): HTMLDivElement {
     return this.containerRef.nativeElement;
@@ -78,7 +91,10 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     return this.table.querySelector('select') as HTMLSelectElement;
   }
 
+  private rnService = new RoadNetworkService();
+
   private player!: Player;
+  private playerPositionObject!: Object3D;
   private closestWarehouse!: Object3D;
   private roads: Object3D[] = [];
   private warehouses: Object3D[] = [];
@@ -88,7 +104,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   private scene!: THREE.Scene;
 
   private roadNetwork !: roadNetworkTemplate;
-  private truckNetwork !: truckNetowrk;
+  private truckNetwork !: TruckNetwork;
 
   private updateOptions(options: string[]) {
     // Clear the existing options
@@ -101,7 +117,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private selectedTruck: any;
+  private selectedTruck?: Object3D;
 
 
   private maxIncline = 25;
@@ -134,11 +150,22 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     return false;
   }
 
+  private async createTrucks() {
+    let allTruckList = await this.rnService.getAllTrucks()
+    let truckList: Truck[] = [];
+    allTruckList.forEach((truck:Truck) => {
+      if(truck.active){
+        truckList.push(truck);
+      }
+    });
+    return truckList;
+  }
+
   private async createScene() {
 
-    let rnService = new RoadNetworkService();
+   
     let warehouses: Warehouse[] = [];
-    await rnService.getAllWarehouses().then((data) => {
+    await this.rnService.getAllWarehouses().then((data) => {
       warehouses = data;
     });
     let paths: any[] = [];
@@ -146,7 +173,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     for (const warehouse of warehouses) {
       if(warehouse.active){
         let amountPathOfWarehouse = 0;
-        await rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
+        await this.rnService.getPathBetweenWarehouses(warehouse.id).then((data) => {
 
           if (data != null) {
 
@@ -192,12 +219,14 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       paths: paths
     });
 
-    this.truckNetwork = new truckNetowrk(positions,this.roadNetwork.whAndWidths);
+    let truckObjects = await this.createTrucks();
+    this.truckNetwork = new TruckNetwork(positions,this.roadNetwork.whAndWidths, truckObjects);
 
-    let whOptions:string[] = [];
-    whOptions.push("Select Warehouse");
-    this.roadNetwork.whAndWidths.forEach((wh) => {
-      whOptions.push(wh.wh);
+    let truckOption:string[] = [];
+    truckOption.push("Select Truck");
+    console.log(this.truckNetwork)
+    this.truckNetwork.truckNames.forEach((truck) => {
+      truckOption.push(truck);
     });
 
     this.roadNetwork.object.children.forEach(objectGroup => {
@@ -225,12 +254,14 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     this.scene.add(this.truckNetwork.object);
 
 
-    this.updateOptions(whOptions);
+    this.updateOptions(truckOption);
     
+    this.playerPositionObject = new THREE.Object3D();
+
     this.select.addEventListener('change', (_) => {
-      let selectedWH = this.select.value;
-      if (selectedWH != "Select Warehouse") {
-        let whIndex = this.roadNetwork.whAndWidths.findIndex((wh) => wh.wh == selectedWH);
+      let selectedTruck = this.select.value;
+      if (selectedTruck != "Select Truck") {
+        let whIndex = this.truckNetwork.truckNames.findIndex((truck) => truck == selectedTruck);
       
         let truckName = this.truckNetwork.object.children[whIndex].name
         
@@ -238,11 +269,24 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
         let truck = this.scene.getObjectByName(truckName)?.children[0];
         
         if(truck != undefined){
-   
-          this.camera.position.set(truck.position.x+0.1,truck.position.y+0.1,truck.position.z+100);
-          this.camera.rotation.z = THREE.MathUtils.degToRad(90);
           this.selectedTruck = truck;
           this.player = new Player(this.selectedTruck);
+
+
+          //create a cube
+          let cubeGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+          let cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+          let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+          cube.position.set(this.selectedTruck.position.x, this.selectedTruck.position.y, this.selectedTruck.position.z+2);
+          
+          //removes all objects from playerPositionObject
+          if(this.playerPositionObject.children.length>0)
+          this.playerPositionObject.children.forEach((object) => {
+            this.playerPositionObject.remove(object);
+          });
+          this.playerPositionObject.add(cube);
+          
+
           
 
         }
@@ -251,10 +295,9 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     });
 
     
-    
+    this.scene.add(this.playerPositionObject);
 
 
-    let closestWarehouseDistance = 100000;
     
   
    
@@ -267,6 +310,17 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       this.nearClippingPlane,
       this.farClippingPlane
     );
+    this.camera.up.set(0, 0, 1);
+
+    this.camera.position.z = this.cameraZ;
+    let truckName = this.truckNetwork.object.children[0].name
+        
+        
+    let truck = this.scene.getObjectByName(truckName)?.children[0];
+    if(truck)
+    this.camera.lookAt(truck.position);
+
+    
 
     const listener = new THREE.AudioListener();
     
@@ -284,29 +338,27 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     });
 
     // this.camera.add(listener);
-    this.camera.position.z = this.cameraZ;
 
 
   }
 
   private animate() {
    
-    //get selected truck in table
-    let selectedWH = this.select.value;
-    if (selectedWH != "Select Warehouse") {
-      let whIndex = this.roadNetwork.whAndWidths.findIndex((wh) => wh.wh == selectedWH);
+    let selectedTruck = this.select.value;
+    if (selectedTruck != "Select Truck") {
+      let whIndex = this.truckNetwork.truckNames.findIndex((truck) => truck == selectedTruck);
+    
       let truckName = this.truckNetwork.object.children[whIndex].name
       let truck = this.scene.getObjectByName(truckName)?.children[0];
       if(truck != undefined){
         
-        this.camera.position.set(truck.position.x+0.1,truck.position.y+0.1,truck.position.z+100);
         this.selectedTruck = truck;
+
+          
+
       }
     }
-    //get closeste warehouse to truck from warehouses array
-    
-
-    // this.checkCollision(this.selectedTruck,this.closestWarehouse);
+   
     
     
 
@@ -408,6 +460,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   }
 
+
   
 
    
@@ -415,38 +468,3 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 }
 
 
- /* //load road model
-    const loader = new GLTFLoader();
-    //this.scene.add(loader)
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath( '/examples/js/libs/draco/' );
-    loader.setDRACOLoader( dracoLoader );
-    
-    loader.load('./assets/road/scene.gltf', 
-      function ( gltf ) {
-        console.log(gltf)
-        scene1.add(gltf.scene)
-        gltf.animations; // Array<THREE.AnimationClip>
-        gltf.scene; // THREE.Group
-        gltf.scenes; // Array<THREE.Group>
-        gltf.cameras; // Array<THREE.Camera>
-        gltf.asset; // Object
-      },
-      // called while loading is progressing
-      function ( xhr ) {
-      
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-      
-      },
-      // called when loading has errors
-      function ( error ) {
-      
-        console.log( 'An error happened' );
-      
-      }
-    );
-      this.scene.add(scene1)
-    //lightning
-    const light = new THREE.DirectionalLight(0xffffffff,1)
-    light.position.set(2,2,5)
-    this.scene.add(light); */

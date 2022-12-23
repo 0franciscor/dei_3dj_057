@@ -2,26 +2,33 @@ import * as THREE from "three";
 import Truck from "./truck";
 
 
-export default class truckNetowrk {
+export default class TruckNetwork {
     object: THREE.Group;
-    warehouseNames: string[] = [];
-    constructor(positions: any,paths: any) {
+    truckNames: string[] = [];
+    constructor(positions: any,paths: any, trucks: any[]) {
         this.object = new THREE.Group();
-        this.createTrucks(positions, paths);
+        console.log("trucks", trucks)
+        this.createTrucks(positions, paths, trucks);
+
     }
 
    
 
-    private createTrucks(warehousePos: any, paths:any) {
-        
-      
-        warehousePos.forEach((pos: any) => {
-            
-            let truck = new Truck(pos, paths);
-            this.object.add(truck.object);
-            this.warehouseNames.push(truck.warehouseOG);
-    
+    private createTrucks(warehousePos: any, paths:any, trucks: any[]) {
+        let chosenWarehouses: any[] = [];
+        trucks.forEach((truck: any) => {
+            //choose random warehouse from warehousePos
+            let randomNumber = Math.floor(Math.random() * warehousePos.length);
+            while(chosenWarehouses.includes(randomNumber))
+                randomNumber = Math.floor(Math.random() * warehousePos.length); 
+            chosenWarehouses.push(randomNumber);
+            let randomWarehouse = warehousePos[randomNumber];
+            let truckObject = new Truck(randomWarehouse, paths);
+            this.object.add(truckObject.object);
+            this.truckNames.push(truck.truckID);
+
         });
+        
 
     
 

@@ -22,22 +22,50 @@ export class RoadNetworkService {
     return cookie;
   }
 
+  async sendFetch(url: string, method: string, data: any, cookie: any) {
+    if(data)
+      return await fetch(url, {
+        method: method,
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          "authorization": cookie,
+        },
+      })
+    else
+      return await fetch(url, {
+        method: method,
+        headers: {
+          'Accept': 'application/json',
+          "authorization": cookie,
+        }
+      })
+  }
+
 
   async getAllWarehouses() {
     let url = this.urlOrigin+"api/warehouse/all";
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/warehouse/all';
     }
-    const response = await fetch(url, {
-      method: 'GET',
-      headers:{
-        'Accept': 'application/json',
-        "authorization": this.getJwt(),
-      }
-    });
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
     
     let data = await response.json();
     return data;
+  }
+
+  async getAllTrucks() {
+
+    let url = this.urlOrigin+"api/truck/all";
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/truck/all';
+    }
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
+
+    let data = await response.json();
+    return data;
+
   }
   
 
@@ -48,13 +76,7 @@ export class RoadNetworkService {
       url = 'https://auth57.azurewebsites.net/api/path/all/'+warehouse1+"/undefined";
     }
     
-    const response = await fetch(url, {
-      method: 'GET',
-      headers:{
-        'Accept': 'application/json',
-        "authorization": this.getJwt(),
-      }
-    });
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
     
     if(response.status == 404){
       return null;
