@@ -23,8 +23,8 @@ export default class Truck {
         const startPositonOffset = startPositionConstant*thisWH.width; 
         this.object = new THREE.Group();
         const truckTexture = new THREE.Object3D();
-        const truckloader = new GLTFLoader();
         const truckScale = 0.00025;
+        const truckloader = new GLTFLoader();
         truckloader.load(
             './assets/italeri_truck/scene.gltf', 
             (object) => {
@@ -33,10 +33,13 @@ export default class Truck {
 
         });
         truckTexture.scale.set(truckScale, truckScale, truckScale);
-        // truckTexture.rotateZ(Math.PI / 2);
-        truckTexture.rotateX(Math.PI / 2);
-        truckTexture.position.set(pos.x, pos.y - startPositonOffset, pos.z + 0.003);
-
+       
+        
+        truckTexture.position.set(pos.x, pos.y - startPositonOffset, pos.z + 0.1);
+        const target = new THREE.Vector3();
+        truckTexture.getWorldDirection(target);
+        console.log(target);
+        
         this.object.add(truckTexture);
 
         this.object.name = pos.wh + "Truck";

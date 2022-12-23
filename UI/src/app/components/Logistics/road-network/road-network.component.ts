@@ -151,6 +151,19 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     return false;
   }
 
+  private async createWarehouses(): Promise<Warehouse[]> {
+    let allWarehouseList = await this.rnService.getAllWarehouses()
+    let activeWarehouseList: Warehouse[] = [];
+    allWarehouseList.forEach((warehouse:Warehouse) => {
+      if(warehouse.active){
+        activeWarehouseList.push(warehouse);
+      }
+    });
+
+    return activeWarehouseList;
+
+  }
+
   private async createTrucks(maxAmount:number) {
     let allTruckList = await this.rnService.getAllTrucks()
     let activeTruckList: Truck[] = [];
@@ -233,10 +246,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   private async createScene() {
 
    
-    let warehouses: Warehouse[] = [];
-    await this.rnService.getAllWarehouses().then((data) => {
-      warehouses = data;
-    });
+    let warehouses: Warehouse[] = await this.createWarehouses();
+    
     let paths: any[] = await this.createPaths(warehouses);
 
     let positions = roadNetworkTemplate.calculatePositions(warehouses);
@@ -316,6 +327,14 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
           
 
         }
+      }else{
+        if(this.playerPositionObject.children.length>0)
+          this.playerPositionObject.children.forEach((object) => {
+            this.playerPositionObject.remove(object);
+          });
+        this.player.destroy();
+        this.selectedTruck = undefined;
+        
       }
       
     });
@@ -382,7 +401,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
         
         this.controls.update();
         
-        
+        this.playerPositionObject.children[0].position.set(this.selectedTruck.position.x, this.selectedTruck.position.y, this.selectedTruck.position.z+2);
         this.camera.position.lerp(this.selectedTruck.position, 0);
         this.camera.lookAt(this.selectedTruck.position);
         this.renderer.render(this.scene, this.camera);
@@ -425,6 +444,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     let component: RoadNetworkComponent = this;
     (function render() {
       requestAnimationFrame(render);
+      component.gravity();
+      component.checkRoads();
       component.animate();
       component.onWindowResize();
       component.renderer.render(component.scene, component.camera);
@@ -472,28 +493,71 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   }
 
 
-  private checkCollision(object1: THREE.Object3D,object2: THREE.Object3D) {
-    const raycaster = new Raycaster();
+  private checkRoads() {
+    if(this.selectedTruck){
+      let raycaster = new THREE.Raycaster();
 
-    // Set the raycaster's origin and direction based on the positions of the objects
-    const origin = object1.position;
-    const direction = object2.position.clone().sub(object1.position);
-    raycaster.set(origin, direction);
-    const material = new THREE.LineBasicMaterial({
-      color: 0x0000ff
-    });
+      // Next, set the origin and direction of the ray to match the position and direction of the truck
+      let direction = new THREE.Vector3();
+      this.selectedTruck.getWorldDirection(direction)
+      raycaster.set(this.selectedTruck.position, direction);
+      
+      // Use the raycaster to check for intersections between the ray and the list of roads
+      let intersects = raycaster.intersectObjects(this.roads);
+      
+      // If the ray intersects with any of the roads, the truck is moving on one of them
+      if (intersects.length > 0) {
+        console.log("Truck is moving on a road!");
+      }
+    }
     
-    const points = [];
-    points.push( origin );
-    points.push( direction );
 
+
+  }
+
+  private gravity() {
+    if(this.selectedTruck){
+      // First, create a new raycaster object
+      let raycaster = new THREE.Raycaster();
+        
+      // Next, set the origin and direction of the ray to match the position and direction of the truck's fall
+      raycaster.set(this.selectedTruck.position, new THREE.Vector3(0, 0, -1)); // Direction of fall is (0, 0, -1)
+
+      // Use the raycaster to check for intersections between the ray and the list of roads
+      let intersects = raycaster.intersectObjects(this.roads);
+
+      // If the ray does not intersect with any of the roads, update the truck's position to make it fall
+      if (intersects.length === 0) {
+        this.selectedTruck.position.z -= 0.1; // Fall rate of 0.1 units per frame
+      }
+      // If the ray intersects with a road, stop the truck's fall
+      else {
+        // Get the position of the truck in world space
+        // Create a new Vector3 object to store the world position of the truck
+        let worldPosition = new THREE.Vector3();
+
+        // Get the world position of the truck and store it in the Vector3 object
+        this.selectedTruck.getWorldPosition(worldPosition);
     
-    const geometry = new THREE.BufferGeometry().setFromPoints( points );
+        // Loop through the list of intersecting roads
+        for (const element of intersects) {
+          // Get the current road object
+          let road = element.object;
+          console.log(road)
+          // Check if the world position of the truck is inside the bounds of the road
+          // if (worldPosition.x >= road.position.x - road.size.x / 2 && worldPosition.x <= road.position.x + road.size.x / 2 && worldPosition.y >= road.position.y - road.size.y / 2 && worldPosition.y <= road.position.y + road.size.y / 2) {
+          //   // If the truck is inside the bounds of the road, set its position to the point of intersection
+          //   truck.position.z = intersects[0].point.z;
+          //   break;
+          // }
+        }
     
-    const line = new THREE.Line( geometry, material );
-    this.scene.add( line );
-
-
+        // If the truck is outside the bounds of all intersecting roads, allow it to continue falling
+        // this.selectedTruck.position.z -= 0.1; // Fall rate of 0.1 units per frame
+      }
+      
+    }
+    
   }
 
 
