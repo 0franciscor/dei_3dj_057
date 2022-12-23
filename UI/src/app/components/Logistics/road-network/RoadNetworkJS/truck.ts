@@ -8,10 +8,6 @@ interface posProps {
     z: number
 }
 
-interface whAndWidth {
-    wh: string,
-    width: number
-}
 export default class Truck {
     object: THREE.Group;
     warehouseOG: string;

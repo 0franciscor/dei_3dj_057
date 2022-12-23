@@ -73,6 +73,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   private camera!: THREE.PerspectiveCamera;
   
+  private controls!: OrbitControls;
 
   private get container(): HTMLDivElement {
     return this.containerRef.nativeElement;
@@ -243,7 +244,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       positions: positions,
       paths: paths
     });
-    console.log(warehouses.length)
     let truckObjects = await this.createTrucks(warehouses.length);
     this.truckNetwork = new TruckNetwork(positions,this.roadNetwork.whAndWidths, truckObjects);
 
@@ -294,8 +294,10 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
         
         if(truck != undefined){
           this.selectedTruck = truck;
+          this.lastPosition = this.selectedTruck.position;
+          this.camera.position.z = this.selectedTruck.position.z + 10;
           this.player = new Player(this.selectedTruck);
-
+          this.controls.target.copy(this.selectedTruck.position);
 
           //create a cube
           let cubeGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
@@ -337,12 +339,9 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     this.camera.up.set(0, 0, 1);
 
     this.camera.position.z = this.cameraZ;
-    let truckName = this.truckNetwork.object.children[0].name
+    
         
-        
-    let truck = this.scene.getObjectByName(truckName)?.children[0];
-    if(truck)
-    this.camera.lookAt(truck.position);
+    
 
     
 
@@ -366,6 +365,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   }
 
+  private lastPosition = new THREE.Vector3();
+
   private animate() {
    
     let selectedTruck = this.select.value;
@@ -374,10 +375,20 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     
       let truckName = this.truckNetwork.object.children[whIndex].name
       let truck = this.scene.getObjectByName(truckName)?.children[0];
+      
       if(truck != undefined){
         
         this.selectedTruck = truck;
-
+        
+        this.controls.update();
+        
+        
+        this.camera.position.lerp(this.selectedTruck.position, 0);
+        this.camera.lookAt(this.selectedTruck.position);
+        this.renderer.render(this.scene, this.camera);
+        
+        
+        
           
 
       }
@@ -425,7 +436,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
      }
     }());
 
-    new OrbitControls(this.camera, this.canvas);
+    this.controls = new OrbitControls(this.camera, this.canvas);
+    this.controls.target.set(0, 0, 0);
   }
 
 
