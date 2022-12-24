@@ -56,6 +56,14 @@ export default class Player {
         this.canMoveBackward = canMove;
     }
 
+    public getMoveForward() {
+        return this.canMoveForward;
+    }
+
+    public getMoveBackward() {
+        return this.canMoveBackward;
+    }
+
     public getSpeed() {
         return this.movementSpeed;
     }

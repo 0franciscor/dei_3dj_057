@@ -519,7 +519,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       raycastPosition.z += 0.5;
       raycaster.set(raycastPosition, new THREE.Vector3(0, 0, -1));
       intersects = raycaster.intersectObjects(this.roads);
-      
       if (intersects.length === 0)
         this.player.changeMoveForward(false);
       else
@@ -533,17 +532,22 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       else
         this.player.changeMoveBackward(true);
 
+      raycastPosition = this.player.getNextForwardPosition();
+      raycastPosition.z += 0.5;
+      raycaster.set(raycastPosition, new THREE.Vector3(0, 0, -1));
+      intersects = raycaster.intersectObjects(this.warehouses);
+      if (intersects.length != 0 && this.player.getMoveForward())
+        this.player.changeMoveForward(false);
       
+      raycastPosition = this.player.getNextBackwardPosition();
+      raycastPosition.z += 0.5;
+      raycaster.set(raycastPosition, new THREE.Vector3(0, 0, -1));
+      intersects = raycaster.intersectObjects(this.warehouses);
+      if (intersects.length != 0 && this.player.getMoveBackward())
+        this.player.changeMoveBackward(false);
+      
+        
 
-
-      
-      
-      
-      
-
-
-    
-      
     }
 
   }
