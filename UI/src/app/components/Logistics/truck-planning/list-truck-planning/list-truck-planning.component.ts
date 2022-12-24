@@ -11,9 +11,9 @@ import { TripService } from "src/app/Services/TripService/trip.service";
 interface Trip {
     tripID: string
     date: string;
-    pathIDlist: string;
+    pathIDlist: string[];
     truckID: string;
-    deliveryIDlist: string;
+    deliveryIDlist: string[];
 }
 
 
@@ -59,12 +59,12 @@ export class ListTruckPlanningComponent implements OnInit {
 
     loadTrips() {
         this.tripList = [
-            { tripID: "1", date: "2021-05-01", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
-            { tripID: "2", date: "2021-05-02", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
-            { tripID: "3", date: "2021-05-03", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
-            { tripID: "4", date: "2021-05-04", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
-            { tripID: "5", date: "2021-05-05", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
-            { tripID: "6", date: "2021-05-06", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
+            { tripID: "1", date: "2021-05-01", pathIDlist: ["1", "2"], truckID: "1", deliveryIDlist: ["1", "2"] },
+            { tripID: "2", date: "2021-05-02", pathIDlist: ["1", "2"], truckID: "1", deliveryIDlist: ["1", "2"] },
+            { tripID: "3", date: "2021-05-03", pathIDlist: ["1", "2"], truckID: "1", deliveryIDlist: ["1", "2"] },
+            { tripID: "4", date: "2021-05-04", pathIDlist: ["1", "2"], truckID: "1", deliveryIDlist: ["1", "2"] },
+            { tripID: "5", date: "2021-05-05", pathIDlist: ["1", "2"], truckID: "1", deliveryIDlist: ["1", "2"] },
+            { tripID: "6", date: "2021-05-06", pathIDlist: ["1", "2"], truckID: "1", deliveryIDlist: ["1", "2"] },
         ]
 
         this.dataSource =  new MatTableDataSource(this.tripList);
