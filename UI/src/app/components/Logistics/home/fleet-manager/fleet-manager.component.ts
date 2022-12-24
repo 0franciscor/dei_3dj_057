@@ -40,9 +40,12 @@ export class FleetManagerComponent implements OnInit {
   constructor(private loginService:LoginService,public dialog: MatDialog,private truckService: TruckService, private router: Router) {}
 
   isAuth: boolean = false;
+  isAdmin: boolean = false;
   authorizedRoles: string[] = ["fltMan","admin"];
   async isAuthenticated() {
     const role= await this.loginService.getRole();
+    if(role == "admin")
+      this.isAdmin = true;
     if(!this.authorizedRoles.includes(role)){
       this.router.navigate(['/']);
       return false
@@ -90,7 +93,11 @@ export class FleetManagerComponent implements OnInit {
     
 
     let answer = await this.truckService.toggleActiveTruck(truckID);
-    let message = "Truck Deleted Successfully";
+    let message = "";
+    if(this.selectedTruckOption.active)
+      message = "Truck Disabled Successfully";
+    else
+      message = "Truck Enabled Successfully";
     if(answer.status != 200){
       message = "Truck Deletion Failed";
     }
@@ -103,13 +110,15 @@ export class FleetManagerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(answer.status == 200)
-        this.router.navigate(['Logistics/Truck/FleetManager']);
+        this.router.navigate(['Logistics/Home/FleetManager']);
       
     });
     this.truckService.getAllTruck().then((data) => {
       this.truckList = data;
       this.dataSource = this.truckList;
     });
+    if(this.selectedTruckOption!="")
+      this.selectedTruck.active = !this.selectedTruck.active;
     
   }
 
@@ -117,6 +126,39 @@ export class FleetManagerComponent implements OnInit {
     this.selectedTruckOption="";
     this.seeAll=!this.seeAll;
   }
+
+  async deleteTruck(truckID:string) {
+    if(!this.selectedTruckOption.active){
+      let answer = await this.truckService.deleteTruck(truckID);
+      let message = "Truck Deleted Successfully";
+      
+        
+      if(answer.status != 200){
+        message = "Truck Deletion Failed";
+      }
+      const dialogRef = this.dialog.open(DeleteTruckComponentDialog, {
+        width: '250px',
+        data: {
+          name: truckID,
+          message: message},
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(answer.status == 200)
+          this.router.navigate(['Logistics/Home/FleetManager']);
+        
+      });
+      this.truckService.getAllTruck().then((data) => {
+        this.truckList = data;
+        this.dataSource = this.truckList;
+      });
+
+      if(this.selectedTruckOption!="")
+        window.location.reload();
+
+    }
+  }
+    
 
 }
 

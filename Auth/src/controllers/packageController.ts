@@ -12,31 +12,45 @@ constructor() {}
 
 private roles = ["admin","logMan"];
 
-  isAuthenticated(req: Request) {
+isAuthenticated(req: Request) {
+  try {
     if(req.cookies['jwt'] == undefined)
       return false;
     const cookie = req.cookies['jwt'];
-    
+  
     const claims = jwt.verify(cookie, config.jwtSecret);
-    
+  
     if(!claims)
         return false;
     
     return true;
+  } catch (error) {
+    return false
   }
+  
+}
 
-  isAuthorized(req: Request) {
+isAuthorized(req: Request, specifiedRoles?: string[]) {
+  try {
     if(req.cookies['jwt'] == undefined)
       return false;
     const cookie = req.cookies['jwt'];
     const claims = jwt.verify(cookie, config.jwtSecret);
-    
     if(!claims)
         return false;
-    if(this.roles.indexOf(claims.role) > -1)
-      return true;
+    if(specifiedRoles != undefined){
+        if(specifiedRoles.indexOf(claims.role) > -1)
+            return true;
+        return false;
+    }
+    else if(this.roles.indexOf(claims.role) > -1)
+        return true;
+    return false;
+  } catch (error) {
     return false;
   }
+
+}
 
   async createPackage(req: Request, res:Response, next: NextFunction) {
     if(req.headers.authorization!=undefined)

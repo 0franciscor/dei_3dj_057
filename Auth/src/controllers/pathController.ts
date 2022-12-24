@@ -15,26 +15,43 @@ export default class PathController implements IPathController {
   private roles = ["admin","logMan"];
 
   isAuthenticated(req: Request) {
-    if(req.cookies['jwt'] == undefined)
-      return false;
-    const cookie = req.cookies['jwt'];
-    const claims = jwt.verify(cookie, config.jwtSecret);
-    if(!claims)
+    try {
+      if(req.cookies['jwt'] == undefined)
         return false;
+      const cookie = req.cookies['jwt'];
     
-    return true;
+      const claims = jwt.verify(cookie, config.jwtSecret);
+    
+      if(!claims)
+          return false;
+      
+      return true;
+    } catch (error) {
+      return false
+    }
+    
   }
 
-  isAuthorized(req: Request) {
-    if(req.cookies['jwt'] == undefined)
-      return false;
-    const cookie = req.cookies['jwt'];
-    const claims = jwt.verify(cookie, config.jwtSecret);
-    if(!claims)
+  isAuthorized(req: Request, specifiedRoles?: string[]) {
+    try {
+      if(req.cookies['jwt'] == undefined)
         return false;
-    if(this.roles.indexOf(claims.role) > -1)
-      return true;
-    return false;
+      const cookie = req.cookies['jwt'];
+      const claims = jwt.verify(cookie, config.jwtSecret);
+      if(!claims)
+          return false;
+      if(specifiedRoles != undefined){
+          if(specifiedRoles.indexOf(claims.role) > -1)
+              return true;
+          return false;
+      }
+      else if(this.roles.indexOf(claims.role) > -1)
+          return true;
+      return false;
+    } catch (error) {
+      return false;
+    }
+
   }
 
   public async getAllPaths(req: Request, res: Response, next: NextFunction){

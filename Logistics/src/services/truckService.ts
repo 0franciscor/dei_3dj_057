@@ -115,7 +115,7 @@ export default class TruckService implements ITruckService {
 
     }
 
-    public async deleteTruck(truckID: string): Promise<Result<ITruckDTO>> {
+    public async softDeleteTruck(truckID: string): Promise<Result<ITruckDTO>> {
         try {
 
             const truck = await this.truckRepo.getTruckById(truckID);
@@ -130,6 +130,22 @@ export default class TruckService implements ITruckService {
             await this.truckRepo.save(truck);
 
             const truckDTOResult = TruckMap.toDTO(truck) as ITruckDTO;
+            return Result.ok<ITruckDTO>(truckDTOResult);
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    public async hardDeleteTruck(truckID: string): Promise<Result<ITruckDTO>> {
+        try {
+            const truck = await this.truckRepo.getTruckById(truckID);
+            if(truck === null)
+                return Result.fail<ITruckDTO>("Truck not found");
+            if(truck.active.active)
+                return Result.fail<ITruckDTO>("Truck is active");
+
+            await this.truckRepo.delete(truck);
+            const truckDTOResult = TruckMap.toDTO(truck);
             return Result.ok<ITruckDTO>(truckDTOResult);
         } catch (e) {
             throw e;

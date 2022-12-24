@@ -7,5 +7,6 @@ export default interface ITruckService  {
     getTruck(truckID: string): Promise<Result<ITruckDTO>>;
     getAllTrucks(): Promise<Result<ITruckDTO[]>>;
     updateTruck(truck: ITruckDTO): Promise<Result<ITruckDTO>>;
-    deleteTruck(truckID: string): Promise<Result<ITruckDTO>>;
+    softDeleteTruck(truckID: string): Promise<Result<ITruckDTO>>;
+    hardDeleteTruck(truckID: string): Promise<Result<ITruckDTO>>;
 }

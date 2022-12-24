@@ -56,8 +56,11 @@ export default (app: Router) => {
     );
 
     route.delete('/id/:id', (req, res, next) => {
-        req.body.truckID = req.params.id;
-        ctrl.deleteTruck(req, res, next)
+        ctrl.softDeleteTruck(req, res, next)
+    });
+
+    route.delete('/hard/id/:id', (req, res, next) => {
+        ctrl.hardDeleteTruck(req, res, next)
     });
 
 
