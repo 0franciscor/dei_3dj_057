@@ -35,6 +35,7 @@ interface Truck {
   
 
 
+
 @Component({
   selector: 'app-road-network',
   templateUrl: './RoadNetworkJS/road-network.component.html',

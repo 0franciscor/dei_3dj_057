@@ -90,7 +90,7 @@ namespace WarehouseManagementTest.Unit.Services
             });
         }
 
-        [Test]
+        /* [Test]
         public async Task CreateWarehouseTest()
         {
             var warehouseExpected = new Warehouse(new WarehouseId(id + "1"), new Address(address), new Altitude(altitude), new Coordinates(latitude, longitude), new Designation(description), new CityId(CityId));
@@ -126,7 +126,7 @@ namespace WarehouseManagementTest.Unit.Services
                 Assert.That(warehouseResult.Designation, Is.EqualTo(warehouseExpected.Designation.designation));
 
             });
-        }
+        } */
 
         /*[Test]
         public async Task UpdateWarehouseTest()

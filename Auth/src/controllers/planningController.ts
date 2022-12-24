@@ -94,7 +94,7 @@ export default class PlanningController implements IPlanningController {
 
     const data = req.body;
     console.log(data)
-    const response = await this.fetch(url_prolog, 'POST', data, httpAgent); 
+    const response = await this.fetch(url_prolog, 'POST', data,req.headers.cookie,httpAgent); 
 
     const info = await response.json();
     res.status(200);

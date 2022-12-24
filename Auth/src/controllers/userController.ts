@@ -1,20 +1,15 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import { Container} from 'typedi';
 import { Inject, Service } from 'typedi';
 
 import config from '../../config';
 
-import IUserRepo from '../services/IRepos/IUserRepo';
 
 import { Result } from '../core/logic/Result';
 
-import { UserMap } from "../mappers/UserMap";
 import { IUserDTO } from '../dto/IUserDTO';
-import { ServerCapabilities } from 'mongodb';
-import IUserController from './IControllers/IUserController';
 import IUserService from '../services/IServices/IUserService';
-import { ParamsDictionary } from 'express-serve-static-core';
+import IUserController from './IControllers/IUserController';
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(config.googleClientId);
 const jwt = require('jsonwebtoken');

@@ -1,7 +1,6 @@
 import { Repo } from "../../core/infra/Repo";
 import { Role } from "../../domain/role/Role";
 import { RoleId } from "../../domain/role/RoleId";
-import IRoleDTO from "../../dto/IRoleDTO";
 
 export default interface IRoleRepo extends Repo<Role> {
   save(role: Role): Promise<Role>;

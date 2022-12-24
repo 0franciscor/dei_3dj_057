@@ -4,5 +4,5 @@ export interface ITripPersistence{
     date: string;
     pathIDlist: Array<string>;
     truckID: string;
-    packagingID: string;
+    deliveryIDlist: Array<string>;
 }

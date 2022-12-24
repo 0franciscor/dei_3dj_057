@@ -1,14 +1,13 @@
+import bcrypt from "bcrypt";
 import { Inject, Service } from "typedi";
+import config from "../../config";
 import { Result } from "../core/logic/Result";
+import { User } from "../domain/user/User";
+import { UserEmail } from "../domain/user/UserEmail";
 import { IUserDTO } from "../dto/IUserDTO";
+import { UserMap } from "../mappers/UserMap";
 import IUserRepo from "./IRepos/IUserRepo";
 import IUserService from "./IServices/IUserService";
-import { User } from "../domain/user/User";
-import config from "../../config";
-import { UserMap } from "../mappers/UserMap";
-import { UserEmail } from "../domain/user/UserEmail";
-import bcrypt from "bcrypt";
-import { resolve } from "path";
 
 
 @Service()

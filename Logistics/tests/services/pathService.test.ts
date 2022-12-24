@@ -1,15 +1,13 @@
-import PathService from '../../src//services/pathService'
-import IPathService from '../../src/services/IServices/IPathService'
-import { IPathDTO } from '../../src/dto/IPathDTO'
+import { expect } from 'chai';
+import { Document } from 'mongoose';
 import * as sinon from 'sinon';
 import Container from 'typedi';
-import IPathRepo from '../../src/repos/IRepos/IPathRepo';
-import { expect } from 'chai';
-import { PathMap } from '../../src/mappers/PathMap';
-import {Path}  from '../../src/domain/path/Path'
-import path from 'path';
+import PathService from '../../src//services/pathService';
 import { IPathPersistance } from '../../src/dataschema/IPathPersistance';
-import { Document, FilterQuery, Model } from 'mongoose';
+import { Path } from '../../src/domain/path/Path';
+import { IPathDTO } from '../../src/dto/IPathDTO';
+import { PathMap } from '../../src/mappers/PathMap';
+import IPathRepo from '../../src/repos/IRepos/IPathRepo';
 
 describe('PathService Unit Tests', () =>{
     const sandbox = sinon.createSandbox();

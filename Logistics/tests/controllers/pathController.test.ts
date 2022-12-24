@@ -1,17 +1,16 @@
+import { NextFunction, Request, Response } from 'express';
+import 'mocha';
+import { Document } from 'mongoose';
 import "reflect-metadata";
-import {Response, Request, NextFunction} from 'express';
-import { Container } from 'typedi';
-import { Result }  from '../../src/core/logic/Result';
 import * as sinon from 'sinon';
-import PathController from '../../src/controllers/pathController'
-import IPathService from "../../src/services/IServices/IPathService";
-import { IPathDTO } from "../../src/dto/IPathDTO";
-import 'mocha'
-import {PathMap} from "../../src/mappers/PathMap"
-import path from "path";
-import {Path} from '../../src/domain/path/Path'
+import { Container } from 'typedi';
+import PathController from '../../src/controllers/pathController';
+import { Result } from '../../src/core/logic/Result';
 import { IPathPersistance } from "../../src/dataschema/IPathPersistance";
-import { Document, FilterQuery, Model } from 'mongoose';
+import { Path } from '../../src/domain/path/Path';
+import { IPathDTO } from "../../src/dto/IPathDTO";
+import { PathMap } from "../../src/mappers/PathMap";
+import IPathService from "../../src/services/IServices/IPathService";
 
 describe('PathController Unit Tests', ()=>{
     const sandbox = sinon.createSandbox();

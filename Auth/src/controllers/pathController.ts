@@ -1,10 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
-import { Inject, Service } from 'typedi';
+import { NextFunction, Request, Response } from 'express';
+import { Service } from 'typedi';
 import config from "../../config";
 
 import IPathController from "./IControllers/IPathController";
 
-import { Result } from "../core/logic/Result";
 import fetch from 'node-fetch';
 
 const http = require('https');

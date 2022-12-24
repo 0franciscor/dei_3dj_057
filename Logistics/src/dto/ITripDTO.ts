@@ -5,7 +5,7 @@ export interface ITripDTO {
     date: string;
     pathIDlist: string[];
     truckID: string;
-    packagingID: string;
+    deliveryIDlist: string[];
     
 }
 

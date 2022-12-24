@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PathService } from 'src/app/Services/PathService/path.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { PathService } from 'src/app/Services/PathService/path.service';
 
+import { CreatePathComponentDialog } from '../../path/create-path/create-path.component';
 import { LogisticsManagerComponent } from './logistics-manager.component';
-import { CreatePathComponent, CreatePathComponentDialog } from '../../path/create-path/create-path.component';
 
 describe('LogisticsManagerComponent', () => {
   let component: LogisticsManagerComponent;

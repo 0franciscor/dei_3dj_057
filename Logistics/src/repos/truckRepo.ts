@@ -1,13 +1,12 @@
-import { Service, Inject } from 'typedi';
+import { Inject, Service } from 'typedi';
 
-import ITruckRepo from './IRepos/ITruckRepo';
-import { Truck } from '../domain/truck/Truck';
 import { ITruckPersistence } from '../dataschema/ITruckPersistence';
+import { Truck } from '../domain/truck/Truck';
 import { TruckMap } from '../mappers/TruckMap';
+import ITruckRepo from './IRepos/ITruckRepo';
 
 import { Document, FilterQuery, Model } from 'mongoose';
 import { TruckID } from '../domain/truck/TruckID';
-import { raw } from 'body-parser';
 
 
 @Service()

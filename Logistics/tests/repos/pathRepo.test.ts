@@ -1,14 +1,13 @@
-import "reflect-metadata";
-import { Container } from 'typedi';
-import * as sinon from 'sinon';
+import { expect } from "chai";
 import 'mocha';
-import {expect} from "chai";
-import { Document, FilterQuery, Model } from 'mongoose';
-import { IPathDTO } from "../../src/dto/IPathDTO";
-import PathRepo from "../../src/repos/pathRepo"
-import { PathMap } from "../../src/mappers/PathMap";
+import { Document } from 'mongoose';
+import "reflect-metadata";
+import * as sinon from 'sinon';
+import { Container } from 'typedi';
 import { IPathPersistance } from "../../src/dataschema/IPathPersistance";
-import path from "path";
+import { IPathDTO } from "../../src/dto/IPathDTO";
+import { PathMap } from "../../src/mappers/PathMap";
+import PathRepo from "../../src/repos/pathRepo";
 
 describe('PathRepo Unit Tests', ()=>{
     const sandbox = sinon.createSandbox();

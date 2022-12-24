@@ -1,14 +1,13 @@
-import { Service, Inject } from 'typedi';
+import { Inject, Service } from 'typedi';
 
-import ITripRepo from './IRepos/ITripRepo';
-import { Trip } from '../domain/trip/Trip';
 import { ITripPersistence } from '../dataschema/ITripPersistence';
+import { Trip } from '../domain/trip/Trip';
 import { TripMap } from '../mappers/TripMap';
+import ITripRepo from './IRepos/ITripRepo';
 
 import { Document, FilterQuery, Model } from 'mongoose';
 
 import { TripID } from '../domain/trip/TripID';
-import { raw} from 'body-parser'; 
 
 @Service()
 export default class TripRepo implements ITripRepo {
@@ -51,11 +50,17 @@ export default class TripRepo implements ITripRepo {
                     pathToStringList.push(pathID.id);
                 });
 
+                let deliveryToStringList :string[] = [];
+                trip.deliveryIDlist.forEach(deliveryID => {
+                    deliveryToStringList.push(deliveryID.id);
+                });
+
                 tripDocument.tripID = trip.tripID.id;
                 tripDocument.date = trip.date.date;
                 tripDocument.pathIDlist= pathToStringList;
                 tripDocument.truckID = trip.truck.id;
-                tripDocument.packagingID = trip.packaging.id;
+                tripDocument.deliveryIDlist = deliveryToStringList;
+                console.log(tripDocument)
                 await tripDocument.save();
                 return trip;
             }

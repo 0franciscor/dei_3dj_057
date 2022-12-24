@@ -385,13 +385,26 @@ export default class DeliveryController implements IDeliveryController {
                     }
                 }
         }
+       
+        // for(let l=1; l<deliveredWarehouseList.length-1; l++){
+          
+
+        //     plan.info.push({
+        //         warehouse: deliveredWarehouseList[l].id,
+        //         delivery: deliveriesMoved[l-1].deliveryID
+        //     })
+        // }
         
-        for(let l=1; l<deliveredWarehouseList.length-1; l++){
-            plan.info.push({
-                warehouse: deliveredWarehouseList[l].id,
-                delivery: deliveriesMoved[l-1].deliveryID
-            })
-        }
+        deliveredWarehouseList.forEach(deliveredWarehouse => {
+          deliveriesMoved.forEach(delivery => {
+            if(deliveredWarehouse.active &&deliveredWarehouse.city == delivery.destination ){
+              plan.info.push({
+                warehouse: deliveredWarehouse.id,
+                delivery: delivery.deliveryID
+              })
+            }
+          });
+        });
         // console.log(plan)
         res.status(200);
         return res.json(plan);
