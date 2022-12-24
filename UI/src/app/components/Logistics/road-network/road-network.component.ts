@@ -445,7 +445,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     (function render() {
       requestAnimationFrame(render);
       component.gravity();
-      component.checkRoads();
       component.animate();
       component.onWindowResize();
       component.renderer.render(component.scene, component.camera);
@@ -493,72 +492,62 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   }
 
 
-  private checkRoads() {
-    if(this.selectedTruck){
-      let raycaster = new THREE.Raycaster();
-
-      // Next, set the origin and direction of the ray to match the position and direction of the truck
-      let direction = new THREE.Vector3();
-      this.selectedTruck.getWorldDirection(direction)
-      raycaster.set(this.selectedTruck.position, direction);
-      
-      // Use the raycaster to check for intersections between the ray and the list of roads
-      let intersects = raycaster.intersectObjects(this.roads);
-      
-      // If the ray intersects with any of the roads, the truck is moving on one of them
-      if (intersects.length > 0) {
-        console.log("Truck is moving on a road!");
-      }
-    }
-    
-
-
-  }
-
   private gravity() {
     if(this.selectedTruck){
       // First, create a new raycaster object
       let raycaster = new THREE.Raycaster();
-        
+    
       // Next, set the origin and direction of the ray to match the position and direction of the truck's fall
-      raycaster.set(this.selectedTruck.position, new THREE.Vector3(0, 0, -1)); // Direction of fall is (0, 0, -1)
-
+      let raycastPosition = new THREE.Vector3(this.selectedTruck.position.x, this.selectedTruck.position.y, this.selectedTruck.position.z+0.5);
+      raycaster.set(raycastPosition, new THREE.Vector3(0, 0, -1)); // Direction of fall is (0, 0, -1)
+      raycaster.far = 1;
       // Use the raycaster to check for intersections between the ray and the list of roads
       let intersects = raycaster.intersectObjects(this.roads);
 
-      // If the ray does not intersect with any of the roads, update the truck's position to make it fall
-      if (intersects.length === 0) {
-        this.selectedTruck.position.z -= 0.1; // Fall rate of 0.1 units per frame
-      }
-      // If the ray intersects with a road, stop the truck's fall
-      else {
-        // Get the position of the truck in world space
-        // Create a new Vector3 object to store the world position of the truck
-        let worldPosition = new THREE.Vector3();
 
-        // Get the world position of the truck and store it in the Vector3 object
-        this.selectedTruck.getWorldPosition(worldPosition);
-    
-        // Loop through the list of intersecting roads
-        for (const element of intersects) {
-          // Get the current road object
-          let road = element.object;
-          console.log(road)
-          // Check if the world position of the truck is inside the bounds of the road
-          // if (worldPosition.x >= road.position.x - road.size.x / 2 && worldPosition.x <= road.position.x + road.size.x / 2 && worldPosition.y >= road.position.y - road.size.y / 2 && worldPosition.y <= road.position.y + road.size.y / 2) {
-          //   // If the truck is inside the bounds of the road, set its position to the point of intersection
-          //   truck.position.z = intersects[0].point.z;
-          //   break;
-          // }
-        }
-    
-        // If the truck is outside the bounds of all intersecting roads, allow it to continue falling
-        // this.selectedTruck.position.z -= 0.1; // Fall rate of 0.1 units per frame
+      
+      if(intersects.length != 0){
+        // Get the intersection point and calculate the distance between it and the bottom of the truck
+        let intersection = intersects[0];
+        let distance = intersection.point.z - this.selectedTruck.position.z;
+        // Adjust the position of the truck to keep it touching the road
+        this.selectedTruck.position.z += distance+0.01;
+
       }
+
+      raycastPosition = this.player.getNextForwardPosition();
+      raycastPosition.z += 0.5;
+      raycaster.set(raycastPosition, new THREE.Vector3(0, 0, -1));
+      intersects = raycaster.intersectObjects(this.roads);
+      
+      if (intersects.length === 0)
+        this.player.changeMoveForward(false);
+      else
+        this.player.changeMoveForward(true);
+      raycastPosition = this.player.getNextBackwardPosition();
+      raycastPosition.z += 0.5;
+      raycaster.set(raycastPosition, new THREE.Vector3(0,0,-1))
+      intersects = raycaster.intersectObjects(this.roads);
+      if(intersects.length === 0)
+        this.player.changeMoveBackward(false);
+      else
+        this.player.changeMoveBackward(true);
+
+      
+
+
+      
+      
+      
+      
+
+
+    
       
     }
-    
+
   }
+  
 
 
   

@@ -11,7 +11,6 @@ interface posProps {
 export default class Truck {
     object: THREE.Group;
     warehouseOG: string;
-    mass = 8000;
 
     
     constructor(pos: posProps, paths:any) {
@@ -38,7 +37,7 @@ export default class Truck {
         truckTexture.position.set(pos.x, pos.y - startPositonOffset, pos.z + 0.1);
         const target = new THREE.Vector3();
         truckTexture.getWorldDirection(target);
-        console.log(target);
+        
         
         this.object.add(truckTexture);
 

@@ -147,7 +147,7 @@ export default class NodeTemplate {
         let material = new THREE.MeshBasicMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
 
         let circle: THREE.Mesh = new THREE.Mesh(geometry, material);
-        circle.position.set(pos.x, pos.y, pos.z + 0.001);
+        circle.position.set(pos.x, pos.y, pos.z);
         this.object.add(circle);
 
         //Lighting
