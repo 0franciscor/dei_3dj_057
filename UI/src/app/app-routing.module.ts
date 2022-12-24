@@ -22,6 +22,7 @@ import { DefaultHomeComponent } from './components/defaultHome/default-home/defa
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { CreateUserComponent } from './components/admin/create-user/create-user.component';
+import { ListTruckPlanningComponent } from './components/Logistics/truck-planning/list-truck-planning/list-truck-planning.component';
 
 
 
@@ -47,7 +48,7 @@ const routes: Routes = [
   { path: 'Admin/Home', component: AdminHomeComponent},
   { path: 'Admin/CreateUser', component: CreateUserComponent},
   { path: 'TermsAndConditions', component: TermsAndConditionsComponent},
-
+  { path: 'Logistics/TruckPlanning/ListTruckPlanning', component: ListTruckPlanningComponent}
 ];
 
 @NgModule({

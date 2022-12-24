@@ -29,10 +29,7 @@
             <td mat-cell id="deliveryIDlist" *matCellDef="let trip">{{trip.deliveryIDList}}</td>
         </ng-container>
     </table>
-    <mat-paginator *ngIf="dataSource.data != undefined"
-        #paginator
-        [length] = "dataSource.data.length"
-        [pageSizeOptions]="[1, 5, 10]"
-        showFirstLastButtons
-></mat-paginator>
+
+    
+    
 </div>
