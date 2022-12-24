@@ -23,13 +23,41 @@ export class LoginService {
     const jsonResponse = await response.json();
 
     const cookie = jsonResponse.token;
+    console.log(cookie);
     localStorage.setItem('jwt', cookie);
     document.cookie = "jwt=" + cookie + "; path=/";
+    console.log(document.cookie);
+
     localStorage.setItem('user', jsonResponse.userId);
     localStorage.setItem('role', jsonResponse.role);
     
     return response;
   }
+
+  async deleteLogin(loginInfo: any){
+    let url = this.urlOrigin+'api/user/login';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/user/login/'
+    }
+
+    const data = loginInfo;
+    console.log("data:",data)
+
+    const response = await this.sendFetch(url, 'GET', data," ");
+
+    const jsonResponse = await response.json();
+
+    const cookie = jsonResponse.token;
+    document.cookie = "jwt=" + cookie + "; path=/";
+    console.log(cookie);
+    localStorage.removeItem(document.cookie);
+
+    this.sendFetch(url,'DELETE',data, "");
+
+  }
+
+
+
 
   async loginWithGoogle(credentials: string) {
     // const header = new HttpHeaders().set('Content-type', 'application/json');
@@ -43,6 +71,16 @@ export class LoginService {
     localStorage.setItem('jwt', cookie);
     document.cookie = "jwt=" + cookie + "; path=/";
   }
+
+
+  async deleteLoginCookie(){
+
+
+
+
+  }
+
+
 
   async getRole() {
     let url = this.urlOrigin+'api/role/currentRole';
