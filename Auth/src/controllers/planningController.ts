@@ -55,25 +55,30 @@ export default class PlanningController implements IPlanningController {
  
 
   private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
-   
-    if(body)
-      return await fetch(url,{
-        method : method,
-        body : JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
-          'Cookie': cookie
-        },
-        agent: agent
-      });
-    else
-      return await fetch(url,{
-        method : method,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        agent: agent
-      });
+    try {
+      if(body)
+        return await fetch(url,{
+          method : method,
+          body : JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+          },
+          agent: agent
+        });
+      else
+        return await fetch(url,{
+          method : method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+          },
+          agent: agent
+        });
+    } catch (error) {
+      return {status: 503, json(): any{ return {message: "Error connecting to server"}}};
+    }
+    
   }
 
 
@@ -95,7 +100,10 @@ export default class PlanningController implements IPlanningController {
     const data = req.body;
     console.log(data)
     const response = await this.fetch(url_prolog, 'POST', data,req.headers.cookie,httpAgent); 
-
+    if(response.status != 200){
+      res.status(503);
+      return res.json(response.json());
+    }
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -141,7 +149,10 @@ export default class PlanningController implements IPlanningController {
 
     const data = req.body;
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie, httpAgent); 
-
+    if(response.status != 200){
+      res.status(503);
+      return res.json(response.json());
+    }
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -164,7 +175,10 @@ export default class PlanningController implements IPlanningController {
 
     const data = req.body;
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie, httpAgent); 
-
+    if(response.status != 200){
+      res.status(503);
+      return res.json(response.json());
+    }
     const info = await response.json();
     res.status(200);
     return res.json(info);
