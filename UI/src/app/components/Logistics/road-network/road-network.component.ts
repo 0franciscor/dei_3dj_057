@@ -97,7 +97,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   private player!: Player;
   private playerPositionObject!: Object3D;
-  private closestWarehouse!: Object3D;
   private roads: Object3D[] = [];
   private warehouses: Object3D[] = [];
 
@@ -308,6 +307,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
           this.selectedTruck = truck;
           this.lastPosition = this.selectedTruck.position;
           this.camera.position.z = this.selectedTruck.position.z + 10;
+          if(this.player != undefined)
+            this.player.destroy();
           this.player = new Player(this.selectedTruck);
           this.controls.target.copy(this.selectedTruck.position);
 
@@ -389,30 +390,35 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   private animate() {
    
-    let selectedTruck = this.select.value;
-    if (selectedTruck != "Select Truck") {
-      let whIndex = this.truckNetwork.truckNames.findIndex((truck) => truck == selectedTruck);
+    if(this.selectedTruck != undefined){
+      this.controls.update();
+        
+      this.playerPositionObject.children[0].position.set(this.selectedTruck.position.x, this.selectedTruck.position.y, this.selectedTruck.position.z+2);
+      this.camera.position.lerp(this.selectedTruck.position, 0);
+      this.camera.lookAt(this.selectedTruck.position);
+      this.renderer.render(this.scene, this.camera);
+
+    }
+    // let selectedTruck = this.select.value;
+    // if (selectedTruck != "Select Truck") {
+    //   let whIndex = this.truckNetwork.truckNames.findIndex((truck) => truck == selectedTruck);
     
-      let truckName = this.truckNetwork.object.children[whIndex].name
-      let truck = this.scene.getObjectByName(truckName)?.children[0];
+    //   let truckName = this.truckNetwork.object.children[whIndex].name
+    //   let truck = this.scene.getObjectByName(truckName)?.children[0];
       
-      if(truck != undefined){
+    //   if(truck != undefined){
+    //     console.log(this.selectedTruck)
         
-        this.selectedTruck = truck;
+    //     this.selectedTruck = truck;
         
-        this.controls.update();
         
-        this.playerPositionObject.children[0].position.set(this.selectedTruck.position.x, this.selectedTruck.position.y, this.selectedTruck.position.z+2);
-        this.camera.position.lerp(this.selectedTruck.position, 0);
-        this.camera.lookAt(this.selectedTruck.position);
-        this.renderer.render(this.scene, this.camera);
         
         
         
           
 
-      }
-    }
+    //   }
+    // }
    
     
     
