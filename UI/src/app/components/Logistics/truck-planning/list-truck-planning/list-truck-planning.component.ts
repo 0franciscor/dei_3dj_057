@@ -25,9 +25,6 @@ interface Trip {
 
 export class ListTruckPlanningComponent implements OnInit {
 
-    constructor(private loginService: LoginService, private tripService: TripService, private router: Router) {
-        this.loadTrips();
-    }
 
     public tripList: Trip[] = [];
     public originalPackageList: Trip[] = [];
@@ -35,9 +32,16 @@ export class ListTruckPlanningComponent implements OnInit {
 
     displayedColumns: string[] = ['tripID', 'date', 'pathIDlist', 'truckID', 'deliveryIDlist'];
 
+    constructor(private loginService: LoginService, private tripService: TripService, private router: Router) {
+        this.loadTrips();
+    }
+
+    
+    
+
     dataSource!: MatTableDataSource<Trip>;
 
-    @ViewChild('paginator', { static: true })
+    @ViewChild('paginator', { static: false })
     set paginator(value: MatPaginator) {
         if (this.dataSource) {
             this.dataSource.paginator = value;
@@ -57,6 +61,7 @@ export class ListTruckPlanningComponent implements OnInit {
     }
 
 
+    
     loadTrips() {
         this.tripList = [
             { tripID: "1", date: "2021-05-01", pathIDlist: ["1", "2"], truckID: "1", deliveryIDlist: ["1", "2"] },
@@ -70,13 +75,43 @@ export class ListTruckPlanningComponent implements OnInit {
         this.dataSource =  new MatTableDataSource(this.tripList);
     }
 
-    async ngOnInit() {
+    /*
+
+    loadTrips() {
+        this.tripList = [
+            { tripID: "1", date: "2021-05-01", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
+            { tripID: "2", date: "2021-05-02", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
+            { tripID: "3", date: "2021-05-03", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
+            { tripID: "4", date: "2021-05-04", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
+            { tripID: "5", date: "2021-05-05", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
+            { tripID: "6", date: "2021-05-06", pathIDlist: "1", truckID: "1", deliveryIDlist: "1" },
+        ]
+
+        this.dataSource =  new MatTableDataSource(this.tripList);
+    }
+    */
+
+    /* async ngOnInit() {
         this.isAuth = await this.isAuthenticated();
         if (this.isAuth) 
             this.tripService.getAllTrips().then((data) => {
                 this.tripList = data;
+                console.log(data);
                 this.originalPackageList = data.slice();
                 this.loadTrips();
             });
+    }
+    */
+
+    async ngOnInit() {
+        this.isAuth = await this.isAuthenticated();
+        if (this.isAuth) 
+           {
+            this.loadTrips();
+            console.log(this.tripList);
+            console.log(this.dataSource);
+            this.originalPackageList = this.tripList.slice();
+            this.dataSource = new MatTableDataSource(this.tripList);
+           }
     }
 }
