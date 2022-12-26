@@ -127,4 +127,9 @@ export class TruckPlanningComponent implements OnInit {
     this.tripService.createTrip(savePlan);
     
   }
+
+  goToListTruckPlanning(){
+    this.router.navigate(['Logistics/TruckPlanning/ListTruckPlanning']);
+  }
+
 }

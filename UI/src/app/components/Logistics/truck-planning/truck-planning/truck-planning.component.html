@@ -6,6 +6,8 @@
                     <h2>Getting a truck plan</h2>
                     <h4 class="animation a2">Please enter the information in the fields below</h4>
                 </mat-card-title>
+
+                <button mat-button class="btn btn-primary" (click)="goToListTruckPlanning()"> dai, un'altra bandiera a Maranello. Vai!</button>
                
             </mat-card-header>
             <form [formGroup]="formPlanning" (ngSubmit)="onSubmit()">
@@ -46,6 +48,7 @@
             <li (click)="getHighestMassFirst()">Highest Mass first path</li>
             <li (click)="getClosestWarehouse()"> Closest warehouse path</li>
             <li (click)="getCheapestPath()">Cheapest Mass/Distance path</li>
+            <li (click)="goToListTruckPlanning() ">Get all trips </li>
           </ul>
         
     </div>
