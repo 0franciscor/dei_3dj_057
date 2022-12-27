@@ -31,4 +31,10 @@ export class AdminHomeComponent implements OnInit {
     this.router.navigate(['Admin/CreateUser']);
   }
 
+  goToCancelUser(){
+    this.router.navigate(['Admin/CancelUser']);
+  }
+
+
+
 }

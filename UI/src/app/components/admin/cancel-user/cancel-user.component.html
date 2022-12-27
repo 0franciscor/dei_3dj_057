@@ -1,0 +1,21 @@
+<div class = "main-div" *ngIf="isAuth">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                <h1>Cancel User</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class = "sec-div" *ngIf="formCancelUser">
+            <form [formGroup] = "formCancelUser" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance = "fill">
+                <mat-label> Email </mat-label>
+                <input matInput type="text" formControlName="email" required>
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="submit">Submit</button>   
+            </form>
+        </mat-card-content>
+        <button mat-raised-button color="warn" (click)="goBack()">Go Back</button>
+    </mat-card>
+
+
+</div>
