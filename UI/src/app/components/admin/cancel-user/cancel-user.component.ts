@@ -50,6 +50,7 @@ export class CancelUserComponent implements OnInit {
    async ngOnInit(){
         this.isAuth = await this.isAuthenticated();
         const email = this.route.snapshot.paramMap.get('email'); 
+        /*
         this.formCancelUser= new FormGroup({
 
             firstName: new FormControl(this.selectedUser.firstName,[Validators.required]),
@@ -61,6 +62,7 @@ export class CancelUserComponent implements OnInit {
         });
 
         console.log(email);
+        */
 
         if(email)
         this.adminService.getAccount(email).then((data) => {
