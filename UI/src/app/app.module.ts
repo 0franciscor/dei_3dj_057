@@ -44,7 +44,7 @@ import { TermsAndConditionsComponent } from './components/terms-and-conditions/t
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { CreateUserComponent } from './components/admin/create-user/create-user.component';
 import { ListTruckPlanningComponent } from './components/Logistics/truck-planning/list-truck-planning/list-truck-planning.component';
-import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
+//import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +79,7 @@ import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.
     AdminHomeComponent,
     CreateUserComponent,
     ListTruckPlanningComponent,
-    CancelUserComponent
+    //CancelUserComponent
   ],
   imports: [
     BrowserModule,
