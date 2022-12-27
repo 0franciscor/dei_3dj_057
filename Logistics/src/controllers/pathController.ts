@@ -16,47 +16,74 @@ export default class PathController implements IPathController{
     constructor(
         @Inject (config.services.path.name) private pathService: IPathService,) {}
 
-        private roles = ["admin", "logMan"];
+    private roles = ["admin", "logMan"];
 
-        isAuthenticated(req: Request) {
-            try {
-              if(req.cookies['jwt'] == undefined)
-                return false;
-              const cookie = req.cookies['jwt'];
-            
-              const claims = jwt.verify(cookie, config.jwtSecret);
-            
-              if(!claims)
-                  return false;
-              
-              return true;
-            } catch (error) {
-              return false
-            }
-            
-          }
+    isAuthenticated(req: Request) {
+        try {
+            if(req.cookies['jwt'] == undefined)
+            return false;
+            const cookie = req.cookies['jwt'];
         
-          isAuthorized(req: Request, specifiedRoles?: string[]) {
-            try {
-              if(req.cookies['jwt'] == undefined)
-                return false;
-              const cookie = req.cookies['jwt'];
-              const claims = jwt.verify(cookie, config.jwtSecret);
-              if(!claims)
-                  return false;
-              if(specifiedRoles != undefined){
-                  if(specifiedRoles.indexOf(claims.role) > -1)
-                      return true;
-                  return false;
-              }
-              else if(this.roles.indexOf(claims.role) > -1)
-                  return true;
-              return false;
-            } catch (error) {
-              return false;
-            }
+            const claims = jwt.verify(cookie, config.jwtSecret);
         
-          }
+            if(!claims)
+                return false;
+            
+            return true;
+        } catch (error) {
+            return false
+        }
+    
+    }
+
+    isAuthorized(req: Request, specifiedRoles?: string[]) {
+        try {
+            if(req.cookies['jwt'] == undefined)
+                return false;
+            const cookie = req.cookies['jwt'];
+            const claims = jwt.verify(cookie, config.jwtSecret);
+            if(!claims)
+                return false;
+            if(specifiedRoles != undefined){
+                if(specifiedRoles.indexOf(claims.role) > -1)
+                    return true;
+                return false;
+            }
+            else if(this.roles.indexOf(claims.role) > -1)
+                return true;
+            return false;
+        } catch (error) {
+            return false;
+        }
+
+    }
+
+    private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
+        try {
+            if(body)
+                return await fetch(url,{
+                    method : method,
+                    body : JSON.stringify(body),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': cookie
+                    },
+                    agent: agent
+                });
+            else
+                return await fetch(url,{
+                    method : method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': cookie
+                    },
+                    agent: agent
+                });
+        } catch (error) {
+            return {status: 503, json(): any{ return {message: "Error connecting to server"}}};
+        }
+    
+    }
     
     public async getPath(req: Request, res: Response, next: NextFunction) {
         if(!this.isAuthenticated(req)){
@@ -128,8 +155,8 @@ export default class PathController implements IPathController{
         
            
             const address_start = 'https://localhost:5001/api/warehouses/Exists/' + req.body.startWHId;
-
-            const response_start = await this.fetch(address_start, req.headers.cookie)
+            const response_start = await this.fetch(address_start, "GET", null, req.headers.cookie)
+            // const response_start = await this.fetch(address_start, req.headers.cookie)
 
             if(response_start.status!= 200){
                 res.status(404)
@@ -138,7 +165,8 @@ export default class PathController implements IPathController{
                 
             
             const address_destination ='https://localhost:5001/api/warehouses/Exists/' + req.body.destinationWHId;
-           const response_destination = await this.fetch(address_destination, req.headers.cookie)
+            const response_destination = await this.fetch(address_destination, "GET", null, req.headers.cookie)
+        //    const response_destination = await this.fetch(address_destination, req.headers.cookie)
 
 
            if (response_destination.status != 200){
@@ -218,15 +246,7 @@ export default class PathController implements IPathController{
         }
     }
 
-    private async fetch(address : string, cookie:any ){
-        const httpAgent = new http.Agent({rejectUnauthorized: false});
-        return await fetch(address,{
-        method : 'GET',
-        agent: httpAgent,
-        headers: {
-            'Content-Type': 'application/json',
-            'Cookie': cookie
-        }
-        });
-    }
+    
+
+    
 }

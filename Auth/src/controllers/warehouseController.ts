@@ -53,26 +53,31 @@ export default class WarehouseController implements IWarehouseController {
 
   }
 
-  private async fetch(url : string, method: string, body: any,cookie:any, agent: any = null){
-   
-    if(body)
-      return await fetch(url,{
-        method : method,
-        body : JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
-          'Cookie': cookie
-        },
-        agent: agent
-      });
-    else
-      return await fetch(url,{
-        method : method,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        agent: agent
-      });
+  private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
+    try {
+      if(body)
+        return await fetch(url,{
+          method : method,
+          body : JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+          },
+          agent: agent
+        });
+      else
+        return await fetch(url,{
+          method : method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+          },
+          agent: agent
+        });
+    } catch (error) {
+      return {status: 503, json(): any{ return {message: "Error connecting to server"}}};
+    }
+    
   }
 
   public async getAllWarehouse(req: Request, res: Response, next: NextFunction){
