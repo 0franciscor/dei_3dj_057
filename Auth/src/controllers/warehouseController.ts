@@ -81,7 +81,7 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async getAllWarehouse(req: Request, res: Response, next: NextFunction){
-
+    console.log(req.headers.origin)
     if(req.headers.origin != "https://vs-gate.dei.isep.ipp.pt:30382"){
       if(req.headers.authorization!=undefined)
         req.cookies["jwt"]=req.headers.authorization.split("=")[1];
