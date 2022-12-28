@@ -142,7 +142,7 @@ export default class TruckController implements ITruckController {
 
   async getAllTruck(req: Request, res: Response, next: NextFunction) {
     console.log(req.headers.origin)
-    if(req.headers.origin != "https://vs-gate.dei.isep.ipp.pt:30382"){
+    if(req.headers.referer != "https://vs-gate.dei.isep.ipp.pt:30382"){
       if(req.headers.authorization!=undefined)
       req.cookies["jwt"]=req.headers.authorization.split("=")[1];
       if(!this.isAuthenticated(req)){
