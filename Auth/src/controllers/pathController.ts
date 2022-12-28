@@ -73,7 +73,7 @@ export default class PathController implements IPathController {
     if(req.get('host').includes("azure"))
       address = 'https://logistics57.azurewebsites.net/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
     
-    const response = await this.fetch(address, 'GET', null, req.headers.cookie);
+    const response = await this.fetch(address, 'GET', null, req.headers.cookie, null, req.headers.origin);
     
     if (response.status != 200){
         res.status(response.status)
@@ -101,7 +101,7 @@ export default class PathController implements IPathController {
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/path/'
     const data = req.body;
-    const response = await this.fetch(url, 'POST', data, req.headers.cookie);
+    const response = await this.fetch(url, 'POST', data, req.headers.cookie, null, req.headers.origin);
     // const response = await fetch(url,{
     //   method: 'POST',
     //   body:JSON.stringify(data),
@@ -135,7 +135,7 @@ export default class PathController implements IPathController {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_path';
 
-    const response_prolog = await this.fetch(url_prolog, 'POST', req.body, req.headers.cookie, httpAgent);
+    const response_prolog = await this.fetch(url_prolog, 'POST', req.body, req.headers.cookie, httpAgent, req.headers.origin);
     // const response_prolog = await fetch(url_prolog, {
     //   method: 'POST',
     //   body: JSON.stringify(req.body),
@@ -155,7 +155,7 @@ export default class PathController implements IPathController {
     return res.json(info);
   }
 
-  private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
+  private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null, origin: string){
     try {
       if(body)
         return await fetch(url,{
@@ -172,7 +172,8 @@ export default class PathController implements IPathController {
           method : method,
           headers: {
             'Content-Type': 'application/json',
-            'Cookie': cookie
+            'Cookie': cookie,
+            'Origin': origin
           },
           agent: agent
         });
