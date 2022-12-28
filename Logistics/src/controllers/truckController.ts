@@ -86,8 +86,8 @@ export default class TruckController implements ITruckController {
     }
 
     public async getAllTrucks(req: Request, res: Response, next: NextFunction){
-        console.log(req.headers.origin);
-        if(req.headers.origin != "https://vs-gate.dei.isep.ipp.pt:30382"){
+        
+        if(req.headers.origin != undefined){
             if(!this.isAuthenticated(req)){
                 res.status(401);
                 return res.json({message: "Not authenticated"});
