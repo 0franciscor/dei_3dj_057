@@ -83,9 +83,7 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
-      console.log(req.headers.origin)
-      console.log(req.headers.origin==undefined)
-      console.log(req.headers.origin=="undefined")
+
 
       if(req.headers.origin != undefined){
         if(req.headers.authorization!=undefined)
@@ -126,37 +124,31 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getAllDeliveriesProlog(req: Request, res: Response, next: NextFunction) {
-      if(req.headers.authorization!=undefined)
-      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
-    if(!this.isAuthenticated(req)){
-      res.status(401);
-      return res.json({message: "Not authenticated"});
-    }
-    if(!this.isAuthorized(req)){
-      res.status(403);
-      return res.json({message: "Not authorized"});
-    }
-    req.headers.cookie = "jwt="+req.cookies["jwt"];
-        const httpAgent = new http.Agent({ rejectUnauthorized: false });
-        const address = 'https://localhost:5001/api/deliveries/GetAllProlog';
-
-        const response = await this.fetch(address, 'GET', null, req.headers.cookie, httpAgent);
-        // const response = await fetch(address, {
-        //     method: 'GET',
-        //     agent: httpAgent,
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Cookie': req.headers.cookie
-        //       },
-        // });
-
-        if (response.status != 200) {
-            res.status(response.status);
-            return res.json({ message: "Error Getting Deliveries" });
+      if(req.headers.origin != undefined){
+        if(req.headers.authorization!=undefined)
+          req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+        if(!this.isAuthenticated(req)){
+          res.status(401);
+          return res.json({message: "Not authenticated"});
         }
-        const info = await response.json();
-        res.status(200);
-        return res.json(info);
+        if(!this.isAuthorized(req)){
+          res.status(403);
+          return res.json({message: "Not authorized"});
+        }
+        req.headers.cookie = "jwt="+req.cookies["jwt"];
+      }
+      const httpAgent = new http.Agent({ rejectUnauthorized: false });
+      const address = 'https://localhost:5001/api/deliveries/GetAllProlog';
+
+      const response = await this.fetch(address, 'GET', null, req.headers.cookie, httpAgent);
+
+      if (response.status != 200) {
+          res.status(response.status);
+          return res.json({ message: "Error Getting Deliveries" });
+      }
+      const info = await response.json();
+      res.status(200);
+      return res.json(info);
     }
 
     public async getDelivery(req: Request, res: Response, next: NextFunction) {
