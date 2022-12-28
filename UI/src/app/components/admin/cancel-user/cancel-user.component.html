@@ -5,8 +5,8 @@
                 <h1>Cancel User</h1>
             </mat-card-title>
         </mat-card-header>
-        <mat-card-content class = "sec-div" *ngIf="formCancelUser">
-            <form [formGroup] = "formCancelUser" (ngSubmit)="onSubmit()">
+        <mat-card-content class = "sec-div" *ngIf="formEmail">
+            <form [formGroup] = "formEmail" (ngSubmit)="onSubmit()">
                 <mat-form-field appearance = "fill">
                 <mat-label> Email </mat-label>
                 <input matInput type="text" formControlName="email" required>

@@ -56,12 +56,12 @@ export class AdminService {
   }
 
 
-  async getAccount(email: string){
+  async getAllUsers(){
 
-    console.log(email);
-    let url = this.urlOrigin+ 'api/user/' + email;
+    
+    let url = this.urlOrigin+ 'api/user/all' ;
     if(this.urlOrigin.includes("azure")){
-      url = 'https://auth57.azurewebsites.net/api/user/' + email;
+      url = 'https://auth57.azurewebsites.net/api/user/all';
     }
 
     const cookies = document.cookie.split(';');
@@ -91,9 +91,10 @@ export class AdminService {
 
 
   async updateUser(user: any) {
-    let url = this.urlOrigin+ 'api/role/';
+    console.log(user);
+    let url = this.urlOrigin+ 'api/user/' + user;
     if(this.urlOrigin.includes("azure")){
-      url = 'https://auth57.azurewebsites.net/api/role/';
+      url = 'https://auth57.azurewebsites.net/api/user/'+ user;
     }
     
 

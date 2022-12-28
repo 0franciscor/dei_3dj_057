@@ -43,6 +43,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { CreateUserComponent } from './components/admin/create-user/create-user.component';
+import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +75,8 @@ import { CreateUserComponent } from './components/admin/create-user/create-user.
     DefaultHomeComponent,
     TermsAndConditionsComponent,
     AdminHomeComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    CancelUserComponent
   ],
   imports: [
     BrowserModule,

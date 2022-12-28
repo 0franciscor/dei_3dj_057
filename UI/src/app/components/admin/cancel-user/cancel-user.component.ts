@@ -21,9 +21,6 @@ export interface DialogData{
     message: string;
 }
 
-
-
-
 @Component({
     selector: 'app-cancel-user',
     templateUrl: './cancel-user.component.html',
@@ -31,64 +28,16 @@ export interface DialogData{
 })
 
 export class CancelUserComponent implements OnInit {
-    formCancelUser!: FormGroup;
+    
+    
+    public accountList: any[] = [];
+    formEmail!: FormGroup;
+
+
     constructor(private loginService:LoginService,public dialog: MatDialog,public route: ActivatedRoute, private adminService:AdminService ,private fb: FormBuilder, private router: Router )
 { }
 
-  selectedUser = {
-    firstName: undefined,
-    lastName: undefined,
-    email: "",
-    password: undefined,
-    phoneNumber: undefined,
-    role: undefined
-    
-  }
-
-
-
-   async ngOnInit(){
-        this.isAuth = await this.isAuthenticated();
-        const email = this.route.snapshot.paramMap.get('email'); 
-        /*
-        this.formCancelUser= new FormGroup({
-
-            firstName: new FormControl(this.selectedUser.firstName,[Validators.required]),
-            lastName: new FormControl(this.selectedUser.lastName,[Validators.required]),
-            email: new FormControl(this.selectedUser.email,[Validators.required]),
-            password: new FormControl(this.selectedUser.password,[Validators.required]),
-            phoneNumber: new FormControl(this.selectedUser.phoneNumber,[Validators.required]),
-            role: new FormControl(this.selectedUser.role,[Validators.required])
-        });
-
-        console.log(email);
-        */
-
-        if(email)
-        this.adminService.getAccount(email).then((data) => {
-            this.selectedUser = data;
-            this.formCancelUser = new FormGroup({
-                firstName: new FormControl('xxxxxx'),
-                lastName: new FormControl('xxxxxx'),
-                email: new FormControl(email),
-                password: new FormControl('xxxxxx'),
-                phoneNumber: new FormControl('xxxxxx'),
-                role: new FormControl('xxxxxx'),
-                
-            });
-        });
-        /*
-        else
-            this.router.navigate(['Admin/Home']);
-
-            */
-    }
-
-    goBack(){
-        this.router.navigate(['Admin/Home']);
-    }
-
-    isAuth: boolean = false;
+isAuth: boolean = false;
     authorizedRoles: string[] = ["admin"];
     async isAuthenticated() {
         const role = await this.loginService.getRole();
@@ -99,9 +48,100 @@ export class CancelUserComponent implements OnInit {
         else return true;
     }
 
+
+selectedUser = {
+    firstName: undefined,
+    lastName: undefined,
+    email: "",
+    password: undefined,
+    phoneNumber: undefined,
+    role: undefined
+    
+  }
+
+  
+
+  
+
+
+
+   async ngOnInit(){
+        this.isAuth = await this.isAuthenticated();
+        if(this.isAuth){
+           
+            const email = "";
+
+            this.formEmail= new FormGroup({
+                email: new FormControl(this.selectedUser.email,[Validators.required])
+                            
+            });
+
+           
+        }
+
+
+
+
+
+
+        /*
+        const email = this.route.snapshot.paramMap.get('email'); 
+        
+        this.formCancelUser= new FormGroup({
+            
+        
+            email: new FormControl(this.selectedUser.email,[Validators.required])
+                        
+        });
+
+       
+        if(email)
+        this.adminService.getAccount(email).then((data) => {
+            this.selectedUser = data;
+            this.formCancelUser.patchValue({
+                firstName: ('xxxxxx'),
+                lastName: ('xxxxxx'),
+                password: ('xxxxxx'),
+                phoneNumber: ('xxxxxx'),
+                role: ('xxxxxx'),
+                
+            });
+        });
+        /*
+        else
+            this.router.navigate(['Admin/Home']);
+
+            
+
+            console.log(email);
+
+            */
+    }
+
+    goBack(){
+        this.router.navigate(['Admin/Home']);
+    }
+
+    
+
     async onSubmit() {
-        if(this.formCancelUser.valid){
-            let answer = await this.adminService.updateUser(this.formCancelUser.value);
+
+        this.adminService.getAllUsers().then((data) => {
+            this.accountList = data; 
+        });
+
+        
+        console.log(this.formEmail.value);
+
+        if(this.formEmail.valid){
+            this.selectedUser = this.accountList.find(element => element.email == this.formEmail.value );
+            console.log(this.selectedUser)
+        }
+
+        
+
+        /* if(this.selectedUser != undefined){
+            let answer = await this.adminService.updateUser();
             console.log(answer);
             let message = "User canceled";
             if(answer.status != 200) {
@@ -109,7 +149,7 @@ export class CancelUserComponent implements OnInit {
             }
         }
 
-        
+        */
 
     }
 
