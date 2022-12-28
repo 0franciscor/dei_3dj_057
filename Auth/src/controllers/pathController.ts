@@ -74,13 +74,6 @@ export default class PathController implements IPathController {
       address = 'https://logistics57.azurewebsites.net/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
     
     const response = await this.fetch(address, 'GET', null, req.headers.cookie);
-    // const response = await fetch(address, {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Cookie': req.headers.cookie
-    //     },
-    // });
     
     if (response.status != 200){
         res.status(response.status)
