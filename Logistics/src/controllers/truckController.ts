@@ -86,7 +86,6 @@ export default class TruckController implements ITruckController {
     }
 
     public async getAllTrucks(req: Request, res: Response, next: NextFunction){
-        console.log(req.headers.origin=="undefined");
         if(req.headers.origin != "undefined"){
             if(!this.isAuthenticated(req)){
                 res.status(401);

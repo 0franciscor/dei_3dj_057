@@ -83,6 +83,10 @@ export default class DeliveryController implements IDeliveryController {
     }
 
     public async getAllDeliveries(req: Request, res: Response, next: NextFunction) {
+      console.log(req.headers.origin)
+      console.log(req.headers.origin==undefined)
+      console.log(req.headers.origin=="undefined")
+
       if(req.headers.origin != undefined){
         if(req.headers.authorization!=undefined)
         req.cookies["jwt"]=req.headers.authorization.split("=")[1];
