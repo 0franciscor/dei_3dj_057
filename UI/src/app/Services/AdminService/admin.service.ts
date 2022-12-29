@@ -16,7 +16,7 @@ export class AdminService {
 
     }else if(this.urlOrigin.includes("isep")){
       let number = window.location.origin.split(":")[2].replace("10","vs")
-      url = 'http://'+number+'.dei.isep.ipp.pt:/api/user';
+      url = 'http://'+number+'.dei.isep.ipp.pt:2224/api/user';
     }
     const cookies = document.cookie.split(';');
     
@@ -50,7 +50,7 @@ export class AdminService {
     }
     else if(this.urlOrigin.includes("isep")){
       let number = window.location.origin.split(":")[2].replace("10","vs")
-      url = 'http://'+number+'.dei.isep.ipp.pt/api/role/all';
+      url = 'http://'+number+'.dei.isep.ipp.pt:2224/api/role/all';
     }
 
     const cookies = document.cookie.split(';');
