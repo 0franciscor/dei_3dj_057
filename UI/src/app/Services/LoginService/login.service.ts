@@ -15,13 +15,8 @@ export class LoginService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/user/login/';
     }
-    else if(this.urlOrigin.includes("isep")){
-      let number = window.location.origin.split(":")[2].replace("10","vs")
-      url = 'http://'+number+'.dei.isep.ipp.pt:2224/api/user/login';
-    }
     
     const data = loginInfo;
-    console.log("data:",data)
 
     const response = await this.sendFetch(url, 'POST', data, "");
 
@@ -40,7 +35,6 @@ export class LoginService {
     // const header = new HttpHeaders().set('Content-type', 'application/json');
     // return this.httpClient.post(this.urlOrigin + "loginWithGoogle", JSON.stringify(credentials), { headers: header });
     const data = {credentials:credentials};
-    console.log(data)
     const response = await this.sendFetch(this.urlOrigin + "api/user/loginWithGoogle", 'POST', data, "");
     const jsonResponse = await response.json();
 
@@ -50,14 +44,9 @@ export class LoginService {
   }
 
   async getRole() {
-    console.log(window.location.origin)
     let url = this.urlOrigin+'api/role/currentRole';
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/role/currentRole';
-    }
-    else if(this.urlOrigin.includes("isep")){
-      let number = window.location.origin.split(":")[2].replace("10","vs")
-      url = 'http://'+number+'.dei.isep.ipp.pt:2224/api/role/currentRole';
     }
     const cookies = document.cookie.split(';');
     
