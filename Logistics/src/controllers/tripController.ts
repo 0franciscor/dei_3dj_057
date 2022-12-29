@@ -27,27 +27,70 @@ export default class TripController implements ITripController{
     private roles = ["admin", "logMan"];
 
     isAuthenticated(req: Request) {
-        if(req.cookies['jwt'] == undefined)
-        return false;
-        const cookie = req.cookies['jwt'];
-        const claims = jwt.verify(cookie, config.jwtSecret);
+        try {
+            if(req.cookies['jwt'] == undefined)
+                return false;
+            const cookie = req.cookies['jwt'];
         
-        if(!claims)
-            return false;
+            const claims = jwt.verify(cookie, config.jwtSecret);
         
-        return true;
+            if(!claims)
+                return false;
+            
+            return true;
+        } catch (error) {
+            return false
+        }
+    
     }
 
-    isAuthorized(req: Request) {
+    isAuthorized(req: Request, specifiedRoles?: string[]) {
+    try {
         if(req.cookies['jwt'] == undefined)
-        return false;
+            return false;
         const cookie = req.cookies['jwt'];
         const claims = jwt.verify(cookie, config.jwtSecret);
         if(!claims)
             return false;
-        if(this.roles.indexOf(claims.role) > -1)
-        return true;
+        if(specifiedRoles != undefined){
+            if(specifiedRoles.indexOf(claims.role) > -1)
+                return true;
+            return false;
+        }
+        else if(this.roles.indexOf(claims.role) > -1)
+            return true;
         return false;
+    } catch (error) {
+        return false;
+    }
+
+    }
+
+    private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
+    try {
+        if(body)
+            return await fetch(url,{
+                method : method,
+                body : JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': cookie
+                },
+                agent: agent
+            });
+        else
+            return await fetch(url,{
+                method : method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': cookie
+                },
+                agent: agent
+            });
+    } catch (error) {
+        return {status: 503, json(): any{ return {message: "Error connecting to server"}}};
+    }
+    
     }
 
     public async getTrip(req: Request, res: Response, next: NextFunction ) {
@@ -204,16 +247,7 @@ export default class TripController implements ITripController{
 
     }
 
-    private async fetch(address : string, cookie:any ){
-        const httpAgent = new http.Agent({rejectUnauthorized: false});
-        return await fetch(address,{
-        method : 'GET',
-        agent: httpAgent,
-        headers: {
-            'Content-Type': 'application/json',
-            'Cookie': cookie
-        }
-        });
-    }
+
+    
 }
 

@@ -35,6 +35,18 @@ export class TripService {
 
   }
 
+   async getAllTrips(){
+    let url = this.urlOrigin+'api/trip/all';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/trip/all';
+    }
+
+    const response = await this.sendFetch(url,'GET',null,this.getJwt());
+    const data = await response.json();
+    return data;
+
+  }
+
   async sendFetch(url: string, method: string, data: any, cookie: any) {
     if(data)
       return await fetch(url, {

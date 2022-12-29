@@ -15,6 +15,16 @@ export default class UserRepo implements IUserRepo {
     @Inject('userSchema') private userSchema : Model<IUserPersistence & Document>,
   ) { }
 
+  public async findById(id: string): Promise<User> {
+    const query = { _id: id };
+    const userRecord = await this.userSchema.findOne( query as FilterQuery<IUserPersistence & Document> );
+    if( userRecord != null) {
+      return UserMap.toDomain(userRecord);
+    }
+    else
+      return null;
+  }
+
   public async exists (user: User): Promise<boolean> {
 
   

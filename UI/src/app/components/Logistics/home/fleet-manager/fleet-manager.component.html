@@ -48,12 +48,16 @@
         <button mat-raised-button style="width: 10em;" (click)="goToEditTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
           Edit Truck
         </button>
-        <button mat-raised-button style="width: 10em;" *ngIf="selectedTruck.active" (click)="toggleActiveTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
+        <button mat-raised-button style="width: 10em;" *ngIf="selectedTruck.active" (click)="toggleActiveTruck(selectedTruck.truckID)" color="red">
+          Disable Truck
+        </button>
+        <button mat-raised-button style="width: 10em;" *ngIf="selectedTruck.active==false" (click)="toggleActiveTruck(selectedTruck.truckID)" color="green" >
+          Enable Truck
+        </button>
+        <button mat-raised-button style="width: 10em;" *ngIf="selectedTruck.active==false && isAdmin" (click)="deleteTruck(selectedTruck.truckID)" color="red" >
           Delete Truck
         </button>
-        <button mat-raised-button style="width: 10em;" *ngIf="selectedTruck.active==false" (click)="toggleActiveTruck(selectedTruck.truckID)" color="primary" aria-label="Example icon button with a home icon">
-          Activate Truck
-        </button>
+        
       </mat-card>
       
     </mat-card-actions>
@@ -109,11 +113,14 @@
         </button>
 
 
-        <button mat-raised-button style="width: 10em;" *ngIf="element.active" (click)="toggleActiveTruck(element.truckID)" color="red" aria-label="Example icon button with a home icon">
-          Delete Truck
+        <button mat-raised-button style="width: 10em;" *ngIf="element.active" (click)="toggleActiveTruck(element.truckID)" color="red">
+          Disable Truck
         </button>
-        <button mat-raised-button style="width: 10em;" *ngIf="element.active==false" (click)="toggleActiveTruck(element.truckID)" color="green" aria-label="Example icon button with a home icon">
-          Activate Truck
+        <button mat-raised-button style="width: 10em;" *ngIf="element.active==false" (click)="toggleActiveTruck(element.truckID)" color="green" >
+          Enable Truck
+        </button>
+        <button mat-raised-button style="width: 10em;" *ngIf="element.active==false && isAdmin" (click)="deleteTruck(element.truckID)" color="red" >
+          Delete Truck
         </button>
       </td>
     </ng-container>

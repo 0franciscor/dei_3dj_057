@@ -29,7 +29,7 @@ export class TruckService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/truck/id/'+truckID;
     }
-    const response = await this.sendFetch(url, 'GET', null, document.cookie);
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
     const data = await response.json();
 
     return data;
@@ -111,6 +111,16 @@ export class TruckService {
     let url = this.urlOrigin+'api/truck/id/'+truckID;
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/truck/id/'+truckID;
+    }
+    const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
+
+    return response;
+  }
+
+  async deleteTruck(truckID: string) {
+    let url = this.urlOrigin+'api/truck/hard/id/'+truckID;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/hard/truck/id/'+truckID;
     }
     const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
 

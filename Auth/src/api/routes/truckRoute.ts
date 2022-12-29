@@ -29,7 +29,10 @@ export default (app: Router)=>{
     );
 
     route.delete('/id/:id',
-        (req,res,next) => ctrl.deleteTruck(req,res,next)
+        (req,res,next) => ctrl.softDeleteTruck(req,res,next)
+    );
+    route.delete('/hard/id/:id',
+        (req,res,next) => ctrl.hardDeleteTruck(req,res,next)
     );
 
     route.post('/prolog',

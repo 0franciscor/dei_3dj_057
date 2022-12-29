@@ -43,6 +43,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { CreateUserComponent } from './components/admin/create-user/create-user.component';
+import { ListTruckPlanningComponent } from './components/Logistics/truck-planning/list-truck-planning/list-truck-planning.component';
+//import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +77,9 @@ import { CreateUserComponent } from './components/admin/create-user/create-user.
     DefaultHomeComponent,
     TermsAndConditionsComponent,
     AdminHomeComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    ListTruckPlanningComponent,
+    //CancelUserComponent
   ],
   imports: [
     BrowserModule,

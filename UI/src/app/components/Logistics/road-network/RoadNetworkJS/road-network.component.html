@@ -1,1 +1,14 @@
-<canvas #canvas id="canvas" style="height: 100%; width: 100%; overflow:hidden" *ngIf="isAuth"></canvas>
+<div #container style="position: relative;" *ngIf="isAuth">
+    <canvas #canvas id="canvas" style="height: 100%; width: 95%; overflow:hidden; position: absolute; top: 0; left: 0;" ></canvas>
+    <table class="help" style="position: absolute; top: 10px; left: 0;">
+        <tr>
+            <th colspan="2" style="font-size: 3.0vmin">
+                <select id="truckSelect"></select>
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+        
+    </table> 
+</div>

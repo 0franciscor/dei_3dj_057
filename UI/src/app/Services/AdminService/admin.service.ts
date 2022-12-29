@@ -13,6 +13,7 @@ export class AdminService {
     let url = this.urlOrigin+'api/user/';
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/user/';
+
     }
     const cookies = document.cookie.split(';');
     

@@ -15,6 +15,7 @@ export default class UserService implements IUserService{
     constructor(
         @Inject(config.repos.user.name) private userRepo: IUserRepo 
     ){}
+    
 
 
     
@@ -113,6 +114,21 @@ export default class UserService implements IUserService{
             const userDTO = UserMap.toDTO(userOrError) as IUserDTO;
             return Result.ok<IUserDTO>(userDTO);
         } catch (error) {
+            throw error;
+        }
+    }
+    
+    public async getUserByID(id: string): Promise<Result<IUserDTO>> {
+
+        try{
+            const userOrError = await this.userRepo.findById(id);
+            if(userOrError == null)
+                return Result.fail<IUserDTO>("User not found");
+
+            const userDTO = UserMap.toDTO(userOrError) as IUserDTO;
+            return Result.ok<IUserDTO>(userDTO);
+        }
+        catch(error){
             throw error;
         }
     }

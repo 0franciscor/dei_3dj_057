@@ -1,11 +1,17 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
+
 interface posProps {
     wh: string,
     x: number,
     y: number,
     z: number
+}
+
+interface whAndWidth {
+    wh: string,
+    width: number
 }
 
 interface elementProps {
@@ -15,13 +21,14 @@ interface elementProps {
 }
 export default class NodeTemplate {
     object: THREE.Group;
-
+    whAndWidth: whAndWidth = { wh: "", width: 0 };
+    roadInclination: number = 0;
 
 
     constructor(pos: posProps, outGoingConnections: any[], incomingConnections: any[], allPositions: any[]) {
 
         this.object = new THREE.Group();
-
+        this.whAndWidth.width=0;
 
         let largestWidth = 0;
 
@@ -33,7 +40,6 @@ export default class NodeTemplate {
             if (element.roadWidth > largestWidth)
                 largestWidth = element.roadWidth;
         })
-        console.log("largestWidth", largestWidth);
         const circleConstant = 2;
         let circleRadius = (largestWidth * circleConstant) / 2;
 
@@ -114,12 +120,14 @@ export default class NodeTemplate {
                     Math.pow((roadEndY - roadBeginY), 2) + 
                     Math.pow(roadEndZ- roadBeginZ, 2));
 
-
+                
 
                 let angle = Math.sqrt(Math.pow((destination.x - pos.x), 2) + Math.pow((destination.y - pos.y), 2)) - connectionLength * 2;
+                let color = 0xA52A2A;
+                
 
                 let roadGeometry = new THREE.PlaneGeometry(element.roadWidth, roadLength, 32);
-                let roadMaterial = new THREE.MeshBasicMaterial({ color: 0xA52A2A, side: THREE.DoubleSide });
+                let roadMaterial = new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide });
                 let road = new THREE.Mesh(roadGeometry, roadMaterial);
                 road.position.set((pos.x + destination.x) / 2, (pos.y + destination.y) / 2, (pos.z + destination.z) / 2);
 
@@ -128,7 +136,7 @@ export default class NodeTemplate {
 
 
                 road.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.atan2((destination.z - pos.z), angle));
-
+                
                 this.object.add(road);
             }
 
@@ -139,55 +147,41 @@ export default class NodeTemplate {
         let material = new THREE.MeshBasicMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
 
         let circle: THREE.Mesh = new THREE.Mesh(geometry, material);
-        circle.position.set(pos.x, pos.y, pos.z + 0.1);
+        circle.position.set(pos.x, pos.y, pos.z);
         this.object.add(circle);
 
         //Lighting
         const light = new THREE.AmbientLight(0xffffff, 1);
         //q: what are the ideal coordinates for the light?
         light.position.set(40,10,1200);
+        light.name = "light";
         this.object.add(light);
 
-        let warehouseScale = largestWidth *0.05;
+        
 
         // Warehouse Texture
         const warehouseTexture = new THREE.Object3D();
         const gltfloader = new GLTFLoader();
 
-
+        const warehouseScale = largestWidth *0.035;
         gltfloader.load(
             './assets/farmhouse/scene.gltf', 
             (object) => {
             object.scene.scale.set(warehouseScale, warehouseScale, warehouseScale);
-            object.scene.position.set(pos.x, pos.y, pos.z + 0.2);
+            object.scene.position.set(pos.x, pos.y, pos.z + 0.002);
             object.scene.rotateX(Math.PI / 2);
             warehouseTexture.add(object.scene);
 
         });
         
+        warehouseTexture.name = pos.wh
         this.object.add(warehouseTexture);
 
 
-        const lightTruck = new THREE.AmbientLight(0xffffff, 1);
-        //q: what are the ideal coordinates for the light?
-        light.position.set(40,10,1200);
-        this.object.add(lightTruck);
 
-        const truckTexture = new THREE.Object3D();
-        const truckloader = new GLTFLoader();
-
-
-        truckloader.load(
-            './assets/italeri_truck/scene.gltf', 
-            (object) => {
-            object.scene.scale.set(0.003, 0.003, 0.003);
-            object.scene.position.set(pos.x + 1, pos.y + 1, pos.z + 0.2);
-            object.scene.rotateZ(Math.PI / 2);
-            object.scene.rotateX(Math.PI / 2);
-            truckTexture.add(object.scene);
-
-        });
-        this.object.add(truckTexture);
+        this.whAndWidth.wh = pos.wh;
+        this.whAndWidth.width = largestWidth;
+        
 
     }
 }
