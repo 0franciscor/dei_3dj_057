@@ -7,27 +7,17 @@ extractMass([H|T],[H1|T1]):- extractMass(T,T1), entrega(H,_,H1,_,_,_).
 extractWarehouse([],[Matosinhos]):- findMatosinhos(Matosinhos).
 extractWarehouse([HD|TD],[H1|T1]):- extractWarehouse(TD,T1), entrega(HD,_,_,H1,_,_).
 
-largestMassFirst(Day,WarehouseSorted):- 
-    get_time(Ti),
-    getAllDeliveriesInADay(Day,Delivery), 
+largestMassFirst(Delivery,WarehouseSorted):- 
     extractMass(Delivery,Mass), sortTwoList(Mass,Delivery,_,DeliverySorted),
-    reverse(DeliverySorted,DeliverySortedReversed), extractWarehouse(DeliverySortedReversed,WarehouseSorted),
-    get_time(Tf),
-    TSol is Tf - Ti,
-    write(TSol),!.
+    reverse(DeliverySorted,DeliverySortedReversed), extractWarehouse(DeliverySortedReversed,WarehouseSorted).
 
 
 
 %% Closest Warehouse First %%
-
 closestWarehouseFirst([],[]).
-closestWarehouseFirst(Day, PATH_LIST):- get_time(Ti),getAllDeliveriesInADay(Day,FINAL_LIST),
-                                        extractDestinations(FINAL_LIST, WAREHOUSE_LIST_MATOSINHOS),
-                                        delete(WAREHOUSE_LIST_MATOSINHOS, 5, WAREHOUSE_LIST),
-                                        searchClosestWarehouse(5,WAREHOUSE_LIST,PATH_LIST),
-                                        get_time(Tf),
-                                        TSol is Tf - Ti,
-                                        write(TSol).
+closestWarehouseFirst(FINAL_LIST, PATH_LIST):- extractDestinations(FINAL_LIST, WAREHOUSE_LIST_MATOSINHOS),
+                                                delete(WAREHOUSE_LIST_MATOSINHOS, 5, WAREHOUSE_LIST),
+                                                searchClosestWarehouse(5,WAREHOUSE_LIST,PATH_LIST).
 
 searchClosestWarehouse(_,[],[]):-!.
 searchClosestWarehouse(BEGIN,[H|T],[MENOR|PATH_LIST]):- compareClosest(BEGIN,[H|T],_,MENOR), delete([H|T], MENOR, NOVA_LISTA), searchClosestWarehouse(MENOR, NOVA_LISTA, PATH_LIST).
@@ -39,7 +29,8 @@ compareClosest(ARMAZEM, [H|T], TEMPO, FH):- compareClosest(ARMAZEM, T, TEMPO1, F
 
 % Cheapest Warehouse first Mass/Km Heuristic %
 extractCities([],[]).
-extractCities(Delivery_List, Warehouse_List):- appendDelivery(Delivery_List, Final_List), extractDestinations(Final_List, WarehouseListWithMatosinhos),
+extractCities(Delivery_List, Warehouse_List):- appendDelivery(Delivery_List, Final_List), 
+                                                extractDestinations(Final_List, WarehouseListWithMatosinhos),
                                                findMatosinhos(Matosinhos), delete(WarehouseListWithMatosinhos, Matosinhos, Warehouse_List).
 
 extractMassFromWarehouse([DH],[MH]):- entrega(_,_,MH,DH,_,_).
@@ -68,11 +59,17 @@ extractBoth(Origin, Destinations, Visited,Result):- extractMassFromWarehouse(Des
                                                         sortTwoList(MassOverDistances, Destinations, _, [H|T]), append([H],Visited, Visited2),extractBoth(H, T, Visited2,Result).
 
 
-cheapestWarehouseFirst(Day,Result):- get_time(Ti),
-    getAllDeliveriesInADay(Day,Entregas),extractCities(Entregas, Warehouse_List), findMatosinhos(Matosinhos),append([Matosinhos],Warehouse_List,[H|T]), EmptyList = [H], extractBoth(H,T,EmptyList,ResultNoMatosinhos),
-    findMatosinhos(Matosinhos),append([Matosinhos],ResultNoMatosinhos,ResultReverse), reverse(ResultReverse,Result),
-    get_time(Tf),
-    TSol is Tf - Ti,
-    write(TSol),!.
+cheapestWarehouseFirst(Entregas,Result):-
+    extractCities(Entregas, Warehouse_List), 
+    findMatosinhos(Matosinhos),append([Matosinhos],Warehouse_List,[H|T]), 
+    EmptyList = [H], 
+    extractBoth(H,T,EmptyList,ResultNoMatosinhos),
+    findMatosinhos(Matosinhos),append([Matosinhos],
+    ResultNoMatosinhos,ResultReverse), 
+    reverse(ResultReverse,Result).
 
 
+findAllDeliveriesInACity(_,[],[]):-!.
+findAllDeliveriesInACity(Date,[H|T], Deliveries):- findAllDeliveriesInACity(Date,T, Deliveries1), 
+                                            findall(X, entrega(X,Date,_,H,_,_), Deliveries2), 
+                                            append(Deliveries1, Deliveries2, Deliveries).
