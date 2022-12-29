@@ -86,16 +86,16 @@ export default class TruckController implements ITruckController {
     }
 
     public async getAllTrucks(req: Request, res: Response, next: NextFunction){
-        if(req.headers.origin != "undefined"){
-            if(!this.isAuthenticated(req)){
-                res.status(401);
-                return res.json({message: "Not authenticated"});
-            }
-            if(!this.isAuthorized(req)){
-                res.status(403);
-                return res.json({message: "Not authorized"});
-            }
-        }
+        // if(req.headers.origin != "undefined"){
+        //     if(!this.isAuthenticated(req)){
+        //         res.status(401);
+        //         return res.json({message: "Not authenticated"});
+        //     }
+        //     if(!this.isAuthorized(req)){
+        //         res.status(403);
+        //         return res.json({message: "Not authorized"});
+        //     }
+        // }
         try {
             const trucks = await this.truckService.getAllTrucks();
             res.status(200);

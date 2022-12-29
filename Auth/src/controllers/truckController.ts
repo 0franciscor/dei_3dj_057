@@ -141,20 +141,19 @@ export default class TruckController implements ITruckController {
   }
 
   async getAllTruck(req: Request, res: Response, next: NextFunction) {
-    console.log(req.get('host'))
-    if(req.headers.origin != undefined){
-      if(req.headers.authorization!=undefined)
-      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
-      if(!this.isAuthenticated(req)){
-        res.status(401);
-        return res.json({message: "Not authenticated"});
-      }
-      if(!this.isAuthorized(req)){
-        res.status(403);
-        return res.json({message: "Not authorized"});
-      }
-      req.headers.cookie = "jwt="+req.cookies["jwt"];
-    }
+    // if(req.headers.origin != undefined){
+    //   if(req.headers.authorization!=undefined)
+    //   req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    //   if(!this.isAuthenticated(req)){
+    //     res.status(401);
+    //     return res.json({message: "Not authenticated"});
+    //   }
+    //   if(!this.isAuthorized(req)){
+    //     res.status(403);
+    //     return res.json({message: "Not authorized"});
+    //   }
+    //   req.headers.cookie = "jwt="+req.cookies["jwt"];
+    // }
     
 
     let url = 'http://localhost:3000/api/truck/all';

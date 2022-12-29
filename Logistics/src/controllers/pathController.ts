@@ -108,16 +108,16 @@ export default class PathController implements IPathController{
     }
 
     public async getAllPaths(req: Request, res: Response, next: NextFunction) {
-        if(req.headers.origin != "undefined"){
-            if(!this.isAuthenticated(req)){
-                res.status(401);
-                return res.json({message: "Not authenticated"});
-            }
-            if(!this.isAuthorized(req)){
-                res.status(403);
-                return res.json({message: "Not authorized"});
-            }
-        }
+        // if(req.headers.origin != "undefined"){
+        //     if(!this.isAuthenticated(req)){
+        //         res.status(401);
+        //         return res.json({message: "Not authenticated"});
+        //     }
+        //     if(!this.isAuthorized(req)){
+        //         res.status(403);
+        //         return res.json({message: "Not authorized"});
+        //     }
+        // }
         try {
             if(req.params.startWHId == "undefined"){
                 req.params.startWHId="";
