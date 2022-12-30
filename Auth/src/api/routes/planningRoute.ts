@@ -28,6 +28,10 @@ export default (app: Router) => {
     route.post('/heuristicMassAndDistance',
         (req,res,next)=>ctrl.heuristicMassAndDistance(req,res,next)
     );
+
+    route.post('/geneticAlgortithm',
+    (req,res,next)=>ctrl.geneticAlgorithm(req,res,next)
+);
     
  
 };

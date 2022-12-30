@@ -121,6 +121,47 @@ export class PlanningService{
     return plan 
   }
 
+
+  async getBestPath(TruckName: any, date: any){
+    let url = this.urlOrigin+'api/planning/bestPath'
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/packaging/all';
+    }
+    const data={
+      truck: TruckName,
+      date: date, 
+    }
+    console.log(data)
+
+    const response = await this.sendFetch(url,'POST',data, this.getJwt());
+    const pathlist=await response.json();
+    console.log(pathlist.bestPath[1])
+
+   
+      const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+      const body= {pathList:pathlist.bestPath, date:date}
+      const plan = await this.sendFetch(url2,'POST',body, this.getJwt())
+    
+    
+    return plan 
+  }
+
+  async getGeneticAlgorithm(date: any){
+    let url = this.urlOrigin+'api/planning/geneticAlgorithm'
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/planning/geneticAlgorithm';
+    }
+    const data={
+      date: date, 
+    }
+    console.log(data)
+
+    const response = await this.sendFetch(url,'POST',data, this.getJwt());
+    const pathlist=await response.json();
+    
+    return pathlist
+  }
+
   async sendFetch(url: string, method: string, data: any, cookie: any) {
     if(data)
       return fetch(url, {

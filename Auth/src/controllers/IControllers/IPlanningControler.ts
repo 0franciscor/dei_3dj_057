@@ -5,4 +5,5 @@ export default interface IPlanningController  {
     heuristicMass(req: Request, res: Response, next: NextFunction)
     heuristicClosestWarehouse(req: Request, res: Response, next: NextFunction)
     heuristicMassAndDistance(req: Request, res: Response, next: NextFunction)
+    geneticAlgorithm(req: Request, res: Response, next: NextFunction)
 }
