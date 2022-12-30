@@ -16,7 +16,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
 import { CreateTruckComponent, CreateTruckComponentDialog } from './components/Logistics/truck/create-truck/create-truck.component';
 import { FleetManagerComponent, DeleteTruckComponentDialog } from './components/Logistics/home/fleet-manager/fleet-manager.component';
@@ -36,7 +39,6 @@ import { GetWarehousesComponent } from './components/WarehouseManagement/warehou
 import { TruckPlanningComponent } from './components/Logistics/truck-planning/truck-planning/truck-planning.component';
 import { CreatePackageComponent } from './components/Logistics/packaging/create-package/create-package.component';
 import { PackageListComponent } from './components/Logistics/packaging/package-list/package-list.component';
-import {MatRadioModule} from '@angular/material/radio';
 import { DefaultHomeComponent } from './components/defaultHome/default-home/default-home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -102,9 +104,8 @@ import { ListTruckPlanningComponent } from './components/Logistics/truck-plannin
     MatRadioModule,
     HttpClientModule,
     MatCheckboxModule,
-    
-    
-    
+    MatSortModule,
+    MatSelectModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],
