@@ -1,38 +1,34 @@
 <div *ngIf="isAuth">
-    <table mat-table [dataSource]="dataSource" class="tripTable">
-
-        <tr mat.header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef = "let row; columns: displayedColumns"></tr>
+    <table mat-table matSort [dataSource]="dataSource" class="tripTable">
 
         <ng-container matColumnDef="tripID">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef> ID
+            </th>
             <td mat-cell id="tripID" *matCellDef = "let trip">{{trip.tripID}}</td>
         </ng-container>
 
         <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef>TripDate</th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Date</th>
             <td mat-cell id="date" *matCellDef="let trip">{{trip.date}}</td>
         </ng-container>
 
         <ng-container matColumnDef="pathIDlist">
-            <th mat-header-cell *matHeaderCellDef>ListofPaths</th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Paths</th>
             <td mat-cell id="pathIDlist" *matCellDef="let trip">
                 <ng-container *ngFor="let pathIDlist of trip.pathIDlist">
                         {{pathIDlist}}
                         <br>
                 </ng-container>
-
-
             </td>
         </ng-container>
 
         <ng-container matColumnDef="truckID">
-            <th mat-header-cell *matHeaderCellDef>Truck</th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Truck</th>
             <td mat-cell id="truckID" *matCellDef="let trip">{{trip.truckID}}</td>
         </ng-container>
 
         <ng-container matColumnDef="deliveryIDlist">
-            <th mat-header-cell *matHeaderCellDef>List of Deliveries</th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Deliveries</th>
             <td mat-cell id="deliveryIDlist" *matCellDef="let trip">
                 <ng-container *ngFor ="let deliveryIDlist of trip.deliveryIDlist">
                     {{deliveryIDlist}}
@@ -40,11 +36,15 @@
                 </ng-container>
             </td>
         </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef = "let row; columns: displayedColumns"></tr>
+
     </table>
     <mat-paginator *ngIf="dataSource.filteredData != undefined"
         #paginator
         [length] = "dataSource.filteredData.length"
-        [pageSizeOptions]="[1, 3, 10]"
+        [pageSizeOptions]="[3, 1, 10]"
         showFirstLastButtons
 ></mat-paginator>
 </div>
