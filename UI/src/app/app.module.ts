@@ -19,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
 import { CreateTruckComponent, CreateTruckComponentDialog } from './components/Logistics/truck/create-truck/create-truck.component';
 import { FleetManagerComponent, DeleteTruckComponentDialog } from './components/Logistics/home/fleet-manager/fleet-manager.component';
@@ -103,7 +104,8 @@ import { ListTruckPlanningComponent } from './components/Logistics/truck-plannin
     MatRadioModule,
     HttpClientModule,
     MatCheckboxModule,
-    MatSortModule
+    MatSortModule,
+    MatSelectModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

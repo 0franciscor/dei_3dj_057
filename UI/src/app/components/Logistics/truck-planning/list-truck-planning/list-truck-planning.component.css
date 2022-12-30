@@ -28,3 +28,18 @@
 /* .mat-column-edit{
   align-items: center;
 } */
+
+.filteringDiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px;
+}
+
+.opcoes{
+  text-align: center;
+}
+
+.inputFiltro{
+  text-align: center;
+}
