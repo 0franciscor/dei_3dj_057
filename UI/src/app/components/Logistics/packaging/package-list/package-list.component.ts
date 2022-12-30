@@ -5,15 +5,6 @@ import { PackagingService } from "src/app/Services/PackageService/package.servic
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 
-interface Package {
-  packagingID: string;
-  truckID: string;
-  deliveryID: string;
-  xPosition: number;
-  yPosition: number;
-  zPosition: number;
-}
-
 @Component({
   selector: 'app-package-list',
   templateUrl: './package-list.component.html',
@@ -23,12 +14,12 @@ interface Package {
 export class PackageListComponent implements OnInit {
 
   constructor(private loginService: LoginService,private packageService: PackagingService, private router: Router) {  }
-  originalPackageList: Package[] = [];
-  packageList: Package[] = [];
+  originalPackageList: any[] = [];
+  packageList: any[] = [];
 
   displayedColumns: string[] = ['packagingID', 'truckID', 'deliveryID', 'xPosition', 'yPosition', 'zPosition', 'edit'];
 
-  dataSource!: MatTableDataSource<Package>;
+  dataSource!: MatTableDataSource<any>;
 
   @ViewChild('paginator', {static: false})
   set paginator(value: MatPaginator) {
@@ -66,17 +57,17 @@ export class PackageListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.packageList);
     });
   }
-  updateDataSource(packageList: Package[] = this.originalPackageList){
+  updateDataSource(packageList: any[] = this.originalPackageList){
     this.dataSource.data = packageList;
     this.packageList = packageList;
   }
 
-  filteredIDList: Package[] = [];
-  filteredTruckIDList: Package[] = [];
-  filteredDeliveryIDList: Package[] = [];
-  filteredPositionXList: Package[] = [];
-  filteredPositionYList: Package[] = [];
-  filteredPositionZList: Package[] = [];
+  filteredIDList: any[] = [];
+  filteredTruckIDList: any[] = [];
+  filteredDeliveryIDList: any[] = [];
+  filteredPositionXList: any[] = [];
+  filteredPositionYList: any[] = [];
+  filteredPositionZList: any[] = [];
 
 
   applyAllFilters() {
