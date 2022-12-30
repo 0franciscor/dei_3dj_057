@@ -82,19 +82,19 @@ export default class WarehouseController implements IWarehouseController {
 
   public async getAllWarehouse(req: Request, res: Response, next: NextFunction){
     
-    if(req.headers.origin != undefined){
-      if(req.headers.authorization!=undefined)
-        req.cookies["jwt"]=req.headers.authorization.split("=")[1];
-      if(!this.isAuthenticated(req)){
-        res.status(401);
-        return res.json({message: "Not authenticated"});
-      }
-      if(!this.isAuthorized(req)){
-        res.status(403);
-        return res.json({message: "Not authorized"});
-      }
-      req.headers.cookie = "jwt="+req.cookies["jwt"];
-    }
+    // if(req.headers.origin != undefined){
+    //   if(req.headers.authorization!=undefined)
+    //     req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    //   if(!this.isAuthenticated(req)){
+    //     res.status(401);
+    //     return res.json({message: "Not authenticated"});
+    //   }
+    //   if(!this.isAuthorized(req)){
+    //     res.status(403);
+    //     return res.json({message: "Not authorized"});
+    //   }
+    //   req.headers.cookie = "jwt="+req.cookies["jwt"];
+    // }
     
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAll';
@@ -114,19 +114,19 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async getAllCities(req: Request, res: Response, next: NextFunction){
-    if(req.headers.origin != undefined){
-      if(req.headers.authorization!=undefined)
-        req.cookies["jwt"]=req.headers.authorization.split("=")[1];
-      if(!this.isAuthenticated(req)){
-        res.status(401);
-        return res.json({message: "Not authenticated"});
-      }
-      if(!this.isAuthorized(req)){
-        res.status(403);
-        return res.json({message: "Not authorized"});
-      }
-      req.headers.cookie = "jwt="+req.cookies["jwt"];
-    }
+    // if(req.headers.origin != undefined){
+    //   if(req.headers.authorization!=undefined)
+    //     req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    //   if(!this.isAuthenticated(req)){
+    //     res.status(401);
+    //     return res.json({message: "Not authenticated"});
+    //   }
+    //   if(!this.isAuthorized(req)){
+    //     res.status(403);
+    //     return res.json({message: "Not authorized"});
+    //   }
+    //   req.headers.cookie = "jwt="+req.cookies["jwt"];
+    // }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAllCities';
     const host = req.get('host');
