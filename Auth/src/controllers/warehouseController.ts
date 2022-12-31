@@ -14,62 +14,88 @@ export default class WarehouseController implements IWarehouseController {
   private roles = ["admin","whMan"];
 
   isAuthenticated(req: Request) {
-    if(req.cookies['jwt'] == undefined)
-      return false;
-    const cookie = req.cookies['jwt'];
-    const claims = jwt.verify(cookie, config.jwtSecret);
-    if(!claims)
+    try {
+      if(req.cookies['jwt'] == undefined)
         return false;
+      const cookie = req.cookies['jwt'];
     
-    return true;
-  }
-
-  isAuthorized(req: Request) {
-    if(req.cookies['jwt'] == undefined)
-      return false;
-    const cookie = req.cookies['jwt'];
-    const claims = jwt.verify(cookie, config.jwtSecret);
-    if(!claims)
-        return false;
-    if(this.roles.indexOf(claims.role) > -1)
+      const claims = jwt.verify(cookie, config.jwtSecret);
+    
+      if(!claims)
+          return false;
+      
       return true;
-    return false;
+    } catch (error) {
+      return false
+    }
+    
   }
 
-  private async fetch(url : string, method: string, body: any,cookie:any, agent: any = null){
-   
-    if(body)
-      return await fetch(url,{
-        method : method,
-        body : JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
-          'Cookie': cookie
-        },
-        agent: agent
-      });
-    else
-      return await fetch(url,{
-        method : method,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        agent: agent
-      });
+  isAuthorized(req: Request, specifiedRoles?: string[]) {
+    try {
+      if(req.cookies['jwt'] == undefined)
+        return false;
+      const cookie = req.cookies['jwt'];
+      const claims = jwt.verify(cookie, config.jwtSecret);
+      if(!claims)
+          return false;
+      if(specifiedRoles != undefined){
+          if(specifiedRoles.indexOf(claims.role) > -1)
+              return true;
+          return false;
+      }
+      else if(this.roles.indexOf(claims.role) > -1)
+          return true;
+      return false;
+    } catch (error) {
+      return false;
+    }
+
+  }
+
+  private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
+    try {
+      if(body)
+        return await fetch(url,{
+          method : method,
+          body : JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+          },
+          agent: agent
+        });
+      else
+        return await fetch(url,{
+          method : method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+          },
+          agent: agent
+        });
+    } catch (error) {
+      return {status: 503, json(): any{ return {message: "Error connecting to server"}}};
+    }
+    
   }
 
   public async getAllWarehouse(req: Request, res: Response, next: NextFunction){
-    if(req.headers.authorization!=undefined)
-      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
-    if(!this.isAuthenticated(req)){
-      res.status(401);
-      return res.json({message: "Not authenticated"});
-    }
-    if(!this.isAuthorized(req)){
-      res.status(403);
-      return res.json({message: "Not authorized"});
-    }
-    req.headers.cookie = "jwt="+req.cookies["jwt"];
+    
+    // if(req.headers.origin != undefined){
+    //   if(req.headers.authorization!=undefined)
+    //     req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    //   if(!this.isAuthenticated(req)){
+    //     res.status(401);
+    //     return res.json({message: "Not authenticated"});
+    //   }
+    //   if(!this.isAuthorized(req)){
+    //     res.status(403);
+    //     return res.json({message: "Not authorized"});
+    //   }
+    //   req.headers.cookie = "jwt="+req.cookies["jwt"];
+    // }
+    
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAll';
     const host = req.get('host');
@@ -88,17 +114,19 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   public async getAllCities(req: Request, res: Response, next: NextFunction){
-    if(req.headers.authorization!=undefined)
-      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
-    if(!this.isAuthenticated(req)){
-      res.status(401);
-      return res.json({message: "Not authenticated"});
-    }
-    if(!this.isAuthorized(req)){
-      res.status(403);
-      return res.json({message: "Not authorized"});
-    }
-    req.headers.cookie = "jwt="+req.cookies["jwt"];
+    // if(req.headers.origin != undefined){
+    //   if(req.headers.authorization!=undefined)
+    //     req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    //   if(!this.isAuthenticated(req)){
+    //     res.status(401);
+    //     return res.json({message: "Not authenticated"});
+    //   }
+    //   if(!this.isAuthorized(req)){
+    //     res.status(403);
+    //     return res.json({message: "Not authorized"});
+    //   }
+    //   req.headers.cookie = "jwt="+req.cookies["jwt"];
+    // }
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     let address = 'https://localhost:5001/api/warehouses/GetAllCities';
     const host = req.get('host');

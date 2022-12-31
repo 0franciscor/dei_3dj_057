@@ -5,6 +5,7 @@ export default interface IUserService  {
   login(user: IUserDTO): Promise<Result<IUserDTO>>;
   getUser(userId: string): Promise<Result<IUserDTO>>;
   getUserByEmail(email: string): Promise<Result<IUserDTO>>;
+  getUserByID(id: string): Promise<Result<IUserDTO>>;
   getAllUsers(): Promise <Result<IUserDTO[]>>;
   updateUser(user:IUserDTO):Promise <Result<IUserDTO>>;
   deleteUser(userId:string): Promise <Result<IUserDTO>>

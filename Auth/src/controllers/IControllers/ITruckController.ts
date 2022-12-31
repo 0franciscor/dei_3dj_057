@@ -7,7 +7,8 @@ export default interface ITruckController  {
   getAllTruck(req: Request, res: Response, next: NextFunction)
   getTruck(req: Request, res: Response, next: NextFunction)
   editTruck(req: Request, res: Response, next: NextFunction)
-  deleteTruck(req: Request, res: Response, next: NextFunction)
+  softDeleteTruck(req: Request, res: Response, next: NextFunction)
+  hardDeleteTruck(req: Request, res: Response, next: NextFunction)
   editTruckProlog(req: Request, res: Response, next: NextFunction)
   deleteTruckProlog(req: Request, res: Response, next: NextFunction)
   

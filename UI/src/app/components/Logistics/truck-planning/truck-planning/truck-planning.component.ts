@@ -101,6 +101,14 @@ export class TruckPlanningComponent implements OnInit {
     
   }
 
+  async getGeneticAlgorithm(){
+    this.onSubmit();
+    let answer = await this.planningService.getGeneticAlgorithm(this.finaldate)
+    this.showPlan=await answer.json()
+    this.infoList= this.showPlan.info
+    
+  }
+
    formatDate(date: Date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -127,4 +135,11 @@ export class TruckPlanningComponent implements OnInit {
     this.tripService.createTrip(savePlan);
     
   }
+
+  goToListTruckPlanning(){
+    this.router.navigate(['Logistics/TruckPlanning/ListTruckPlanning']);
+  }
+
+
+
 }

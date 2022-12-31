@@ -218,9 +218,9 @@ deliveryprolog_tojson(Id, Date, Mass, Destination, LoadTime, UnloadTime, NoJson)
 
 % ---------------------------------------------------------------------------
 create_path(Truck, CityDest, AditionalTime, PathTime, CityOrig, Energy, PathJson):-
+			\+dadosCam_t_e_ta(_, City, City1, _, _, _),
 			armazem(CityOrig,_,_,_,_,_,City),
 			armazem(CityDest,_,_,_,_,_,City1),
-			\+dadosCam_t_e_ta(_, City, City1, _, _, _),
 			assertz(dadosCam_t_e_ta(Truck, City, City1, PathTime, Energy, AditionalTime)), 			
 			pathprolog_tojson(Truck, City, City1, PathTime, Energy, AditionalTime, PathJson).
 

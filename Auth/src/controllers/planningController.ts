@@ -13,50 +13,72 @@ export default class PlanningController implements IPlanningController {
   private roles = ["admin", "logMan"];
 
   isAuthenticated(req: Request) {
-    if(req.cookies['jwt'] == undefined)
-      return false;
-    const cookie = req.cookies['jwt'];
-    const claims = jwt.verify(cookie, config.jwtSecret);
-    if(!claims)
+    try {
+      if(req.cookies['jwt'] == undefined)
         return false;
+      const cookie = req.cookies['jwt'];
     
-    return true;
+      const claims = jwt.verify(cookie, config.jwtSecret);
+    
+      if(!claims)
+          return false;
+      
+      return true;
+    } catch (error) {
+      return false
+    }
+    
   }
 
-  isAuthorized(req: Request) {
-    if(req.cookies['jwt'] == undefined)
-      return false;
-    const cookie = req.cookies['jwt'];
-    const claims = jwt.verify(cookie, config.jwtSecret);
-    if(!claims)
+  isAuthorized(req: Request, specifiedRoles?: string[]) {
+    try {
+      if(req.cookies['jwt'] == undefined)
         return false;
-    if(this.roles.indexOf(claims.role) > -1)
-      return true;
-    return false;
+      const cookie = req.cookies['jwt'];
+      const claims = jwt.verify(cookie, config.jwtSecret);
+      if(!claims)
+          return false;
+      if(specifiedRoles != undefined){
+          if(specifiedRoles.indexOf(claims.role) > -1)
+              return true;
+          return false;
+      }
+      else if(this.roles.indexOf(claims.role) > -1)
+          return true;
+      return false;
+    } catch (error) {
+      return false;
+    }
+
   }
 
  
 
   private async fetch(url : string, method: string, body: any, cookie:any, agent: any = null){
-   
-    if(body)
-      return await fetch(url,{
-        method : method,
-        body : JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
-          'Cookie': cookie
-        },
-        agent: agent
-      });
-    else
-      return await fetch(url,{
-        method : method,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        agent: agent
-      });
+    try {
+      if(body)
+        return await fetch(url,{
+          method : method,
+          body : JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+          },
+          agent: agent
+        });
+      else
+        return await fetch(url,{
+          method : method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookie
+          },
+          agent: agent
+        });
+    } catch (error) {
+      return {status: 503, json(): any{ return {message: "Error connecting to server"}}};
+    }
+    
   }
 
 
@@ -78,7 +100,10 @@ export default class PlanningController implements IPlanningController {
     const data = req.body;
     console.log(data)
     const response = await this.fetch(url_prolog, 'POST', data,req.headers.cookie,httpAgent); 
-
+    if(response.status != 200){
+      res.status(503);
+      return res.json(response.json());
+    }
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -107,6 +132,7 @@ export default class PlanningController implements IPlanningController {
     return res.json(info);
   }
 
+
   async heuristicClosestWarehouse(req: Request, res: Response, next: NextFunction) {
     if(req.headers.authorization!=undefined)
       req.cookies["jwt"]=req.headers.authorization.split("=")[1];
@@ -124,7 +150,10 @@ export default class PlanningController implements IPlanningController {
 
     const data = req.body;
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie, httpAgent); 
-
+    if(response.status != 200){
+      res.status(503);
+      return res.json(response.json());
+    }
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -147,6 +176,32 @@ export default class PlanningController implements IPlanningController {
 
     const data = req.body;
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie, httpAgent); 
+    if(response.status != 200){
+      res.status(503);
+      return res.json(response.json());
+    }
+    const info = await response.json();
+    res.status(200);
+    return res.json(info);
+  }
+
+  async geneticAlgorithm(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
+    if(!this.isAuthenticated(req)){
+      res.status(401);
+      return res.json({message: "Not authenticated"});
+    }
+    if(!this.isAuthorized(req)){
+      res.status(403);
+      return res.json({message: "Not authorized"});
+    }
+    req.headers.cookie = "jwt="+req.cookies["jwt"];
+    const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/genetic_algorithm';
+    const httpAgent = new http.Agent({rejectUnauthorized: false});
+
+    const data = req.body;
+    const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie ,httpAgent); 
 
     const info = await response.json();
     res.status(200);

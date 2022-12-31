@@ -1,0 +1,45 @@
+.tripTable {
+  width: 100%;
+}
+
+.mat-column-tripID{
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.mat-column-date{
+  padding-left: 16px;
+}
+
+.mat-column-pathIDlist{
+  font-style: italic;
+}
+
+.mat-column-truckID{
+  font-style: italic;
+}
+
+.mat-column-deliveryIDlist{
+  font-style: italic;
+}
+
+/* .mat-column-edit{
+  align-items: center;
+} */
+
+.filteringDiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px;
+}
+
+.opcoes{
+  text-align: center;
+}
+
+.inputFiltro{
+  text-align: center;
+}

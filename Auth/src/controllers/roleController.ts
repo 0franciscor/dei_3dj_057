@@ -7,37 +7,55 @@ import IRoleService from '../services/IServices/IRoleService';
 import IRoleController from "./IControllers/IRoleController";
 
 import { Result } from "../core/logic/Result";
+import IUserService from '../services/IServices/IUserService';
 const jwt = require('jsonwebtoken');
 @Service()
-export default class RoleController implements IRoleController /* TODO: extends ../core/infra/BaseController */ {
+export default class RoleController implements IRoleController {
   constructor(
-      @Inject(config.services.role.name) private roleServiceInstance : IRoleService
+      @Inject(config.services.role.name) private roleServiceInstance : IRoleService,
+      @Inject(config.services.user.name) private userServiceInstance : IUserService
   ) {}
   
   private roles = ["admin"];
 
   isAuthenticated(req: Request) {
-    if(req.cookies['jwt'] == undefined)
-      return false;
-    const cookie = req.cookies['jwt'];
-    const claims = jwt.verify(cookie, config.jwtSecret);
-    
-    if(!claims)
+    try {
+      if(req.cookies['jwt'] == undefined)
         return false;
+      const cookie = req.cookies['jwt'];
     
-    return true;
+      const claims = jwt.verify(cookie, config.jwtSecret);
+      if(!claims)
+          return false;
+      
+      return true;
+    } catch (error) {
+      return false
+    }
+    
   }
 
-  isAuthorized(req: Request) {
+  isAuthorized(req: Request, specifiedRoles?: string[]) {
+    try {
       if(req.cookies['jwt'] == undefined)
         return false;
       const cookie = req.cookies['jwt'];
       const claims = jwt.verify(cookie, config.jwtSecret);
+      
       if(!claims)
           return false;
-      if(this.roles.indexOf(claims.role) > -1)
-        return true;
+      if(specifiedRoles != undefined){
+          if(specifiedRoles.indexOf(claims.role) > -1)
+              return true;
+          return false;
+      }
+      else if(this.roles.indexOf(claims.role) > -1)
+          return true;
       return false;
+    } catch (error) {
+      return false;
+    }
+
   }
 
 
@@ -172,9 +190,16 @@ export default class RoleController implements IRoleController /* TODO: extends 
         return res.send("Unauthorized");
       }
       const cookie = req.cookies['jwt'];
-      
+
       const claims = jwt.verify(cookie, config.jwtSecret);
-      
+      const userOrError = await this.userServiceInstance.getUserByID(claims.id);
+
+      if(userOrError.isFailure || userOrError.getValue().role != claims.role){
+        res.status(401);
+        return res.send("Unauthorized");
+
+      }
+
       if(!claims){
         res.status(401);
         return res.send("Unauthorized");
@@ -213,5 +238,7 @@ export default class RoleController implements IRoleController /* TODO: extends 
       next(error)
     }
   }
+
+  
 
 }

@@ -10,13 +10,13 @@ export class LoginService {
   constructor() { }
 
   async login(loginInfo: any) {
+    
     let url = this.urlOrigin+'api/user/login/';
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/user/login/';
     }
     
     const data = loginInfo;
-    console.log("data:",data)
 
     const response = await this.sendFetch(url, 'POST', data, "");
 
@@ -63,7 +63,6 @@ export class LoginService {
     // const header = new HttpHeaders().set('Content-type', 'application/json');
     // return this.httpClient.post(this.urlOrigin + "loginWithGoogle", JSON.stringify(credentials), { headers: header });
     const data = {credentials:credentials};
-    console.log(data)
     const response = await this.sendFetch(this.urlOrigin + "api/user/loginWithGoogle", 'POST', data, "");
     const jsonResponse = await response.json();
 
@@ -86,7 +85,6 @@ export class LoginService {
     let url = this.urlOrigin+'api/role/currentRole';
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/role/currentRole';
-
     }
     const cookies = document.cookie.split(';');
     

@@ -102,7 +102,7 @@
         </ng-container>
     
 </table>
-<mat-paginator *ngIf="dataSource.data != undefined"
+<mat-paginator *ngIf="dataSource != undefined"
         #paginator
         [length] = "dataSource.data.length"
         [pageSizeOptions]="[1, 5, 10]"
