@@ -43,8 +43,8 @@ export class TripService {
 
     const response = await this.sendFetch(url,'GET',null,this.getJwt());
     const data = await response.json();
-    return data;
 
+    return data;
   }
 
   async sendFetch(url: string, method: string, data: any, cookie: any) {

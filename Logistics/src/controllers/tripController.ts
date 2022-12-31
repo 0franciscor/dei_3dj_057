@@ -123,18 +123,17 @@ export default class TripController implements ITripController{
             res.status(403);
             return res.json({message: "Not authorized"});
         }
+
         try {
             const trips = await this.tripService.getAllTrips();
-            console.log("trips: ", trips);
+            
             if(trips.isFailure)
-            return res.status(404).send("Trip not found");
+                return res.status(404).send("Trip not found");
 
-            res.status(200).json(trips);
+            res.status(200).json(trips.getValue());
         } catch(e) {
             next(e);
         }
-        
-
     }
 
     public async createTrip(req: Request, res: Response, next: NextFunction) {

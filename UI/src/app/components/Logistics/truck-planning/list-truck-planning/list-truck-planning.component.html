@@ -1,11 +1,6 @@
 <div *ngIf="isAuth">
 
     <div class="filteringDiv">
-        <mat-form-field class="inputFiltro" appearance="fill">
-            <mat-label>Filter</mat-label>
-            <input  matInput placeholder="Filter" (keyup)="filterSearch($event)">
-        </mat-form-field>
-
         <mat-form-field class="opcoes" appearance="fill">
             <mat-label>Filter Option</mat-label>
             <mat-select placeholder="Option" (selectionChange)="changeOption($event)">
@@ -13,6 +8,11 @@
                     {{option.choice}}
                 </mat-option>
             </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="inputFiltro" appearance="fill">
+            <mat-label>Filter</mat-label>
+            <input  matInput placeholder="Filter" (keyup)="filterSearch($event)">
         </mat-form-field>
     </div>
 
@@ -57,7 +57,13 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
+        <mat-paginator *ngIf="dataSource != undefined"
+            #paginator 
+            [length]="dataSource.data.length"
+            [pageSizeOptions]="[3, 1, 10]" 
+            showFirstLastButtons
+        ></mat-paginator>
+
     </table>
-    <mat-paginator *ngIf="dataSource.filteredData != undefined" #paginator [length]="dataSource.filteredData.length"
-        [pageSizeOptions]="[3, 1, 10]" showFirstLastButtons></mat-paginator>
+    
 </div>

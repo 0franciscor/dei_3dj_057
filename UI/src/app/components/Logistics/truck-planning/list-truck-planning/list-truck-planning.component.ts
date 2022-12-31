@@ -68,23 +68,18 @@ export class ListTruckPlanningComponent implements OnInit {
     }
 
     loadTrips() {
-        this.tripList = [
-            { tripID: "1", date: "2021-05-01", pathIDlist: ["1", "2"], truckID: "1", deliveryIDlist: ["1", "2"] },
-            { tripID: "2", date: "2021-05-02", pathIDlist: ["1", "2"], truckID: "2", deliveryIDlist: ["1", "2"] },
-            { tripID: "3", date: "2021-05-03", pathIDlist: ["1", "2"], truckID: "3", deliveryIDlist: ["1", "2"] },
-            { tripID: "4", date: "2021-05-04", pathIDlist: ["1", "2"], truckID: "4", deliveryIDlist: ["1", "2"] },
-            { tripID: "5", date: "2021-05-05", pathIDlist: ["1", "2"], truckID: "5", deliveryIDlist: ["1", "2"] },
-            { tripID: "6", date: "2021-05-06", pathIDlist: ["1", "2"], truckID: "6", deliveryIDlist: ["3", "4"] },
-        ]
-
-        this.dataSource =  new MatTableDataSource(this.tripList);
+        this.tripService.getAllTrips().then((data) => {
+            this.tripList = data;
+            this.originalPackageList = this.tripList.slice();
+            this.dataSource = new MatTableDataSource(this.tripList);
+        });
     }
 
     async ngOnInit() {
         this.isAuth = await this.isAuthenticated();
         if (this.isAuth) {
-            this.originalPackageList = this.tripList.slice();
             this.loadTrips();
+            
         }
     }
 

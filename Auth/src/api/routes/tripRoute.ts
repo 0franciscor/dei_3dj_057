@@ -11,14 +11,14 @@ export default (app: Router)=>{
 
     const ctrl = Container.get(config.controllers.trip.name) as ITripController;
 
-    
-
     route.post('/',
         
         (req,res,next)=> ctrl.createTrip(req,res,next)       	
     );
 
-    
- 
+    route.get('/all',
 
+        (req,res,next)=> ctrl.getAllTrips(req,res,next)
+    );
+    
 }
