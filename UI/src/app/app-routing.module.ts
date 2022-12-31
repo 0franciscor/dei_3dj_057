@@ -22,9 +22,9 @@ import { DefaultHomeComponent } from './components/defaultHome/default-home/defa
 import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { CreateUserComponent } from './components/admin/create-user/create-user.component';
+import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
 import { ListTruckPlanningComponent } from './components/Logistics/truck-planning/list-truck-planning/list-truck-planning.component';
-//import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
-
+ 
 
 const routes: Routes = [
   { path: '', component: DefaultHomeComponent },
@@ -47,7 +47,7 @@ const routes: Routes = [
   { path: 'WarehouseManagement/Warehouse/EditWarehouse/:id', component: EditWarehouseComponent},
   { path: 'Admin/Home', component: AdminHomeComponent},
   { path: 'Admin/CreateUser', component: CreateUserComponent},
-  //{ path: 'Admin/CancelUser', component: CancelUserComponent},
+  { path: 'Admin/CancelUser', component: CancelUserComponent},
   { path: 'TermsAndConditions', component: TermsAndConditionsComponent},
   { path: 'Logistics/TruckPlanning/ListTruckPlanning', component: ListTruckPlanningComponent},
   
