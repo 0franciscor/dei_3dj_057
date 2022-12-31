@@ -80,8 +80,8 @@ import { ListTruckPlanningComponent } from './components/Logistics/truck-plannin
     TermsAndConditionsComponent,
     AdminHomeComponent,
     CreateUserComponent,
-    CancelUserComponent
-    ListTruckPlanningComponent
+    CancelUserComponent,
+    ListTruckPlanningComponent,
   ],
   imports: [
     BrowserModule,
