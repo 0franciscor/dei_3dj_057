@@ -68,7 +68,7 @@ export default class NodeTemplate {
                 rectangle.position.set(pos.x - connectionLength / 2 * Math.sin(rectangle.rotation.z), pos.y + connectionLength / 2 * Math.cos(rectangle.rotation.z), pos.z);
 
                 //castshadow on mesh
-                //rectangleGeometry.receiveShadow= true;
+                
                 this.object.add(rectangle);
 
             }
@@ -209,6 +209,8 @@ export default class NodeTemplate {
 
         this.whAndWidth.wh = pos.wh;
         this.whAndWidth.width = largestWidth;
+        
+
         
 
         
