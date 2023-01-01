@@ -27,12 +27,17 @@ export default class Truck {
         truckloader.load(
             './assets/italeri_truck/scene.gltf', 
             (object) => {
+                object.scene.traverse(function(node){
+                    if(node)
+                        node.castShadow = true;
+                });
+    
 
             truckTexture.add(object.scene);
 
         });
         truckTexture.scale.set(truckScale, truckScale, truckScale);
-       
+        truckTexture.castShadow = true;
         
         truckTexture.position.set(pos.x, pos.y - startPositonOffset, pos.z + 0.1);
         const target = new THREE.Vector3();

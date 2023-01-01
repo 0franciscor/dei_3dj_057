@@ -53,9 +53,9 @@ export default class NodeTemplate {
             //incoming connection element
             let starting = allPositions.filter((allPositions: any) => allPositions.wh == element.startWHId).at(0);
             if (starting) {
-
-                let rectangleGeometry = new THREE.PlaneGeometry(element.roadWidth, connectionLength, 32);
-                let rectangleMaterial = new THREE.MeshBasicMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
+                
+                let rectangleGeometry = new THREE.PlaneGeometry(element.roadWidth, connectionLength);
+                let rectangleMaterial = new THREE.MeshStandardMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
                 let rectangle: THREE.Mesh = new THREE.Mesh(rectangleGeometry, rectangleMaterial);
 
                 let startY = (Math.PI * starting.y) / 180;
@@ -67,6 +67,8 @@ export default class NodeTemplate {
 
                 rectangle.position.set(pos.x - connectionLength / 2 * Math.sin(rectangle.rotation.z), pos.y + connectionLength / 2 * Math.cos(rectangle.rotation.z), pos.z);
 
+                //castshadow on mesh
+                //rectangleGeometry.receiveShadow= true;
                 this.object.add(rectangle);
 
             }
@@ -82,7 +84,7 @@ export default class NodeTemplate {
 
 
                 let rectangleGeometry = new THREE.PlaneGeometry(element.roadWidth, connectionLength, 32);
-                let rectangleMaterial = new THREE.MeshBasicMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
+                let rectangleMaterial = new THREE.MeshStandardMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
                 let rectangle: THREE.Mesh = new THREE.Mesh(rectangleGeometry, rectangleMaterial);
 
                 let destY = (Math.PI * destination.y) / 180;
@@ -93,7 +95,8 @@ export default class NodeTemplate {
                 rectangle.rotation.z = Math.atan2((destY - posY), (destX - posX)) - Math.PI / 2;
 
                 rectangle.position.set(pos.x - connectionLength / 2 * Math.sin(rectangle.rotation.z), pos.y + connectionLength / 2 * Math.cos(rectangle.rotation.z), pos.z);
-
+                
+                this.setShadow();
                 this.object.add(rectangle);
 
                 
@@ -127,7 +130,7 @@ export default class NodeTemplate {
                 
 
                 let roadGeometry = new THREE.PlaneGeometry(element.roadWidth, roadLength, 32);
-                let roadMaterial = new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide });
+                let roadMaterial = new THREE.MeshStandardMaterial({ color: color, side: THREE.DoubleSide });
                 let road = new THREE.Mesh(roadGeometry, roadMaterial);
                 road.position.set((pos.x + destination.x) / 2, (pos.y + destination.y) / 2, (pos.z + destination.z) / 2);
 
@@ -137,6 +140,7 @@ export default class NodeTemplate {
 
                 road.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.atan2((destination.z - pos.z), angle));
                 
+                this.setShadow();
                 this.object.add(road);
             }
 
@@ -144,20 +148,24 @@ export default class NodeTemplate {
 
         //Circle
         let geometry = new THREE.CircleGeometry(circleRadius, 32);
-        let material = new THREE.MeshBasicMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
+        let material = new THREE.MeshStandardMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
 
         let circle: THREE.Mesh = new THREE.Mesh(geometry, material);
         circle.position.set(pos.x, pos.y, pos.z);
+        //circle.position.set(pos.x, pos.y, pos.z + 0.1);
+
+        circle.castShadow = false;
+        circle.receiveShadow = true;
+        
         this.object.add(circle);
 
         //Lighting
-        const light = new THREE.AmbientLight(0xffffff, 1);
-        //q: what are the ideal coordinates for the light?
-        light.position.set(40,10,1200);
-        light.name = "light";
-        this.object.add(light);
-
+       
         
+        //q: what are the ideal coordinates for the light?
+       
+        //this.object.add(light);
+       
 
         // Warehouse Texture
         const warehouseTexture = new THREE.Object3D();
@@ -170,18 +178,49 @@ export default class NodeTemplate {
             object.scene.scale.set(warehouseScale, warehouseScale, warehouseScale);
             object.scene.position.set(pos.x, pos.y, pos.z + 0.002);
             object.scene.rotateX(Math.PI / 2);
+            object.scene.traverse(function(node){
+                if(node)
+                    node.castShadow = true;
+            });
+
             warehouseTexture.add(object.scene);
+            
 
         });
         
         warehouseTexture.name = pos.wh
+        warehouseTexture.castShadow = true;
+        warehouseTexture.receiveShadow = false;
         this.object.add(warehouseTexture);
 
 
+        //this.object.add(warehouseTexture);
+
+
+        //const directionalLightTruck= new THREE.DirectionalLight(0xffffff,0.5);
+      /*   directionalLightTruck.position.set(40,10,1200);
+        directionalLightTruck.target.position.set(0,0,0); */
+       
+        
+        //q: what are the ideal coordinates for the light?
+       
+        //this.object.add(lightTruck);
+        //this.object.add(directionalLightTruck)
 
         this.whAndWidth.wh = pos.wh;
         this.whAndWidth.width = largestWidth;
         
 
+        
+
+    }
+
+    setShadow(){
+        this.object.traverseVisible(child=>{
+            if (child instanceof THREE.Object3D) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        })
     }
 }

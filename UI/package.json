@@ -25,7 +25,7 @@
     "@types/three": "^0.146.0",
     "google-one-tap": "^1.0.6",
     "https": "^1.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "loader": "^2.1.1",
     "ng": "^0.0.0",
     "ngx-cookie": "^6.0.1",

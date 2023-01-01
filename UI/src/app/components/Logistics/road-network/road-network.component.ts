@@ -4,7 +4,8 @@ import { random } from 'cypress/types/lodash';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
 import * as THREE from 'three';
-import { Object3D, Raycaster } from 'three';
+import { Object3D, Raycaster, VSMShadowMap } from 'three';
+import { PCFShadowMap, PCFSoftShadowMap } from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Player from './RoadNetworkJS/player';
 import roadNetworkTemplate from './RoadNetworkJS/road-network';
@@ -347,9 +348,29 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
     
   
-   
-
-
+    const ambientLight = new THREE.AmbientLight(0xFFFFFF,0.3);
+    ambientLight.position.set(-100,100,100);
+    const directionalLight= new THREE.DirectionalLight(0xFFFFFF,1);
+    directionalLight.position.set(-100,100,100);
+    
+    directionalLight.castShadow=true;
+    directionalLight.shadow.mapSize.width = 4096
+    directionalLight.shadow.mapSize.height = 4096
+    directionalLight.shadow.camera.near = 1;
+    directionalLight.shadow.camera.far = 500.0;
+    directionalLight.shadow.camera.left = -100;
+    directionalLight.shadow.camera.right = 100;
+    directionalLight.shadow.camera.top = 100;
+    directionalLight.shadow.camera.bottom = -100;
+    
+    this.scene.add(new THREE.CameraHelper(directionalLight.shadow.camera))
+    this.scene.add(directionalLight);
+    this.scene.add(ambientLight);
+    
+    for(let i=0; i<warehouses.length; i++){
+      this.warehouses[i].castShadow = true;
+    }
+    
     //Camera
     this.camera = new THREE.PerspectiveCamera(
       this.fieldOfView,
@@ -436,6 +457,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.lastwindowWidth = window.innerWidth;
       this.lastwindowHeight = window.innerHeight;
+     
     }
 
   }
@@ -445,9 +467,17 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-
+    this.renderer.shadowMap.enabled = true;
+    
+    this.renderer.shadowMap.type = PCFSoftShadowMap;
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
     let start = true;
+    //ENABLE SHADOWS
+   
+
+    
+
+
     let component: RoadNetworkComponent = this;
     (function render() {
       requestAnimationFrame(render);
