@@ -363,7 +363,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     directionalLight.shadow.camera.top = 100;
     directionalLight.shadow.camera.bottom = -100;
     
-    this.scene.add(new THREE.CameraHelper(directionalLight.shadow.camera))
+    //this.scene.add(new THREE.CameraHelper(directionalLight.shadow.camera))
     this.scene.add(directionalLight);
     this.scene.add(ambientLight);
     
