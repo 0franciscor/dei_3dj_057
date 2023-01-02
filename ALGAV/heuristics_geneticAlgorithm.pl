@@ -4,7 +4,7 @@
 extractMass([X],[M]):- entrega(X,_,M,_,_,_).
 extractMass([H|T],[H1|T1]):- extractMass(T,T1), entrega(H,_,H1,_,_,_).
 
-extractWarehouse([],[Matosinhos]):- findMatosinhos(Matosinhos).
+extractWarehouse([],[]):- !.
 extractWarehouse([HD|TD],[H1|T1]):- extractWarehouse(TD,T1), entrega(HD,_,_,H1,_,_).
 
 largestMassFirst(Delivery,WarehouseSorted):- 
@@ -61,15 +61,24 @@ extractBoth(Origin, Destinations, Visited,Result):- extractMassFromWarehouse(Des
 
 cheapestWarehouseFirst(Entregas,Result):-
     extractCities(Entregas, Warehouse_List), 
-    findMatosinhos(Matosinhos),append([Matosinhos],Warehouse_List,[H|T]), 
+    findMatosinhos(Matosinhos),
+    append([Matosinhos],Warehouse_List,[H|T]), 
     EmptyList = [H], 
     extractBoth(H,T,EmptyList,ResultNoMatosinhos),
-    findMatosinhos(Matosinhos),append([Matosinhos],
-    ResultNoMatosinhos,ResultReverse), 
-    reverse(ResultReverse,Result).
+    findMatosinhos(Matosinhos),
+    append([Matosinhos],ResultNoMatosinhos,ResultReverse),
+    reverse(ResultReverse,Result1),
+    deleteMatosinhos(5,Result1,Result).
 
+
+
+deliveriesInADay(Date,Path,Deliveries):- deleteMatosinhos(5,Path, Path1), 
+    findAllDeliveriesInACity(Date, Path1, Deliveries).
 
 findAllDeliveriesInACity(_,[],[]):-!.
-findAllDeliveriesInACity(Date,[H|T], Deliveries):- findAllDeliveriesInACity(Date,T, Deliveries1), 
-                                            findall(X, entrega(X,Date,_,H,_,_), Deliveries2), 
-                                            append(Deliveries1, Deliveries2, Deliveries).
+findAllDeliveriesInACity(Date,[H|T], Deliveries):- findAllDeliveriesInACity(Date,T, Deliveries1),
+    findall(X, entrega(X,Date,_,H,_,_), Deliveries2), 
+    union(Deliveries1, Deliveries2, Deliveries).
+
+    
+

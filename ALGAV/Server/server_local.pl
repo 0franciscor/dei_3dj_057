@@ -52,21 +52,21 @@ resetar(_Request):-
 % ---------------------------------------------------------------------------
 
 create_city(Request):-
-		cors_enable,
+	cors_enable,
         http_read_json_dict(Request, DictIn),
         Id = DictIn.get(id), Name = DictIn.get(name),
         (add_city(Id, Name, CityJson), reply_json(CityJson, [status(200)]), !);
         reply_json(_, [status(500)]).
 
 update_city(Request):-
-		cors_enable,
+	cors_enable,
         http_read_json_dict(Request, DictIn),
         Id = DictIn.get(id), Name = DictIn.get(name),
         (update_city(Id, Name, CityJson), reply_json(CityJson,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 delete_city(Request):-
-		cors_enable,
+	cors_enable,
         http_read_json_dict(Request, DictIn),
         Id = DictIn.get(id),
         (remove_city(Id), reply_json(_,  [status(200)]), !);

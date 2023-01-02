@@ -7,9 +7,9 @@ dadosCam_t_e_ta(eTruck01,1,2,122,42,0).
 dadosCam_t_e_ta(eTruck01,1,3,122,46,0).
 dadosCam_t_e_ta(eTruck01,1,4,151,54,25).
 dadosCam_t_e_ta(eTruck01,1,5,147,52,25).
-dadosCam_t_e_ta(eTruck01,1,6,74,24,0).
+dadosCam_t_e_ta(eTruck01,1,6,74,24,0). 
 dadosCam_t_e_ta(eTruck01,1,7,116,35,0).
-dadosCam_t_e_ta(eTruck01,1,8,141,46,0).
+dadosCam_t_e_ta(eTruck01,1,8,141,46,0). 
 dadosCam_t_e_ta(eTruck01,1,9,185,74,53).
 dadosCam_t_e_ta(eTruck01,1,10,97,30,0).
 dadosCam_t_e_ta(eTruck01,1,11,164,64,40).
