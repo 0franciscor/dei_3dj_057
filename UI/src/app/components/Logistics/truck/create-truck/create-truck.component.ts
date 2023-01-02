@@ -41,6 +41,7 @@ export class CreateTruckComponent implements OnInit {
   authorizedRoles: string[] = ["fltMan","admin"];
   async isAuthenticated() {
     const role= await this.loginService.getRole();
+
     if(!this.authorizedRoles.includes(role)){
       this.router.navigate(['/']);
       return false

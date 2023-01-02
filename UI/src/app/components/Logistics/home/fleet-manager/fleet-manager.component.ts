@@ -91,10 +91,10 @@ export class FleetManagerComponent implements OnInit {
   } 
   async toggleActiveTruck(truckID:string) {
     
-
+    let truck = this.truckList.find(element => element.truckID == truckID);
     let answer = await this.truckService.toggleActiveTruck(truckID);
     let message = "";
-    if(this.selectedTruckOption.active)
+    if(truck.active)
       message = "Truck Disabled Successfully";
     else
       message = "Truck Enabled Successfully";

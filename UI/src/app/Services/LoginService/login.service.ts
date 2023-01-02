@@ -87,7 +87,6 @@ export class LoginService {
       url = 'https://auth57.azurewebsites.net/api/role/currentRole';
     }
     const cookies = document.cookie.split(';');
-    
     let jwt = "";
     for (const cookie of cookies) {
       const [name, value] = cookie.split('=');
