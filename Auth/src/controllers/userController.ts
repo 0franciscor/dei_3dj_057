@@ -133,7 +133,6 @@ export default class UserController implements IUserController{
             const userOrError = await this.userService.updateUser(req.body as IUserDTO) as Result<IUserDTO>;
             if(userOrError.isFailure){
                 res.status(404);
-                console.log("deu erro: " + userOrError.errorValue());
                 return res.send("user not found");
             }
 

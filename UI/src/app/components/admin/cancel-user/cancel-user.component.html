@@ -11,7 +11,7 @@
 
         <mat-form-field class="userSelectCard" appearance="fill">
             <mat-label>User</mat-label>
-            <select matNativeControl [(ngModel)]="selectedUserOption" (ngModelChange)="onUserSelected($event)"
+            <select matNativeControl [(ngModel)]="selectedUserOption" (ngModelChange)="onUserSelected()"
                 name="truck">
                 <option *ngFor="let account of accountList;" [value]="account.email">
                     {{account.email}}

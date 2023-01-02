@@ -26,7 +26,7 @@ export class CancelUserComponent implements OnInit {
 
 
     isAuth: boolean = false;
-    authorizedRoles: string[] = ["admin"];
+    authorizedRoles: string[] = ["admin", "user"];
     async isAuthenticated() {
         const role = await this.loginService.getRole();
         if (!this.authorizedRoles.includes(role)) {
@@ -41,9 +41,14 @@ export class CancelUserComponent implements OnInit {
         this.isAuth = await this.isAuthenticated();
         if (this.isAuth) {
             this.adminService.getAllUsers().then((data) => {
-                this.accountList = data;
+                data.forEach( (element : any) => {
+                    if (element.role != "admin") {
+                        this.accountList.push(element);
+                    }
+                });
             });
         }
+
         this.selectedUser = {
             id: undefined,
             firstName: undefined,
@@ -55,14 +60,13 @@ export class CancelUserComponent implements OnInit {
         }
     }
 
-    onUserSelected($event: any) {
+    onUserSelected() {
         this.selectedUser = this.accountList.find(element => element.email == this.selectedUserOption);;
     }
 
     encryptUserInfo() {
         this.selectedUser.firstName = "xxxxxx";
         this.selectedUser.lastName = "xxxxxx";
-        this.selectedUser.password = "xxxxxx";
         this.selectedUser.phoneNumber = "xxxxxxxxx";
         this.selectedUser.role = "deleted";
     }
@@ -70,6 +74,7 @@ export class CancelUserComponent implements OnInit {
     async onSubmit() {
         this.encryptUserInfo();
         let operationSucces = await this.adminService.updateUser(this.selectedUser);
+        window.location.reload();
     }
 
     goBack() {
