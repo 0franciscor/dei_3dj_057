@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";;
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AdminService } from "src/app/Services/AdminService/admin.service";
@@ -10,16 +10,13 @@ export interface DialogData {
 }
 
 @Component({
-    selector: 'app-cancel-user',
-    templateUrl: './cancel-user.component.html',
-    styleUrls: ['./cancel-user.component.css']
+    selector: 'app-cancel-account',
+    templateUrl: './cancel-account.component.html',
+    styleUrls: ['./cancel-account.component.css']
 })
+export class CancelAccountComponent implements OnInit {
 
-export class CancelUserComponent implements OnInit {
-
-    public accountList: any[] = [];
-    public selectedUser: any;
-    public selectedUserOption: any;
+    public myUser: any;
 
     constructor(private loginService: LoginService, public dialog: MatDialog, public route: ActivatedRoute, private adminService: AdminService, private router: Router) { }
 
@@ -39,16 +36,10 @@ export class CancelUserComponent implements OnInit {
     async ngOnInit() {
         this.isAuth = await this.isAuthenticated();
         if (this.isAuth) {
-            this.adminService.getAllUsers().then((data) => {
-                data.forEach( (element : any) => {
-                    if (element.role != "admin") {
-                        this.accountList.push(element);
-                    }
-                });
-            });
+            this.adminService.getUser
         }
 
-        this.selectedUser = {
+        this.myUser = {
             id: undefined,
             firstName: undefined,
             lastName: undefined,
@@ -59,20 +50,17 @@ export class CancelUserComponent implements OnInit {
         }
     }
 
-    onUserSelected() {
-        this.selectedUser = this.accountList.find(element => element.email == this.selectedUserOption);;
-    }
 
     encryptUserInfo() {
-        this.selectedUser.firstName = "xxxxxx";
-        this.selectedUser.lastName = "xxxxxx";
-        this.selectedUser.phoneNumber = "xxxxxxxxx";
-        this.selectedUser.role = "deleted";
+        this.myUser.firstName = "xxxxxx";
+        this.myUser.lastName = "xxxxxx";
+        this.myUser.phoneNumber = "xxxxxxxxx";
+        this.myUser.role = "deleted";
     }
 
     async onSubmit() {
         this.encryptUserInfo();
-        let operationSucces = await this.adminService.updateUser(this.selectedUser);
+        let operationSucces = await this.adminService.updateUser(this.myUser);
         window.location.reload();
     }
 

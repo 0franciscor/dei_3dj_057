@@ -54,6 +54,22 @@ export class AdminService {
     return jsonResponse;
   }
 
+  async getUser(email: any) {
+    let url = this.urlOrigin+ 'api/user/id/'+ email;
+
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/user/all';
+    }
+
+    const response = await this.sendFetch(url,'GET',null, this.getJwt());
+    if(response.status == 401){
+      return "401";
+    }
+
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  }
+
 
   async updateUser(user: any) {
     let url = this.urlOrigin+ 'api/user/';

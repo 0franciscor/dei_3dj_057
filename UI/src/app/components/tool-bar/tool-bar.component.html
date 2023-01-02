@@ -4,9 +4,15 @@
     </button>
     
     <span>EletricGO</span>
-    <span class="example-spacer"></span>
 
+    <button class="button" (click)="goToUserManagement()">
+      User Management
+    </button>
+
+    <span class="example-spacer"></span>
+  
     <div *ngIf="isAdmn">
+
       <button class="button" (click)="goToLMHome()">
         Logistics Manager
       </button>

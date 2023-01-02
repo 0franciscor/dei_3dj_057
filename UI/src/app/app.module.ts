@@ -47,6 +47,7 @@ import { AdminHomeComponent } from './components/admin/admin-home/admin-home.com
 import { CreateUserComponent } from './components/admin/create-user/create-user.component';
 import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
 import { ListTruckPlanningComponent } from './components/Logistics/truck-planning/list-truck-planning/list-truck-planning.component';
+import { CancelAccountComponent } from './components/userManagement/cancel-account/cancel-account.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { ListTruckPlanningComponent } from './components/Logistics/truck-plannin
     CreateUserComponent,
     CancelUserComponent,
     ListTruckPlanningComponent,
+    CancelAccountComponent,
   ],
   imports: [
     BrowserModule,

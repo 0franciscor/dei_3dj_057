@@ -1,0 +1,28 @@
+<div class="main-div" *ngIf="isAuth">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                <h1>My User Info</h1>
+            </mat-card-title>
+            <mat-card-subtitle>A place where you can check the info of your account!</mat-card-subtitle>
+
+        </mat-card-header>
+
+        <br>
+
+        <mat-card class="userInfoCard" *ngIf="myUser!=undefined">
+            <mat-card-content>
+                <p> <b>First Name:</b> {{myUser.firstName}}</p>
+                <p> <b>Last Name:</b> {{myUser.lastName}}</p>
+                <p> <b>Email:</b> {{myUser.email}}</p>
+                <p> <b>Phone Number:</b> {{myUser.phoneNumber}}</p>
+                <p> <b>Role:</b> {{myUser.role}}</p>
+            </mat-card-content>
+        </mat-card>
+        
+        <button mat-raised-button style="width: 11em;" (click)="onSubmit()" color="primary">Delete my account</button>
+        <button mat-raised-button class="goBackButton" color="warn" (click)="goBack()">Go Back</button>
+
+    </mat-card>
+
+</div>

@@ -92,6 +92,10 @@ export class ToolBarComponent implements OnInit {
   goToTermsAndConditions(): void {
     this.router.navigate(['/TermsAndConditions']);
   }
+
+  goToUserManagement(): void {
+    this.router.navigate(['/UserManagement/CancelAccount']);
+  }
  
 
 }
