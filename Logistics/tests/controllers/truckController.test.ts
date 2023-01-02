@@ -381,7 +381,7 @@ describe('TruckController Unit Tests', () => {
 
 
 
-    it('deleteTruck returns truck', async () => {
+    it('softDeleteTruck returns truck', async () => {
 
         // Arrange
         let body = {
@@ -390,11 +390,12 @@ describe('TruckController Unit Tests', () => {
             capacity: 1,
             maxBatteryCapacity: 1,
             autonomy: 1,
-            fastChargeTime: 1
+            fastChargeTime: 1,
+            active: false
         };
         let req: Partial<Request> = {};
-            req.body= {
-                truckID: "truckID"
+            req.params= {
+                id: "truckID"
             }
 
         let res: Partial<Response> = {
@@ -408,14 +409,15 @@ describe('TruckController Unit Tests', () => {
         let truckServiceInstance = Container.get("TruckService");
   
 
-        sinon.stub(truckServiceInstance, 'deleteTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
+        sinon.stub(truckServiceInstance, 'softDeleteTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
         sinon.stub(truckController, 'isAuthenticated').returns(true);
         sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
-        await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
+       
+        await truckController.softDeleteTruck(<Request>req, <Response>res, <NextFunction>next);
         
         //Assert
         sinon.assert.calledOnce(res.json);
@@ -424,7 +426,7 @@ describe('TruckController Unit Tests', () => {
         
     });
 
-    it('deleteTruck returns 200', async () => {
+    it('softDeleteTruck returns 200', async () => {
 
         // Arrange
         let body = {
@@ -436,8 +438,8 @@ describe('TruckController Unit Tests', () => {
             fastChargeTime: 1
         };
         let req: Partial<Request> = {};
-        req.body= {
-            truckID: "truckID"
+        req.params= {
+            id: "truckID"
         }
 
         let res: Partial<Response> = {
@@ -451,14 +453,15 @@ describe('TruckController Unit Tests', () => {
   
 
 
-        sinon.stub(truckServiceInstance, 'deleteTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
+        sinon.stub(truckServiceInstance, 'softDeleteTruck').returns(Promise.resolve(Result.ok<ITruckDTO>(body as ITruckDTO)));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
         sinon.stub(truckController, 'isAuthenticated').returns(true);
         sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
-        await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
+ 
+        await truckController.softDeleteTruck(<Request>req, <Response>res, <NextFunction>next);
         
         //Assert
         sinon.assert.calledOnce(res.status);
@@ -468,13 +471,13 @@ describe('TruckController Unit Tests', () => {
 
 
 
-    it('deleteTruck returns "Truck not found"', async () => {
+    it('softDeleteTruck returns "Truck not found"', async () => {
 
         // Arrange
         let req: Partial<Request> = {};
-            req.body= {
-                truckID: "truckID"
-            }
+        req.params= {
+            id: "truckID"
+        }
 
         let res: Partial<Response> = {
             status: sinon.spy(),
@@ -487,14 +490,14 @@ describe('TruckController Unit Tests', () => {
         let truckServiceInstance = Container.get("TruckService");
   
 
-        sinon.stub(truckServiceInstance, 'deleteTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
+        sinon.stub(truckServiceInstance, 'softDeleteTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
         sinon.stub(truckController, 'isAuthenticated').returns(true);
         sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
-        await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
+        await truckController.softDeleteTruck(<Request>req, <Response>res, <NextFunction>next);
         
         //Assert
         sinon.assert.calledOnce(res.send);
@@ -503,13 +506,13 @@ describe('TruckController Unit Tests', () => {
         
     });
 
-    it('deleteTruck returns 404', async () => {
+    it('softDeleteTruck returns 404', async () => {
 
         // Arrange
         let req: Partial<Request> = {};
-            req.body= {
-                truckID: "truckID"
-            }
+        req.params= {
+            id: "truckID"
+        }
 
         let res: Partial<Response> = {
             status: sinon.spy()
@@ -521,14 +524,14 @@ describe('TruckController Unit Tests', () => {
         let truckServiceInstance = Container.get("TruckService");
   
 
-        sinon.stub(truckServiceInstance, 'deleteTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
+        sinon.stub(truckServiceInstance, 'softDeleteTruck').returns(Promise.resolve(Result.fail<ITruckDTO>("Truck not found")));
 
         const truckController = new TruckController(truckServiceInstance as ITruckService);
         sinon.stub(truckController, 'isAuthenticated').returns(true);
         sinon.stub(truckController, 'isAuthorized').returns(true);
 
         // Act
-        await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
+        await truckController.softDeleteTruck(<Request>req, <Response>res, <NextFunction>next);
         
         //Assert
         sinon.assert.calledOnce(res.status);
@@ -823,7 +826,7 @@ describe("TruckController + TruckService Integration test", () => {
 
     });
 
-    it('deleteTruck returns truck', async () => {
+    it('softDeleteTruck returns truck', async () => {
 
         // Arrange
         let body = {
@@ -837,7 +840,9 @@ describe("TruckController + TruckService Integration test", () => {
             active: true
         };
         let req: Partial<Request> = {};
-            req.body=body;
+        req.params= {
+            id: "truckID"
+        }
 
         let res: Partial<Response> = {
             status: sinon.spy(),
@@ -852,13 +857,13 @@ describe("TruckController + TruckService Integration test", () => {
         sinon.stub(truckRepoInstance, 'save').returns(Promise.resolve(TruckMap.toDomain(body as ITruckDTO)));
 
         let truckServiceInstance = Container.get("TruckService");
-        const truckServiceSpy = sinon.spy(truckServiceInstance, 'deleteTruck');
+        const truckServiceSpy = sinon.spy(truckServiceInstance, 'softDeleteTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
         sinon.stub(truckController, 'isAuthenticated').returns(true);
         sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
-        await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
+        await truckController.softDeleteTruck(<Request>req, <Response>res, <NextFunction>next);
         
         //Assert
         sinon.assert.calledOnce(res.status);
@@ -1114,7 +1119,7 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
         sinon.assert.calledOnce(truckServiceSpy);
 
     });
-    it('deleteTruck returns truck', async () => {
+    it('softDeleteTruck returns truck', async () => {
 
         // Arrange
         let body = {
@@ -1141,7 +1146,9 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
         }as ITruckPersistence;
         
         let req: Partial<Request> = {};
-            req.body=body;
+        req.params= {
+            id: "truckID"
+        }
 
         let res: Partial<Response> = {
             status: sinon.spy()
@@ -1159,13 +1166,13 @@ describe("TruckController + TruckService + TruckRepo Integration test", () => {
         const truckRepoSpy = sinon.spy(truckRepoInstance, 'save');
 
         let truckServiceInstance = Container.get("TruckService");
-        const truckServiceSpy = sinon.spy(truckServiceInstance, 'deleteTruck');
+        const truckServiceSpy = sinon.spy(truckServiceInstance, 'softDeleteTruck');
     
         const truckController = new TruckController(truckServiceInstance as ITruckService);
         sinon.stub(truckController, 'isAuthenticated').returns(true);
         sinon.stub(truckController, 'isAuthorized').returns(true);
         // Act
-        await truckController.deleteTruck(<Request>req, <Response>res, <NextFunction>next);
+        await truckController.softDeleteTruck(<Request>req, <Response>res, <NextFunction>next);
         
         //Assert
         sinon.assert.calledOnce(res.status);

@@ -117,7 +117,6 @@ export default class TruckService implements ITruckService {
 
     public async softDeleteTruck(truckID: string): Promise<Result<ITruckDTO>> {
         try {
-
             const truck = await this.truckRepo.getTruckById(truckID);
             if(truck === null)
                 return Result.fail<ITruckDTO>("Truck not found");

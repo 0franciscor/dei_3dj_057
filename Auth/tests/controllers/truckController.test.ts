@@ -1236,7 +1236,7 @@ describe('TruckController Unit Tests', () => {
     });
 
 
-    it('deleteTruck returns JSON', async()=>{
+    it('softDeleteTruck returns JSON', async()=>{
         //Arrange
         let params={
             id: "1"
@@ -1279,14 +1279,14 @@ describe('TruckController Unit Tests', () => {
         });
     
         //Act
-        await truckController.deleteTruck(<Request>req,<Response>res,<NextFunction>next);
+        await truckController.softDeleteTruck(<Request>req,<Response>res,<NextFunction>next);
     
         //Assert
         sinon.assert.calledOnce(res.json);
         sinon.assert.calledWith(res.json, sinon.match.has('message', 'Truck deleted'));    
     });
 
-    it('deleteTruck returns status', async()=>{
+    it('softDeleteTruck returns status', async()=>{
         //Arrange
         let params={
             id: "1"
@@ -1329,14 +1329,14 @@ describe('TruckController Unit Tests', () => {
         });
     
         //Act
-        await truckController.deleteTruck(<Request>req,<Response>res,<NextFunction>next);
+        await truckController.softDeleteTruck(<Request>req,<Response>res,<NextFunction>next);
     
         //Assert
         sinon.assert.calledOnce(res.status);
         sinon.assert.calledWith(res.status, 200);    
     });
 
-    it('deleteTruck error returns JSON', async()=>{
+    it('softDeleteTruck error returns JSON', async()=>{
         //Arrange
         let params={
             id: "1"
@@ -1379,14 +1379,14 @@ describe('TruckController Unit Tests', () => {
         });
     
         //Act
-        await truckController.deleteTruck(<Request>req,<Response>res,<NextFunction>next);
+        await truckController.softDeleteTruck(<Request>req,<Response>res,<NextFunction>next);
     
         //Assert
         sinon.assert.calledOnce(res.json);
         sinon.assert.calledWith(res.json, sinon.match.has('message', 'Error deleting truck'));    
     });
 
-    it('deleteTruck error returns status', async()=>{
+    it('softDeleteTruck error returns status', async()=>{
         //Arrange
         let params={
             id: "1"
@@ -1429,7 +1429,7 @@ describe('TruckController Unit Tests', () => {
         });
     
         //Act
-        await truckController.deleteTruck(<Request>req,<Response>res,<NextFunction>next);
+        await truckController.softDeleteTruck(<Request>req,<Response>res,<NextFunction>next);
     
         //Assert
         sinon.assert.calledOnce(res.status);

@@ -158,6 +158,7 @@ export default class TruckController implements ITruckController {
     }
 
     public async softDeleteTruck(req: Request, res: Response, next: NextFunction){
+       
         if(!this.isAuthenticated(req)){
             res.status(401);
             return res.json({message: "Not authenticated"});

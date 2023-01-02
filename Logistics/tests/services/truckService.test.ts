@@ -254,7 +254,7 @@ describe('TruckService Unit Tests', () => {
         expect(answer.errorValue()).to.equal("Truck not found");
 
     });
-    it('deleteTruck returns truck', async () => {
+    it('softDeleteTruck returns truck', async () => {
         
         let body = {
             truckID: "truckID",
@@ -272,7 +272,7 @@ describe('TruckService Unit Tests', () => {
         sinon.stub(truckRepoInstance, "getTruckById").returns(TruckMap.toDomain(body));
         sinon.stub(truckRepoInstance, "save").returns(TruckMap.toDomain(body));
         const truckService = new TruckService(truckRepoInstance as ITruckRepo);
-        const answer = await truckService.deleteTruck(body.truckID);
+        const answer = await truckService.softDeleteTruck(body.truckID);
         expect(answer.getValue().truckID).to.equal(body.truckID);
         expect(answer.getValue().tare).to.equal(body.tare);
         expect(answer.getValue().capacity).to.equal(body.capacity);
@@ -298,7 +298,7 @@ describe('TruckService Unit Tests', () => {
 
         sinon.stub(truckRepoInstance, "getTruckById").returns(null);
         const truckService = new TruckService(truckRepoInstance as ITruckRepo);
-        const answer = await truckService.deleteTruck(body.truckID);
+        const answer = await truckService.softDeleteTruck(body.truckID);
 
         expect(answer.errorValue()).to.equal("Truck not found");
 
@@ -505,7 +505,7 @@ describe("TruckService + TruckRepo Integration Test", () => {
         sinon.assert.calledOnce(truckRepoSpy2);
     });
 
-    it('delete returns truck', async () => {
+    it('soft delete returns truck', async () => {
         
         let body = {
             id:"id",
@@ -539,7 +539,8 @@ describe("TruckService + TruckRepo Integration Test", () => {
         const truckRepoSpy = sinon.spy(truckRepoInstance, 'save');
         
         const truckService = new TruckService(truckRepoInstance as ITruckRepo);
-        const answer = await truckService.deleteTruck(body.truckID);
+        
+        const answer = await truckService.softDeleteTruck(body.truckID);
         expect(answer.getValue().truckID).to.equal(body.truckID);
         expect(answer.getValue().tare).to.equal(body.tare);
         expect(answer.getValue().capacity).to.equal(body.capacity);
