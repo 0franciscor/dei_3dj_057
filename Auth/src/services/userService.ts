@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { Compressor } from "mongodb";
 import { Inject, Service } from "typedi";
 import config from "../../config";
 import { Result } from "../core/logic/Result";
@@ -15,11 +16,6 @@ export default class UserService implements IUserService{
     constructor(
         @Inject(config.repos.user.name) private userRepo: IUserRepo 
     ){}
-    
-
-
-    
-
 
     public async login(user: IUserDTO): Promise<Result<IUserDTO>> {
         try {
@@ -81,7 +77,10 @@ export default class UserService implements IUserService{
                 return Result.fail<IUserDTO>("User not found");
             }else{
                 user.email= UserEmail.create(userDTO.email).getValue();
-                await this.userRepo.save(user);
+
+                const updatedUser = User.create(userDTO).getValue();
+
+                await this.userRepo.save(updatedUser);
 
                 const userDTOresult = UserMap.toDTO(user) as IUserDTO;
                 return Result.ok<IUserDTO>(userDTOresult)

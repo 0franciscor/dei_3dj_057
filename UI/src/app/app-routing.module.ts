@@ -24,6 +24,7 @@ import { AdminHomeComponent } from './components/admin/admin-home/admin-home.com
 import { CreateUserComponent } from './components/admin/create-user/create-user.component';
 import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
 import { ListTruckPlanningComponent } from './components/Logistics/truck-planning/list-truck-planning/list-truck-planning.component';
+import { CancelAccountComponent } from './components/userManagement/cancel-account/cancel-account.component';
  
 
 const routes: Routes = [
@@ -50,7 +51,7 @@ const routes: Routes = [
   { path: 'Admin/CancelUser', component: CancelUserComponent},
   { path: 'TermsAndConditions', component: TermsAndConditionsComponent},
   { path: 'Logistics/TruckPlanning/ListTruckPlanning', component: ListTruckPlanningComponent},
-  
+  { path: 'UserManagement/CancelAccount', component: CancelAccountComponent}
 ];
 
 @NgModule({
