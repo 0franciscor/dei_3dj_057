@@ -38,14 +38,13 @@ export default (app: Router) => {
                 role: Joi.string().required()
             })
         }),
-        
         (req,res,next) => ctrl.createUser(req,res,next)    
     );
     
     route.patch('/',
         celebrate({
             body: Joi.object({
-                userId: Joi.string().required(),
+                id: Joi.string().required(),
                 firstName: Joi.string(),
                 lastName: Joi.string(),
                 email: Joi.string(),
