@@ -1,41 +1,43 @@
 <mat-toolbar class="toolBar">
-    <button mat-icon-button color="secondary" (click)="goHome()" >
-        <mat-icon>home</mat-icon>
-    </button>
-    
-    <span>EletricGO</span>
+  <button mat-icon-button color="secondary" (click)="goHome()">
+    <mat-icon>home</mat-icon>
+  </button>
 
+  <span>EletricGO</span>
+
+  <div *ngIf="!isAdmn && isLoggedIn">
     <button class="button" (click)="goToUserManagement()">
       User Management
     </button>
+  </div>
 
-    <span class="example-spacer"></span>
-  
-    <div *ngIf="isAdmn">
+  <span class="example-spacer"></span>
 
-      <button class="button" (click)="goToLMHome()">
-        Logistics Manager
-      </button>
-  
-      <button class="button" (click)="goToFMHome()" >
-        Fleet Manager
-      </button>
-  
-      <button class="button" (click)="goToWMHome()">
-        Warehouse Manager
-      </button>
+  <div *ngIf="isAdmn">
 
-
-    </div>
-
-    <button class="button" (click)="goToTermsAndConditions()" *ngIf="!isLoggedIn">
-      Terms and Conditions
+    <button class="button" (click)="goToLMHome()">
+      Logistics Manager
     </button>
 
-    <button mat-icon-button color="secondary" (click)="logout()" *ngIf="isLoggedIn">
-      <mat-icon>logout</mat-icon>
+    <button class="button" (click)="goToFMHome()">
+      Fleet Manager
     </button>
-    
 
-    
+    <button class="button" (click)="goToWMHome()">
+      Warehouse Manager
+    </button>
+
+
+  </div>
+
+  <button class="button" (click)="goToTermsAndConditions()" *ngIf="!isLoggedIn">
+    Terms and Conditions
+  </button>
+
+  <button mat-icon-button color="secondary" (click)="logout()" *ngIf="isLoggedIn">
+    <mat-icon>logout</mat-icon>
+  </button>
+
+
+
 </mat-toolbar>

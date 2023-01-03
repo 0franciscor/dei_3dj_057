@@ -54,11 +54,11 @@ export class AdminService {
     return jsonResponse;
   }
 
-  async getUser(email: any) {
-    let url = this.urlOrigin+ 'api/user/id/'+ email;
+  async getUser() {
+    let url = this.urlOrigin+ 'api/user/id';
 
     if(this.urlOrigin.includes("azure")){
-      url = 'https://auth57.azurewebsites.net/api/user/all';
+      url = 'https://auth57.azurewebsites.net/api/user/id';
     }
 
     const response = await this.sendFetch(url,'GET',null, this.getJwt());

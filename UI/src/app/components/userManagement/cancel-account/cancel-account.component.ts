@@ -22,7 +22,7 @@ export class CancelAccountComponent implements OnInit {
 
 
     isAuth: boolean = false;
-    authorizedRoles: string[] = ["admin", "user"];
+    authorizedRoles: string[] = ["user"];
     async isAuthenticated() {
         const role = await this.loginService.getRole();
         if (!this.authorizedRoles.includes(role)) {
@@ -36,7 +36,9 @@ export class CancelAccountComponent implements OnInit {
     async ngOnInit() {
         this.isAuth = await this.isAuthenticated();
         if (this.isAuth) {
-            this.adminService.getUser
+            this.adminService.getUser().then((data) => {
+                this.myUser = data;
+            });
         }
 
         this.myUser = {

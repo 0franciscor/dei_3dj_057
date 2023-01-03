@@ -16,9 +16,8 @@ export default (app: Router) => {
     route.post('/loginWithGoogle', (req,res,next) => ctrl.loginWithGoogle(req,res,next));
     route.post('/login', (req,res,next) => ctrl.login(req,res,next));
 
-    route.get ('/id/:id',(req,res,next)=>
+    route.get ('/id',(req,res,next)=>
     {
-        req.body.userId = req.params.id;
         ctrl.getUser(req,res,next)
     });
 

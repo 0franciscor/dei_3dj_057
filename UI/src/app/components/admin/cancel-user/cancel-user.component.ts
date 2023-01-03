@@ -25,7 +25,7 @@ export class CancelUserComponent implements OnInit {
 
 
     isAuth: boolean = false;
-    authorizedRoles: string[] = ["admin", "user"];
+    authorizedRoles: string[] = ["admin"];
     async isAuthenticated() {
         const role = await this.loginService.getRole();
         if (!this.authorizedRoles.includes(role)) {
@@ -60,7 +60,7 @@ export class CancelUserComponent implements OnInit {
     }
 
     onUserSelected() {
-        this.selectedUser = this.accountList.find(element => element.email == this.selectedUserOption);;
+        this.selectedUser = this.accountList.find(element => element.email == this.selectedUserOption);
     }
 
     encryptUserInfo() {
