@@ -104,7 +104,7 @@ export default class NodeTemplate {
 
                 rectangle.position.set(pos.x - connectionLength / 2 * Math.sin(rectangle.rotation.z), pos.y + connectionLength / 2 * Math.cos(rectangle.rotation.z), pos.z);
                 
-                this.setShadow();
+                rectangle.receiveShadow = true;
                 this.object.add(rectangle);
 
                 
@@ -152,7 +152,8 @@ export default class NodeTemplate {
 
                 road.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.atan2((destination.z - pos.z), angle));
                 
-                this.setShadow();
+                road.castShadow = true;
+                road.receiveShadow = true;  
                 this.object.add(road);
 
                 
