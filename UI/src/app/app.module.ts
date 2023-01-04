@@ -48,6 +48,7 @@ import { CreateUserComponent } from './components/admin/create-user/create-user.
 import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
 import { ListTruckPlanningComponent } from './components/Logistics/truck-planning/list-truck-planning/list-truck-planning.component';
 import { CancelAccountComponent } from './components/userManagement/cancel-account/cancel-account.component';
+import { TruckPlanningSimulationComponent } from './components/Logistics/truck-planning/truck-planning-simulation/truck-planning-simulation.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { CancelAccountComponent } from './components/userManagement/cancel-accou
     CancelUserComponent,
     ListTruckPlanningComponent,
     CancelAccountComponent,
+    TruckPlanningSimulationComponent
   ],
   imports: [
     BrowserModule,

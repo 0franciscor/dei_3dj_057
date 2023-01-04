@@ -25,7 +25,8 @@ import { CreateUserComponent } from './components/admin/create-user/create-user.
 import { CancelUserComponent } from './components/admin/cancel-user/cancel-user.component';
 import { ListTruckPlanningComponent } from './components/Logistics/truck-planning/list-truck-planning/list-truck-planning.component';
 import { CancelAccountComponent } from './components/userManagement/cancel-account/cancel-account.component';
- 
+import { TruckPlanningSimulationComponent } from './components/Logistics/truck-planning/truck-planning-simulation/truck-planning-simulation.component';
+
 
 const routes: Routes = [
   { path: '', component: DefaultHomeComponent },
@@ -51,7 +52,8 @@ const routes: Routes = [
   { path: 'Admin/CancelUser', component: CancelUserComponent},
   { path: 'TermsAndConditions', component: TermsAndConditionsComponent},
   { path: 'Logistics/TruckPlanning/ListTruckPlanning', component: ListTruckPlanningComponent},
-  { path: 'UserManagement/CancelAccount', component: CancelAccountComponent}
+  { path: 'UserManagement/CancelAccount', component: CancelAccountComponent},
+  { path: 'Logistics/TruckPlanning/TruckPlanningSimulation', component: TruckPlanningSimulationComponent }
 ];
 
 @NgModule({
