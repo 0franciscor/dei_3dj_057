@@ -1,9 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, NgZone } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { TruckService } from 'src/app/Services/TruckService/truck.service';
-
 
 
 interface Truck{
@@ -37,7 +36,7 @@ export class FleetManagerComponent implements OnInit {
   displayedColumns: string[] = ['TruckID', 'Tare', 'Capacity', 'Maximum Battery Capacity', 'Autonomy', 'Fast Charge Time', "Actions"];
   dataSource = this.truckList;
   
-  constructor(private loginService:LoginService,public dialog: MatDialog,private truckService: TruckService, private router: Router) {}
+  constructor(private ngZone:NgZone,private loginService:LoginService,public dialog: MatDialog,private truckService: TruckService, private router: Router) {}
 
   isAuth: boolean = false;
   isAdmin: boolean = false;
@@ -47,7 +46,7 @@ export class FleetManagerComponent implements OnInit {
     if(role == "admin")
       this.isAdmin = true;
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -82,15 +81,16 @@ export class FleetManagerComponent implements OnInit {
 
 
   goToCreateTruck() {
-    this.router.navigate(['Logistics/Truck/CreateTruck']);
+    this.ngZone.run(() => this.router.navigate(['Logistics/Truck/CreateTruck']));
+    
     
   }
   goToEditTruck(truckID:string) {
-    this.router.navigate(['Logistics/Truck/EditTruck', truckID]);
+    this.ngZone.run(() => this.router.navigate(['Logistics/Truck/EditTruck', truckID]));
+
     
   } 
   async toggleActiveTruck(truckID:string) {
-    
     let truck = this.truckList.find(element => element.truckID == truckID);
     let answer = await this.truckService.toggleActiveTruck(truckID);
     let message = "";
@@ -110,7 +110,7 @@ export class FleetManagerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(answer.status == 200)
-        this.router.navigate(['Logistics/Home/FleetManager']);
+        this.ngZone.run(() => this.router.navigate(['Logistics/Home/FleetManager']));
       
     });
     this.truckService.getAllTruck().then((data) => {
@@ -145,7 +145,7 @@ export class FleetManagerComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => {
         if(answer.status == 200)
-          this.router.navigate(['Logistics/Home/FleetManager']);
+          this.ngZone.run(() => this.router.navigate(['Logistics/Home/FleetManager']));
         
       });
       this.truckService.getAllTruck().then((data) => {

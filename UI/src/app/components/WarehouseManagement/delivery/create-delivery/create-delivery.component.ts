@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeliveryService } from "src/app/Services/DeliveryService/delivery.service";
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
@@ -20,7 +20,7 @@ export class CreateDeliveryComponent implements OnInit {
   formCreateDelivery!: FormGroup;
   minDate: Date;
 
-  constructor(private loginService:LoginService,private dialog: MatDialog, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
+  constructor(private ngZone:NgZone,private loginService:LoginService,private dialog: MatDialog, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDate();
@@ -41,7 +41,7 @@ export class CreateDeliveryComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -81,7 +81,7 @@ export class CreateDeliveryComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => {
         if (answer.status == 201)
-          this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+          this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
   
       });
     }

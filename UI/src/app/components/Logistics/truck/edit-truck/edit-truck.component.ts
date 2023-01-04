@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,7 +27,7 @@ export interface DialogData {
 })
 export class EditTruckComponent implements OnInit {
     formEditTruck!: FormGroup;
-  constructor(private loginService:LoginService,public dialog: MatDialog,public route: ActivatedRoute,private truckService: TruckService,private fb: FormBuilder,private router: Router) { }
+  constructor(private ngZone:NgZone,private loginService:LoginService,public dialog: MatDialog,public route: ActivatedRoute,private truckService: TruckService,private fb: FormBuilder,private router: Router) { }
 
   selectedTruck = {
     truckID: "",
@@ -44,7 +44,7 @@ export class EditTruckComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -77,12 +77,12 @@ export class EditTruckComponent implements OnInit {
         });
       });
     else
-      this.router.navigate(['Logistics/Home/FleetManager']);
+      this.ngZone.run(() => this.router.navigate(['Logistics/Home/FleetManager']));
   }
 
 
   goBack(){
-    this.router.navigate(['Logistics/Home/FleetManager']);
+    this.ngZone.run(() => this.router.navigate(['Logistics/Home/FleetManager']));
   }
   
   async onSubmit() {
@@ -104,7 +104,7 @@ export class EditTruckComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if(answer.status == 200)
-          this.router.navigate(['Logistics/Home/FleetManager']);
+          this.ngZone.run(() => this.router.navigate(['Logistics/Home/FleetManager']));
         
       });
     }

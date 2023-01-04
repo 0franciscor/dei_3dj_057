@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";;
+import { Component, OnInit, NgZone } from "@angular/core";;
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AdminService } from "src/app/Services/AdminService/admin.service";
@@ -21,7 +21,7 @@ export class CancelUserComponent implements OnInit {
     public selectedUser: any;
     public selectedUserOption: any;
 
-    constructor(private loginService: LoginService, public dialog: MatDialog, public route: ActivatedRoute, private adminService: AdminService, private router: Router) { }
+    constructor(private ngZone:NgZone,private loginService: LoginService, public dialog: MatDialog, public route: ActivatedRoute, private adminService: AdminService, private router: Router) { }
 
 
     isAuth: boolean = false;
@@ -29,7 +29,7 @@ export class CancelUserComponent implements OnInit {
     async isAuthenticated() {
         const role = await this.loginService.getRole();
         if (!this.authorizedRoles.includes(role)) {
-            this.router.navigate(['/']);
+            this.ngZone.run(() => this.router.navigate(['/']));
             return false
         }
         return true;
@@ -77,7 +77,7 @@ export class CancelUserComponent implements OnInit {
     }
 
     goBack() {
-        this.router.navigate(['Admin/Home']);
+        this.ngZone.run(() => this.router.navigate(['Admin/Home']));
     }
 
 }

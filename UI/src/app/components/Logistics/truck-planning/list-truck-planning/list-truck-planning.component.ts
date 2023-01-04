@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, OnInit, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
@@ -42,7 +42,7 @@ export class ListTruckPlanningComponent implements OnInit {
 
     selectedOption!: string;
 
-    constructor(private loginService: LoginService, private tripService: TripService, private router: Router) {}
+    constructor(private ngZone:NgZone,private loginService: LoginService, private tripService: TripService, private router: Router) {}
 
     dataSource!: MatTableDataSource<any>;
 
@@ -61,7 +61,7 @@ export class ListTruckPlanningComponent implements OnInit {
     async isAuthenticated() {
         const role = await this.loginService.getRole();
         if (!this.authorizedRoles.includes(role)) {
-            this.router.navigate(['/']);
+            this.ngZone.run(() => this.router.navigate(['/']));
             return false;
         }
         return true;

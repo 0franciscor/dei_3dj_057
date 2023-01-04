@@ -59,7 +59,6 @@ export class TruckService {
     const data = truck;
  
     const response = await this.sendFetch(url, 'POST', data, this.getJwt());
-    console.log("response", response);
     return response;
     
 
