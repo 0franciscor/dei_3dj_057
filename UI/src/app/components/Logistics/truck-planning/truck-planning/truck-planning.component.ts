@@ -109,6 +109,13 @@ export class TruckPlanningComponent implements OnInit {
     
   }
 
+  async getTruckPlanningSimulation(){
+    this.router.navigate(['Logistics/TruckPlanning/TruckPlanningSimulation']);
+    
+  }
+
+
+
    formatDate(date: Date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
