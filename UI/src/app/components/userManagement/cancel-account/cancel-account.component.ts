@@ -22,7 +22,7 @@ export class CancelAccountComponent implements OnInit {
 
 
     isAuth: boolean = false;
-    authorizedRoles: string[] = ["user"];
+    authorizedRoles: string[] = ["fltMan","logMan","whMan"];
     async isAuthenticated() {
         const role = await this.loginService.getRole();
         if (!this.authorizedRoles.includes(role)) {
