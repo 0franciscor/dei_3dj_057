@@ -31,11 +31,11 @@ export class PlanningService{
       truck: TruckName,
       date: date, 
     }
-    console.log(data)
+
 
     const response = await this.sendFetch(url,'POST',data, this.getJwt());
     const pathlist=await response.json();
-    console.log(pathlist.bestPath[1])
+
 
    
       const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
@@ -54,11 +54,11 @@ export class PlanningService{
     const data={
       date: date, 
     }
-    console.log(data)
+
 
     const response = await this.sendFetch(url,'POST',data, this.getJwt());
     const pathlist=await response.json();
-    console.log(pathlist.bestRoute)
+
 
    
       let url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
@@ -83,7 +83,7 @@ export class PlanningService{
 
     const response = await this.sendFetch(url,'POST',data, this.getJwt());
     const pathlist=await response.json();
-    console.log(pathlist)
+
 
    
       let url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
@@ -107,7 +107,7 @@ export class PlanningService{
     }
     const response = await this.sendFetch(url,'POST',data, this.getJwt());
     const pathlist=await response.json();
-    console.log(pathlist)
+
 
    
       let url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
@@ -129,7 +129,7 @@ export class PlanningService{
     const data={
       date: date, 
     }
-    console.log(data)
+
 
     const response = await this.sendFetch(url,'POST',data, this.getJwt());
     const pathlist=await response.json();

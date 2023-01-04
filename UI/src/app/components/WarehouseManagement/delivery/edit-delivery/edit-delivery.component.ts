@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
@@ -16,7 +16,7 @@ export class EditDeliveryComponent implements OnInit {
   formEditDelivery!: FormGroup;
   minDate: Date;
 
-  constructor(private loginService:LoginService,private dialog: MatDialog, private route: ActivatedRoute, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
+  constructor(private ngZone:NgZone,private loginService:LoginService,private dialog: MatDialog, private route: ActivatedRoute, private deliveryService: DeliveryService, private fb: FormBuilder, private router: Router) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentDay = new Date().getDate();
@@ -33,7 +33,7 @@ export class EditDeliveryComponent implements OnInit {
   }
 
   goBack(){
-    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
   }
 
   isAuth: boolean = false;
@@ -41,7 +41,7 @@ export class EditDeliveryComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -94,7 +94,7 @@ export class EditDeliveryComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (answer.status == 200)
-        this.router.navigate(['WarehouseManagement/Delivery/GetDelivery']);
+        this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Delivery/GetDelivery']));
 
     });
   }

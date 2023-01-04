@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { random } from 'cypress/types/lodash';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
@@ -44,7 +44,7 @@ interface Truck {
 })
 export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
-  constructor(private loginService:LoginService,private router: Router) { }
+  constructor(private ngZone:NgZone,private loginService:LoginService,private router: Router) { }
 
 
   @ViewChild('container')
@@ -509,7 +509,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else

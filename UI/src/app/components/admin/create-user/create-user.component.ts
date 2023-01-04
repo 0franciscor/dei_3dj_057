@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/Services/AdminService/admin.service';
@@ -17,7 +17,7 @@ export interface Role {
 })
 export class CreateUserComponent implements OnInit {
   formCreateUser!: FormGroup;
-  constructor(private adminService:AdminService,private loginService:LoginService, private router: Router) { }
+  constructor(private ngZone:NgZone,private adminService:AdminService,private loginService:LoginService, private router: Router) { }
 
   roleList: Role[] = []; 
 
@@ -25,7 +25,6 @@ export class CreateUserComponent implements OnInit {
     this.isAuth = await this.isAuthenticated();
     if(this.isAuth){
       this.roleList = await this.adminService.getAllRole();
-      console.log(this.roleList)
       this.formCreateUser = new FormGroup({
         firstName: new FormControl('', [Validators.required]),
         lastName: new FormControl('', [Validators.required]),
@@ -43,7 +42,7 @@ export class CreateUserComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() =>this.router.navigate(['/']));
       return false
     }
     else
@@ -52,7 +51,6 @@ export class CreateUserComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log(this.formCreateUser.valid)
     if(this.formCreateUser.valid){
       //get this.formCreateUser.value.role in roleList
       this.roleList.forEach(role => {

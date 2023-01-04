@@ -14,7 +14,7 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 export class LogInComponent implements OnInit {
   hide = true;
   
-  constructor(private loginService:LoginService, private router:Router,public dialog: MatDialog, private _ngZone: NgZone) { }
+  constructor(private ngZone:NgZone,private loginService:LoginService, private router:Router,public dialog: MatDialog, private _ngZone: NgZone) { }
   formLogin!: FormGroup;
   isDisabled = true;
   isAuth: boolean = true;
@@ -23,22 +23,22 @@ export class LogInComponent implements OnInit {
     const role = await this.loginService.getRole();
 
     if(role=="admin"){
-      this.router.navigate(['/Admin/Home/']);
+      this.ngZone.run(() => this.router.navigate(['/Admin/Home']));
       return true;
     }
     
     else if(role=="whMan" ){
-      this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']);
+      this.ngZone.run(() => this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']));
       return true;
     }
       
     else if(role=="logMan"){
-      this.router.navigate(['/Logistics/Home/LogisticsManager']);
+      this.ngZone.run(() => this.router.navigate(['/Logistics/Home/LogisticsManager']));
       return true;
     }
       
     else if(role=="fltMan"){
-      this.router.navigate(['/Logistics/Home/FleetManager']);
+      this.ngZone.run(() => this.router.navigate(['/Logistics/Home/FleetManager']));
       return true;
     }
     return false
@@ -49,8 +49,6 @@ export class LogInComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
-    
-    //TODO: check if admin, if so, redirect to admin page
    
     if(!this.isAuth){
       this.formLogin = new FormGroup({
@@ -87,7 +85,7 @@ export class LogInComponent implements OnInit {
     if (response.credential) {
       await this.loginService.loginWithGoogle(response.credential)
       window.location.reload();
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
     } 
   }
   
@@ -95,7 +93,7 @@ export class LogInComponent implements OnInit {
     if(this.formLogin.valid){
       await this.loginService.login(this.formLogin.value);
       window.location.reload();
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
     }      
   }
 

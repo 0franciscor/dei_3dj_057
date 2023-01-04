@@ -46,8 +46,6 @@ export class PackagingService {
       url = 'https://auth57.azurewebsites.net/api/packaging/';
     }
     const data = packageL;
-    console.log(data);
-    console.log(JSON.stringify(data));
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(data),

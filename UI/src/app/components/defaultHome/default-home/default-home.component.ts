@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 
@@ -9,19 +9,21 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 })
 export class DefaultHomeComponent implements OnInit {
 
-  constructor(private router: Router, private loginService: LoginService) { }
+  constructor(private ngZone:NgZone,private router: Router, private loginService: LoginService) { }
 
   async ngOnInit() {
-    //TODO: check if admin, if so, redirect to admin page
+
     const role = await this.loginService.getRole();
-    if(role=="whMan" )
-      this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']);
+    if(role=="admin")
+      this.ngZone.run(() => this.router.navigate(['/Admin/Home']));
+    else if(role=="whMan" )
+      this.ngZone.run(() => this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']));  
     else if(role=="logMan")
-      this.router.navigate(['/Logistics/Home/LogisticsManager']);
+      this.ngZone.run(() => this.router.navigate(['/Logistics/Home/LogisticsManager']));
     else if(role=="fltMan")
-      this.router.navigate(['/Logistics/Home/FleetManager']);
+      this.ngZone.run(() => this.router.navigate(['/Logistics/Home/FleetManager']));
     else
-      this.router.navigate(['/login']);
+      this.ngZone.run(() => this.router.navigate(['/login']));
     
   }
 

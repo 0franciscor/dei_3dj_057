@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, NgZone } from "@angular/core";
 import { Router } from "@angular/router";
 import { LoginService } from "src/app/Services/LoginService/login.service";
 import { PackagingService } from "src/app/Services/PackageService/package.service";
@@ -13,7 +13,7 @@ import { MatTableDataSource } from "@angular/material/table";
 
 export class PackageListComponent implements OnInit {
 
-  constructor(private loginService: LoginService,private packageService: PackagingService, private router: Router) {  }
+  constructor(private ngZone:NgZone,private loginService: LoginService,private packageService: PackagingService, private router: Router) {  }
   originalPackageList: any[] = [];
   packageList: any[] = [];
 
@@ -33,7 +33,7 @@ export class PackageListComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else

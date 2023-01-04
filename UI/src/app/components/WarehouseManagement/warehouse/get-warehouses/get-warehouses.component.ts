@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { WarehouseService } from 'src/app/Services/WarehouseService/warehouse.service';
@@ -21,7 +21,7 @@ export class GetWarehousesComponent implements OnInit {
   dataSource = this.warehouseList;
 
   
-  constructor(private loginService:LoginService,private warehouseService: WarehouseService, private router: Router){ 
+  constructor(private ngZone:NgZone,private loginService:LoginService,private warehouseService: WarehouseService, private router: Router){ 
     
     this.warehouseService.getAllWarehouses().then((data) => {
       this.warehouseList = data;
@@ -34,7 +34,7 @@ export class GetWarehousesComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -47,18 +47,18 @@ export class GetWarehousesComponent implements OnInit {
   }
 
   goToEditWarehouse(warehouseID : string) {
-    this.router.navigate(['WarehouseManagement/Warehouse/EditWarehouse', warehouseID]);
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Warehouse/EditWarehouse', warehouseID]));
   }
 
   goToActiveWarehouse(warehouseID : string) {
     this.warehouseService.activateWarehouse(warehouseID)
-    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
 
   }
 
   goToDeactiveWarehouse(warehouseID : string) {
     this.warehouseService.deactivateWarehouse(warehouseID)
-    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
 
   }
 

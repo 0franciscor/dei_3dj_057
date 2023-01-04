@@ -164,15 +164,18 @@ export default class NodeTemplate {
         });
 
         //Circle
-        let geometry = new THREE.CircleGeometry(circleRadius, 32);
+        let geometry = new THREE.CylinderGeometry(circleRadius, circleRadius, 0.1, 32);
+        // new THREE.CircleGeometry(circleRadius, 32);
+        
         let material = new THREE.MeshStandardMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
 
         let circle: THREE.Mesh = new THREE.Mesh(geometry, material);
-        circle.position.set(pos.x, pos.y, pos.z+0.03);
+        circle.position.set(pos.x, pos.y, pos.z-0.0465);
         //circle.position.set(pos.x, pos.y, pos.z + 0.1);
 
         circle.castShadow = false;
         circle.receiveShadow = true;
+        circle.rotateX(Math.PI / 2);
         
         this.object.add(circle);
 

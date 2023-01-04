@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
@@ -13,14 +13,14 @@ import { PackagingService } from 'src/app/Services/PackageService/package.servic
 export class CreatePackageComponent implements OnInit {
 
   formCreatePackage!: FormGroup;
-  constructor(private loginService:LoginService,private packagingService: PackagingService,private fb: FormBuilder, private router:Router) {}
+  constructor(private ngZone:NgZone,private loginService:LoginService,private packagingService: PackagingService,private fb: FormBuilder, private router:Router) {}
 
   isAuth: boolean = false;
   authorizedRoles: string[] = ["logMan","admin"];
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -42,7 +42,6 @@ export class CreatePackageComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formCreatePackage.value);
     this.packagingService.createPackage(this.formCreatePackage.value);
   
   }

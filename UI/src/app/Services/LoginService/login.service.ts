@@ -23,10 +23,8 @@ export class LoginService {
     const jsonResponse = await response.json();
 
     const cookie = jsonResponse.token;
-    console.log(cookie);
     localStorage.setItem('jwt', cookie);
     document.cookie = "jwt=" + cookie + "; path=/";
-    console.log(document.cookie);
 
     localStorage.setItem('user', jsonResponse.userId);
     localStorage.setItem('role', jsonResponse.role);
@@ -41,7 +39,6 @@ export class LoginService {
     }
 
     const data = loginInfo;
-    console.log("data:",data)
 
     const response = await this.sendFetch(url, 'GET', data," ");
 
@@ -49,7 +46,6 @@ export class LoginService {
 
     const cookie = jsonResponse.token;
     document.cookie = "jwt=" + cookie + "; path=/";
-    console.log(cookie);
     localStorage.removeItem(document.cookie);
 
     this.sendFetch(url,'DELETE',data, "");

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog,MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -21,14 +21,14 @@ export class CreatePathComponent implements OnInit {
  
   formCreatePath!: FormGroup;
 
-  constructor(private loginService:LoginService,public dialog:MatDialog,private pathService: PathService, private fb: FormBuilder,private router: Router) { }
+  constructor(private ngZone:NgZone,private loginService:LoginService,public dialog:MatDialog,private pathService: PathService, private fb: FormBuilder,private router: Router) { }
 
   isAuth: boolean = false;
   authorizedRoles: string[] = ["logMan","admin"];
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -74,7 +74,7 @@ export class CreatePathComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if(answer.status == 201){
-          this.router.navigate(['Logistics/Home/Logistics Manager']);
+          this.ngZone.run(() => this.router.navigate(['Logistics/Home/Logistics Manager']));
         }
       });
     }

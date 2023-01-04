@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import {WarehouseService} from "../../../../Services/WarehouseService/warehouse.service";
 import { DeliveryService } from "src/app/Services/DeliveryService/delivery.service";
@@ -11,7 +11,7 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 })
 export class WarehouseManagerComponent implements OnInit {
 
-  constructor(private loginService:LoginService,private warehouseService: WarehouseService, private deliveryService : DeliveryService, private router: Router) {
+  constructor(private ngZone:NgZone,private loginService:LoginService,private warehouseService: WarehouseService, private deliveryService : DeliveryService, private router: Router) {
 
   }
 
@@ -20,7 +20,7 @@ export class WarehouseManagerComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -33,23 +33,23 @@ export class WarehouseManagerComponent implements OnInit {
   }
 
   goToCreateWarehouse(){
-    this.router.navigate(['WarehouseManagement/Warehouse/CreateWarehouse'])
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Warehouse/CreateWarehouse']));
   }
 
   goToCreateDelivery(){
-    this.router.navigate(['WarehouseManagement/Delivery/CreateDelivery'])
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Delivery/CreateDelivery']));
   }
 
   goToGetWarehouseById(){
-    this.router.navigate(['WarehouseManagement/Warehouse/GetWarehouseById'])
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Warehouse/GetWarehouseById']));
   }
 
   goToGetDelivery(){
-    this.router.navigate(['WarehouseManagement/Delivery/GetDelivery'])
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Delivery/GetDelivery']));
   }
 
   goToEditWarehouse(){
-    this.router.navigate(['WarehouseManagement/Warehouse/EditWarehouse'])
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Warehouse/EditWarehouse']));
   }
 
 }
