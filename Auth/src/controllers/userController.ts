@@ -82,11 +82,13 @@ export default class UserController implements IUserController{
         }
     }
 
-  
-
     public async getUser(req: Request, res: Response, next: NextFunction){
         try{
-            const user = await this.userService.getUserByEmail(req.body.email);
+            const cookie = req.headers.authorization;
+            const id = jwt.verify(cookie.substring(4, cookie.length), config.jwtSecret).id;
+
+            const user = await this.userService.getUserByID(id);
+
             if(user.isFailure){
                 res.status(404);
                 return res.send("User not found");

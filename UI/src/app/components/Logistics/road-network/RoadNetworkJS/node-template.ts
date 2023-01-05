@@ -29,6 +29,9 @@ export default class NodeTemplate {
 
         this.object = new THREE.Group();
         this.whAndWidth.width=0;
+        let roadTexture = new THREE.TextureLoader().load('./assets/road/textures/road_basecolor.jpeg');
+        //roadTexture.anisotropy = renderer.getMaxAnisotropy();
+        roadTexture.magFilter = THREE.NearestFilter;
 
         let largestWidth = 0;
 
@@ -55,7 +58,10 @@ export default class NodeTemplate {
             if (starting) {
                 
                 let rectangleGeometry = new THREE.PlaneGeometry(element.roadWidth, connectionLength);
-                let rectangleMaterial = new THREE.MeshStandardMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
+                roadTexture.repeat.set(element.roadWidth,connectionLength);
+                let rectangleMaterial = new THREE.MeshStandardMaterial({ map: roadTexture, side: THREE.DoubleSide });
+                //let rectangleMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF,side: THREE.DoubleSide });
+                
                 let rectangle: THREE.Mesh = new THREE.Mesh(rectangleGeometry, rectangleMaterial);
 
                 let startY = (Math.PI * starting.y) / 180;
@@ -84,7 +90,9 @@ export default class NodeTemplate {
 
 
                 let rectangleGeometry = new THREE.PlaneGeometry(element.roadWidth, connectionLength, 32);
-                let rectangleMaterial = new THREE.MeshStandardMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
+                roadTexture.repeat.set(element.roadWidth,connectionLength);
+                let rectangleMaterial = new THREE.MeshStandardMaterial({ map: roadTexture,side: THREE.DoubleSide });
+                //let rectangleMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF,side: THREE.DoubleSide });
                 let rectangle: THREE.Mesh = new THREE.Mesh(rectangleGeometry, rectangleMaterial);
 
                 let destY = (Math.PI * destination.y) / 180;
@@ -96,7 +104,7 @@ export default class NodeTemplate {
 
                 rectangle.position.set(pos.x - connectionLength / 2 * Math.sin(rectangle.rotation.z), pos.y + connectionLength / 2 * Math.cos(rectangle.rotation.z), pos.z);
                 
-                this.setShadow();
+                rectangle.receiveShadow = true;
                 this.object.add(rectangle);
 
                 
@@ -126,11 +134,15 @@ export default class NodeTemplate {
                 
 
                 let angle = Math.sqrt(Math.pow((destination.x - pos.x), 2) + Math.pow((destination.y - pos.y), 2)) - connectionLength * 2;
-                let color = 0xA52A2A;
+               
+
+                
+                roadTexture.repeat.set(1,roadLength);
+                
                 
 
                 let roadGeometry = new THREE.PlaneGeometry(element.roadWidth, roadLength, 32);
-                let roadMaterial = new THREE.MeshStandardMaterial({ color: color, side: THREE.DoubleSide });
+                let roadMaterial = new THREE.MeshStandardMaterial({ map: roadTexture, side: THREE.DoubleSide });
                 let road = new THREE.Mesh(roadGeometry, roadMaterial);
                 road.position.set((pos.x + destination.x) / 2, (pos.y + destination.y) / 2, (pos.z + destination.z) / 2);
 
@@ -140,22 +152,30 @@ export default class NodeTemplate {
 
                 road.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.atan2((destination.z - pos.z), angle));
                 
-                this.setShadow();
+                road.castShadow = true;
+                road.receiveShadow = true;  
                 this.object.add(road);
+
+                
+
+
             }
 
         });
 
         //Circle
-        let geometry = new THREE.CircleGeometry(circleRadius, 32);
+        let geometry = new THREE.CylinderGeometry(circleRadius, circleRadius, 0.1, 32);
+        // new THREE.CircleGeometry(circleRadius, 32);
+        
         let material = new THREE.MeshStandardMaterial({ color: 0x40e0d0, side: THREE.DoubleSide });
 
         let circle: THREE.Mesh = new THREE.Mesh(geometry, material);
-        circle.position.set(pos.x, pos.y, pos.z);
+        circle.position.set(pos.x, pos.y, pos.z-0.0465);
         //circle.position.set(pos.x, pos.y, pos.z + 0.1);
 
         circle.castShadow = false;
         circle.receiveShadow = true;
+        circle.rotateX(Math.PI / 2);
         
         this.object.add(circle);
 
@@ -176,7 +196,7 @@ export default class NodeTemplate {
             './assets/farmhouse/scene.gltf', 
             (object) => {
             object.scene.scale.set(warehouseScale, warehouseScale, warehouseScale);
-            object.scene.position.set(pos.x, pos.y, pos.z + 0.002);
+            object.scene.position.set(pos.x, pos.y, pos.z );
             object.scene.rotateX(Math.PI / 2);
             object.scene.traverse(function(node){
                 if(node)

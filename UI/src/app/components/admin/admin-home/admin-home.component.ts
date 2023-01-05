@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 
@@ -9,14 +9,14 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 })
 export class AdminHomeComponent implements OnInit {
 
-  constructor(private loginService:LoginService, private router: Router) { }
+  constructor(private ngZone:NgZone,private loginService:LoginService, private router: Router) { }
 
   isAuth: boolean = false;
   authorizedRoles: string[] = ["admin"];
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() =>this.router.navigate(['/']))
       return false
     }
     else
@@ -28,11 +28,11 @@ export class AdminHomeComponent implements OnInit {
     this.isAuth = await this.isAuthenticated();
   }
   goToCreateUser(){
-    this.router.navigate(['Admin/CreateUser']);
+    this.ngZone.run(() => this.router.navigate(['Admin/CreateUser']));
   }
 
   goToCancelUser(){
-    this.router.navigate(['Admin/CancelUser']);
+    this.ngZone.run(() => this.router.navigate(['Admin/CancelUser']));
   }
 
 

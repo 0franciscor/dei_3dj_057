@@ -16,9 +16,8 @@ export default (app: Router) => {
     route.post('/loginWithGoogle', (req,res,next) => ctrl.loginWithGoogle(req,res,next));
     route.post('/login', (req,res,next) => ctrl.login(req,res,next));
 
-    route.get ('/id/:id',(req,res,next)=>
+    route.get ('/id',(req,res,next)=>
     {
-        req.body.userId = req.params.id;
         ctrl.getUser(req,res,next)
     });
 
@@ -38,14 +37,13 @@ export default (app: Router) => {
                 role: Joi.string().required()
             })
         }),
-        
         (req,res,next) => ctrl.createUser(req,res,next)    
     );
     
     route.patch('/',
         celebrate({
             body: Joi.object({
-                userId: Joi.string().required(),
+                id: Joi.string().required(),
                 firstName: Joi.string(),
                 lastName: Joi.string(),
                 email: Joi.string(),

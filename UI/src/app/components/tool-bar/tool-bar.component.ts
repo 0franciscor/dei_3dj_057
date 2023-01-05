@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
@@ -10,7 +10,7 @@ import { LoginService } from 'src/app/Services/LoginService/login.service';
 })
 export class ToolBarComponent implements OnInit {
 
-  constructor(private loginService:LoginService,private router: Router) {}
+  constructor(private ngZone:NgZone,private loginService:LoginService,private router: Router) {}
 
   
 
@@ -26,14 +26,15 @@ export class ToolBarComponent implements OnInit {
     
   }
 
-  async ngOnInit() {
-    this.isAdmn = await this.isAdmin();
+  checkCookie() {
     for (let cookie of document.cookie.split(';')) {
+    
       const cookieName = cookie.split("=")[0].trim();
       if(cookieName == "jwt"){
-        if(cookie.split("=")[1] == undefined){
+        console.log(cookie.split("=")[1] == '')
+        if(cookie.split("=")[1] == ''){
           this.isLoggedIn = false;
-          this.router.navigate(['/login']);
+          this.ngZone.run(() => this.router.navigate(['/login']));
         }
         else{
           this.isLoggedIn = true;
@@ -41,26 +42,33 @@ export class ToolBarComponent implements OnInit {
         }
       }
     }
+  }
+
+  async ngOnInit() {
+    this.isAdmn = await this.isAdmin();
+
+    this.checkCookie();
+    
     if(!this.isLoggedIn)
-      this.router.navigate(['/login']);
+      this.ngZone.run(() => this.router.navigate(['/login']));
   }
 
   async goHome() {
     const role = await this.loginService.getRole();
     if(role == "admin"){
-      this.router.navigate(['/Admin/Home']);
+      this.ngZone.run(() => this.router.navigate(['/Admin/Home']));
     }
     else if(role == "whMan"){
-      this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']);
+      this.ngZone.run(() => this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']));
     }
     else if(role == "logMan"){
-      this.router.navigate(['/Logistics/Home/LogisticsManager']);
+      this.ngZone.run(() => this.router.navigate(['/Logistics/Home/LogisticsManager']));
     }
     else if(role == "fltMan"){
-      this.router.navigate(['/Logistics/Home/FleetManager']);
+      this.ngZone.run(() => this.router.navigate(['/Logistics/Home/FleetManager']));
     }
     else
-      this.router.navigate(['/login']);
+      this.ngZone.run(() => this.router.navigate(['/login']));
 
 
   }
@@ -72,25 +80,29 @@ export class ToolBarComponent implements OnInit {
       const cookieName = cookie.split("=")[0].trim();
       document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`
     }
-    window.location.reload();
-    this.router.navigate(['/']);
+    this.ngOnInit();
+    this.ngZone.run(() => this.router.navigate(['/']));
   }
 
 
   goToWMHome(): void {
-    this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']);
+    this.ngZone.run(() => this.router.navigate(['/WarehouseManagement/Home/WarehouseManager']));
   }
 
   goToLMHome(): void {
-    this.router.navigate(['/Logistics/Home/LogisticsManager']);
+    this.ngZone.run(() => this.router.navigate(['/Logistics/Home/LogisticsManager']));
   }
 
   goToFMHome(): void {
-    this.router.navigate(['/Logistics/Home/FleetManager']);
+    this.ngZone.run(() => this.router.navigate(['/Logistics/Home/FleetManager']));
   }
 
   goToTermsAndConditions(): void {
-    this.router.navigate(['/TermsAndConditions']);
+    this.ngZone.run(() => this.router.navigate(['/TermsAndConditions']));
+  }
+
+  goToUserManagement(): void {
+    this.ngZone.run(() => this.router.navigate(['/UserManagement/CancelAccount']));
   }
  
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, NgZone } from "@angular/core";
 import { Router } from "@angular/router";
 import { LoginService } from "src/app/Services/LoginService/login.service";
 import { PackagingService } from "src/app/Services/PackageService/package.service";
@@ -13,7 +13,7 @@ import { MatTableDataSource } from "@angular/material/table";
 
 export class PackageListComponent implements OnInit {
 
-  constructor(private loginService: LoginService,private packageService: PackagingService, private router: Router) {  }
+  constructor(private ngZone:NgZone,private loginService: LoginService,private packageService: PackagingService, private router: Router) {  }
   originalPackageList: any[] = [];
   packageList: any[] = [];
 
@@ -33,7 +33,7 @@ export class PackageListComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -42,21 +42,24 @@ export class PackageListComponent implements OnInit {
   }
 
  
-   async ngOnInit() {
+  async ngOnInit() {
      this.isAuth = await this.isAuthenticated();
-     if(this.isAuth)
-     this.packageService.getPackage().then((data) => {
-      this.packageList = data;
-      this.originalPackageList = data.slice();
-      this.filteredIDList = data.slice();
-      this.filteredTruckIDList = data.slice();
-      this.filteredDeliveryIDList = data.slice();
-      this.filteredPositionXList = data.slice();
-      this.filteredPositionYList = data.slice();
-      this.filteredPositionZList = data.slice();
+     if(this.isAuth){
+      const dataList:any[] = await this.packageService.getPackage();
+      console.log(dataList);
+      this.packageList = dataList;
+      this.originalPackageList = dataList.slice();
+      this.filteredIDList = dataList.slice();
+      this.filteredTruckIDList = dataList.slice();
+      this.filteredDeliveryIDList = dataList.slice();
+      this.filteredPositionXList = dataList.slice();
+      this.filteredPositionYList = dataList.slice();
+      this.filteredPositionZList = dataList.slice();
       this.dataSource = new MatTableDataSource(this.packageList);
-    });
+     }
+     
   }
+
   updateDataSource(packageList: any[] = this.originalPackageList){
     this.dataSource.data = packageList;
     this.packageList = packageList;

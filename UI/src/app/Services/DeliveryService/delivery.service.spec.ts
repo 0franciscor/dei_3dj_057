@@ -14,6 +14,20 @@ describe('DeliveryService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('cookie with jwt', () => {
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('jwt=123');
+    const cookie = service.getJwt();
+    expect(cookie).toEqual('jwt=123');
+    
+  });
+
+  it('cookie without jwt', () => {
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('abc=123');
+    const cookie = service.getJwt();
+    expect(cookie).toEqual('jwt=');
+
+  });
+
   it('should get a delivery', async () => {
     const response = {
       "deliveryID": "123",
@@ -32,6 +46,8 @@ describe('DeliveryService', () => {
     const delivery = await service.getDelivery("123");
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery).toEqual(response);
+    service.urlOrigin = "https://azure:4200";
+    await service.getDelivery("test");
   });
 
   it('should get all deliveries', async () => {
@@ -56,6 +72,8 @@ describe('DeliveryService', () => {
     const deliveries = await service.getDeliveries();
     expect(fetchSpy).toHaveBeenCalled();
     expect(deliveries).toEqual(response);
+    service.urlOrigin = "https://azure:4200";
+    await service.getDeliveries();
   });
 
   it('should Create a delivery', async () => {
@@ -68,6 +86,8 @@ describe('DeliveryService', () => {
     const delivery = await service.createDelivery("123");
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery.status).toEqual(201);
+    service.urlOrigin = "https://azure:4200";
+    await service.createDelivery("123");
   });
 
   it('should Create a delivery prolog', async () => {
@@ -80,6 +100,8 @@ describe('DeliveryService', () => {
     const delivery = await service.createDeliveryProlog("123");
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery.status).toEqual(201);
+    service.urlOrigin = "https://azure:4200";
+    await service.createDeliveryProlog("123");
   });
 
   it('should Update a delivery', async () => {
@@ -92,6 +114,8 @@ describe('DeliveryService', () => {
     const delivery = await service.updateDelivery("123");
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.updateDelivery("123");
   });
 
   it('should Update a delivery prolog', async () => {
@@ -104,6 +128,8 @@ describe('DeliveryService', () => {
     const delivery = await service.updateDeliveryProlog("123");
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.updateDeliveryProlog("123");
   });
 
   it('should send a fetch without data', async () => {

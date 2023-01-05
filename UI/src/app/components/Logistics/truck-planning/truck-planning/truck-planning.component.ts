@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
@@ -20,7 +20,7 @@ export class TruckPlanningComponent implements OnInit {
 
 
   public truck : any;
-  constructor(private loginService:LoginService ,private fb: FormBuilder, private router: Router, private planningService:PlanningService, private tripService:TripService) { }
+  constructor(private ngZone:NgZone,private loginService:LoginService ,private fb: FormBuilder, private router: Router, private planningService:PlanningService, private tripService:TripService) { }
 
   selectedPlan={
     truckName: "",
@@ -37,7 +37,7 @@ export class TruckPlanningComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -57,6 +57,7 @@ export class TruckPlanningComponent implements OnInit {
 
  onSubmit(){
   let yourDate=this.formatDate(this.formPlanning.value.planDate)
+  console.log(yourDate)
   let datesplit=(yourDate).split("/");
 
   if(datesplit[2].charAt(0)=="0"){
@@ -109,7 +110,14 @@ export class TruckPlanningComponent implements OnInit {
     
   }
 
-   formatDate(date: Date) {
+  async getTruckPlanningSimulation(){
+    this.ngZone.run(() => this.router.navigate(['Logistics/TruckPlanning/TruckPlanningSimulation']));
+    
+  }
+
+
+
+  formatDate(date: Date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -129,15 +137,13 @@ export class TruckPlanningComponent implements OnInit {
       planDate: this.finaldate,
       infoList: this.infoList
     }
-    
-    
-    console.log(savePlan)
+ 
     this.tripService.createTrip(savePlan);
     
   }
 
   goToListTruckPlanning(){
-    this.router.navigate(['Logistics/TruckPlanning/ListTruckPlanning']);
+    this.ngZone.run(() => this.router.navigate(['Logistics/TruckPlanning/ListTruckPlanning']));
   }
 
 

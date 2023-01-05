@@ -1,21 +1,44 @@
-<div class = "main-div" *ngIf="isAuth">
+<div class="main-div" *ngIf="isAuth">
     <mat-card>
+
         <mat-card-header>
             <mat-card-title>
-                <h1>Cancel User</h1>
+                <h1>List of Users</h1>
             </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class = "sec-div" *ngIf="formEmail">
-            <form [formGroup] = "formEmail" (ngSubmit)="onSubmit()">
-                <mat-form-field appearance = "fill">
-                <mat-label> Email </mat-label>
-                <input matInput type="text" formControlName="email" required>
-                </mat-form-field>
-                <button mat-raised-button color="primary" type="submit">Submit</button>   
-            </form>
-        </mat-card-content>
-        <button mat-raised-button color="warn" (click)="goBack()">Go Back</button>
-    </mat-card>
+            <mat-card-subtitle>A place where you can check a user's info </mat-card-subtitle>
 
+        </mat-card-header>
+
+        <mat-form-field class="userSelectCard" appearance="fill">
+            <mat-label>User</mat-label>
+            <select matNativeControl [(ngModel)]="selectedUserOption" (ngModelChange)="onUserSelected()"
+                name="truck">
+                <option *ngFor="let account of accountList;" [value]="account.email">
+                    {{account.email}}
+                </option>
+            </select>
+        </mat-form-field>
+
+        <br>
+
+        <mat-card-content class="userInfoCard" *ngIf="selectedUserOption">
+
+            <form (ngSubmit)="onSubmit()">
+                <mat-card-content>
+                    <p> <b>First Name:</b> {{selectedUser.firstName}}</p>
+                    <p> <b>Last Name:</b> {{selectedUser.lastName}}</p>
+                    <p> <b>Email:</b> {{selectedUser.email}}</p>
+                    <p> <b>Phone Number:</b> {{selectedUser.phoneNumber}}</p>
+                    <p> <b>Role:</b> {{selectedUser.role}}</p>
+                </mat-card-content>
+            </form>
+
+            <button mat-raised-button style="width: 10em;" (click)="onSubmit()" color="primary">Delete User</button>
+
+        </mat-card-content>
+
+        
+        <button mat-raised-button class="goBackButton" color="warn" (click)="goBack()">Go Back</button>
+    </mat-card>
 
 </div>

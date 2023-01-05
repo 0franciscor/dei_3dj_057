@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
@@ -18,7 +18,7 @@ export class GetDeliveriesComponent implements OnInit {
   displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass', 'Actions'];
   dataSource = this.deliveryList;
 
-  constructor(private loginService:LoginService,private deliveryService: DeliveryService, private router: Router) {
+  constructor(private ngZone:NgZone,private loginService:LoginService,private deliveryService: DeliveryService, private router: Router) {
 
     this.deliveryService.getDeliveries().then((data) => {
       this.deliveryList = data;
@@ -36,7 +36,7 @@ export class GetDeliveriesComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -49,6 +49,6 @@ export class GetDeliveriesComponent implements OnInit {
   }
 
   goToEditDelivery(deliveryID : string) {
-    this.router.navigate(['WarehouseManagement/Delivery/EditDelivery', deliveryID]);
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Delivery/EditDelivery', deliveryID]));
   }
 }

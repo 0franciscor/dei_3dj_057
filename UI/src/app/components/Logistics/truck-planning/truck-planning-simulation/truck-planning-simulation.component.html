@@ -1,0 +1,41 @@
+<div class = "main-div" *ngIf="isAuth">
+    <div class = "title">
+    <mat-card-title>Truck Planning Simulation</mat-card-title>
+    </div>
+
+    <body>
+        <div class = "col-3 col-s-3 menu">
+            <ul>
+                <li (click)="getBestPath()"> Find best path</li>
+                <li (click)="getHighestMassFirst()">Highest Mass first path</li>
+                <li (click)="getClosestWarehouse()"> Closest warehouse path</li>
+                <li (click)="getCheapestPath()">Cheapest Mass/Distance path</li>
+                
+            </ul>
+
+            </div>
+
+            <div class="print-info">
+                <mat-card class="planinfo-card" *ngIf="showPlan">
+                    <mat-card-title>Plan information</mat-card-title>
+                    
+                    <mat-card-content>
+                      <p>Truck Name: {{showPlan.truck}}</p>
+        
+                      <div *ngFor="let info of infoList">
+                        <br>
+                        <p> Warehouse:{{info.warehouse}}</p>
+                        <p> Delivery:{{info.delivery}}</p>
+                        <br>
+                      </div>
+                    </mat-card-content>
+                </mat-card>                
+        
+            </div>
+
+    </body>
+
+
+</div>
+
+

@@ -14,6 +14,20 @@ describe('WarehouseService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('cookie with jwt', () => {
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('jwt=123');
+    const cookie = service.getJwt();
+    expect(cookie).toEqual('jwt=123');
+    
+  });
+
+  it('cookie without jwt', () => {
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('abc=123');
+    const cookie = service.getJwt();
+    expect(cookie).toEqual('jwt=');
+
+  });
+
   it('should get a warehouse', async () => {
     const response = {
         "id": "TH1",
@@ -33,6 +47,8 @@ describe('WarehouseService', () => {
     const warehouse = await service.getWarehouse('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(warehouse).toEqual(response);
+    service.urlOrigin = "https://azure:4200";
+    await service.getWarehouse('TH1');
   });
 
 
@@ -46,6 +62,8 @@ describe('WarehouseService', () => {
     const status = await service.createWarehouse('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.createWarehouse('TH1');
   });
 
   it('should create a warehouse prolog', async () => {
@@ -58,6 +76,8 @@ describe('WarehouseService', () => {
     const status = await service.createWarehouseProlog('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(201);
+    service.urlOrigin = "https://azure:4200";
+    await service.createWarehouseProlog('TH1');
 
   });
 
@@ -71,6 +91,8 @@ describe('WarehouseService', () => {
     const status = await service.updateWarehouse('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.updateWarehouse('TH1');
   });
 
   it('should update a warehouse prolog', async () => {
@@ -83,6 +105,8 @@ describe('WarehouseService', () => {
     const status = await service.updateWarehouseProlog('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.updateWarehouseProlog('TH1');
   });
 
 
@@ -109,6 +133,8 @@ describe('WarehouseService', () => {
     const trucks = await service.getAllWarehouses();
     expect(fetchSpy).toHaveBeenCalled();
     expect(trucks).toEqual(response);
+    service.urlOrigin = "https://azure:4200";
+    await service.getAllWarehouses();
   });
 
   it('should activate a warehouse', async () => {
@@ -121,6 +147,8 @@ describe('WarehouseService', () => {
     const status = await service.activateWarehouse('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.activateWarehouse('TH1');
   });
 
   it('should deactivate a warehouse', async () => {
@@ -130,9 +158,11 @@ describe('WarehouseService', () => {
 
     const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
-    const status = await service.activateWarehouse('TH1');
+    const status = await service.deactivateWarehouse('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deactivateWarehouse('TH1');
   });
 
   it('should send a fetch without data', async () => {

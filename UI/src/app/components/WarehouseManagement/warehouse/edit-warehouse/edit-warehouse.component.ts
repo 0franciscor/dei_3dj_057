@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +29,7 @@ export class EditWarehouseComponent implements OnInit {
 
   formEditWarehouse!: FormGroup
   
-  constructor(private loginService:LoginService,public dialog: MatDialog,private route: ActivatedRoute, private warehouseService: WarehouseService, private fb: FormBuilder, private router: Router) { 
+  constructor(private ngZone:NgZone,private loginService:LoginService,public dialog: MatDialog,private route: ActivatedRoute, private warehouseService: WarehouseService, private fb: FormBuilder, private router: Router) { 
     
   }
 
@@ -43,7 +43,7 @@ export class EditWarehouseComponent implements OnInit {
   }
 
   goBack(){
-    this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
   }
 
   isAuth: boolean = false;
@@ -51,7 +51,7 @@ export class EditWarehouseComponent implements OnInit {
   async isAuthenticated() {
     const role= await this.loginService.getRole();
     if(!this.authorizedRoles.includes(role)){
-      this.router.navigate(['/']);
+      this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
@@ -90,7 +90,6 @@ export class EditWarehouseComponent implements OnInit {
 
   async onSubmit() {
     let answer = await this.warehouseService.updateWarehouse(this.formEditWarehouse.value);
-    console.log(answer);
     let message = "Warehouse updated successfully";
 
     if(answer.status != 200){
@@ -105,7 +104,7 @@ export class EditWarehouseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(_result => {
       if(answer.status == 200)
-        this.router.navigate(['WarehouseManagement/Home/WarehouseManager']);
+        this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
       
     });
   }
