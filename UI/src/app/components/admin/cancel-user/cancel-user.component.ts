@@ -75,11 +75,11 @@ export class CancelUserComponent implements OnInit {
     async onSubmit() {
         this.encryptUserInfo();
         let operationSucces = await this.adminService.updateUser(this.selectedUser);
-        window.location.reload();
+        this.ngOnInit();
     }
 
     goBack() {
-        this.router.navigate(['Admin/Home']);
+        this.ngZone.run(() => this.router.navigate(['Admin/Home']));
     }
 
 }
