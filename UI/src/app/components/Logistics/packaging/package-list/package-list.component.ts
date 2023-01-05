@@ -42,21 +42,24 @@ export class PackageListComponent implements OnInit {
   }
 
  
-   async ngOnInit() {
+  async ngOnInit() {
      this.isAuth = await this.isAuthenticated();
-     if(this.isAuth)
-     this.packageService.getPackage().then((data) => {
-      this.packageList = data;
-      this.originalPackageList = data.slice();
-      this.filteredIDList = data.slice();
-      this.filteredTruckIDList = data.slice();
-      this.filteredDeliveryIDList = data.slice();
-      this.filteredPositionXList = data.slice();
-      this.filteredPositionYList = data.slice();
-      this.filteredPositionZList = data.slice();
+     if(this.isAuth){
+      const dataList:any[] = await this.packageService.getPackage();
+      console.log(dataList);
+      this.packageList = dataList;
+      this.originalPackageList = dataList.slice();
+      this.filteredIDList = dataList.slice();
+      this.filteredTruckIDList = dataList.slice();
+      this.filteredDeliveryIDList = dataList.slice();
+      this.filteredPositionXList = dataList.slice();
+      this.filteredPositionYList = dataList.slice();
+      this.filteredPositionZList = dataList.slice();
       this.dataSource = new MatTableDataSource(this.packageList);
-    });
+     }
+     
   }
+
   updateDataSource(packageList: any[] = this.originalPackageList){
     this.dataSource.data = packageList;
     this.packageList = packageList;

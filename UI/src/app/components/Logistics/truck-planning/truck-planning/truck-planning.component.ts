@@ -57,6 +57,7 @@ export class TruckPlanningComponent implements OnInit {
 
  onSubmit(){
   let yourDate=this.formatDate(this.formPlanning.value.planDate)
+  console.log(yourDate)
   let datesplit=(yourDate).split("/");
 
   if(datesplit[2].charAt(0)=="0"){
@@ -110,7 +111,7 @@ export class TruckPlanningComponent implements OnInit {
   }
 
   async getTruckPlanningSimulation(){
-    this.router.navigate(['Logistics/TruckPlanning/TruckPlanningSimulation']);
+    this.ngZone.run(() => this.router.navigate(['Logistics/TruckPlanning/TruckPlanningSimulation']));
     
   }
 

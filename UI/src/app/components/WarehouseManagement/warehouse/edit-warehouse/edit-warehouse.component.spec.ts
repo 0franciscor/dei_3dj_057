@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { WarehouseService } from 'src/app/Services/WarehouseService/warehouse.service';
 
 import { EditWarehouseComponent, EditWarehouseComponentDialog } from './edit-warehouse.component';
@@ -17,7 +18,7 @@ describe('EditWarehouseComponent', () => {
   let dialogComponent: EditWarehouseComponentDialog;
   let dialogFixture: ComponentFixture<EditWarehouseComponentDialog>;
   let fakeWarehouseService: any;
-
+  let fakeLoginService: LoginService;
   const dialogMock = {
     close: () => { }
   };
@@ -54,6 +55,7 @@ describe('EditWarehouseComponent', () => {
       }));
 
     TestBed.overrideProvider(WarehouseService, {useValue: fakeWarehouseService});
+    fakeLoginService = TestBed.inject(LoginService);
     fixture = TestBed.createComponent(EditWarehouseComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -80,6 +82,15 @@ describe('EditWarehouseComponent', () => {
     dialogComponent = dialogFixture.componentInstance;
     dialogFixture.detectChanges();
     dialogComponent.ngOnInit();
+
+  });
+
+  it('should be authenticated with admin role', async () => {
+
+    const fetchSpy = spyOn<any>(fakeLoginService, 'getRole').and.returnValue(Promise.resolve("admin"));
+    const response = await component.isAuthenticated();
+    expect(response).toBeTrue();
+    expect(fetchSpy).toHaveBeenCalled();
 
   });
 
@@ -198,6 +209,115 @@ describe('EditWarehouseComponent with null activated route', () => {
 });
 
 
+describe('LoginService', () => {
+  let service: LoginService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(LoginService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  it('get role with jwt cookie', async () => {
+    const response = {
+      "status": 200,
+      json() {
+        return {role:"admin"};
+      }
+    }
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('jwt=123');
+    const role = await service.getRole();
+    expect(fetchSpy).toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.getRole();
+    
+  });
+
+  
+  it('get role with null jwt cookie', async () => {
+    const response = {
+      "status": 401,
+      json() {
+        return {role:"admin"};
+      }
+    }
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('');
+    const role = await service.getRole();
+    expect(fetchSpy).not.toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.getRole();
+    
+  });
+
+  it('get invalid role with jwt cookie', async () => {
+    const response = {
+      "status": 401,
+      json() {
+        return {role:"admin"};
+      }
+    }
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('jwt=123');
+    const role = await service.getRole();
+    expect(fetchSpy).toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.getRole();
+    
+  });
+
+  it('should login', async () => {
+
+    const response = {
+      "status": 200,
+      json() {
+        return {token: "test"};
+      }
+    }
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    const login = await service.login("test");
+    expect(fetchSpy).toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.login("test");
+
+  });
+
+  it('should login with google', async () => {
+
+    const response = {
+      "status": 200,
+      json() {
+        return {token: "test"};
+      }
+    }
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    const login = await service.loginWithGoogle("test");
+    expect(fetchSpy).toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.loginWithGoogle("test");
+
+  });
+
+
+
+
+  it('should send a fetch without data', async () => {
+
+    const status = await service.sendFetch('test', 'GET', null, "cookie");
+    expect(status.status).toEqual(404);
+
+  });
+
+  it('should send a fetch with data', async () => {
+    const status = await service.sendFetch('test', 'POST', "null", "cookie");
+    expect(status.status).toEqual(404);
+  });
+});
+
 describe('WarehouseService', () => {
   let service: WarehouseService;
 
@@ -208,6 +328,20 @@ describe('WarehouseService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('cookie with jwt', () => {
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('jwt=123');
+    const cookie = service.getJwt();
+    expect(cookie).toEqual('jwt=123');
+    
+  });
+
+  it('cookie without jwt', () => {
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('abc=123');
+    const cookie = service.getJwt();
+    expect(cookie).toEqual('jwt=');
+
   });
 
   it('should get a warehouse', async () => {
@@ -229,6 +363,8 @@ describe('WarehouseService', () => {
     const warehouse = await service.getWarehouse('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(warehouse).toEqual(response);
+    service.urlOrigin = "https://azure:4200";
+    await service.getWarehouse('TH1');
   });
 
 
@@ -242,6 +378,8 @@ describe('WarehouseService', () => {
     const status = await service.createWarehouse('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.createWarehouse('TH1');
   });
 
   it('should create a warehouse prolog', async () => {
@@ -254,6 +392,8 @@ describe('WarehouseService', () => {
     const status = await service.createWarehouseProlog('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(201);
+    service.urlOrigin = "https://azure:4200";
+    await service.createWarehouseProlog('TH1');
 
   });
 
@@ -267,6 +407,8 @@ describe('WarehouseService', () => {
     const status = await service.updateWarehouse('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.updateWarehouse('TH1');
   });
 
   it('should update a warehouse prolog', async () => {
@@ -279,6 +421,8 @@ describe('WarehouseService', () => {
     const status = await service.updateWarehouseProlog('TH1');
     expect(fetchSpy).toHaveBeenCalled();
     expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.updateWarehouseProlog('TH1');
   });
 
 
@@ -305,6 +449,36 @@ describe('WarehouseService', () => {
     const trucks = await service.getAllWarehouses();
     expect(fetchSpy).toHaveBeenCalled();
     expect(trucks).toEqual(response);
+    service.urlOrigin = "https://azure:4200";
+    await service.getAllWarehouses();
+  });
+
+  it('should activate a warehouse', async () => {
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.activateWarehouse('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.activateWarehouse('TH1');
+  });
+
+  it('should deactivate a warehouse', async () => {
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deactivateWarehouse('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deactivateWarehouse('TH1');
   });
 
   it('should send a fetch without data', async () => {
