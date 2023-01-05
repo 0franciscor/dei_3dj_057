@@ -8,49 +8,11 @@
 :-dynamic populacao/1.
 :-dynamic prob_cruzamento/1.
 :-dynamic prob_mutacao/1.
-:-dynamic totalMassOfDeliveries/2.
-:-dynamic date/1.
-:-dynamic idTruck/1.
-:-dynamic tarefas/1.
-
-%% FIND ALL DESTINATIONS OF DELIVERIES %%
-
-findAllDestination(Date, Result):-
-    findall(Destination, entrega(_,Date,_,Destination,_,_), Destinations1),
-    removeDuplicates(Destinations1, Destinations),
-    delete([], Destinations, Result).
-
-removeDuplicates([],[]):-!.
-removeDuplicates([H|T],[H1|L]):- removeDuplicates(T,L), ((\+member(H,L), H1 is H); H1=[]).
-
-
-%% INTERSECTION BETWEEN THE DELIVERIES DESTINATIONS AND THE CITIES %%
-citiesToVisite(Date):-
-    findAllDestination(Date, Destinations),
-    sumMassOfDeliveriesWithSameDestination(Destinations).
-
-%% group deliveries that have the same destination %%
-
-sumMassOfDeliveriesWithSameDestination([]):-!.
-sumMassOfDeliveriesWithSameDestination([H|T]):- sumMassOfDeliveriesWithSameDestination(T),sumMassOfDeliveriesWithSameDestination1(H).
-
-sumMassOfDeliveriesWithSameDestination1(Destination):-
-    findall(Mass, entrega(_,_,Mass,Destination,_,_), Masses),
-    sum_list(Masses, Sum),
-    assert(totalMassOfDeliveries(Destination,Sum)).
-
-sum_list([],0).
-sum_list([H|T],Sum):- sum_list(T,Sum1), Sum is Sum1+H.
-
-%----------------------------------------------------------------------------------------%
-
-% tarefas(NTarefas).
 
 date(20230110).
 idTruck(eTruck01).
 
-
-% parameteriza��o
+% parameterizaçao
 inicializa(ListaEntregas):-
     length(ListaEntregas, N),
     (retract(tarefas(_));true),
@@ -74,46 +36,22 @@ gera(ListaEntregas):-
 	write('PopAv='),write(PopAv),nl,
 	ordena_populacao(PopAv,PopOrd),
 	geracoes(NG),
-	head(PopOrd,First),
-	gera_geracao(0,NG,PopOrd,First,0).
+	gera_geracao(0,NG,PopOrd).
 
-gera_populacao(Pop, ListaEntregas):-
+gera_populacao(Pop,ListaTarefas):-
 	populacao(TamPop),
 	tarefas(NumT),
-	gera_populacao_heuristicas(ListaEntregas,TamPop,Pop1),
-	populacao(TamPop1),
-	gera_populacao(TamPop1,ListaEntregas,NumT,Pop1,Pop2),
-	merge(Pop1,Pop2,Pop).
+	gera_populacao(TamPop,ListaTarefas,NumT,Pop).
 
-gera_populacao_heuristicas(ListaEntregas,TamPop,Populacao):-
-	date(Date),
-    deliveriesInADay(Date,ListaEntregas,ListaEntregas1),
-    largestMassFirst(ListaEntregas1,WarehouseSorted),
-	closestWarehouseFirst(ListaEntregas1, PATH_LIST),
-    cheapestWarehouseFirst(ListaEntregas1,Result),
-    ((\+(WarehouseSorted==PATH_LIST),!, Populacao1=[WarehouseSorted,PATH_LIST]; Populacao1=WarehouseSorted)),
-    ((\+member(Result,Populacao1),!, merge1(Populacao1, Result, Populacao)); Populacao=Populacao1),
-	retract(populacao(_)),
-	length(Populacao, TamPop1),
-	asserta(populacao((TamPop-TamPop1))).
+gera_populacao(0,_,_,[]):-!.
 
-merge1([],L,[L]):-!.
-merge1([L|LL],L1,[L|T]):- merge1(LL,L1,T).
-
-
-gera_populacao(0,_,_,_,[]):-!.
-
-gera_populacao(TamPop,ListaTarefas,NumT,Populacao,[Ind|Resto]):-
+gera_populacao(TamPop,ListaTarefas,NumT,[Ind|Resto]):-
 	TamPop1 is TamPop-1,
-	gera_populacao(TamPop1,ListaTarefas,NumT,Populacao,Resto),
-	loop_gera_individuo(ListaTarefas,NumT,Ind,Populacao,Resto).
-
-gera_populacao(TamPop,ListaTarefas,NumT,Populacao,L):-
-	gera_populacao(TamPop,ListaTarefas,NumT,Populacao,L).
-
-loop_gera_individuo(ListaTarefas,NumT,Ind,Populacao,Resto):-
-	(gera_individuo(ListaTarefas,NumT,Ind1), !,
-	not(member(Ind1,Populacao)), not(member(Ind1,Resto)), Ind = Ind1);(loop_gera_individuo(ListaTarefas,NumT,Ind,Populacao,Resto)).
+	gera_populacao(TamPop1,ListaTarefas,NumT,Resto),
+	gera_individuo(ListaTarefas,NumT,Ind),
+	not(member(Ind,Resto)).
+gera_populacao(TamPop,ListaTarefas,NumT,L):-
+	gera_populacao(TamPop,ListaTarefas,NumT,L).
 
 gera_individuo([G],1,[G]):-!.
 
@@ -145,7 +83,6 @@ avalia(Seq,V):-
 avalia(Seq,Truck,ListaEntregas1,Batery,TotalTime,V):-
 	analisePath(Seq,Truck,ListaEntregas1,Batery,TotalTime,V).
 
-
 ordena_populacao(PopAv,PopAvOrd):-
 	bsort(PopAv,PopAvOrd).
 
@@ -163,46 +100,26 @@ btroca([X*VX,Y*VY|L1],[Y*VY|L2]):-
 
 btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
+
 media([],0):-!.
 media([_*Valor|Resto], Soma):-
     media(Resto, Soma1),
     Soma is Soma1 + Valor.
 
-gera_geracao(G,G,Pop,_,_):-!,
-	write('Geração '), write(G), write(':'), nl, write(Pop), nl.
-	
 
-gera_geracao(N,G,Pop,Last,N3):-
-	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
-	media(Pop,Media),
-    write('Media: '), write(Media), nl,
-	length(Pop,TamPop),
-	NrMove is ceiling(TamPop/10),
-	remove_top10(Pop,PopMove,PopAux,NrMove,0),
-	random_permutation(PopAux,Pop1),
-	cruzamento(Pop1,NPop1),
+gera_geracao(G,G,Pop):-!,
+	write('Gera��o '), write(G), write(':'), nl, write(Pop), nl,
+    media(Pop,Media),
+    write('Media: '), write(Media), nl.
+
+gera_geracao(N,G,Pop):-
+	write('Gera��o '), write(N), write(':'), nl, write(Pop), nl,
+	cruzamento(Pop,NPop1),
 	mutacao(NPop1,NPop),
-	merge(NPop, PopMove, NPop2),
-	avalia_populacao(NPop2,NPopAv),
+	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
 	N1 is N+1,
-	((check_geracao1(NPopOrd,Last), Last1 = Last, N2 is N3 + 1, !)
-	;
-	(N2 is 0, head(NPopOrd,Last1))),
-	((check_geracao2(G,N2), !)
-	;
-	gera_geracao(N1,G,NPopOrd,Last1,N2)).
-
-check_geracao1([Last|_],Last).
-check_geracao2(N,N1):-
-	N1>=(ceiling(sqrt(N) * 2)).
-
-head([H|_],H).
-
-remove_top10(L,[],L,N,N):-!.
-remove_top10([Ind*_|Resto],[Ind|PopAux],PopF,TamPop,N):-
-	N1 is N+1,
-	remove_top10(Resto,PopAux,PopF,TamPop,N1), !.
+	gera_geracao(N1,G,NPopOrd).
 
 gerar_pontos_cruzamento(P1,P2):-
 	gerar_pontos_cruzamento1(P1,P2).
@@ -332,6 +249,16 @@ mutacao23(G1,1,[G2|Ind],G2,[G1|Ind]):-!.
 mutacao23(G1,P,[G|Ind],G2,[G|NInd]):-
 	P1 is P-1,
 	mutacao23(G1,P1,Ind,G2,NInd).
+
+
+
+
+
+
+
+
+
+
 
 
 
