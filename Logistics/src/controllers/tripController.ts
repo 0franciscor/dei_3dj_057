@@ -148,10 +148,7 @@ export default class TripController implements ITripController{
       try{
         
         if(req.body.tripID == null)
-            return res.status(400).send("TripID is required");
-
-        console.log(req.body)
-            
+            return res.status(400).send("TripID is required");            
 
             req.body.pathIDlist.forEach(async pathID => {
                 const pathOrError = await this.pathService.exist(pathID);
@@ -178,9 +175,9 @@ export default class TripController implements ITripController{
             if(tripOrError.isFailure){
                 return res.status(409).send("Trip already exists");
             }
-            console.log("tripOrError: ", tripOrError);
+            
             const tripDTO = tripOrError.getValue();
-            console.log("tripDTO: ", tripDTO);
+            
             return res.status(201).json(tripDTO);
 
 

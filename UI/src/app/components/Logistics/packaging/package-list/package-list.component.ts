@@ -46,7 +46,6 @@ export class PackageListComponent implements OnInit {
      this.isAuth = await this.isAuthenticated();
      if(this.isAuth){
       const dataList:any[] = await this.packageService.getPackage();
-      console.log(dataList);
       this.packageList = dataList;
       this.originalPackageList = dataList.slice();
       this.filteredIDList = dataList.slice();

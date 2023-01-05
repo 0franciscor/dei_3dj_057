@@ -116,7 +116,7 @@ export default class PackagingController implements IPackagingController {
             res.status(401);
             return res.json({message: "Not authenticated"});
           }
-          console.log("getAllPackagings")
+          
         if(!this.isAuthorized(req)){
             res.status(403);
             return res.json({message: "Not authorized"});
@@ -177,8 +177,6 @@ export default class PackagingController implements IPackagingController {
             }
 
             const packagingDTO = packagingOrError.getValue();
-
-            console.log(packagingDTO);
             
             return res.status(201).json( packagingDTO );
 

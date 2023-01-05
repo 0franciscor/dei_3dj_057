@@ -98,7 +98,6 @@ export default class PlanningController implements IPlanningController {
     const httpAgent = new http.Agent({rejectUnauthorized: false});
 
     const data = req.body;
-    console.log(data)
     const response = await this.fetch(url_prolog, 'POST', data,req.headers.cookie,httpAgent); 
     if(response.status != 200){
       res.status(503);
