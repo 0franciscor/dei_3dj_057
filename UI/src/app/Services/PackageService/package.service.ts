@@ -28,13 +28,8 @@ export class PackagingService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/packaging/all';
     }
-    const response = await fetch(url, {
-      method: 'GET',
-      headers:{
-        'Accept': 'application/json',
-        "authorization": this.getJwt(),
-      }
-    });
+
+    const response = await this.sendFetch(url, 'GET', null, this.getJwt());
 
     const data = await response.json();
     return data
@@ -46,15 +41,33 @@ export class PackagingService {
       url = 'https://auth57.azurewebsites.net/api/packaging/';
     }
     const data = packageL;
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json',
-            "authorization": this.getJwt(),
-        },
-    })
+    const response = await this.sendFetch(url, 'POST', data, this.getJwt());
 
     return response;
+  }
+
+  async sendFetch(url: string, method: string, data: any, cookie: any) {
+    if(data)
+      return await fetch(url, {
+        method: method,
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          "authorization": cookie,
+          
+
+        },
+        
+        
+      })
+    else
+      return await fetch(url, {
+        method: method,
+        headers: {
+          'Accept': 'application/json',
+          "authorization": cookie,
+        }
+      })
   }
 }

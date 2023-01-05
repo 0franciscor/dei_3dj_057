@@ -7,12 +7,12 @@ import fetch from 'node-fetch';
 export class TruckService {
 
   public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
-  private cookieName = "jwt";
   constructor() {}
 
   getJwt() {
+
     const cookies = document.cookie.split(';');
-    
+    console.log("cookies",cookies)
     let jwt = "";
     for (const cookie of cookies) {
       const [name, value] = cookie.split('=');

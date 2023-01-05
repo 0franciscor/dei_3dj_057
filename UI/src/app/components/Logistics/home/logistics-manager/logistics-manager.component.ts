@@ -76,31 +76,32 @@ export class LogisticsManagerComponent implements OnInit {
     });
   }
 
-  onPathSelected($event: any) {
-    let test = this.pathList.find(element => element.pathID == this.selectedPathOption);
-    this.selectedPath = test;
-  }
+  // onPathSelected($event: any) {
+  //   let test = this.pathList.find(element => element.pathID == this.selectedPathOption);
+  //   this.selectedPath = test;
+  // }
 
-  onStartWarehouseSelected($event:any){
-    let test = this.pathList.find(element => element.startWHId == this.selectedPathOption);
-    this.selectedPath = test;
-  }
+  // onStartWarehouseSelected($event:any){
+  //   let test = this.pathList.find(element => element.startWHId == this.selectedPathOption);
+  //   this.selectedPath = test;
+  // }
 
-  onDestinationWarehouseSelected($event: any){
-    let test= this.pathList.find(element => element.destinationWHId == this.selectedPathOption);
-    this.selectedPath = test;
-  }
+  // onDestinationWarehouseSelected($event: any){
+  //   let test= this.pathList.find(element => element.destinationWHId == this.selectedPathOption);
+  //   this.selectedPath = test;
+  // }
 
   onSubmit(){
     this.selectedPathOption=[];
-    let test;
-    if(this.formSelectWarehouse.value.startWHId == undefined){
-      test= this.pathList.find(element => element.destinationWHId == this.selectedPathOption)
-    }else if(this.formSelectWarehouse.value.destinationWHId == undefined){
-      test= this.pathList.find(element => element.startWHId == this.selectedPathOption)
-    }else{
-       test = this.pathList.find(element=>element.startWHId == this.selectedPathOption && element.destinationWHId == this.selectedPathOption)
-    }
+    
+    // let test;
+    // if(this.formSelectWarehouse.value.startWHId == undefined){
+    //   test= this.pathList.find(element => element.destinationWHId == this.selectedPathOption)
+    // }else if(this.formSelectWarehouse.value.destinationWHId == undefined){
+    //   test= this.pathList.find(element => element.startWHId == this.selectedPathOption)
+    // }else{
+    //    test = this.pathList.find(element=>element.startWHId == this.selectedPathOption && element.destinationWHId == this.selectedPathOption)
+    // }
    
     this.pathService.getAllPaths(this.formSelectWarehouse.value).then((data)=>{
       for(let i=0;i<data.length;i++){

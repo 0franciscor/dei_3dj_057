@@ -26,12 +26,13 @@ export class ToolBarComponent implements OnInit {
     
   }
 
-  async ngOnInit() {
-    this.isAdmn = await this.isAdmin();
+  checkCookie() {
     for (let cookie of document.cookie.split(';')) {
+    
       const cookieName = cookie.split("=")[0].trim();
       if(cookieName == "jwt"){
-        if(cookie.split("=")[1] == undefined){
+        console.log(cookie.split("=")[1] == '')
+        if(cookie.split("=")[1] == ''){
           this.isLoggedIn = false;
           this.ngZone.run(() => this.router.navigate(['/login']));
         }
@@ -41,6 +42,13 @@ export class ToolBarComponent implements OnInit {
         }
       }
     }
+  }
+
+  async ngOnInit() {
+    this.isAdmn = await this.isAdmin();
+
+    this.checkCookie();
+    
     if(!this.isLoggedIn)
       this.ngZone.run(() => this.router.navigate(['/login']));
   }
@@ -72,7 +80,7 @@ export class ToolBarComponent implements OnInit {
       const cookieName = cookie.split("=")[0].trim();
       document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`
     }
-    window.location.reload();
+    this.ngOnInit();
     this.ngZone.run(() => this.router.navigate(['/']));
   }
 

@@ -154,7 +154,7 @@ export class FleetManagerComponent implements OnInit {
       });
 
       if(this.selectedTruckOption!="")
-        window.location.reload();
+        this.ngOnInit();
 
     }
   }

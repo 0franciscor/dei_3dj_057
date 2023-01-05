@@ -27,18 +27,20 @@ export class CancelUserComponent implements OnInit {
     isAuth: boolean = false;
     authorizedRoles: string[] = ["admin"];
     async isAuthenticated() {
-        const role = await this.loginService.getRole();
-        if (!this.authorizedRoles.includes(role)) {
-            this.ngZone.run(() => this.router.navigate(['/']));
+        const role= await this.loginService.getRole();
+        if(!this.authorizedRoles.includes(role)){
+        this.ngZone.run(() =>this.router.navigate(['/']));
             return false
         }
-        return true;
+        else
+            return true;
+        
     }
 
 
     async ngOnInit() {
         this.isAuth = await this.isAuthenticated();
-        if (this.isAuth) {
+        if(this.isAuth){
             this.adminService.getAllUsers().then((data) => {
                 data.forEach( (element : any) => {
                     if (element.role != "admin") {
@@ -77,7 +79,7 @@ export class CancelUserComponent implements OnInit {
     }
 
     goBack() {
-        this.ngZone.run(() => this.router.navigate(['Admin/Home']));
+        this.router.navigate(['Admin/Home']);
     }
 
 }

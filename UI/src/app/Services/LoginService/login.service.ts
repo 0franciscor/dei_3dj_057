@@ -32,32 +32,7 @@ export class LoginService {
     return response;
   }
 
-  async deleteLogin(loginInfo: any){
-    let url = this.urlOrigin+'api/user/login';
-    if(this.urlOrigin.includes("azure")){
-      url = 'https://auth57.azurewebsites.net/api/user/login/'
-    }
-
-    const data = loginInfo;
-
-    const response = await this.sendFetch(url, 'GET', data," ");
-
-    const jsonResponse = await response.json();
-
-    const cookie = jsonResponse.token;
-    document.cookie = "jwt=" + cookie + "; path=/";
-    localStorage.removeItem(document.cookie);
-
-    this.sendFetch(url,'DELETE',data, "");
-
-  }
-
-
-
-
   async loginWithGoogle(credentials: string) {
-    // const header = new HttpHeaders().set('Content-type', 'application/json');
-    // return this.httpClient.post(this.urlOrigin + "loginWithGoogle", JSON.stringify(credentials), { headers: header });
     const data = {credentials:credentials};
     const response = await this.sendFetch(this.urlOrigin + "api/user/loginWithGoogle", 'POST', data, "");
     const jsonResponse = await response.json();
@@ -66,15 +41,6 @@ export class LoginService {
     localStorage.setItem('jwt', cookie);
     document.cookie = "jwt=" + cookie + "; path=/";
   }
-
-
-  async deleteLoginCookie(){
-
-
-
-
-  }
-
 
 
   async getRole() {

@@ -7,6 +7,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { PathService } from 'src/app/Services/PathService/path.service';
+import { LoginService } from 'src/app/Services/LoginService/login.service';
 
 
 describe('CreatePathComponent', () => {
@@ -15,7 +16,7 @@ describe('CreatePathComponent', () => {
   let dialogComponent: CreatePathComponentDialog;
   let dialogFixture: ComponentFixture<CreatePathComponentDialog>;
   let fakePathService: any;
-
+  let fakeLoginService: LoginService;
   const dialogMock={
     close:()=>{}
   };
@@ -32,6 +33,7 @@ describe('CreatePathComponent', () => {
     fakePathService.createPath.and.returnValue(Promise.resolve({status:201}));
     
     TestBed.overrideProvider(PathService,{useValue:fakePathService});
+    fakeLoginService = TestBed.inject(LoginService);
     fixture = TestBed.createComponent(CreatePathComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -52,7 +54,19 @@ describe('CreatePathComponent', () => {
     dialogComponent.ngOnInit();
   });
 
+  it('should be authenticated with admin role', async () => {
+
+    const fetchSpy = spyOn<any>(fakeLoginService, 'getRole').and.returnValue(Promise.resolve("admin"));
+    const response = await component.isAuthenticated();
+    expect(response).toBeTrue();
+    expect(fetchSpy).toHaveBeenCalled();
+
+  });
+
   it('should create', () => {
+    const fetchSpy = spyOn<any>(fakeLoginService, 'getRole').and.returnValue(Promise.resolve("admin"));
+    component.ngOnInit();
+    expect(fetchSpy).toHaveBeenCalled();
     expect(component).toBeTruthy();
   });
 
@@ -96,82 +110,307 @@ describe('CreatePathComponent', () => {
 
 
 
-describe('PathService',()=>{
+describe('PathService', ()=>{
   let service: PathService;
 
-  beforeEach(()=>{
-    TestBed.configureTestingModule({});
-    service=TestBed.inject(PathService);
-  })
+  beforeEach(() => {
+      TestBed.configureTestingModule({});
+      service = TestBed.inject(PathService);
+    });
+  
+    it('should be created', () => {
+      expect(service).toBeTruthy();
+    });
 
-  it('should be created',()=>{
+    it('cookie with jwt', () => {
+      spyOnProperty(document, 'cookie', 'get').and.returnValue('jwt=123');
+      const cookie = service.getJwt();
+      expect(cookie).toEqual('jwt=123');
+      
+    });
+  
+    it('cookie without jwt', () => {
+      spyOnProperty(document, 'cookie', 'get').and.returnValue('abc=123');
+      const cookie = service.getJwt();
+      expect(cookie).toEqual('jwt=');
+  
+    });
+
+    it('should get all paths', async () => {
+      const response = {
+        "path": [
+          {
+            "id": "TH1",
+            "address": "Rua António Bernardino,47,4535-334,Porto",
+            "altitude": 250,
+            "latitude": "40.9321º N",
+            "longitude": "8.2451º W",
+            "designation": "Arouca",
+            "city": "1",
+          },
+          {
+            "id": "TH2",
+            "address": "Rua António Bernardino,47,4535-334,Porto",
+            "altitude": 250,
+            "latitude": "40.9321º N",
+            "longitude": "8.2451º W",
+            "designation": "Arouca",
+            "city": "1",
+          }
+        ],
+        json () {
+          return this;
+        },
+        status: 200
+      };
+
+      const warehouses = {
+        startWHId: "WH1",
+        destinationWHId: "WH2"
+      }
+      const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+      const paths = await service.getAllPaths(warehouses);
+      expect(fetchSpy).toHaveBeenCalled();
+      expect(paths).toEqual(response);
+      service.urlOrigin = "https://azure:4200";
+      await service.getAllPaths(warehouses);
+
+    });
+
+    it('should get all paths with undefined', async () => {
+      const response = {
+        "path": [
+          {
+            "id": "TH1",
+            "address": "Rua António Bernardino,47,4535-334,Porto",
+            "altitude": 250,
+            "latitude": "40.9321º N",
+            "longitude": "8.2451º W",
+            "designation": "Arouca",
+            "city": "1",
+          },
+          {
+            "id": "TH2",
+            "address": "Rua António Bernardino,47,4535-334,Porto",
+            "altitude": 250,
+            "latitude": "40.9321º N",
+            "longitude": "8.2451º W",
+            "designation": "Arouca",
+            "city": "1",
+          }
+        ],
+        json () {
+          return this;
+        },
+        status: 404
+      };
+
+      const warehouses = {
+        startWHId: "",
+        destinationWHId: ""
+      }
+      const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+      const paths = await service.getAllPaths(warehouses);
+      expect(fetchSpy).toHaveBeenCalled();
+      expect(paths).toEqual(response);
+      service.urlOrigin = "https://azure:4200";
+      await service.getAllPaths(warehouses);
+
+    });
+
+    it('should create a path', async () => {
+
+      const response = {
+        "path": {
+          "id": "TH1",
+          "address": "Rua António Bernardino,47,4535-334,Porto",
+          "altitude": 250,
+          "latitude": "40.9321º N",
+          "longitude": "8.2451º W",
+          "designation": "Arouca",
+          "city": "1",
+        },
+        json () {
+          return this;
+        },
+        status: 200
+      };
+
+      const path = {
+        "id": "TH1",
+        "address": "Rua António Bernardino,47,4535-334,Porto",
+        "altitude": 250,
+        "latitude": "40.9321º N",
+        "longitude": "8.2451º W",
+        "designation": "Arouca",
+        "city": "1",
+      }
+
+      const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+      const paths = await service.createPath(path);
+      expect(fetchSpy).toHaveBeenCalled();
+      service.urlOrigin = "https://azure:4200";
+      await service.createPath(path);
+
+
+    });
+
+    it('should create a path in prolog', async () => {
+
+      const response = {
+        "path": {
+          "id": "TH1",
+          "address": "Rua António Bernardino,47,4535-334,Porto",
+          "altitude": 250,
+          "latitude": "40.9321º N",
+          "longitude": "8.2451º W",
+          "designation": "Arouca",
+          "city": "1",
+        },
+        json () {
+          return this;
+        },
+        status: 200
+      };
+
+      const path = {
+        "id": "TH1",
+        "address": "Rua António Bernardino,47,4535-334,Porto",
+        "altitude": 250,
+        "latitude": "40.9321º N",
+        "longitude": "8.2451º W",
+        "designation": "Arouca",
+        "city": "1",
+      }
+
+      const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+      const paths = await service.createPathProlog(path);
+      expect(fetchSpy).toHaveBeenCalled();
+      service.urlOrigin = "https://azure:4200";
+      await service.createPathProlog(path);
+
+
+    });
+
+
+    it('should send a fetch without data', async () => {
+
+      const status = await service.sendFetch('test', 'GET', null, "cookie");
+      expect(status.status).toEqual(404);
+  
+    });
+  
+    it('should send a fetch with data', async () => {
+      const status = await service.sendFetch('test', 'POST', "null", "cookie");
+      expect(status.status).toEqual(404);
+    });
+});
+
+describe('LoginService', () => {
+  let service: LoginService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(LoginService);
+  });
+
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get all paths', async()=>{
-    const response ={
-    "paths":[{
-      "id": '1',
-      "pathID":'teste1',
-      "startWHId" :'ts1',
-      "destinationWHId": 'ts2',
-      "pathDistance" :1,
-      "pathTravelTime": 1,
-      "wastedEnergy": 1,
-      "extraTravelTime": 1,
+  it('get role with jwt cookie', async () => {
+    const response = {
+      "status": 200,
+      json() {
+        return {role:"admin"};
       }
-    ],
-    json(){
-      return this;
     }
-    };
-
-    const fetchSpy = spyOn<any>(service,'sendFetch').and.returnValue(Promise.resolve(response));
-    const warehouses ={
-      startWHId: '',
-      destinationWHId: ''
-    }
-    const paths = await service.getAllPaths(warehouses);
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('jwt=123');
+    const role = await service.getRole();
     expect(fetchSpy).toHaveBeenCalled();
-    expect(paths).toEqual(response);
+    service.urlOrigin = "https://azure:4200";
+    await service.getRole();
+    
   });
 
-  it('should get all destiantion paths', async()=>{
-    const response ={
-    "paths":[{
-      "id": '1',
-      "pathID":'teste1',
-      "startWHId" :'ts1',
-      "destinationWHId": 'ts2',
-      "pathDistance" :1,
-      "pathTravelTime": 1,
-      "wastedEnergy": 1,
-      "extraTravelTime": 1,
+  
+  it('get role with null jwt cookie', async () => {
+    const response = {
+      "status": 401,
+      json() {
+        return {role:"admin"};
       }
-    ],
-    json(){
-      return this;
     }
-    };
-
-    const fetchSpy = spyOn<any>(service,'sendFetch').and.returnValue(Promise.resolve(response));
-    const warehouses ={
-      startWHId: 't1',
-      destinationWHId: ''
-    }
-    const paths = await service.getAllPaths(warehouses);
-    expect(fetchSpy).toHaveBeenCalled();
-    expect(paths).toEqual(response);
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('');
+    const role = await service.getRole();
+    expect(fetchSpy).not.toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.getRole();
+    
   });
+
+  it('get invalid role with jwt cookie', async () => {
+    const response = {
+      "status": 401,
+      json() {
+        return {role:"admin"};
+      }
+    }
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    spyOnProperty(document, 'cookie', 'get').and.returnValue('jwt=123');
+    const role = await service.getRole();
+    expect(fetchSpy).toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.getRole();
+    
+  });
+
+  it('should login', async () => {
+
+    const response = {
+      "status": 200,
+      json() {
+        return {token: "test"};
+      }
+    }
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    const login = await service.login("test");
+    expect(fetchSpy).toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.login("test");
+
+  });
+
+  it('should login with google', async () => {
+
+    const response = {
+      "status": 200,
+      json() {
+        return {token: "test"};
+      }
+    }
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+    const login = await service.loginWithGoogle("test");
+    expect(fetchSpy).toHaveBeenCalled();
+    service.urlOrigin = "https://azure:4200";
+    await service.loginWithGoogle("test");
+
+  });
+
+
+
 
   it('should send a fetch without data', async () => {
 
-    const status = await service.sendFetch('test', 'GET', null,"cookie");
+    const status = await service.sendFetch('test', 'GET', null, "cookie");
     expect(status.status).toEqual(404);
+
   });
 
   it('should send a fetch with data', async () => {
-    const status = await service.sendFetch('test', 'POST', "null","cookie");
+    const status = await service.sendFetch('test', 'POST', "null", "cookie");
     expect(status.status).toEqual(404);
   });
-})
+});

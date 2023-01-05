@@ -47,6 +47,7 @@ export class LogInComponent implements OnInit {
 
   clientId = "598640220043-j4v51sbat7nft28jqi165dltsq2dlrm9.apps.googleusercontent.com";
 
+
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
    
@@ -84,7 +85,7 @@ export class LogInComponent implements OnInit {
   async handleCredentialResponse(response: CredentialResponse) {
     if (response.credential) {
       await this.loginService.loginWithGoogle(response.credential)
-      window.location.reload();
+      this.ngOnInit();
       this.ngZone.run(() => this.router.navigate(['/']));
     } 
   }
@@ -92,12 +93,12 @@ export class LogInComponent implements OnInit {
   async onSubmit() {
     if(this.formLogin.valid){
       await this.loginService.login(this.formLogin.value);
-      window.location.reload();
+      this.ngOnInit();
       this.ngZone.run(() => this.router.navigate(['/']));
     }      
   }
 
- async isAvaiable(event : any){
+ async isAvailable(event : any){
   
     if (event.target.checked ) {
       this.isDisabled = false;

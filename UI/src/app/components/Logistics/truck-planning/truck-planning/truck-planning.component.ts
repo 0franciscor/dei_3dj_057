@@ -116,7 +116,7 @@ export class TruckPlanningComponent implements OnInit {
 
 
 
-   formatDate(date: Date) {
+  formatDate(date: Date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),

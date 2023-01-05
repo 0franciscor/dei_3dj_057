@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, NgZone } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ export interface DialogData {
 export class CreateTruckComponent implements OnInit {
 
   formCreateTruck!: FormGroup;
-  constructor(private ngZone:NgZone,private loginService: LoginService,public dialog: MatDialog,private truckService: TruckService,private fb: FormBuilder,private router: Router) {}
+  constructor(private loginService: LoginService,public dialog: MatDialog,private truckService: TruckService,private fb: FormBuilder,private router: Router) {}
 
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
@@ -43,7 +43,7 @@ export class CreateTruckComponent implements OnInit {
     const role= await this.loginService.getRole();
 
     if(!this.authorizedRoles.includes(role)){
-      this.ngZone.run(() => this.router.navigate(['/']));
+      this.router.navigate(['/']);
       return false
     }
     else
@@ -70,7 +70,7 @@ export class CreateTruckComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => {
         if(answer.status == 201){
-          this.ngZone.run(() => this.router.navigate(['Logistics/Home/FleetManager']));
+          this.router.navigate(['Logistics/Home/FleetManager']);
         }
       });
      
