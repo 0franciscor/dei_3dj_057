@@ -25,8 +25,6 @@ export class RoleMap extends Mapper<Role> {
       new UniqueEntityID(role.domainId)
     );
 
-    roleOrError.isFailure ? console.log(roleOrError.error) : '';
-
     return roleOrError.isSuccess ? roleOrError.getValue() : null;
   }
 

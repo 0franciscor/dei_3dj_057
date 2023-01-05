@@ -37,6 +37,7 @@
     "save": "^2.9.0",
     "three": "^0.146.0",
     "tslib": "^2.3.0",
+    "yuka": "^0.7.8",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -46,6 +47,7 @@
     "@types/google-one-tap": "^1.2.2",
     "@types/jasmine": "~4.0.0",
     "@types/node-fetch": "^2.6.2",
+    "@types/yuka": "^0.7.1",
     "cypress": "^11.2.0",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",

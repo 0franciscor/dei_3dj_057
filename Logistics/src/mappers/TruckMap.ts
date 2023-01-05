@@ -32,7 +32,6 @@ export class TruckMap extends Mapper<Truck> {
                 truck,
                 new UniqueEntityID(truck._id),
         );
-        truckOrError.isFailure ? console.log(truckOrError.error) : '';
         
         return truckOrError.isSuccess ? truckOrError.getValue() : null;
     }
