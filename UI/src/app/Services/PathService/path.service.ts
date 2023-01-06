@@ -37,9 +37,7 @@ export class PathService{
       let test : any[]=[];
       const data = warehouses
       const response= await this.sendFetch(url,'GET',null, this.getJwt())
-      if(response.status != 200){
-        console.log("No paths found")
-      }
+      
       paths= await response.json();
       return paths;
     }

@@ -12,7 +12,6 @@ export class TruckService {
   getJwt() {
 
     const cookies = document.cookie.split(';');
-    console.log("cookies",cookies)
     let jwt = "";
     for (const cookie of cookies) {
       const [name, value] = cookie.split('=');

@@ -31,7 +31,6 @@ export class PathMap extends Mapper<Path>{
             path, 
             new UniqueEntityID(path._id),
         );
-        pathOrError.isFailure ? console.log(pathOrError.error):'';
         
         return pathOrError.isSuccess ? pathOrError.getValue(): null;
     }

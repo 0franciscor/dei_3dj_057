@@ -39,7 +39,6 @@ export class TripMap extends Mapper<Trip> {
             trip,
             new UniqueEntityID(trip._id),
         );
-        tripOrError.isFailure ? console.log(tripOrError.error) : '';
 
         return tripOrError.isSuccess ? tripOrError.getValue() : null;
     }
@@ -56,7 +55,6 @@ export class TripMap extends Mapper<Trip> {
         trip.pathIDlist.forEach(pathID => {
             pathToStringList.push(pathID.id);
         });
-        console.log("pathToStringList", pathToStringList);
         
         return {
             id: trip.id.toString(),

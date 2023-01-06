@@ -31,7 +31,6 @@ export class PackagingMap extends Mapper<Packaging> {
                 packaging,
                 new UniqueEntityID(packaging.id),
         );
-        PackagingOrError.isFailure ? console.log(PackagingOrError.error) : '';
         
         return PackagingOrError.isSuccess ? PackagingOrError.getValue() : null;
     }

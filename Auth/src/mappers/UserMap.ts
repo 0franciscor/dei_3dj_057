@@ -34,7 +34,6 @@ export class UserMap extends Mapper<User> {
       user,
       new UniqueEntityID(user._id),
     );
-    userOrError.isFailure ? console.log(userOrError):'';
     return userOrError.isSuccess ? userOrError.getValue():null;
   }
 

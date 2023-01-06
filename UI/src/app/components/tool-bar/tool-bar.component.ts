@@ -31,7 +31,6 @@ export class ToolBarComponent implements OnInit {
     
       const cookieName = cookie.split("=")[0].trim();
       if(cookieName == "jwt"){
-        console.log(cookie.split("=")[1] == '')
         if(cookie.split("=")[1] == ''){
           this.isLoggedIn = false;
           this.ngZone.run(() => this.router.navigate(['/login']));

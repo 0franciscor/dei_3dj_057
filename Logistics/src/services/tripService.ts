@@ -42,11 +42,11 @@ export default class TripService implements ITripService {
             if(tripOrError.isFailure) {
                 return Result.fail<ITripDTO>(tripOrError.error);
             }
-            console.log(tripOrError);
+            
             const tripResult = tripOrError.getValue();
-            console.log("tripResult", tripResult);
+            
             const test = await this.tripRepo.save(tripResult);
-            console.log("test", test);
+            
             const tripDTOResult = TripMap.toDTO(tripResult) as ITripDTO;
             return Result.ok<ITripDTO>(tripDTOResult);
         }catch(e){
