@@ -333,12 +333,12 @@ distributeDeliveries(TruckList, DeliveryList,Date,SplitList,ResultList):-
     loop_split_list(RealTruckList,Destinations,DLPerTruck,SplitList,Date,ResultList).
 
 
-loop_split_list(TruckList,Destinations,DLPerTruck,SplitList,Date,ResultList):-
+loop_split_list(TruckList,Destinations,DLPerTruck,SplitList,Date,ResultList):- 
 	split_list(Destinations,DLPerTruck,SplitList),
 	dummy_function(TruckList,Destinations,DLPerTruck,SplitList,Date,ResultList).
 
 
-dummy_function(TruckList,_,_,SplitList,Date,ResultList):-
+dummy_function(TruckList,_,_,SplitList,Date,ResultList):- 
 	compareTtrucksWithDLWeight(TruckList, SplitList, Date,[]),!, ResultList = SplitList.
 dummy_function(TruckList,_,DLPerTruck,SplitList,Date,ResultList):-
 	compareVerified(SplitList,RandomDestinations),
@@ -366,7 +366,7 @@ split_list_(List, X, Length, [Split|Splits]) :-
     ->  length(Split, X),
         append(Split, Rest, List),
         NewLength is Length - X,
-        (split_list_(Rest, X, NewLength, Splits),!);
+        (split_list_(Rest, X, NewLength, Splits),!);   
 		Split = List,
         Splits = []
     ).
@@ -405,7 +405,7 @@ get_final_list(FinalList) :-
 
 
 
-compareVerified(SplitList,RandomDestinations):- get_final_list(FinalList), get_nonmatching_sublists(SplitList, FinalList,Result),
+compareVerified(SplitList,RandomDestinations):- get_final_list(FinalList), get_nonmatching_sublists2(SplitList, FinalList,Result),
     flatten(Result, FlattenDestinations),
     random_permutation(FlattenDestinations,PermutatedDestinations),!,
     append(FinalList,PermutatedDestinations,RandomDestinations) .
