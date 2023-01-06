@@ -159,7 +159,7 @@ delete_path(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
         CityOrig = DictIn.get(cityOrig), CityDest = DictIn.get(cityDest),
-        (remove_path(CityOrig, CityDest), reply_json(Id,  [status(200)]), !);
+        (remove_path(CityOrig, CityDest), reply_json(CityOrig,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 getById_path(Request):-
