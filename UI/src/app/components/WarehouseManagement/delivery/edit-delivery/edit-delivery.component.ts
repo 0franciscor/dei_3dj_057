@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, NgZone } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeliveryService } from 'src/app/Services/DeliveryService/delivery.service';
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -25,7 +25,7 @@ export class EditDeliveryComponent implements OnInit {
 
   selectedDelivery = {
     deliveryID: "",
-    deliveryDate: undefined,
+    deliveryDate: new Date(),
     deliveryMass: undefined,
     destination: undefined,
     loadTime: undefined,
@@ -52,13 +52,14 @@ export class EditDeliveryComponent implements OnInit {
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
     const deliveryID = this.route.snapshot.paramMap.get('id');
+
     this.formEditDelivery = this.fb.group({
-      deliveryID: this.selectedDelivery.deliveryID,
-      deliveryDate: this.selectedDelivery.deliveryDate,
-      loadTime: this.selectedDelivery.loadTime,
-      unloadTime: this.selectedDelivery.unloadTime,
-      destination: this.selectedDelivery.destination,
-      deliveryMass: this.selectedDelivery.deliveryMass
+      deliveryID: new FormControl(''),
+      deliveryDate: new FormControl(''),
+      loadTime: new FormControl(''),
+      unloadTime: new FormControl(''),
+      destination: new FormControl(''),
+      deliveryMass: new FormControl('')
     });
 
     if (deliveryID)
@@ -66,7 +67,7 @@ export class EditDeliveryComponent implements OnInit {
         this.selectedDelivery = data;
         this.formEditDelivery = this.fb.group({
           deliveryID: this.selectedDelivery.deliveryID,
-          deliveryDate: this.selectedDelivery.deliveryDate,
+          deliveryDate: new Date(this.selectedDelivery.deliveryDate),
           loadTime: this.selectedDelivery.loadTime,
           unloadTime: this.selectedDelivery.unloadTime,
           destination: this.selectedDelivery.destination,

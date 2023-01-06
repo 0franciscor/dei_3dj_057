@@ -6,6 +6,7 @@ import fetch from 'node-fetch';
 })
 export class DeliveryService {
   public urlOrigin = window.location.origin.split(":")[0] + ":" + window.location.origin.split(":")[1] + ":3001/";
+
   constructor() { }
 
   getJwt() {
@@ -56,7 +57,6 @@ export class DeliveryService {
     const response = await this.sendFetch(url, 'POST', data, this.getJwt());
 
     return response;
-
   }
 
   async updateDelivery(delivery: any) {
@@ -71,12 +71,40 @@ export class DeliveryService {
     return response;
   }
 
+  async deleteDelivery(deliveryID: string) {
+    let url = this.urlOrigin + 'api/delivery/delete/' + deliveryID;
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/delivery/delete/'+deliveryID;
+    }
+
+    const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
+
+    return response;
+  }
+
   async createDeliveryProlog(delivery: any) {
     let url = this.urlOrigin + 'api/delivery/createProlog';
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/delivery/createProlog';
     }
-    const data = delivery;
+
+    interface createDeliveryProlog {
+      deliveryID: string,
+      deliveryDateProlog: string,
+      loadTime: number,
+      unloadTime: number,
+      destination: string,
+      deliveryMass: number,
+    }
+
+    const data : createDeliveryProlog = {
+      deliveryID: delivery.deliveryID,
+      deliveryDateProlog: delivery.deliveryDate.getFullYear().toString() + (delivery.deliveryDate.getMonth()+1).toString().padStart(2, '0') + delivery.deliveryDate.getDate().toString().padStart(2, '0'),
+      loadTime: delivery.loadTime,
+      unloadTime: delivery.unloadTime,
+      destination: delivery.destination,
+      deliveryMass: delivery.deliveryMass,
+    }
 
     const response = await this.sendFetch(url, 'POST', data, this.getJwt());
 
@@ -89,11 +117,44 @@ export class DeliveryService {
       url = 'https://auth57.azurewebsites.net/api/delivery/updateProlog';
     }
 
-    const data = delivery;
+    interface updateDeliveryProlog {
+      deliveryID: string,
+      deliveryDate: string,
+      loadTime: number,
+      unloadTime: number,
+      destination: string,
+      deliveryMass: number,
+    }
+
+    const data : updateDeliveryProlog = {
+      deliveryID: delivery.deliveryID,
+      deliveryDate: delivery.deliveryDate.getFullYear().toString() + (delivery.deliveryDate.getMonth()+1).toString().padStart(2, '0') + delivery.deliveryDate.getDate().toString().padStart(2, '0'),
+      loadTime: delivery.loadTime,
+      unloadTime: delivery.unloadTime,
+      destination: delivery.destination,
+      deliveryMass: delivery.deliveryMass,
+    }
 
     const response = await this.sendFetch(url, 'PUT', data, this.getJwt());
 
     return response;
+  }
+
+  async deleteDeliveryProlog(deliveryID: string) {
+    let url = this.urlOrigin + 'api/delivery/deleteProlog';
+    if(this.urlOrigin.includes("azure")){
+      url = 'https://auth57.azurewebsites.net/api/delivery/deleteProlog/';
+    }
+
+    interface deleteDeliveryProlog {
+      id: string
+    }
+
+    const data : deleteDeliveryProlog = { id: deliveryID };
+
+    const response = await this.sendFetch(url, 'DELETE', data, this.getJwt());
+
+    return response; 
   }
 
   async sendFetch(url: string, method: string, data: any, cookie:any) {

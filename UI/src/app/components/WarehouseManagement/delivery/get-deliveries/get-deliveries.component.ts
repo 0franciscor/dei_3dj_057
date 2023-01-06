@@ -18,18 +18,7 @@ export class GetDeliveriesComponent implements OnInit {
   displayedColumns: string[] = ['deliveryID', 'deliveryDate', 'loadTime', 'unloadTime', 'destination', 'deliveryMass', 'Actions'];
   dataSource = this.deliveryList;
 
-  constructor(private ngZone:NgZone,private loginService:LoginService,private deliveryService: DeliveryService, private router: Router) {
-
-    this.deliveryService.getDeliveries().then((data) => {
-      this.deliveryList = data;
-      this.deliveryList.forEach((delivery) => {
-        if(delivery.deliveryID == "" || delivery.deliveryID == null) {
-          delivery.deliveryID = "N/A";
-        }
-      });
-      this.dataSource = this.deliveryList;
-    });
-  }
+  constructor(private ngZone:NgZone,private loginService:LoginService,private deliveryService: DeliveryService, private router: Router) {}
 
   isAuth: boolean = false;
   authorizedRoles: string[] = ["whMan","admin"];
@@ -46,9 +35,34 @@ export class GetDeliveriesComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
+    if(this.isAuth){
+      this.loadDeliveries();
+    }
+  }
+
+  loadDeliveries() {
+    this.deliveryService.getDeliveries().then((data) => {
+      this.deliveryList = data;
+      this.deliveryList.forEach((delivery) => {
+        if(delivery.deliveryID == "" || delivery.deliveryID == null) {
+          delivery.deliveryID = "N/A";
+        }
+      });
+      this.dataSource = this.deliveryList;
+    });
   }
 
   goToEditDelivery(deliveryID : string) {
     this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Delivery/EditDelivery', deliveryID]));
   }
+
+  async deleteDelivery(deliveryID : string) {
+    let answer = await this.deliveryService.deleteDelivery(deliveryID);
+    if (answer.status == 200)
+      this.deliveryService.deleteDeliveryProlog(deliveryID);
+    
+    this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
+    
+  }
+
 }

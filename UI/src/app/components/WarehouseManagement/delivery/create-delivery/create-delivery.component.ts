@@ -66,6 +66,7 @@ export class CreateDeliveryComponent implements OnInit {
     if(this.formCreateDelivery.valid){
       let answer = await this.deliveryService.createDelivery(this.formCreateDelivery.value);
       let message = "Delivery created successfully";
+
       if (answer.status == 201)
         this.deliveryService.createDeliveryProlog(this.formCreateDelivery.value);
       else

@@ -12,18 +12,11 @@ export default (app: Router) => {
 
     const ctrl = Container.get(config.controllers.delivery.name) as IDeliveryController;
 
+    // ################# .NET WEB API RELATED #################
 
     route.get('/all', (req,res,next)=>
     {
         ctrl.getAllDeliveries(req,res,next)
-    });
-
-    route.post("/getDeliveryDestination",(req,res,next)=>{
-        ctrl.getDeliveryDestination(req,res,next)
-    })
-    route.get('/allProlog', (req,res,next)=>
-    {
-        ctrl.getAllDeliveriesProlog(req,res,next)
     });
 
     route.get('/:id', (req,res,next)=>
@@ -36,18 +29,44 @@ export default (app: Router) => {
         ctrl.createDelivery(req,res,next)
     });
 
-    route.post('/createProlog', (req,res,next)=>
-    {
-        ctrl.createDeliveryProlog(req,res,next)
-    });
-
     route.patch('/update', (req,res,next)=>
     {
         ctrl.updateDelivery(req,res,next)
     });
 
-    route.patch('/updateProlog', (req,res,next)=>
+    route.delete('/delete/:id', (req,res,next)=>
+    {
+        ctrl.deleteDelivery(req,res,next)
+    });
+
+
+
+
+
+    // ################# PROLOG RELATED #################
+
+    route.post('/createProlog', (req,res,next)=>
+    {
+        ctrl.createDeliveryProlog(req,res,next)
+    });
+
+    route.put('/updateProlog', (req,res,next)=>
     {
         ctrl.updateDeliveryProlog(req,res,next)
     });
+
+    route.delete('/deleteProlog', (req,res,next)=>
+    {
+        ctrl.deleteDeliveryProlog(req,res,next)
+    });
+    
+    
+
+
+    
+    // ################# OTHER #################
+
+    route.post("/getDeliveryDestination",(req,res,next)=>{
+        ctrl.getDeliveryDestination(req,res,next)
+    })
 };

@@ -38,6 +38,7 @@
             <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let delivery">
                 <button mat-button (click)="goToEditDelivery(delivery.deliveryID)">Edit</button>
+                <button mat-button (click)="deleteDelivery(delivery.deliveryID)">Delete</button>
             </td>
         </ng-container>
     
