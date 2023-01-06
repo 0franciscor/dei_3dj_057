@@ -319,25 +319,30 @@ mutacao23(G1,P,[G|Ind],G2,[G|NInd]):-
 % ------------------------------------------------------------------------%
 
 
-distributeDeliveries(TruckList, DeliveryList,Date,SplitList):-
+distributeDeliveries(TruckList, DeliveryList,Date,SplitList,ResultList):-
      calculateMaxDLWeight(DeliveryList,Date,Weight),
     calculateMaxTruckCapacity(TruckList,MaxCapacity),
-    (  ( MaxCapacity<Weight,!,extraTruck(TruckList,NewTruckList),RealTruckList = NewTruckList);
-    RealTruckList = TruckList),
-
-    truckListLength(RealTruckList,0,TLLength), deliveryListLength(DeliveryList,0,DLLength),
+    (( MaxCapacity<Weight,!,
+	extraTruck(TruckList,NewTruckList),
+	RealTruckList = NewTruckList)
+	;RealTruckList = TruckList),
+    truckListLength(RealTruckList,0,TLLength),
+	deliveryListLength(DeliveryList,0,DLLength),
     DLPerTruck is DLLength/TLLength,
     extractDestinations(DeliveryList, Destinations),
-
-    loop_split_list(RealTruckList,Destinations,DLPerTruck,SplitList,Date).
-
-
-    loop_split_list(TruckList,Destinations,DLPerTruck,SplitList,Date):- split_list(Destinations,DLPerTruck,SplitList),dummy_function(TruckList,Destinations,DLPerTruck,SplitList,Date).
+    loop_split_list(RealTruckList,Destinations,DLPerTruck,SplitList,Date,ResultList).
 
 
-dummy_function(TruckList,_,_,SplitList,Date):- compareTtrucksWithDLWeight(TruckList, SplitList, Date,[]),!.
-dummy_function(TruckList,_,DLPerTruck,SplitList,Date):- compareVerified(SplitList,RandomDestinations),
-      loop_split_list(TruckList,RandomDestinations,DLPerTruck,_,Date).
+loop_split_list(TruckList,Destinations,DLPerTruck,SplitList,Date,ResultList):- 
+	split_list(Destinations,DLPerTruck,SplitList),
+	dummy_function(TruckList,Destinations,DLPerTruck,SplitList,Date,ResultList).
+
+
+dummy_function(TruckList,_,_,SplitList,Date,ResultList):- 
+	compareTtrucksWithDLWeight(TruckList, SplitList, Date,[]),!, ResultList = SplitList.
+dummy_function(TruckList,_,DLPerTruck,SplitList,Date,ResultList):-
+	compareVerified(SplitList,RandomDestinations),
+    loop_split_list(TruckList,RandomDestinations,DLPerTruck,_,Date,ResultList).
 
 %compare weights with truck capacity%
 
@@ -361,8 +366,8 @@ split_list_(List, X, Length, [Split|Splits]) :-
     ->  length(Split, X),
         append(Split, Rest, List),
         NewLength is Length - X,
-           split_list_(Rest, X, NewLength, Splits)
-    ;   Split = List,
+        (split_list_(Rest, X, NewLength, Splits),!);   
+		Split = List,
         Splits = []
     ).
 
