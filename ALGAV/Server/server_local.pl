@@ -22,7 +22,7 @@
 :- http_handler('/delete_truck', delete_truck, []).
 :- http_handler('/delete_delivery', delete_delivery, []).
 :- http_handler('/delete_path', delete_path, []).
-:- http_handler('/delete_path', delete_warehouse, []).
+:- http_handler('/delete_warehouse', delete_warehouse, []).
 :- http_handler('/getById', getById_city, []).
 :- http_handler('/getByIdDelivery', getById_delivery, []).
 :- http_handler('/getByIdTruck', getById_truck, []).
@@ -69,7 +69,7 @@ delete_city(Request):-
 	cors_enable,
         http_read_json_dict(Request, DictIn),
         Id = DictIn.get(id),
-        (remove_city(Id), reply_json(_,  [status(200)]), !);
+        (remove_city(Id), reply_json(Id,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 getById_city(Request):-
@@ -99,7 +99,7 @@ delete_truck(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
         Id = DictIn.get(id),
-        (remove_truck(Id), reply_json(_,  [status(200)]), !);
+        (remove_truck(Id), reply_json(Id,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 getById_truck(Request):-
@@ -129,7 +129,7 @@ delete_delivery(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
         Id = DictIn.get(id),
-        (remove_delivery(Id), reply_json(_,  [status(200)]), !);
+        (remove_delivery(Id), reply_json(Id,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 getById_delivery(Request):-
@@ -159,7 +159,7 @@ delete_path(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
         CityOrig = DictIn.get(cityOrig), CityDest = DictIn.get(cityDest),
-        (remove_path(CityOrig, CityDest), reply_json(_,  [status(200)]), !);
+        (remove_path(CityOrig, CityDest), reply_json(CityOrig,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 getById_path(Request):-
@@ -191,7 +191,7 @@ delete_warehouse(Request):-
 		cors_enable,
         http_read_json_dict(Request, DictIn),
         Id = DictIn.get(id),
-        (remove_warehouse(Id), reply_json(_,  [status(200)]), !);
+        (remove_warehouse(Id), reply_json(Id,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 getById_warehouse(Request):-
