@@ -12,6 +12,9 @@
 :-dynamic date/1.
 :-dynamic idTruck/1.
 :-dynamic tarefas/1.
+:- dynamic final_list/1.
+
+
 
 %% FIND ALL DESTINATIONS OF DELIVERIES %%
 
@@ -57,7 +60,7 @@ date(20221205).
 idTruck(eTruck01).
 
 
-% parameterizaï¿½ï¿½o
+% parameteriza��o
 inicializa(ListaEntregas):-
     length(ListaEntregas, N),
     (retract(tarefas(_));true),
@@ -168,10 +171,10 @@ btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
 
 gera_geracao(G,G,Pop):-!,
-	write('Geraï¿½ï¿½o '), write(G), write(':'), nl, write(Pop), nl.
+	write('Gera��o '), write(G), write(':'), nl, write(Pop), nl.
 
 gera_geracao(N,G,Pop):-
-	write('Geraï¿½ï¿½o '), write(N), write(':'), nl, write(Pop), nl,
+	write('Gera��o '), write(N), write(':'), nl, write(Pop), nl,
 	random_permutation(Pop,Pop1),
 	cruzamento(Pop1,NPop1),
 	mutacao(NPop1,NPop),
@@ -329,7 +332,12 @@ distributeDeliveries(TruckList, DeliveryList,Date,SplitList):-
     loop_split_list(RealTruckList,Destinations,DLPerTruck,SplitList,Date).
 
 
-    loop_split_list(TruckList,Destinations,DLPerTruck,SplitList,Date):- split_list(Destinations,DLPerTruck,SplitList), (\+compareTtrucksWithDLWeight(TruckList, SplitList, Date), random_permutation(Destinations,RandomDestinations), loop_split_list(TruckList,RandomDestinations,DLPerTruck,_,Date)).
+    loop_split_list(TruckList,Destinations,DLPerTruck,SplitList,Date):- split_list(Destinations,DLPerTruck,SplitList),dummy_function(TruckList,Destinations,DLPerTruck,SplitList,Date).
+
+
+dummy_function(TruckList,_,_,SplitList,Date):- compareTtrucksWithDLWeight(TruckList, SplitList, Date,[]),!.
+dummy_function(TruckList,_,DLPerTruck,SplitList,Date):- compareVerified(SplitList,RandomDestinations),
+      loop_split_list(TruckList,RandomDestinations,DLPerTruck,_,Date).
 
 %compare weights with truck capacity%
 
@@ -353,7 +361,7 @@ split_list_(List, X, Length, [Split|Splits]) :-
     ->  length(Split, X),
         append(Split, Rest, List),
         NewLength is Length - X,
-        split_list_(Rest, X, NewLength, Splits)
+           split_list_(Rest, X, NewLength, Splits)
     ;   Split = List,
         Splits = []
     ).
@@ -368,10 +376,10 @@ calculateMaxTruckCapacity([H|T],Weight1):- carateristicasCam(H,_,Capacity,_,_,_)
 compareWeight(Truck,Weight):- carateristicasCam(Truck,_,Capacity,_,_,_), Weight < Capacity.
 
 
-compareTtrucksWithDLWeight([],[],_):-!.
+compareTtrucksWithDLWeight([],[],_,_):-!.
 
-compareTtrucksWithDLWeight([TH|TT],[SLH|SLT],Date):-calculateWeight(SLH,Date,Weight),(\+compareWeight(TH,Weight), random_permutation(SLT,RandomDestinations),SLT1 = RandomDestinations),SLT1 = SLT,
-    compareTtrucksWithDLWeight(TT,SLT1,Date).
+compareTtrucksWithDLWeight([TH|TT],[SLH|SLT],Date,VerifiedList):-calculateWeight(SLH,Date,Weight),(compareWeight(TH,Weight),add_to_verified_list(SLH,VerifiedList,_)),
+    compareTtrucksWithDLWeight(TT,SLT,Date,VerifiedList).
 
 
 extraTruck(L, NewList):- append(L,[extraETruck],NewList).
@@ -379,3 +387,26 @@ extraTruck(L, NewList):- append(L,[extraETruck],NewList).
 
 calculateMaxDLWeight([],_,0):-!.
 calculateMaxDLWeight([H|T],Date,Weight1):-entrega(H,Date,Mass,_,_,_), calculateMaxDLWeight(T,Date,Weight), Weight1 is  Weight+Mass.
+
+
+
+add_to_verified_list(TH, VerifiedList, FinalList) :-
+    append(VerifiedList, TH, FinalList),
+    retractall(final_list(_)),
+    asserta(final_list(FinalList)).
+
+get_final_list(FinalList) :-
+    final_list(FinalList).
+
+
+
+compareVerified(SplitList,RandomDestinations):- get_final_list(FinalList), get_nonmatching_sublists(SplitList, FinalList,Result),
+    flatten(Result, FlattenDestinations),
+    random_permutation(FlattenDestinations,PermutatedDestinations),!,
+    append(FinalList,PermutatedDestinations,RandomDestinations) .
+
+
+
+get_nonmatching_sublists(SplitList, FinalList, Result) :-
+    findall(Sublist, (member(Sublist, SplitList), member(X, Sublist), member(X, FinalList)), Matching),
+    subtract(SplitList, Matching, Result).
