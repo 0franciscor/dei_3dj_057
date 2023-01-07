@@ -191,7 +191,7 @@ export default class WarehouseController implements IWarehouseController {
   }
 
   async editWarehouse(req: Request, res: Response, next: NextFunction) {
-
+    
     //############################################
 
     if (req.headers.authorization != undefined)
@@ -215,7 +215,10 @@ export default class WarehouseController implements IWarehouseController {
       url = 'https://whmanagement57.azurewebsites.net/api/warehouses/Update';
 
 
-    const response = await this.fetch(url, 'PUT', null, req.headers.cookie, httpAgent);
+    const data = req.body;
+
+
+    const response = await this.fetch(url, 'PUT', data, req.headers.cookie, httpAgent);
 
     if (response.status != 200) {
       res.status(response.status);

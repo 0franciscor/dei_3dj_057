@@ -18,7 +18,7 @@ export default (app: Router) => {
         ctrl.getAllWarehouse(req,res,next)
     });
     
-    route.get('/:id',(req,res,next)=>{
+    route.get('/id/:id',(req,res,next)=>{
         ctrl.getWarehouse(req,res,next)
     });
     

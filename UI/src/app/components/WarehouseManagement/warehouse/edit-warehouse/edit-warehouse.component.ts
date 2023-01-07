@@ -10,7 +10,7 @@ export interface DialogData {
   message: string;
 }
 
-interface warehouse{
+interface warehouse {
   warehouseId: string;
   address: string;
   altitude: number;
@@ -28,10 +28,8 @@ interface warehouse{
 export class EditWarehouseComponent implements OnInit {
 
   formEditWarehouse!: FormGroup
-  
-  constructor(private ngZone:NgZone,private loginService:LoginService,public dialog: MatDialog,private route: ActivatedRoute, private warehouseService: WarehouseService, private fb: FormBuilder, private router: Router) { 
-    
-  }
+
+  constructor(private ngZone: NgZone, private loginService: LoginService, public dialog: MatDialog, private route: ActivatedRoute, private warehouseService: WarehouseService, private fb: FormBuilder, private router: Router) {}
 
   selectedWarehouse = {
     id: "",
@@ -42,21 +40,21 @@ export class EditWarehouseComponent implements OnInit {
     designation: undefined,
   }
 
-  goBack(){
+  goBack() {
     this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
   }
 
   isAuth: boolean = false;
-  authorizedRoles: string[] = ["whMan","admin"];
+  authorizedRoles: string[] = ["whMan", "admin"];
   async isAuthenticated() {
-    const role= await this.loginService.getRole();
-    if(!this.authorizedRoles.includes(role)){
+    const role = await this.loginService.getRole();
+    if (!this.authorizedRoles.includes(role)) {
       this.ngZone.run(() => this.router.navigate(['/']));
       return false
     }
     else
       return true;
-    
+
   }
 
   async ngOnInit() {
@@ -82,7 +80,7 @@ export class EditWarehouseComponent implements OnInit {
           latitude: this.selectedWarehouse.latitude,
           longitude: this.selectedWarehouse.longitude,
           designation: this.selectedWarehouse.designation,
-          
+
         });
       });
     
@@ -92,20 +90,24 @@ export class EditWarehouseComponent implements OnInit {
     let answer = await this.warehouseService.updateWarehouse(this.formEditWarehouse.value);
     let message = "Warehouse updated successfully";
 
-    if(answer.status != 200){
+    if (answer.status == 200) {
+      const updatedWarehouse = await this.warehouseService.getWarehouse(this.formEditWarehouse.value.id);
+      this.warehouseService.updateWarehouseProlog(updatedWarehouse);
+    } else
       message = "Error updating warehouse";
-    }
+
     const dialogRef = this.dialog.open(EditWarehouseComponentDialog, {
       width: '250px',
       data: {
         name: this.selectedWarehouse.id,
-        message: message},
+        message: message
+      },
     });
 
     dialogRef.afterClosed().subscribe(_result => {
-      if(answer.status == 200)
+      if (answer.status == 200)
         this.ngZone.run(() => this.router.navigate(['WarehouseManagement/Home/WarehouseManager']));
-      
+
     });
   }
 }
@@ -114,18 +116,17 @@ export class EditWarehouseComponent implements OnInit {
   selector: 'app-edit-warehouse',
   templateUrl: 'edit-warehouse.dialog.component.html',
 })
-  export class EditWarehouseComponentDialog {
+export class EditWarehouseComponentDialog {
   constructor(
     public dialogRef: MatDialogRef<EditWarehouseComponentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
 
   }
-  
+
   onOk(): void {
     this.dialogRef.close();
   }
 }
-

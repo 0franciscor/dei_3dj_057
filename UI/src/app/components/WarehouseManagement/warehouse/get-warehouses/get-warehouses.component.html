@@ -50,6 +50,7 @@
             <button mat-button *ngIf="warehouse.active" (click)="goToEditWarehouse(warehouse.id)">Edit</button>
             <button mat-button *ngIf="!warehouse.active" (click)="goToActiveWarehouse(warehouse.id)">Activate</button>
             <button mat-button *ngIf="warehouse.active" (click)="goToDeactiveWarehouse(warehouse.id)">Deactivate</button>
+            <button mat-button (click)="deleteWarehouse(warehouse.id)">Delete</button>
             </td>
         </ng-container>
     

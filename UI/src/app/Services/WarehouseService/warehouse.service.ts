@@ -35,9 +35,9 @@ export class WarehouseService {
   }
 
   async getWarehouse(WarehouseId: string) {
-    let url = this.urlOrigin + 'api/warehouse/' + WarehouseId;
+    let url = this.urlOrigin + 'api/warehouse/id/' + WarehouseId;
     if (this.urlOrigin.includes("azure")) {
-      url = 'https://auth57.azurewebsites.net/api/warehouse/' + WarehouseId;
+      url = 'https://auth57.azurewebsites.net/api/warehouse/id/' + WarehouseId;
     }
     const response = await this.sendFetch(url, 'GET', null, this.getJwt());
     const data = await response.json();
@@ -115,8 +115,8 @@ export class WarehouseService {
 
   // ############################## PROLOG RELATED METHODS ###############################
 
-
   async createWarehouseProlog(warehouse: any) {
+
     let url = this.urlOrigin + 'api/warehouse/createProlog';
     if (this.urlOrigin.includes("azure")) {
       url = 'https://auth57.azurewebsites.net/api/warehouse/createProlog';
@@ -155,7 +155,7 @@ export class WarehouseService {
       url = 'https://auth57.azurewebsites.net/api/warehouse/updateProlog';
     }
 
-    interface createWarehouseProlog {
+    interface updateWarehouseProlog {
       id: string;
       address: string;
       altitude: number;
@@ -165,7 +165,7 @@ export class WarehouseService {
       city: string;
     }
 
-    const data: createWarehouseProlog = {
+    const data: updateWarehouseProlog = {
       id: warehouse.id,
       address: warehouse.address,
       altitude: warehouse.altitude,
@@ -201,7 +201,7 @@ export class WarehouseService {
       return response;
   }
 
-  async createCityProlog(city: any) {
+  async createCityProlog(warehouse: any) {
     let url = this.urlOrigin + 'api/warehouse/createCityProlog';
     if (this.urlOrigin.includes("azure")) {
       url = 'https://auth57.azurewebsites.net/api/warehouse/createCityProlog';
@@ -213,8 +213,8 @@ export class WarehouseService {
     }
 
     const data: createCityProlog = {
-      id: city.id,
-      name: city.name
+      id: warehouse.city,
+      name: warehouse.designation
     };
     
     const response = await this.sendFetch(url, 'POST', data, this.getJwt());
