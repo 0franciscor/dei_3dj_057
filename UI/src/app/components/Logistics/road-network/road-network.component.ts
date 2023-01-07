@@ -4,12 +4,14 @@ import { random } from 'cypress/types/lodash';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
 import * as THREE from 'three';
+import * as YUKA from 'yuka';
 import { Object3D, Raycaster, VSMShadowMap } from 'three';
 import { PCFShadowMap, PCFSoftShadowMap } from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Player from './RoadNetworkJS/player';
 import roadNetworkTemplate from './RoadNetworkJS/road-network';
 import TruckNetwork from './RoadNetworkJS/truck-network';
+import { EntityManager } from 'yuka';
 
 
 interface Warehouse {
@@ -324,7 +326,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
           });
           this.playerPositionObject.add(cube);
           
-
+            
           
 
         }
@@ -340,9 +342,9 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       
     });
 
-    
     this.scene.add(this.playerPositionObject);
    
+
   
     const ambientLight = new THREE.AmbientLight(0xFFFFFF,0.3);
     ambientLight.position.set(-100,100,100);
@@ -359,7 +361,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     directionalLight.shadow.camera.top = 100;
     directionalLight.shadow.camera.bottom = -100;
     
-    //this.scene.add(new THREE.CameraHelper(directionalLight.shadow.camera))
     this.scene.add(directionalLight);
     this.scene.add(ambientLight);
     
@@ -375,21 +376,12 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       this.farClippingPlane
     );
     this.camera.up.set(0, 0, 1);
-
     this.camera.position.z = this.cameraZ;
     
         
-    
-
-    
-
     const listener = new THREE.AudioListener();
-    
-
-    // create a global audio source
     const sound = new THREE.Audio(listener);
 
-    // load a sound and set it as the Audio object's buffer
     const audioLoader = new THREE.AudioLoader();
     audioLoader.load('./assets/audio.mp3', function (buffer) {
       sound.setBuffer(buffer);
@@ -398,11 +390,47 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       sound.play();
     });
 
-    // this.camera.add(listener);
-
+    this.testYUKA(positions);
 
   }
 
+  private testYUKA(positions : any){
+    const vehicleGeometry = new THREE.ConeGeometry( 0.1, 0.5, 8 );
+    const vehicleMaterial = new THREE.MeshNormalMaterial();
+    const vehicleMesh = new THREE.Mesh( vehicleGeometry, vehicleMaterial );
+    vehicleMesh.matrixAutoUpdate = false;
+    this.scene.add(vehicleMesh); 
+    
+    const vehicle = new YUKA.Vehicle();
+    vehicle.setRenderComponent(vehicleMesh, this.sync);
+
+    const path = new YUKA.Path();
+    positions.forEach((position : any) => {
+      path.add(new YUKA.Vector3(position.x, position.y, position.z));
+    });
+
+    vehicle.position.copy(path.current());
+    const folllowPathBehavior = new YUKA.FollowPathBehavior(path, 0.5);
+
+    vehicle.steering.add(folllowPathBehavior);
+
+    this.entityManager = new YUKA.EntityManager();
+
+    this.entityManager.add(vehicle);
+
+    this.time = new YUKA.Time();
+    
+  }
+
+  public time!: YUKA.Time;
+  public entityManager!: YUKA.EntityManager;
+  
+
+  sync(entity:any, renderComponent:any) {
+    renderComponent.matrix.copy(entity.worldMatrix);  
+  }
+
+  private lastPosition = new THREE.Vector3();
 
   private animate() {
    
@@ -415,7 +443,10 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       this.renderer.render(this.scene, this.camera);
 
     }
- 
+    
+    const delta = this.time.update().getDelta();
+    this.entityManager.update(delta);
+    this.renderer.render(this.scene, this.camera);
 
   }
  
@@ -560,13 +591,5 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     }
 
   }
-  
-
-
-  
-
-   
-
+    
 }
-
-
