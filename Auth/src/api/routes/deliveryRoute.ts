@@ -45,6 +45,11 @@ export default (app: Router) => {
 
     // ################# PROLOG RELATED #################
 
+    route.get('/allProlog', (req,res,next)=>
+    {
+        ctrl.getAllDeliveriesProlog(req,res,next)
+    });
+
     route.post('/createProlog', (req,res,next)=>
     {
         ctrl.createDeliveryProlog(req,res,next)
@@ -59,7 +64,6 @@ export default (app: Router) => {
     {
         ctrl.deleteDeliveryProlog(req,res,next)
     });
-    
     
 
 

@@ -91,7 +91,7 @@ export default class DeliveryController implements IDeliveryController {
 
     //######################################################
 
-    if (req.headers.authorization != undefined)
+    /* if (req.headers.authorization != undefined)
       req.cookies["jwt"] = req.headers.authorization.split("=")[1];
     if (!this.isAuthenticated(req)) {
       res.status(401);
@@ -102,9 +102,12 @@ export default class DeliveryController implements IDeliveryController {
       return res.json({ message: "Not authorized" });
     }
     req.headers.cookie = "jwt=" + req.cookies["jwt"];
-    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+
+    //Commented Due to Prolog */
 
     //######################################################
+
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });  
 
     let address = 'https://localhost:5001/api/deliveries/GetAll';
     if (req.get('host').includes("azure"))
@@ -263,6 +266,23 @@ export default class DeliveryController implements IDeliveryController {
 
     res.status(200);
 
+    return res.json(info);
+  }
+
+  public async getAllDeliveriesProlog(req: Request, res: Response, next: NextFunction) {
+
+    const httpAgent = new http.Agent({ rejectUnauthorized: false });
+    const address = 'https://localhost:5001/api/deliveries/GetAllProlog';
+
+    const response = await this.fetch(address, 'GET', null, req.headers.cookie, httpAgent);
+
+    if (response.status != 200) {
+      res.status(response.status);
+      return res.json({ message: "Error Getting Deliveries" });
+    }
+    const info = await response.json();
+    res.status(200);
+    
     return res.json(info);
   }
 

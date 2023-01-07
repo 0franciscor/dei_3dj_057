@@ -7,6 +7,7 @@ export default interface IDeliveryController  {
   updateDelivery(req: Request, res: Response, next: NextFunction);
   deleteDelivery(req: Request, res: Response, next: NextFunction);
 
+  getAllDeliveriesProlog(req: Request, res: Response, next: NextFunction);
   createDeliveryProlog(req: Request, res: Response, next: NextFunction);
   updateDeliveryProlog(req: Request, res: Response, next: NextFunction);
   deleteDeliveryProlog(req: Request, res: Response, next: NextFunction);
