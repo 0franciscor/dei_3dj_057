@@ -39,20 +39,23 @@ export class CreatePathComponent implements OnInit {
   async ngOnInit() {
     this.isAuth = await this.isAuthenticated();
     if(this.isAuth)
-    this.formCreatePath= new FormGroup({
-      pathID: new FormControl('', [Validators.required]),
-      startWHId: new FormControl('', [Validators.required]),
-      destinationWHId: new FormControl('', [Validators.required]),
-      pathDistance: new FormControl('', [Validators.required]),
-      pathTravelTime: new FormControl('', [Validators.required]),
-      wastedEnergy: new FormControl('', [Validators.required]),
-      extraTravelTime:new FormControl('', [Validators.required])
-    });
+      this.formCreatePath= new FormGroup({
+        pathID: new FormControl('', [Validators.required]),
+        startWHId: new FormControl('', [Validators.required]),
+        destinationWHId: new FormControl('', [Validators.required]),
+        pathDistance: new FormControl('', [Validators.required]),
+        pathTravelTime: new FormControl('', [Validators.required]),
+        wastedEnergy: new FormControl('', [Validators.required]),
+        extraTravelTime:new FormControl('', [Validators.required])
+      });
    
   }
 
   async onSubmit(){
-    this.formCreatePath.value.pathID ="path"+ this.formCreatePath.value.startWHId + this.formCreatePath.value.destinationWHId
+    this.formCreatePath.controls['pathID'].setValue("path"+ this.formCreatePath.controls['startWHId'].value + this.formCreatePath.controls['destinationWHId'].value)
+    // this.formCreatePath.value.pathID ="path"+ this.formCreatePath.value.startWHId + this.formCreatePath.value.destinationWHId
+   
+    console.log(this.formCreatePath.valid)
     if(this.formCreatePath.valid){
      
       let answer = await this.pathService.createPath(this.formCreatePath.value);
@@ -74,7 +77,7 @@ export class CreatePathComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if(answer.status == 201){
-          this.ngZone.run(() => this.router.navigate(['Logistics/Home/Logistics Manager']));
+          this.ngZone.run(() => this.router.navigate(['Logistics/Home/LogisticsManager']));
         }
       });
     }

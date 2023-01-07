@@ -26,8 +26,8 @@ export default class NodeTemplate {
 
 
     constructor(pos: posProps, outGoingConnections: any[], incomingConnections: any[], allPositions: any[]) {
-
-        this.object = new THREE.Group();
+        const defaultSize = 0.5;
+        this.object = new THREE.Group();    
         this.whAndWidth.width=0;
         let roadTexture = new THREE.TextureLoader().load('./assets/road/textures/road_basecolor.jpeg');
         //roadTexture.anisotropy = renderer.getMaxAnisotropy();
@@ -44,6 +44,8 @@ export default class NodeTemplate {
                 largestWidth = element.roadWidth;
         })
         const circleConstant = 2;
+        if(largestWidth==0)
+            largestWidth=defaultSize;
         let circleRadius = (largestWidth * circleConstant) / 2;
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EletricGo.Domain.Cities;
 using EletricGo.Domain.Cities.DTO;
+using EletricGo.Domain.Shared;
 using EletricGo.Domain.Warehouses.DTO;
 using EletricGo.Domain.Warehouses.ValueObjects;
 using EletricGo.Services;
@@ -107,6 +108,26 @@ namespace EletricGo.Controllers
 
             return Ok(deletedObject);
             
+            
+        }
+
+        [HttpDelete("HardDelete/{id}")]
+        public async Task<ActionResult<WarehouseDto>> HardDelete(string id)
+        {
+            try{
+                var deletedObject = await _warehouseService.HardDeleteWarehouse(id);
+            
+                if (deletedObject == null)
+                {
+                    return NotFound("The requested delete was not performed.");
+                }
+
+                return Ok(deletedObject);
+            }
+            catch (BusinessRuleValidationException ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
             
         }
 

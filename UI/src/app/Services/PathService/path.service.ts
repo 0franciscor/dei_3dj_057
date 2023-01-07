@@ -48,7 +48,7 @@ export class PathService{
         url = 'https://auth57.azurewebsites.net/api/path/';
       }
       const data = path;
-        
+      console.log(data)
 
       const response = await this.sendFetch(url,'POST',data, this.getJwt());
       return response;

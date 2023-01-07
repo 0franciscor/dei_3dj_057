@@ -130,10 +130,7 @@ export class TruckService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/truck/idProlog/'+truckID;
     }
-    // const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
-    const response = {
-      status: 200
-    }
+    const response = await this.sendFetch(url, 'DELETE', null, this.getJwt());
     return response;
   }
 

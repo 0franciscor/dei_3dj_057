@@ -36,9 +36,9 @@ export class DeliveryService {
   }
 
   async getDelivery(deliveryID: string) {
-    let url = this.urlOrigin + 'api/delivery/' + deliveryID;
+    let url = this.urlOrigin + 'api/delivery/id/' + deliveryID;
     if(this.urlOrigin.includes("azure")){
-      url = 'https://auth57.azurewebsites.net/api/delivery/'+deliveryID;
+      url = 'https://auth57.azurewebsites.net/api/delivery/id/'+deliveryID;
     }
     const response = await this.sendFetch(url, 'GET', null, this.getJwt());
 

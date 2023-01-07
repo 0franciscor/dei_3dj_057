@@ -167,6 +167,19 @@ namespace EletricGo.Services
             return warehouse.ToWarehouseDto();
         }
 
+        public async Task<WarehouseDto> HardDeleteWarehouse(string id){
+            var warehouse = await _warehouseRepository.GetByID(new WarehouseId(id));
+
+            if (warehouse == null)
+            {
+                return null;
+            }
+
+            _warehouseRepository.Delete(warehouse);
+            await _unitOfWork.CommitAsync();
+            return warehouse.ToWarehouseDto();
+        }
+
         public async Task<bool> FindWarehouse(WarehouseDto warehouseDto)
         {
             return await _warehouseRepository.Find(new WarehouseId(warehouseDto.Id));

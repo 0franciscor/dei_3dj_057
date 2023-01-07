@@ -135,6 +135,8 @@ export class FleetManagerComponent implements OnInit {
         
       if(answer.status != 200){
         message = "Truck Deletion Failed";
+      }else{
+        await this.truckService.deleteTruckProlog(truckID);
       }
       const dialogRef = this.dialog.open(DeleteTruckComponentDialog, {
         width: '250px',
