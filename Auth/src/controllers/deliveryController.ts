@@ -379,10 +379,10 @@ export default class DeliveryController implements IDeliveryController {
 
     const response_prolog = await this.fetch(address_prolog, 'POST', req.body, req.headers.cookie, httpAgent);
 
-    /* if (response_prolog.status != 200) {
+    if (response_prolog.status != 200) {
       res.status(response_prolog.status);
       return res.json({ message: "Error Updating Delivery" });
-    } */
+    }
 
     const info = await response_prolog.json();
     res.status(200);
