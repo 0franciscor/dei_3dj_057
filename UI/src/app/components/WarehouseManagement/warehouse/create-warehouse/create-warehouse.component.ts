@@ -67,7 +67,7 @@ export class CreateWarehouseComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (answer.status == 200)
+      if (answer.status == 201)
         this.ngZone.run(() => this.router.navigate(['Logistics/Home/WarehouseManager']));
 
     });

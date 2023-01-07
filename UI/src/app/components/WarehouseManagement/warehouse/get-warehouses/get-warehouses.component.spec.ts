@@ -15,8 +15,9 @@ describe('GetWarehousesComponent', () => {
       providers: [WarehouseService]
     })
     .compileComponents();
-    fakeWarehouseService = jasmine.createSpyObj('WarehouseService', ['getAllWarehouses','activateWarehouse','deactivateWarehouse']);
+    fakeWarehouseService = jasmine.createSpyObj('WarehouseService', ['getAllWarehouses','activateWarehouse','deactivateWarehouse','deleteWarehouse','deleteWarehouseProlog']);
     fakeWarehouseService.getAllWarehouses.and.returnValue(Promise.resolve({status: 200}));
+    fakeWarehouseService.deleteWarehouse.and.returnValue(Promise.resolve({status: 200}));
 
     TestBed.overrideProvider(WarehouseService, {useValue: fakeWarehouseService});
     fakeLoginService = TestBed.inject(LoginService);
@@ -29,6 +30,7 @@ describe('GetWarehousesComponent', () => {
 
     const fetchSpy = spyOn<any>(fakeLoginService, 'getRole').and.returnValue(Promise.resolve("admin"));
     const response = await component.isAuthenticated();
+    component.ngOnInit();
     expect(response).toBeTrue();
     expect(fetchSpy).toHaveBeenCalled();
 
@@ -53,6 +55,11 @@ describe('GetWarehousesComponent', () => {
   it('should go to Deactive Warehouse', () => {
 
     component.goToDeactiveWarehouse("TH1");
+    expect(component).toBeTruthy();
+  });
+
+  it('should delete warehouse', () => {
+    component.deleteWarehouse("TH1");
     expect(component).toBeTruthy();
   });
 });
@@ -271,6 +278,55 @@ describe('WarehouseService', () => {
     expect(status.status).toEqual(200);
     service.urlOrigin = "https://azure:4200";
     await service.updateWarehouseProlog('TH1');
+  });
+
+
+  it('should delete a warehouse', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteWarehouse('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteWarehouse('TH1');
+
+  });
+
+  it('should delete a warehouse prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteWarehouseProlog('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteWarehouseProlog('TH1');
+
+  });
+
+  it('should create a city prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.createCityProlog('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.createCityProlog('TH1');
+
   });
 
 

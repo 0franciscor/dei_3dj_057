@@ -14,6 +14,7 @@ describe('RoadNetworkComponent', () => {
 
     fixture = TestBed.createComponent(RoadNetworkComponent);
     component = fixture.componentInstance;
+    
     fixture.detectChanges();
   });
 

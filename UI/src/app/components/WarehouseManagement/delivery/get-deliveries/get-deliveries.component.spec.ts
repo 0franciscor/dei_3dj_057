@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -51,8 +51,10 @@ describe('GetDeliveriesComponent', () => {
         "deliveryDateProlog": "2021-05-01T00:00:00"
       },
     ]
-    fakeDeliveryService = jasmine.createSpyObj('DeliveryService', ['getDeliveries']);
+    fakeDeliveryService = jasmine.createSpyObj('DeliveryService', ['getDeliveries', 'deleteDelivery', 'deleteDeliveryProlog']);
     fakeDeliveryService.getDeliveries.and.returnValue(Promise.resolve(deliveries));
+    fakeDeliveryService.deleteDelivery.and.returnValue(Promise.resolve({status:200}));
+    fakeDeliveryService.deleteDeliveryProlog.and.returnValue(Promise.resolve({status:200}));
 
     TestBed.overrideProvider(DeliveryService, { useValue: fakeDeliveryService });
     fakeLoginService = TestBed.inject(LoginService);
@@ -67,6 +69,7 @@ describe('GetDeliveriesComponent', () => {
 
     const fetchSpy = spyOn<any>(fakeLoginService, 'getRole').and.returnValue(Promise.resolve("admin"));
     const response = await component.isAuthenticated();
+    component.ngOnInit();
     expect(response).toBeTrue();
     expect(fetchSpy).toHaveBeenCalled();
 
@@ -83,6 +86,14 @@ describe('GetDeliveriesComponent', () => {
   
   
   });
+
+  it('should delete delivery', async () => {
+
+    const response = await component.deleteDelivery("1");
+    expect(component).toBeTruthy();
+
+  });
+
 });
 
 
@@ -284,17 +295,25 @@ describe('DeliveryService', () => {
   });
 
   it('should Create a delivery prolog', async () => {
+    const date: Date = new Date("2023-05-05");
     const response = {
       "status": 201,
     };
-
+    const deliveryParam = {
+      "deliveryID": "1234",
+      "deliveryDate": date,
+      "loadTime": 5,
+      "unloadTime": 5,
+      "destination": "1",
+      "deliveryMass": 5
+    }
     const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
-    const delivery = await service.createDeliveryProlog("123");
+    const delivery = await service.createDeliveryProlog(deliveryParam);
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery.status).toEqual(201);
     service.urlOrigin = "https://azure:4200";
-    await service.createDeliveryProlog("123");
+    await service.createDeliveryProlog(deliveryParam);
   });
 
   it('should Update a delivery', async () => {
@@ -312,17 +331,39 @@ describe('DeliveryService', () => {
   });
 
   it('should Update a delivery prolog', async () => {
+    const date: Date = new Date("2023-05-05");
     const response = {
+      "deliveries": [
+        {
+          "deliveryID": "123",
+          "deliveryDateProlog": date,
+          "loadTime": 5,
+          "unloadTime": 5,
+          "destination": "1",
+          "deliveryMass": 5
+        }
+      ],
+      json() {
+        return this;
+      },
       "status": 200,
     };
+    const deliveryParam = {
+      "deliveryID": "1234",
+      "deliveryDate": date,
+      "loadTime": 5,
+      "unloadTime": 5,
+      "destination": "1",
+      "deliveryMass": 5
+    }
 
     const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
-    const delivery = await service.updateDeliveryProlog("123");
+    const delivery = await service.updateDeliveryProlog(deliveryParam);
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery.status).toEqual(200);
     service.urlOrigin = "https://azure:4200";
-    await service.updateDeliveryProlog("123");
+    await service.updateDeliveryProlog(deliveryParam);
   });
 
   it('should send a fetch without data', async () => {
@@ -334,4 +375,37 @@ describe('DeliveryService', () => {
     const status = await service.sendFetch('test', 'POST', 'null', "cookie");
     expect(status.status).toEqual(404);
   });
+
+  it('should delete delivery', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const delivery = await service.deleteDelivery("123");
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(delivery.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteDelivery("123");
+
+  });
+
+  it('should delete delivery prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const delivery = await service.deleteDeliveryProlog("123");
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(delivery.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteDeliveryProlog("123");
+
+  });
+
 });
