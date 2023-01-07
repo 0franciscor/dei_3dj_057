@@ -269,6 +269,10 @@ export default class DeliveryController implements IDeliveryController {
     return res.json(info);
   }
 
+
+  //###################################################### PROLOG ######################################################
+
+
   public async getAllDeliveriesProlog(req: Request, res: Response, next: NextFunction) {
 
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
