@@ -227,11 +227,11 @@ describe('TripService', () => {
     const response = {
       "trip": [
         {
-          "tripID": "string",
-          "date": "string",
-          "pathIDlist": ["string1", "string2"],
-          "truckID": "string",
-          "deliveryIDlist": ["string1", "string2"]
+          "tripID": "2022125eTruck01",
+            "date": "2022125",
+            "pathIDlist": [],
+            "truckID": "eTruck01",
+            "deliveryIDlist": []
         }
       ],
       json () {
@@ -241,9 +241,9 @@ describe('TripService', () => {
 
     const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
-    const trucks = await service.getAllTrips();
+    const trips = await service.getAllTrips();
     expect(fetchSpy).toHaveBeenCalled();
-    expect(trucks).toEqual(response);
+    expect(trips).toEqual(response);
     service.urlOrigin = "https://azure:4200";
     await service.getAllTrips();
   });
