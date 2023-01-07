@@ -201,17 +201,26 @@ describe('PackagingService', () => {
     it('should get all packages', async () => {
 
         const response = {
-          "status": 200,
-          json() {
-            return this;
-          }
+          "packageL": [
+            {
+                "packagingID": "4438eTruck01",
+                "truckID": "Truck3",
+                "deliveryID": "4506",
+                "xPosition": 3,
+                "yPosition": 5,
+                "zPosition": 4
+            }
+        ],
+        json() {
+          return this;
+        }
         };
     
-        const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+        const fetchSpy = spyOn<any>(service, 'getPackage').and.returnValue(Promise.resolve(response));
     
-        const status = await service.getPackage();
+        const packageL = await service.getPackage();
         expect(fetchSpy).toHaveBeenCalled();
-        expect(status.status).toEqual(200);
+        expect(packageL).toEqual(response);
         service.urlOrigin = "https://azure:4200";
         await service.getPackage();
 
