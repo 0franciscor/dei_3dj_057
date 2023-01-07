@@ -64,15 +64,20 @@ export class TruckPlanningComponent implements OnInit {
   }
   
   this.finaldate = datesplit[0]+datesplit[1]+datesplit[2];
-  this.formPlanning.value.truckName= "eTruck01"
+  
  }
 
 
   async getBestPath(){
-    this.onSubmit();
-    let answer = await this.planningService.getBestPath(this.formPlanning.value.truckName, this.finaldate)
-    this.showPlan=await answer.json()
-    this.infoList= this.showPlan.info
+    this.formPlanning.controls['truckName'].setValue("eTruck01");
+    if(this.formPlanning.valid){
+      this.onSubmit();
+      
+      let answer = await this.planningService.getBestPath(this.formPlanning.value.truckName, this.finaldate)
+      this.showPlan=await answer.json()
+      this.infoList= this.showPlan.info
+    }
+    
     
 
   }

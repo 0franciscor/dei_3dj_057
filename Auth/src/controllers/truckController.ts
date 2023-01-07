@@ -128,7 +128,16 @@ export default class TruckController implements ITruckController {
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_truck';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
-    const response_prolog = await this.fetch(url_prolog, 'POST', req.body,req.headers.cookie, httpAgent, req.headers.origin);
+    
+    const prologBody = {
+      "truckId": req.body.truckID,
+      "tare": req.body.tare,
+      "capacity": req.body.capacity,
+      "maxBatteryCapacity": req.body.maxBatteryCapacity,
+      "autonomy": req.body.autonomy,
+      "fastChargeTime": req.body.fastChargeTime,
+    }
+    const response_prolog = await this.fetch(url_prolog, 'POST', prologBody,req.headers.cookie, httpAgent, req.headers.origin);
 
     if(response_prolog.status != 201){
       res.status(response_prolog.status);
@@ -249,7 +258,15 @@ export default class TruckController implements ITruckController {
 
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/update_truck';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
-    const response_prolog = await this.fetch(url_prolog, 'PUT', req.body,req.headers.cookie, httpAgent, req.headers.origin);
+    const prologBody = {
+      "truckId": req.body.truckID,
+      "tare": req.body.tare,
+      "capacity": req.body.capacity,
+      "maxBatteryCapacity": req.body.maxBatteryCapacity,
+      "autonomy": req.body.autonomy,
+      "fastChargeTime": req.body.fastChargeTime,
+    }
+    const response_prolog = await this.fetch(url_prolog, 'POST', prologBody,req.headers.cookie, httpAgent, req.headers.origin);
 
     if(response_prolog.status != 200){
       res.status(response_prolog.status);
@@ -325,6 +342,8 @@ export default class TruckController implements ITruckController {
   }
 
   async deleteTruckProlog(req: Request, res: Response, next: NextFunction) {
+    if(req.headers.authorization!=undefined)
+      req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
       res.status(401);
       return res.json({message: "Not authenticated"});
@@ -336,8 +355,13 @@ export default class TruckController implements ITruckController {
   
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/delete_truck';
-
-    const response_prolog = await this.fetch(url_prolog, 'DELETE', null,req.headers.cookie, httpAgent, req.headers.origin);
+    
+    const prologBody = {
+      id: req.params.id
+    }
+    
+    console.log(prologBody)
+    const response_prolog = await this.fetch(url_prolog, 'POST', prologBody,req.headers.cookie, httpAgent, req.headers.origin);
 
     if(response_prolog.status != 200){
       res.status(response_prolog.status);

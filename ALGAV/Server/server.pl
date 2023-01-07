@@ -33,6 +33,7 @@
 :- http_handler('/heuristic_mass', heuristic_mass, []).
 :- http_handler('/heuristic_closestWarehouse', heuristic_closestWarehouse, []).
 :- http_handler('/heuristic_massAndDistance', heuristic_massAndDistance, []).
+:- http_handler('/genetic_algorithm', genetic_algorithm, []).
 :- http_handler('/count', count, []).
 :- http_handler('/reset', resetar, []).
 
@@ -239,6 +240,16 @@ heuristic_massAndDistance(Request):-
         reply_json(_, [status(500)]).
 
 % ---------------------------------------------------------------------------
+
+genetic_algorithm(Request):-
+        cors_enable,
+        http_read_json_dict(Request, DictIn),
+        Date = DictIn.get(date),
+        (genetic_algorithm(Date, PathResultJson), reply_json(PathResultJson,  [status(200)]), !);
+        reply_json(_, [status(500)]).
+
+
+
 :- Port is 2228,
 gethostname(Host),
 format('~nHTTP server ready:  http://~w:~w ~n~n',[Host,Port]),

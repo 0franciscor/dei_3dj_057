@@ -25,7 +25,7 @@ export class PlanningService{
   async getBestPath(TruckName: any, date: any){
     let url = this.urlOrigin+'api/planning/bestPath'
     if(this.urlOrigin.includes("azure")){
-      url = 'https://auth57.azurewebsites.net/api/packaging/all';
+      url = 'https://auth57.azurewebsites.net/api/planning/bestPath';
     }
     const data={
       truck: TruckName,
@@ -38,9 +38,9 @@ export class PlanningService{
 
 
    
-      const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
-      const body= {pathList:pathlist.bestPath, date:date}
-      const plan = await this.sendFetch(url2,'POST',body, this.getJwt())
+    const url2 = this.urlOrigin + 'api/delivery/getDeliveryDestination'
+    const body= {pathList:pathlist.bestPath, date:date}
+    const plan = await this.sendFetch(url2,'POST',body, this.getJwt())
     
     
     return plan 

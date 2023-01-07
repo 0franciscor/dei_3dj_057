@@ -66,7 +66,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   @Input() public fieldOfView: number = 1;
 
-  @Input('nearClipping') public nearClippingPlane: number = 0.1;
+  @Input('nearClipping') public nearClippingPlane: number = 1;
 
   @Input('farClipping') public farClippingPlane: number = 100000;
 
@@ -246,7 +246,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   private async createScene() {
 
-   
     let warehouses: Warehouse[] = await this.createWarehouses();
     
     let paths: any[] = await this.createPaths(warehouses);
@@ -306,7 +305,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
         
         if(truck != undefined){
           this.selectedTruck = truck;
-          this.lastPosition = this.selectedTruck.position;
           this.camera.position.z = this.selectedTruck.position.z + 10;
           if(this.player != undefined)
             this.player.destroy();
@@ -344,9 +342,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
     
     this.scene.add(this.playerPositionObject);
-
-
-    
+   
   
     const ambientLight = new THREE.AmbientLight(0xFFFFFF,0.3);
     ambientLight.position.set(-100,100,100);
@@ -407,7 +403,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   }
 
-  private lastPosition = new THREE.Vector3();
 
   private animate() {
    
@@ -420,29 +415,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       this.renderer.render(this.scene, this.camera);
 
     }
-    // let selectedTruck = this.select.value;
-    // if (selectedTruck != "Select Truck") {
-    //   let whIndex = this.truckNetwork.truckNames.findIndex((truck) => truck == selectedTruck);
-    
-    //   let truckName = this.truckNetwork.object.children[whIndex].name
-    //   let truck = this.scene.getObjectByName(truckName)?.children[0];
-      
-    //   if(truck != undefined){
-    //     console.log(this.selectedTruck)
-        
-    //     this.selectedTruck = truck;
-        
-        
-        
-        
-        
-          
-
-    //   }
-    // }
-   
-    
-    
+ 
 
   }
  
@@ -533,17 +506,16 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     if(this.selectedTruck){
       // First, create a new raycaster object
       let raycaster = new THREE.Raycaster();
-    
+
       // Next, set the origin and direction of the ray to match the position and direction of the truck's fall
       let raycastPosition = new THREE.Vector3(this.selectedTruck.position.x, this.selectedTruck.position.y, this.selectedTruck.position.z+0.5);
       raycaster.set(raycastPosition, new THREE.Vector3(0, 0, -1)); // Direction of fall is (0, 0, -1)
       raycaster.far = 1;
       // Use the raycaster to check for intersections between the ray and the list of roads
       let intersects = raycaster.intersectObjects(this.roads);
-
-
       
       if(intersects.length != 0){
+        console.log("intersecting")
         // Get the intersection point and calculate the distance between it and the bottom of the truck
         let intersection = intersects[0];
         let distance = intersection.point.z - this.selectedTruck.position.z;

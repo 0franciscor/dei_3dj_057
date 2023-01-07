@@ -155,11 +155,9 @@ export default class PathController implements IPathController{
         }
         try{
         
-           
+            const httpAgent = new http.Agent({ rejectUnauthorized: false });
             const address_start = 'https://localhost:5001/api/warehouses/Exists/' + req.body.startWHId;
-            const response_start = await this.fetch(address_start, "GET", null, req.headers.cookie)
-            // const response_start = await this.fetch(address_start, req.headers.cookie)
-
+            const response_start = await this.fetch(address_start, "GET", null, req.headers.cookie,httpAgent)
             if(response_start.status!= 200){
                 res.status(404)
                 return res.send("Start Warehouse not found");
@@ -167,7 +165,7 @@ export default class PathController implements IPathController{
                 
             
             const address_destination ='https://localhost:5001/api/warehouses/Exists/' + req.body.destinationWHId;
-            const response_destination = await this.fetch(address_destination, "GET", null, req.headers.cookie)
+            const response_destination = await this.fetch(address_destination, "GET", null, req.headers.cookie,httpAgent)
         //    const response_destination = await this.fetch(address_destination, req.headers.cookie)
 
 

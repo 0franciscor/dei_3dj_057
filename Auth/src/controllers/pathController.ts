@@ -74,10 +74,9 @@ export default class PathController implements IPathController {
       address = 'https://logistics57.azurewebsites.net/api/path/all/'+req.params.startWHId+'/'+req.params.destinationWHId;
     
     const response = await this.fetch(address, 'GET', null, req.headers.cookie, null, req.headers.origin);
-    
     if (response.status != 200){
         res.status(response.status)
-        return res.send(response.json());   
+        return res.send({message: "Error getting paths"});   
     }else{
         let data = await response.json();
         res.status(200)
@@ -101,16 +100,8 @@ export default class PathController implements IPathController {
     if(req.get('host').includes("azure"))
       url = 'https://logistics57.azurewebsites.net/api/path/'
     const data = req.body;
+    console.log(data)
     const response = await this.fetch(url, 'POST', data, req.headers.cookie, null, req.headers.origin);
-    // const response = await fetch(url,{
-    //   method: 'POST',
-    //   body:JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Cookie': req.headers.cookie
-    //   },
-    // })
-
     if(response.status != 201){
       res.status(response.status);
       return res.json({message: "Error creating path"});
@@ -135,16 +126,9 @@ export default class PathController implements IPathController {
     const httpAgent = new http.Agent({ rejectUnauthorized: false });
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/create_path';
 
+    console.log(req.body)
     const response_prolog = await this.fetch(url_prolog, 'POST', req.body, req.headers.cookie, httpAgent, req.headers.origin);
-    // const response_prolog = await fetch(url_prolog, {
-    //   method: 'POST',
-    //   body: JSON.stringify(req.body),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Cookie': req.headers.cookie
-    //   },
-    //   agent: httpAgent
-    // })
+
 
     if(response_prolog.status != 201){
       res.status(response_prolog.status);

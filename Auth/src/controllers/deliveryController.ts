@@ -392,6 +392,7 @@ export default class DeliveryController implements IDeliveryController {
 
 
   public async getDeliveryDestination(req: Request, res: Response, next: NextFunction) {
+    
     if (req.headers.authorization != undefined)
       req.cookies["jwt"] = req.headers.authorization.split("=")[1];
     if (!this.isAuthenticated(req)) {
@@ -403,74 +404,83 @@ export default class DeliveryController implements IDeliveryController {
       return res.json({ message: "Not authorized" });
     }
     req.headers.cookie = "jwt=" + req.cookies["jwt"];
-    let deliveredWarehouseList: any[] = []
-    let deliveriesMoved: any[] = []
+    if(req.body.pathList){
+
+      let deliveredWarehouseList: any[] = []
+      let deliveriesMoved: any[] = []
 
 
-    let plan = {
-      truck: "eTruck01",
-      info: []
+      let plan = {
+        truck: "eTruck01",
+        info: []
 
-    }
+      }
 
-    const httpAgent = new http.Agent({ rejectUnauthorized: false });
-    //GET DELIVERIES
-    let address = 'https://localhost:5001/api/deliveries/GetAll';
-    if (req.get('host').includes("azure"))
-      address = 'https://whmanagement57.azurewebsites.net/api/deliveries/GetAll/';
+      const httpAgent = new http.Agent({ rejectUnauthorized: false });
+      //GET DELIVERIES
+      let address = 'https://localhost:5001/api/deliveries/GetAll';
+      if (req.get('host').includes("azure"))
+        address = 'https://whmanagement57.azurewebsites.net/api/deliveries/GetAll/';
 
-    const responseDeliveries = await this.fetch(address, 'GET', null, req.headers.cookie, httpAgent);
+      const responseDeliveries = await this.fetch(address, 'GET', null, req.headers.cookie, httpAgent);
 
-    if (responseDeliveries.status != 200) {
-      res.status(responseDeliveries.status);
-      return res.json({ message: "Error Getting Deliveries" });
-    }
-    const deliveries = await responseDeliveries.json();
+      if (responseDeliveries.status != 200) {
+        res.status(responseDeliveries.status);
+        return res.json({ message: "Error Getting Deliveries" });
+      }
+      const deliveries = await responseDeliveries.json();
 
-    // GET WAREHOUSES
-    const warehousesAddress = 'https://localhost:5001/api/warehouses/GetAll'
+      // GET WAREHOUSES
+      const warehousesAddress = 'https://localhost:5001/api/warehouses/GetAll'
 
-    const responseWarehouse = await this.fetch(warehousesAddress, 'GET', null, req.headers.cookie, httpAgent);
-    if (responseWarehouse.status != 200) {
-      res.status(responseWarehouse.status);
-      return res.json({ message: "Error Getting Warehouses" });
-    }
-    const warehouses = await responseWarehouse.json()
-    for (let j = 0; j < req.body.pathList.length; j++)
-      for (let i = 0; i < warehouses.length; i++) {
-        if (warehouses[i].city == req.body.pathList[j]) {
-          deliveredWarehouseList.push(warehouses[i]);
+      const responseWarehouse = await this.fetch(warehousesAddress, 'GET', null, req.headers.cookie, httpAgent);
+      if (responseWarehouse.status != 200) {
+        res.status(responseWarehouse.status);
+        return res.json({ message: "Error Getting Warehouses" });
+      }
+      const warehouses = await responseWarehouse.json()
+      for (let j = 0; j < req.body.pathList.length; j++)
+        for (let i = 0; i < warehouses.length; i++) {
+          if (warehouses[i].city == req.body.pathList[j]) {
+            deliveredWarehouseList.push(warehouses[i]);
+          }
+        }
+
+
+      for (let x = 0; x < req.body.pathList.length; x++) {
+        for (let y = 0; y < deliveries.length; y++) {
+          let firstsplit = deliveries[y].deliveryDate.split('T');
+
+          let secondSplit = firstsplit[0].split('-');
+          if (secondSplit[2].charAt(0) == '0') {
+            secondSplit[2] = secondSplit[2].charAt(1)
+          }
+          if (deliveries[y].destination == req.body.pathList[x] && req.body.date == secondSplit[0] + secondSplit[1] + secondSplit[2]) {
+
+            deliveriesMoved.push(deliveries[y])
+          }
         }
       }
 
-
-    for (let x = 0; x < req.body.pathList.length; x++) {
-      for (let y = 0; y < deliveries.length; y++) {
-        let firstsplit = deliveries[y].deliveryDate.split('T');
-
-        let secondSplit = firstsplit[0].split('-');
-        if (secondSplit[2].charAt(0) == '0') {
-          secondSplit[2] = secondSplit[2].charAt(1)
-        }
-        if (deliveries[y].destination == req.body.pathList[x] && req.body.date == secondSplit[0] + secondSplit[1] + secondSplit[2]) {
-
-          deliveriesMoved.push(deliveries[y])
-        }
-      }
-    }
-
-    deliveredWarehouseList.forEach(deliveredWarehouse => {
-      deliveriesMoved.forEach(delivery => {
-        if (deliveredWarehouse.active && deliveredWarehouse.city == delivery.destination) {
-          plan.info.push({
-            warehouse: deliveredWarehouse.id,
-            delivery: delivery.deliveryID
-          })
-        }
+      deliveredWarehouseList.forEach(deliveredWarehouse => {
+        deliveriesMoved.forEach(delivery => {
+          if (deliveredWarehouse.active && deliveredWarehouse.city == delivery.destination) {
+            plan.info.push({
+              warehouse: deliveredWarehouse.id,
+              delivery: delivery.deliveryID
+            })
+          }
+        });
       });
-    });
-    res.status(200);
-    return res.json(plan);
+      res.status(200);
+      return res.json(plan);
+    }
+    else{
+      res.status(404);
+      return res.json({message: "No path"})
+
+    }
+
   }
 
 }
