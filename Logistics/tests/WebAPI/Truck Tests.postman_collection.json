@@ -7,6 +7,36 @@
 	},
 	"item": [
 		{
+			"name": "Login Fleet Manager",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"flt.manager@gmail.com\",\r\n    \"password\": \"Fleet123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Truck Test",
 			"event": [
 				{
@@ -544,7 +574,8 @@
 							"            \"capacity\":200,\r",
 							"            \"maxBatteryCapacity\":300,\r",
 							"            \"autonomy\":400,\r",
-							"            \"fastChargeTime\":50\r",
+							"            \"fastChargeTime\":500,\r",
+							"            \"active\":false\r",
 							"        }\r",
 							"    );\r",
 							"})\r",
@@ -567,6 +598,131 @@
 					"path": [
 						"api",
 						"truck",
+						"id",
+						"testTruckTesting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hard Delete Truck Fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON after delete\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"message\": \"Not authorized\"\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/truck/hard/id/testTruckTesting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						"hard",
+						"id",
+						"testTruckTesting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"firewall.norton@gmail.com\",\r\n    \"password\": \"CappuJSON\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hard Delete Truck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Truck JSON after delete\", function() {\r",
+							"    pm.response.to.have.jsonBody(\r",
+							"        {\r",
+							"            \"truckID\":\"testTruckTesting\",\r",
+							"            \"tare\":100,\r",
+							"            \"capacity\":200,\r",
+							"            \"maxBatteryCapacity\":300,\r",
+							"            \"autonomy\":400,\r",
+							"            \"fastChargeTime\":500\r",
+							"        }\r",
+							"    );\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/truck/hard/id/testTruckTesting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"truck",
+						"hard",
 						"id",
 						"testTruckTesting"
 					]
