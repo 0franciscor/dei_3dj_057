@@ -13,7 +13,12 @@ export default class roadNetworkTemplate {
         this.object = new THREE.Group();
 
         this.createNodes(parameters.positions, parameters.paths);
+
+        
+
     }
+
+    
 
     public static calculatePositions(warehouses: any[]) {
         let positions: any[] = [];
