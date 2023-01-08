@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { Quaternion, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as YUKA from 'yuka';
 

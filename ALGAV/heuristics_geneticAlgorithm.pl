@@ -7,15 +7,16 @@ extractMass([H|T],[H1|T1]):- extractMass(T,T1), entrega(H,_,H1,_,_,_).
 extractWarehouse([],[]):- !.
 extractWarehouse([HD|TD],[H1|T1]):- extractWarehouse(TD,T1), entrega(HD,_,_,H1,_,_).
 
-largestMassFirst(Delivery,WarehouseSorted):- 
+largestMassFirst1(Delivery,WarehouseSorted):- 
     extractMass(Delivery,Mass), sortTwoList(Mass,Delivery,_,DeliverySorted),
-    reverse(DeliverySorted,DeliverySortedReversed), extractWarehouse(DeliverySortedReversed,WarehouseSorted).
+    reverse(DeliverySorted,DeliverySortedReversed), extractWarehouse(DeliverySortedReversed,WarehouseSorted1),
+    delete(WarehouseSorted1,"5",WarehouseSorted).
 
 
 
 %% Closest Warehouse First %%
-closestWarehouseFirst([],[]).
-closestWarehouseFirst(FINAL_LIST, PATH_LIST):- extractDestinations(FINAL_LIST, WAREHOUSE_LIST_MATOSINHOS),
+closestWarehouseFirst1([],[]).
+closestWarehouseFirst1(FINAL_LIST, PATH_LIST):- extractDestinations(FINAL_LIST, WAREHOUSE_LIST_MATOSINHOS),
                                                 delete(WAREHOUSE_LIST_MATOSINHOS, 5, WAREHOUSE_LIST),
                                                 searchClosestWarehouse(5,WAREHOUSE_LIST,PATH_LIST).
 
@@ -55,11 +56,16 @@ bubble(X1,X2,[Y1|T1],[Y2|T2],[X1|NT1],[X2|NT2],Max1,Max2):-X1=<Y1,bubble(Y1,Y2,T
 
 
 extractBoth(_,[],Visited,Visited).
-extractBoth(Origin, Destinations, Visited,Result):- extractMassFromWarehouse(Destinations, Mass), extractDistances(Origin, Destinations, Distances), toMassOverDistance(Mass,Distances,MassOverDistances),
-                                                        sortTwoList(MassOverDistances, Destinations, _, [H|T]), append([H],Visited, Visited2),extractBoth(H, T, Visited2,Result).
+extractBoth(Origin, Destinations, Visited,Result):- 
+    extractMassFromWarehouse(Destinations, Mass), 
+    extractDistances(Origin, Destinations, Distances), 
+    toMassOverDistance(Mass,Distances,MassOverDistances),
+    sortTwoList(MassOverDistances, Destinations, _, [H|T]), 
+    append([H],Visited, Visited2),
+    extractBoth(H, T, Visited2,Result).
 
 
-cheapestWarehouseFirst(Entregas,Result):-
+cheapestWarehouseFirst1(Entregas,Result):-
     extractCities(Entregas, Warehouse_List), 
     findMatosinhos(Matosinhos),
     append([Matosinhos],Warehouse_List,[H|T]), 
@@ -72,7 +78,8 @@ cheapestWarehouseFirst(Entregas,Result):-
 
 
 
-deliveriesInADay(Date,Path,Deliveries):- deleteMatosinhos(5,Path, Path1), 
+deliveriesInADay(Date,Path,Deliveries):- 
+    deleteMatosinhos(5,Path, Path1), 
     findAllDeliveriesInACity(Date, Path1, Deliveries).
 
 findAllDeliveriesInACity(_,[],[]):-!.

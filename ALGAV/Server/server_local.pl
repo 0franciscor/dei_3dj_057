@@ -245,7 +245,7 @@ genetic_algorithm(Request):-
         cors_enable,
         http_read_json_dict(Request, DictIn),
         Date = DictIn.get(date),
-        (genetic_algorithm(Date, PathResultJson), reply_json(PathResultJson,  [status(200)]), !);
+        (genetic_algorithm_request(Date, PathResultJson), reply_json(PathResultJson,  [status(200)]), !);
         reply_json(_, [status(500)]).
 
 % ---------------------------------------------------------------------------
