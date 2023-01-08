@@ -1,13 +1,10 @@
-@startuml getTruckSD
-
+@startuml deletePackagingSD
 autonumber
 !pragma teoz true
-
 skinparam sequence {
 ParticipantBorderColor black
 ParticipantBackgroundColor white
 }
-
 actor "Logistics Manager" as manager
 
 participant Google as Google <<System(C4)>>
@@ -19,8 +16,8 @@ box "<<System(C4)>>\n       System" #LightYellow
     
     
     
-        participant TruckComponent as TruckC <<Component(C4)>>
-        participant TruckS as TruckS <<Component(C4)>>
+        participant PackagingComponent as PackagingC <<Component(C4)>>
+        participant PackagingService as PackagingS <<Component(C4)>>
         
 
     end box
@@ -31,17 +28,17 @@ box "<<System(C4)>>\n       System" #LightYellow
         participant UserService as UserServ <<Container(C4)>> 
         participant UserRepository as UserRepo <<Container(C4)>> 
 
-        participant TruckController as TruckCTRL <<Container(C4)>>
+        participant PackagingController as PackagingCTRL <<Container(C4)>>
 
     end box
     box "<<Container(C4)>>\n       Logistics" #LightBlue
-        participant TruckRoute as Route <<Component(C4)>>
-        participant TruckController as Controller <<Component(C4)>>
-        participant TruckS as Service <<Component(C4)>>
-        participant TruckRepository as Repository <<Component(C4)>>
+        participant PackagingRoute as Route <<Component(C4)>>
+        participant PackagingController as Controller <<Component(C4)>>
+        participant PackagingService as Service <<Component(C4)>>
+        participant PackagingRepository as Repository <<Component(C4)>>
         participant Persistence as Persistence <<Component(C4)>>
     end box
-
+    
 end box
 
 
@@ -105,74 +102,81 @@ end
 
 LoginC --> manager: informs about the success of login
 deactivate LoginC
+manager -> PackagingC: I want to delete a Packaging
+activate PackagingC
 
+PackagingC -> manager: asks for Packaging ID
+deactivate PackagingC
 
-manager -> TruckC: Asks to get a Truck
-activate TruckC
-TruckC -> manager: Asks for Truck ID
+manager -> PackagingC: inserts Packaging ID
+activate PackagingC
+PackagingC -> PackagingS: deletePackaging(packagingID)
+activate PackagingS
+PackagingS -> PackagingCTRL: DELETE deletePackaging(packagingID)
+activate PackagingCTRL
+PackagingCTRL -> PackagingCTRL: checkCookie()
 
+PackagingCTRL -> Route: DELETE deletePackaging(packagingID)
 
-manager ->TruckC: Inserts Truck ID
-
-TruckC -> TruckS: getTruck(TruckID)
-activate TruckS
-TruckS -> TruckCTRL: GET getTruck(TruckID)
-activate TruckCTRL
-TruckCTRL -> TruckCTRL: checkCookie()
-
-TruckCTRL -> Route: GET getTruck(truckID)
 activate Route
-Route -> Controller: GET getTruck(truckID)
+Route -> Controller: DELETE deletePackaging(packagingID)
 activate Controller
 
-
-
-Controller -> Service: getTruck(truckID)
+Controller -> Service: deletePackaging(PackagingInfo)
 activate Service
-
-Service -> Repository: getTruckById(truckID)
+Service -> Repository: getPackagingById(PackagingInfo.id)
 activate Repository
-Repository -> Persistence: findOne(truckID)
+Repository -> Persistence: findOne(PackagingInfo.id)
 activate Persistence
 
-alt Truck exists
 
-    Persistence -> Repository: truckInfo
-    Repository->Service: truckInfo
+alt Packaging exists
 
-    Service -> Controller: truckInfo
-    Controller->Route: truckInfo
-    Route->TruckCTRL: 200 OK, TruckInfo
-    TruckCTRL->TruckS: 200 OK, TruckInfo
-    TruckS->TruckC: 200 OK, TruckInfo
+    Persistence --> Repository: packagingInfo
 
-    TruckC->manager: Shows required information about Truck
+    Repository --> Service: packagingInfo
 
+    Service -> Repository: delete(packagingID)
 
-else Truck doesn't exist
+    Repository -> Persistence: deleteOne(packagingID)
 
-    Service -> Repository: getTruckById(TruckInfo.id)
+    Persistence --> Repository: true
 
-    Repository -> Persistence: findOne(TruckID)
+    Repository --> Service: PackagingInfo
 
-    Persistence->Repository: null
+    Service --> Controller: PackagingInfo
+
+    Controller --> Route: 200 OK + PackagingInfo
+
+    Route --> PackagingCTRL: 200 OK + PackagingInfo
+
+    PackagingCTRL --> PackagingS: 200 OK + PackagingInfo
+
+    PackagingS --> PackagingC: 200 OK + PackagingInfo
+
+    PackagingC --> manager: informs about the success of the deletion
+
+else Packaging doesn't exist
+
+    Persistence --> Repository: null
     deactivate Persistence
-    Repository->Service: null
+    Repository --> Service: null
     deactivate Repository
-    Service->Controller: error, Truck doesn't exist
+    Service --> Controller: error, Packaging doesn't exist
     deactivate Service
-    Controller->Route: 404 NOT FOUND, Truck doesn't exist
+    Controller --> Route: 404 NOT FOUND, Packaging doesn't exist
     deactivate Controller
-    Route->TruckCTRL: 404 NOT FOUND, Truck doesn't exist
+    Route --> PackagingCTRL: 404 NOT FOUND, Packaging doesn't exist
     deactivate Route
-    TruckCTRL -> TruckS: 404 NOT FOUND, Truck doesn't exist
-    deactivate TruckCTRL
-    TruckS -> TruckC: 404 NOT FOUND, Truck doesn't exist
-    deactivate TruckS
-    TruckC -> manager: Informs that Truck doesn't exist
-    deactivate TruckC
-    deactivate manager
+    PackagingCTRL --> PackagingS: 404 NOT FOUND, Packaging doesn't exist
+    deactivate PackagingCTRL
+    PackagingS --> PackagingC: 404 NOT FOUND, Packaging doesn't exist
+    deactivate PackagingS
+    PackagingC --> manager: informs about the failure of the deletion
+    deactivate PackagingC
+
 end
 
+deactivate manager
 
 @enduml

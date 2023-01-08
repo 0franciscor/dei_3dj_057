@@ -1,0 +1,75 @@
+@startuml listDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant UI as UI <<Container(C4)>>
+participant Auth as AUTH <<Container(C4)>>
+participant WarehouseManagement as WM <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> AUTH: POST Login(email, password)
+activate AUTH
+
+AUTH --> UI: 200 OK
+deactivate AUTH
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+
+
+UI --> admin: informs about the success of login
+
+admin -> UI: I want to see all the deliveries in the system
+
+
+UI -> AUTH: GET GetAll()
+activate AUTH
+
+AUTH -> WM: GET GetAll()
+activate WM
+
+alt If there are available deliveries
+WM --> AUTH: 200 OK
+AUTH --> UI: 200 OK
+deactivate WM
+
+UI --> admin: displays a list of deliveries in the system
+
+else If there are no deliveries in the system
+
+activate WM
+WM --> AUTH: 404 NOT FOUND
+AUTH --> UI: 404 NOT FOUND
+deactivate WM
+
+UI --> admin: displays a message that there are no deliveries in the system
+
+end
+
+deactivate UI
+deactivate admin
+
+@enduml

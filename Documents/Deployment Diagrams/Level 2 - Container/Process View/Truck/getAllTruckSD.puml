@@ -1,0 +1,64 @@
+@startuml getAllTruckSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Fleet Manager" as manager
+
+box "<<System(C4)>>\n       System"
+participant UI as UI <<Container(C4)>>
+participant Auth as Auth <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate manager
+manager->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> Auth: POST Login(email, password)
+activate Auth
+
+Auth --> UI: 200 OK
+deactivate Auth
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+
+
+UI --> manager: informs about the success of login
+
+manager -> UI: I want to get all Trucks
+
+
+UI -> Auth: GET getAllTruck()
+activate Auth
+Auth -> Logistics: GET getAllTruck()
+activate Logistics
+
+Logistics -> Auth: 200 OK
+Auth -> UI: 200 OK
+UI -> manager: all trucks
+
+deactivate Logistics
+deactivate Auth
+deactivate UI
+deactivate manager
+
+
+
+@enduml

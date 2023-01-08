@@ -1,13 +1,10 @@
-@startuml getTruckSD
-
+@startuml deletePathSD
 autonumber
 !pragma teoz true
-
 skinparam sequence {
 ParticipantBorderColor black
 ParticipantBackgroundColor white
 }
-
 actor "Logistics Manager" as manager
 
 participant Google as Google <<System(C4)>>
@@ -19,8 +16,8 @@ box "<<System(C4)>>\n       System" #LightYellow
     
     
     
-        participant TruckComponent as TruckC <<Component(C4)>>
-        participant TruckS as TruckS <<Component(C4)>>
+        participant PathComponent as PathC <<Component(C4)>>
+        participant PathService as PathS <<Component(C4)>>
         
 
     end box
@@ -31,17 +28,17 @@ box "<<System(C4)>>\n       System" #LightYellow
         participant UserService as UserServ <<Container(C4)>> 
         participant UserRepository as UserRepo <<Container(C4)>> 
 
-        participant TruckController as TruckCTRL <<Container(C4)>>
+        participant PathController as PathCTRL <<Container(C4)>>
 
     end box
     box "<<Container(C4)>>\n       Logistics" #LightBlue
-        participant TruckRoute as Route <<Component(C4)>>
-        participant TruckController as Controller <<Component(C4)>>
-        participant TruckS as Service <<Component(C4)>>
-        participant TruckRepository as Repository <<Component(C4)>>
+        participant PathRoute as Route <<Component(C4)>>
+        participant PathController as Controller <<Component(C4)>>
+        participant PathService as Service <<Component(C4)>>
+        participant PathRepository as Repository <<Component(C4)>>
         participant Persistence as Persistence <<Component(C4)>>
     end box
-
+   
 end box
 
 
@@ -107,72 +104,86 @@ LoginC --> manager: informs about the success of login
 deactivate LoginC
 
 
-manager -> TruckC: Asks to get a Truck
-activate TruckC
-TruckC -> manager: Asks for Truck ID
+
+manager -> PathC: I want to delete a Path
+activate PathC
+
+PathC -> manager: asks for PathID
+deactivate PathC
+
+manager -> PathC: inserts PathID
+activate PathC
+
+PathC -> PathS: deletePath(pathID)
+activate PathS
+
+PathS -> PathCTRL: DELETE deletePath(pathID)
+activate PathCTRL
+
+PathCTRL -> PathCTRL: checkCookie()
 
 
-manager ->TruckC: Inserts Truck ID
 
-TruckC -> TruckS: getTruck(TruckID)
-activate TruckS
-TruckS -> TruckCTRL: GET getTruck(TruckID)
-activate TruckCTRL
-TruckCTRL -> TruckCTRL: checkCookie()
-
-TruckCTRL -> Route: GET getTruck(truckID)
+PathCTRL -> Route: DELETE deletePath(pathID)
 activate Route
-Route -> Controller: GET getTruck(truckID)
+Route -> Controller: DELETE deletePath(pathID)
 activate Controller
 
-
-
-Controller -> Service: getTruck(truckID)
+Controller -> Service: deletePath(pathInfo)
 activate Service
-
-Service -> Repository: getTruckById(truckID)
+Service -> Repository: getPathById(pathInfo.id)
 activate Repository
-Repository -> Persistence: findOne(truckID)
+Repository -> Persistence: findOne(pathInfo.id)
 activate Persistence
 
-alt Truck exists
 
-    Persistence -> Repository: truckInfo
-    Repository->Service: truckInfo
+alt path exists
 
-    Service -> Controller: truckInfo
-    Controller->Route: truckInfo
-    Route->TruckCTRL: 200 OK, TruckInfo
-    TruckCTRL->TruckS: 200 OK, TruckInfo
-    TruckS->TruckC: 200 OK, TruckInfo
+    Persistence --> Repository: PathInfo
 
-    TruckC->manager: Shows required information about Truck
+    Repository --> Service: PathInfo
 
+    Service -> Repository: delete(pathID)
 
-else Truck doesn't exist
+    Repository -> Persistence: deleteOne(pathID)
 
-    Service -> Repository: getTruckById(TruckInfo.id)
+    Persistence --> Repository: true
 
-    Repository -> Persistence: findOne(TruckID)
+    Repository --> Service: PathInfo
 
-    Persistence->Repository: null
+    Service --> Controller: PathInfo
+
+    Controller --> Route: 200 OK + PathInfo
+
+    Route --> PathCTRL: 200 OK + PathInfo
+
+    PathCTRL --> PathS: 200 OK + PathInfo
+
+    PathS --> PathC: 200 OK + PathInfo
+
+    PathC --> manager: informs about the success of the deletion
+
+else path doesn't exist
+
+    Persistence --> Repository: null
     deactivate Persistence
-    Repository->Service: null
+    Repository --> Service: null
     deactivate Repository
-    Service->Controller: error, Truck doesn't exist
+    Service --> Controller: error, path doesn't exist
     deactivate Service
-    Controller->Route: 404 NOT FOUND, Truck doesn't exist
+    Controller --> Route: 404 NOT FOUND, path doesn't exist
     deactivate Controller
-    Route->TruckCTRL: 404 NOT FOUND, Truck doesn't exist
+    Route --> PathCTRL: 404 NOT FOUND, path doesn't exist
     deactivate Route
-    TruckCTRL -> TruckS: 404 NOT FOUND, Truck doesn't exist
-    deactivate TruckCTRL
-    TruckS -> TruckC: 404 NOT FOUND, Truck doesn't exist
-    deactivate TruckS
-    TruckC -> manager: Informs that Truck doesn't exist
-    deactivate TruckC
-    deactivate manager
+    PathCTRL --> PathS: 404 NOT FOUND, path doesn't exist
+    deactivate PathCTRL
+    PathS --> PathC: 404 NOT FOUND, path doesn't exist
+    deactivate PathS
+    PathC --> manager: informs about the failure of the deletion
+    deactivate PathC
+
 end
 
+deactivate manager
 
 @enduml

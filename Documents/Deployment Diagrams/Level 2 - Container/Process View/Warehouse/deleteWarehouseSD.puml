@@ -1,0 +1,84 @@
+@startuml deleteWarehouseSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+box "<<EletricGo(C4)>>\n       System"
+participant UI as UI <<Container(C4)>>
+participant Auth as Auth <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> Auth: POST Login(email, password)
+activate Auth
+
+Auth --> UI: 200 OK
+deactivate Auth
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+admin -> UI: I want to delete a warehouse
+
+
+UI --> admin: asks for the ID of the warehouse
+
+
+admin -> UI: inserts the ID of the warehouse
+
+
+UI --> admin: asks for the confirmation of the deletion
+
+
+admin -> UI: confirms the deletion
+
+
+UI -> Auth: DELETE DeleteWarehouse(id)
+activate Auth
+Auth -> WM : DELETE DeleteWarehouse(id)
+activate WM
+
+alt If there is a warehouse in the system with the id entered
+
+
+
+WM --> Auth : 200 OK 
+Auth --> UI: 200 OK
+UI --> admin: informs about the successful deletion
+
+
+else If there is no warehouse in the system with the id entered
+
+
+WM --> Auth : 404 NOT FOUND 
+Auth --> UI: 404 Not Found
+UI --> admin: informs about the failure of the operation
+deactivate WM
+
+end 
+
+deactivate UI
+deactivate admin
+
+
+@enduml

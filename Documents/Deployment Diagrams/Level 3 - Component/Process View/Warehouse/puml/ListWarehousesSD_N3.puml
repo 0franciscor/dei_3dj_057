@@ -1,0 +1,168 @@
+@startuml ListWarehousesSD
+autonumber
+!pragma teoz true
+
+actor "Warehouse Manager" as admin
+
+participant Google as Google <<System(C4)>>
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant WarehouseCompoent as WarehouseC <<Component(C4)>>
+        participant WarehouseService as WarehouseS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant WarehouseController as WarehouseCTRL <<Container(C4)>>
+
+    end box
+
+
+    box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+        participant WarehouseController as  CTL <<Component(C4)>>
+        participant WarehouseService as  SV <<Component(C4)>>
+        participant "Warehouse : Warehouse" as  Warehouse <<Component(C4)>>
+        participant "WarehouseDTO : WarehouseDTO" as  DTO <<Component(C4)>>
+        participant WarehouseRepository as  WR <<Component(C4)>>
+    end box
+end box
+
+activate admin
+admin->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+
+end
+
+
+
+LoginC --> admin: informs about the success of login
+deactivate LoginC
+
+admin -> WarehouseC: I want to consult the warehouses in the system
+activate WarehouseC
+
+WarehouseC -> WarehouseS : getAllWarehouses()
+activate WarehouseS
+
+WarehouseS -> WarehouseCTRL : GET getAllWarehouse()
+activate WarehouseCTRL
+WarehouseCTRL -> CTL : GetAll()
+activate CTL
+CTL -> SV : GetWarehouses()
+activate SV 
+alt if there are warehouses in the system
+
+
+    
+    SV -> WR : GetAll()
+    activate WR
+    
+    WR --> SV : listOfWarehouses
+    
+    SV -> Warehouse : toWarehouseDto(listOfWarehouse)
+    activate Warehouse
+
+    Warehouse --> SV : listOfWarehousesDto
+    deactivate Warehouse
+    SV --> CTL : listOfWarehousesDto
+
+    CTL --> WarehouseCTRL : 200 OK
+
+    WarehouseCTRL --> WarehouseS : 200 OK
+
+    WarehouseS --> WarehouseC : 200 OK
+
+
+    WarehouseC --> admin: show all warehouses in the system
+
+
+else If there are no warehouses in the system
+
+
+
+    SV -> WR : GetAll()
+
+    WR --> SV : null
+    deactivate WR
+    SV --> CTL : null
+    deactivate SV
+    CTL --> WarehouseCTRL : 404 NOT FOUND
+    deactivate CTL
+
+    WarehouseCTRL --> WarehouseS : 404 NOT FOUND
+    deactivate WarehouseCTRL
+
+    WarehouseS --> WarehouseC : 404 NOT FOUND
+    deactivate WarehouseS
+    
+    WarehouseC --> admin: show message error "Warehouses not found"
+    deactivate WarehouseC 
+
+
+end
+
+deactivate admin
+@enduml

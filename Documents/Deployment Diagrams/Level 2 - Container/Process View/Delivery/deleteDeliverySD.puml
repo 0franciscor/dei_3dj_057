@@ -1,0 +1,81 @@
+@startuml deleteDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant UI as UI <<Container(C4)>>
+participant Auth as AUTH <<Container(C4)>>
+participant WarehouseManagement as WM <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> AUTH: POST Login(email, password)
+activate AUTH
+
+AUTH --> UI: 200 OK
+deactivate AUTH
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+
+
+UI --> admin: informs about the success of login
+
+admin -> UI: I want to delete a delivery
+
+
+UI --> admin: asks for the delivery's ID
+
+
+admin -> UI: inserts the delivery's ID
+
+
+UI -> AUTH: DELETE DeleteDelivery(deliveryID)
+activate AUTH
+
+AUTH -> WM: DELETE DeleteDelivery(deliveryID)
+activate WM
+
+alt If the delivery exists in the system
+WM --> AUTH: 200 OK(deletedObject)
+AUTH --> UI: 200 OK(deletedObject)
+deactivate WM
+
+UI --> admin: informs about the success of the operation
+
+else If the delivery does not exist in the system
+
+activate WM
+WM --> AUTH: 404 NOT FOUND
+AUTH --> UI: 404 NOT FOUND
+deactivate WM
+
+UI --> admin: informs that the delivery was not deleted
+
+end
+
+deactivate UI
+deactivate admin
+
+@enduml

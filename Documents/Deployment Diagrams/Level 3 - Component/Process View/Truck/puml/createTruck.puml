@@ -8,102 +8,175 @@ ParticipantBorderColor black
 ParticipantBackgroundColor white
 }
 
-actor "Fleet Manager" as manager
+actor "Logistics Manager" as manager
 
-box "<<Container(C4)>>\n           UI" #SandyBrown
-participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
-participant "CreateTruckComponent" as CreateTruckComponent <<Component(C4)>>
-participant "TruckService" as TruckService <<Component(C4)>>
+participant Google as Google <<System(C4)>>
+box "<<System(C4)>>\n       System" #LightYellow
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant TruckComponent as TruckC <<Component(C4)>>
+        participant TruckService as TruckS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant TruckController as TruckCTRL <<Container(C4)>>
+
+    end box
+    box "<<Container(C4)>>\n       Logistics" #LightBlue
+        participant TruckRoute as Route <<Component(C4)>>
+        participant TruckController as Controller <<Component(C4)>>
+        participant TruckService as Service <<Component(C4)>>
+        participant TruckRepository as Repository <<Component(C4)>>
+        participant Persistence as Persistence <<Component(C4)>>
+    end box
+
 end box
-
-box "<<System(C4)>>\n       System" #LightGray
-participant Auth as  Auth <<Container(C4)>>
-box "<<Container(C4)>>\n       Logistics" #LightCyan
-participant TruckRoute as Route <<Component(C4)>>
-participant TruckController as Controller <<Component(C4)>>
-participant TruckService as Service <<Component(C4)>>
-participant TruckRepository as Repository <<Component(C4)>>
-participant Persistance as Persistance <<Component(C4)>>
-end box
-
 
 
 activate manager
+manager->LoginC: I want to login
+activate LoginC
 
-manager -> FleetManagerComponent: Asks to create a new Truck
-activate FleetManagerComponent
-FleetManagerComponent -> CreateTruckComponent: navigate to CreateTruckComponent
-activate CreateTruckComponent
-CreateTruckComponent --> manager: Asks for info about new Truck
+alt Login through email and password in EletricGo
 
-manager ->CreateTruckComponent: Inserts Truck info
 
-CreateTruckComponent -> TruckService: createTruck(Truck)
-activate TruckService
-TruckService -> Auth: POST createTruck(TruckInfo)
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
 
-activate Auth
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
 
-Auth -> Route: POST createTruck(TruckInfo)
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate Google
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+    deactivate Google
+
+end
+
+
+
+LoginC --> manager: informs about the success of login
+deactivate LoginC
+
+
+
+
+manager -> TruckC: I want to create a new Truck
+activate TruckC
+
+TruckC --> manager: Asks for info about new Truck
+
+manager ->TruckC: Inserts Truck info
+
+TruckC -> TruckS: createTruck(Truck)
+activate TruckS
+TruckS -> TruckCTRL: POST createTruck(TruckInfo)
+activate TruckCTRL
+TruckCTRL -> TruckCTRL: checkCookie()
+
+TruckCTRL -> Route: POST createTruck(TruckInfo)
 activate Route
-Route -> Controller :POST createTruck(TruckInfo)
+Route -> Controller: POST createTruck(TruckInfo)
 activate Controller
 
 alt Truck doesn't exist 
 
-Controller -> Service: createTruck(TruckInfo)
-activate Service
+    Controller -> Service: createTruck(TruckInfo)
+    activate Service
 
-Service -> Repository: getTruckById(TruckInfo.id)
-activate Repository
+    Service -> Repository: getTruckById(TruckInfo.id)
+    activate Repository
 
-Repository -> Persistance: findOne(TruckInfo.id)
-activate Persistance
-Persistance -> Repository: null
-Repository->Service: null
+    Repository -> Persistence: findOne(TruckInfo.id)
+    activate Persistence
+    Persistence -> Repository: null
+    Repository->Service: null
 
-Service -> Repository: save(TruckInfo)
-Repository -> Persistance:save(TruckInfo)
-Persistance->Repository: true
-Repository->Service: TruckInfo
-Service->Controller: TruckInfo
-Controller->Route: 201 CREATED + TruckInfo
-Route->Auth: 201 CREATED
-Auth->TruckService: 201 CREATED
-TruckService->CreateTruckComponent: 201 CREATED
-
-CreateTruckComponent-->manager: Informs about truck successfully created
-CreateTruckComponent->FleetManagerComponent: navigate to FleetManagerComponent
-
-
+    Service -> Repository: save(TruckInfo)
+    Repository -> Persistence:save(TruckInfo)
+    Persistence->Repository: true
+    Repository->Service: TruckInfo
+    Service->Controller: TruckInfo
+    Controller->Route: 201 CREATED + TruckInfo
+    Route->TruckCTRL: 201 CREATED
+    TruckCTRL->TruckS: 201 CREATED
+    TruckS->TruckC: 201 CREATED
+    TruckC-->manager: Informs about truck successfully created
 
 else Truck already exists
 
-Controller -> Service: createTruck(TruckInfo)
+    Controller -> Service: createTruck(TruckInfo)
 
 
-Service -> Repository: getTruckById(TruckInfo.id)
+    Service -> Repository: getTruckById(TruckInfo.id)
 
 
-Repository -> Persistance: findOne(TruckInfo.id)
-Persistance-> Repository: Truck
-deactivate Persistance
-Repository->Service: Truck
-deactivate Repository
-Service->Controller: error, Truck already exists
-deactivate Service
-Controller->Route: 409 CONFLIT, Truck already exists
-deactivate Controller
-Route->Auth: 409 CONFLIT, Truck already exists
-deactivate Route
-Auth->TruckService: 409 CONFLIT, Truck already exists
-deactivate Auth
+    Repository -> Persistence: findOne(TruckInfo.id)
+    Persistence-> Repository: Truck
+    deactivate Persistence
+    Repository->Service: Truck
+    deactivate Repository
+    Service->Controller: error, Truck already exists
+    deactivate Service
+    Controller->Route: 409 CONFLIT, Truck already exists
+    deactivate Controller
+    Route->TruckCTRL: 409 CONFLIT, Truck already exists
+    deactivate Route
+    TruckCTRL->TruckS: 409 CONFLIT, Truck already exists
+    deactivate TruckCTRL
+    TruckS->TruckC: 409 CONFLIT, Truck already exists
+    deactivate TruckS
+    TruckC-->manager: Informs about failure creating new Truck
+    deactivate TruckC
+    deactivate manager
 
-TruckService->CreateTruckComponent: 409 CONFLIT, Truck already exists
-deactivate TruckService
-CreateTruckComponent-->manager: Informs about failure creating new Truck
-CreateTruckComponent->FleetManagerComponent: navigate to FleetManagerComponent
-deactivate FleetManagerComponent
-deactivate CreateTruckComponent
-deactivate Manager
+end
 @enduml

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="702px" preserveAspectRatio="none" style="width:500px;height:702px;background:#FFFFFF;" version="1.1" viewBox="0 0 500 702" width="500px" zoomAndPan="magnify"><defs/><g><!--MD5=[e85bd8b7c3eef9e05b8e65fb9224b5e9]
+cluster EletricGo--><g id="cluster_EletricGo"><rect fill="none" height="689" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="487" x="7" y="7"/><path d="M82,7 L82,17.6094 L72,27.6094 L7,27.6094 " fill="none" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="65" x="10" y="22.5332">EletricGo</text></g><!--MD5=[c26638a81821cf585a88e29a60357529]
+cluster s1--><g id="cluster_s1"><polygon fill="none" points="127.5,61,137.5,51,373.5,51,373.5,146,363.5,156,127.5,156,127.5,61" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="363.5" x2="373.5" y1="61" y2="51"/><line style="stroke:#181818;stroke-width:1.0;" x1="127.5" x2="363.5" y1="61" y2="61"/><line style="stroke:#181818;stroke-width:1.0;" x1="363.5" x2="363.5" y1="61" y2="156"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="170" x="161.5" y="78.5332">UI Server localhost:4200</text></g><!--MD5=[08199a91f55f1eee6c032bde60db737c]
+cluster s2--><g id="cluster_s2"><polygon fill="none" points="118.5,190,128.5,180,382.5,180,382.5,275,372.5,285,118.5,285,118.5,190" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="372.5" x2="382.5" y1="190" y2="180"/><line style="stroke:#181818;stroke-width:1.0;" x1="118.5" x2="372.5" y1="190" y2="190"/><line style="stroke:#181818;stroke-width:1.0;" x1="372.5" x2="372.5" y1="190" y2="285"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="188" x="152.5" y="207.5332">Auth Server localhost:3001</text></g><!--MD5=[e80b2a2e2b06ce4648c08fd86acf756b]
+cluster s3--><g id="cluster_s3"><polygon fill="none" points="103,319,113,309,398,309,398,404,388,414,103,414,103,319" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="388" x2="398" y1="319" y2="309"/><line style="stroke:#181818;stroke-width:1.0;" x1="103" x2="388" y1="319" y2="319"/><line style="stroke:#181818;stroke-width:1.0;" x1="388" x2="388" y1="319" y2="414"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="219" x="137" y="336.5332">Logistics Server localhost:3000</text></g><!--MD5=[1888f754de8c3c25dbb7a8a9dd7a110e]
+cluster s4--><g id="cluster_s4"><polygon fill="none" points="31,448,41,438,470,438,470,533,460,543,31,543,31,448" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="460" x2="470" y1="448" y2="438"/><line style="stroke:#181818;stroke-width:1.0;" x1="31" x2="460" y1="448" y2="448"/><line style="stroke:#181818;stroke-width:1.0;" x1="460" x2="460" y1="448" y2="543"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="363" x="65" y="465.5332">WarehouseManagement Server localhost:5000/5001</text></g><!--MD5=[1dbd9da00545b9a808d2702f37e186b1]
+cluster s5--><g id="cluster_s5"><polygon fill="none" points="104,577,114,567,397,567,397,662,387,672,104,672,104,577" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="387" x2="397" y1="577" y2="567"/><line style="stroke:#181818;stroke-width:1.0;" x1="104" x2="387" y1="577" y2="577"/><line style="stroke:#181818;stroke-width:1.0;" x1="387" x2="387" y1="577" y2="672"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="217" x="138" y="594.5332">Planning Server localhost:3002</text></g><!--MD5=[c42ed81cef7fdd2e33758127945b9a5b]
+entity UI--><g id="elem_UI"><rect fill="#F1F1F1" height="47.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="52" x="224.5" y="92"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="256.5" y="97"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="254.5" y="99"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="254.5" y="103"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="12" x="239.5" y="126.5332">UI</text></g><!--MD5=[b3b47143243fa1deeb350c407ecae48b]
+entity AUTH--><g id="elem_AUTH"><rect fill="#F1F1F1" height="47.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="76" x="212.5" y="221"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="268.5" y="226"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="266.5" y="228"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="266.5" y="232"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36" x="227.5" y="255.5332">AUTH</text></g><!--MD5=[4eab8f518407dc74251df1201d2b5370]
+entity Logistics--><g id="elem_Logistics"><rect fill="#F1F1F1" height="47.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="95" x="203" y="350"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="278" y="355"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="276" y="357"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="276" y="361"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="218" y="384.5332">Logistics</text></g><!--MD5=[1c4d6e843ea8712369d0ca64b605873d]
+entity Warehouse Management--><g id="elem_Warehouse Management"><rect fill="#F1F1F1" height="47.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="199" x="151" y="479"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="330" y="484"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="328" y="486"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="328" y="490"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="159" x="166" y="513.5332">Warehouse Management</text></g><!--MD5=[4243c1601d305ab699cf48f8763533aa]
+entity Planning--><g id="elem_Planning"><rect fill="#F1F1F1" height="47.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="95" x="203" y="608"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="278" y="613"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="276" y="615"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="276" y="619"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="218" y="642.5332">Planning</text></g><!--MD5=[c2e0614ef9ffbb030a977c8219d87adc]
+@startuml Level 2 - Physical View
+
+left to right direction
+frame "EletricGo" {
+
+    node "UI Server localhost:4200" as s1 {
+        
+        component "UI"
+    }
+
+    node "Auth Server localhost:3001" as s2 {
+
+    component "AUTH"
+    }
+    
+    
+    node "Logistics Server localhost:3000" as s3 {
+    component "Logistics"
+    }
+
+    node "WarehouseManagement Server localhost:5000/5001" as s4 {
+    component "Warehouse Management"
+    }
+    
+    node "Planning Server localhost:3002" as s5 {
+    component "Planning"
+    }
+}
+
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 18:01:30 WEST 2022)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: Cp1252
+Language: en
+Country: GB
+--></g></svg>

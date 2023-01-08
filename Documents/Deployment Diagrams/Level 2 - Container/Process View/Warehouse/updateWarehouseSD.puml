@@ -1,0 +1,83 @@
+@startuml updateWarehouseSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+box "<<EletricGo(C4)>>\n       System"
+participant UI as UI <<Container(C4)>>
+participant Auth as Auth <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> Auth: POST Login(email, password)
+activate Auth
+
+Auth --> UI: 200 OK
+deactivate Auth
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+UI --> admin: informs about the success of login
+
+admin -> UI: I want to update the details of a warehouse
+
+
+UI --> admin: asks for the ID of the warehouse
+
+
+admin -> UI: inserts the ID of the warehouse
+
+
+UI --> admin: asks for the information to update
+
+
+admin -> UI: inserts the information to update
+
+
+UI -> Auth: PUT Update()
+activate Auth
+Auth -> WM: PUT Update()
+activate WM
+
+alt If the Id entered matches the Id of a warehouse in the system and the business rules for the new attributes are respected
+
+
+WM --> Auth : 200 OK 
+Auth --> UI: 200 OK
+UI --> admin: displays the updated information and informs about the operation success
+
+else If the Id entered does not match the Id of a warehouse in the system or the business rules for the new attributes are not respected
+
+
+WM --> Auth : 409 CONFLICT
+Auth --> UI: 409 Conflict
+UI --> admin: display a message error
+deactivate WM
+
+end
+
+deactivate UI
+deactivate admin
+
+
+@enduml

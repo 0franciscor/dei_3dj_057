@@ -1,12 +1,11 @@
-@startuml getTruckSD
-
+@startuml getAllPackagingSD
 autonumber
 !pragma teoz true
-
 skinparam sequence {
 ParticipantBorderColor black
 ParticipantBackgroundColor white
 }
+
 
 actor "Logistics Manager" as manager
 
@@ -19,8 +18,8 @@ box "<<System(C4)>>\n       System" #LightYellow
     
     
     
-        participant TruckComponent as TruckC <<Component(C4)>>
-        participant TruckS as TruckS <<Component(C4)>>
+        participant PackagingComponent as PackagingC <<Component(C4)>>
+        participant PackagingService as PackagingS <<Component(C4)>>
         
 
     end box
@@ -31,17 +30,17 @@ box "<<System(C4)>>\n       System" #LightYellow
         participant UserService as UserServ <<Container(C4)>> 
         participant UserRepository as UserRepo <<Container(C4)>> 
 
-        participant TruckController as TruckCTRL <<Container(C4)>>
+        participant PackagingController as PackagingCTRL <<Container(C4)>>
 
     end box
     box "<<Container(C4)>>\n       Logistics" #LightBlue
-        participant TruckRoute as Route <<Component(C4)>>
-        participant TruckController as Controller <<Component(C4)>>
-        participant TruckS as Service <<Component(C4)>>
-        participant TruckRepository as Repository <<Component(C4)>>
+        participant PackagingRoute as Route <<Component(C4)>>
+        participant PackagingController as Controller <<Component(C4)>>
+        participant PackagingService as Service <<Component(C4)>>
+        participant PackagingRepository as Repository <<Component(C4)>>
         participant Persistence as Persistence <<Component(C4)>>
     end box
-
+    
 end box
 
 
@@ -107,72 +106,57 @@ LoginC --> manager: informs about the success of login
 deactivate LoginC
 
 
-manager -> TruckC: Asks to get a Truck
-activate TruckC
-TruckC -> manager: Asks for Truck ID
+manager -> PackagingC: I want to get all Packagings
+activate PackagingC
 
+PackagingC -> PackagingS: getAllPackagings()
+activate PackagingS
 
-manager ->TruckC: Inserts Truck ID
+PackagingS -> PackagingCTRL: GET getAllPackagings()
+activate PackagingCTRL
 
-TruckC -> TruckS: getTruck(TruckID)
-activate TruckS
-TruckS -> TruckCTRL: GET getTruck(TruckID)
-activate TruckCTRL
-TruckCTRL -> TruckCTRL: checkCookie()
+PackagingCTRL -> PackagingCTRL: checkCookie()
 
-TruckCTRL -> Route: GET getTruck(truckID)
+PackagingCTRL -> Route: GET getAllPackagings()
 activate Route
-Route -> Controller: GET getTruck(truckID)
+
+
+Route -> Controller: getAllPackaging()
 activate Controller
 
-
-
-Controller -> Service: getTruck(truckID)
+Controller -> Service: getAllPackaging()
 activate Service
 
-Service -> Repository: getTruckById(truckID)
+Service -> Repository: getAllPackaging()
 activate Repository
-Repository -> Persistence: findOne(truckID)
+
+Repository -> Persistence: find()
 activate Persistence
 
-alt Truck exists
+Persistence --> Repository: allPackagings
+deactivate Persistence
 
-    Persistence -> Repository: truckInfo
-    Repository->Service: truckInfo
+Repository --> Service: allPackagings
+deactivate Repository
 
-    Service -> Controller: truckInfo
-    Controller->Route: truckInfo
-    Route->TruckCTRL: 200 OK, TruckInfo
-    TruckCTRL->TruckS: 200 OK, TruckInfo
-    TruckS->TruckC: 200 OK, TruckInfo
+Service --> Controller: allPackagings
+deactivate Service
 
-    TruckC->manager: Shows required information about Truck
+Controller --> Route: 200 OK + allPackagings
+deactivate Controller
 
+Route -> PackagingCTRL: 200 OK + allPackagings
+deactivate Route
+PackagingCTRL -> PackagingS: 200 OK + allPackagings
+deactivate PackagingCTRL
 
-else Truck doesn't exist
+PackagingS --> PackagingC: 200 OK + allPackagings
+deactivate PackagingS
 
-    Service -> Repository: getTruckById(TruckInfo.id)
+PackagingC --> manager: allPackagings
+deactivate PackagingC
 
-    Repository -> Persistence: findOne(TruckID)
-
-    Persistence->Repository: null
-    deactivate Persistence
-    Repository->Service: null
-    deactivate Repository
-    Service->Controller: error, Truck doesn't exist
-    deactivate Service
-    Controller->Route: 404 NOT FOUND, Truck doesn't exist
-    deactivate Controller
-    Route->TruckCTRL: 404 NOT FOUND, Truck doesn't exist
-    deactivate Route
-    TruckCTRL -> TruckS: 404 NOT FOUND, Truck doesn't exist
-    deactivate TruckCTRL
-    TruckS -> TruckC: 404 NOT FOUND, Truck doesn't exist
-    deactivate TruckS
-    TruckC -> manager: Informs that Truck doesn't exist
-    deactivate TruckC
-    deactivate manager
-end
+deactivate manager
 
 
 @enduml

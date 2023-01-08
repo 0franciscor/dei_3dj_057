@@ -1,0 +1,187 @@
+@startuml listDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+participant Google as Google <<System(C4)>>
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant DeliveryCompoent as DeliveryC <<Component(C4)>>
+        participant DeliveryService as DeliveryS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant DeliveryController as DeliveryCTRL <<Container(C4)>>
+
+    end box
+
+
+    box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+        participant DeliveryController as  CTL <<Component(C4)>>
+        participant DeliveryService as  SV <<Component(C4)>>
+        participant "Delivery : Delivery" as  delivery <<Component(C4)>>
+        participant "DeliveryDTO : DeliveryDTO" as  DTO <<Component(C4)>>
+        participant DeliveryRepository as  DR <<Component(C4)>>
+    end box
+end box
+
+activate admin
+admin->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate Google
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+ 
+
+end
+
+
+
+LoginC --> admin: informs about the success of login
+deactivate LoginC
+
+admin -> DeliveryC: I want to see all available deliveries on the system
+activate DeliveryC
+
+DeliveryC -> DeliveryS: GET GetAll()
+activate DeliveryS
+
+DeliveryS -> DeliveryCTRL: GET GetAll()
+activate DeliveryCTRL
+
+DeliveryCTRL -> DeliveryCTRL: checkCookie()
+
+DeliveryCTRL -> CTL: GET GetAll()
+activate CTL
+
+
+alt If there are deliveries on the system
+
+
+    CTL -> SV : GetDeliveries()
+    activate SV
+
+    SV -> DR : GetAll()
+    activate DR
+
+    DR --> SV : deliveryList
+    deactivate DR
+
+
+    SV --> CTL : deliveryList.toDTO()
+    deactivate DR
+
+    deactivate SV
+
+    CTL --> DeliveryCTRL: 200 OK + List
+    deactivate CTL
+
+    DeliveryCTRL --> DeliveryS: 200 OK + List
+
+
+    DeliveryS --> DeliveryC: 200 OK + List
+
+
+    DeliveryC --> admin: informs about the success of the operation + List
+
+
+else If there are no derliveries on the system
+
+    CTL -> SV : GetAll()
+    activate CTL
+    activate SV
+
+
+
+    SV -> DR : GetAll()
+    activate DR
+
+    DR -> SV : null
+    deactivate DR
+
+    SV --> CTL : null
+    deactivate SV
+    CTL --> DeliveryCTRL: 404 NOT FOUND
+    deactivate CTL
+
+    DeliveryCTRL --> DeliveryS: 404 NOT FOUND
+    deactivate DeliveryCTRL
+
+    DeliveryS --> DeliveryC: 404 NOT FOUND
+    deactivate DeliveryS
+
+    DeliveryC --> admin: informs about the fail of the operation
+    deactivate DeliveryC
+
+end 
+
+
+deactivate admin
+
+@enduml

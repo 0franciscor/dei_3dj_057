@@ -1,8 +1,6 @@
-@startuml getTruckSD
-
+@startuml getPathSD
 autonumber
 !pragma teoz true
-
 skinparam sequence {
 ParticipantBorderColor black
 ParticipantBackgroundColor white
@@ -19,8 +17,8 @@ box "<<System(C4)>>\n       System" #LightYellow
     
     
     
-        participant TruckComponent as TruckC <<Component(C4)>>
-        participant TruckS as TruckS <<Component(C4)>>
+        participant PathComponent as PathC <<Component(C4)>>
+        participant PathService as PathS <<Component(C4)>>
         
 
     end box
@@ -31,17 +29,17 @@ box "<<System(C4)>>\n       System" #LightYellow
         participant UserService as UserServ <<Container(C4)>> 
         participant UserRepository as UserRepo <<Container(C4)>> 
 
-        participant TruckController as TruckCTRL <<Container(C4)>>
+        participant PathController as PathCTRL <<Container(C4)>>
 
     end box
     box "<<Container(C4)>>\n       Logistics" #LightBlue
-        participant TruckRoute as Route <<Component(C4)>>
-        participant TruckController as Controller <<Component(C4)>>
-        participant TruckS as Service <<Component(C4)>>
-        participant TruckRepository as Repository <<Component(C4)>>
+        participant PathRoute as Route <<Component(C4)>>
+        participant PathController as Controller <<Component(C4)>>
+        participant PathService as Service <<Component(C4)>>
+        participant PathRepository as Repository <<Component(C4)>>
         participant Persistence as Persistence <<Component(C4)>>
     end box
-
+   
 end box
 
 
@@ -106,73 +104,74 @@ end
 LoginC --> manager: informs about the success of login
 deactivate LoginC
 
+manager -> PathC: I  want to get a path
+activate PathC
 
-manager -> TruckC: Asks to get a Truck
-activate TruckC
-TruckC -> manager: Asks for Truck ID
+PathC --> manager: asks for path origin and destination
+deactivate PathC
 
+manager -> PathC: inserts path origin and destination
+activate PathC
 
-manager ->TruckC: Inserts Truck ID
+PathC -> PathS: getPath(origin, destination)
+activate PathS
 
-TruckC -> TruckS: getTruck(TruckID)
-activate TruckS
-TruckS -> TruckCTRL: GET getTruck(TruckID)
-activate TruckCTRL
-TruckCTRL -> TruckCTRL: checkCookie()
+PathS -> PathCTRL: GET getPath(origin, destination)
+activate PathCTRL
 
-TruckCTRL -> Route: GET getTruck(truckID)
+PathCTRL -> PathCTRL: checkCookie()
+
+PathCTRL -> Route: GET getPath(origin, destination)
 activate Route
-Route -> Controller: GET getTruck(truckID)
+
+Route -> Controller: GET getPath(origin, destination)
 activate Controller
 
-
-
-Controller -> Service: getTruck(truckID)
+Controller -> Service: getPath(origin, destination)
 activate Service
-
-Service -> Repository: getTruckById(truckID)
+Service -> Repository: getPath(origin, destination)
 activate Repository
-Repository -> Persistence: findOne(truckID)
+Repository -> Persistence: findOne(origin, destination)
 activate Persistence
 
-alt Truck exists
+alt path exists
+    Persistence --> Repository: pathInfo
 
-    Persistence -> Repository: truckInfo
-    Repository->Service: truckInfo
+    Repository --> Service: pathInfo
 
-    Service -> Controller: truckInfo
-    Controller->Route: truckInfo
-    Route->TruckCTRL: 200 OK, TruckInfo
-    TruckCTRL->TruckS: 200 OK, TruckInfo
-    TruckS->TruckC: 200 OK, TruckInfo
+    Service --> Controller: pathInfo
 
-    TruckC->manager: Shows required information about Truck
+    Controller --> Route: 200 OK + pathInfo
 
+    Route --> PathCTRL: 200 OK + pathInfo
 
-else Truck doesn't exist
+    PathCTRL --> PathS: 200 OK + pathInfo
 
-    Service -> Repository: getTruckById(TruckInfo.id)
+    PathS --> PathC: 200 OK + pathInfo
 
-    Repository -> Persistence: findOne(TruckID)
+    PathC --> manager: shows information about path
 
-    Persistence->Repository: null
+else path doesn't exists
+
+    Persistence --> Repository: null
     deactivate Persistence
-    Repository->Service: null
+    Repository --> Service: null
     deactivate Repository
-    Service->Controller: error, Truck doesn't exist
+    Service --> Controller: error, path doesn't exist
     deactivate Service
-    Controller->Route: 404 NOT FOUND, Truck doesn't exist
+    Controller --> Route: 404 NOT FOUND, path doesn't exist
     deactivate Controller
-    Route->TruckCTRL: 404 NOT FOUND, Truck doesn't exist
+    Route --> PathCTRL: 404 NOT FOUND, path doesn't exist
     deactivate Route
-    TruckCTRL -> TruckS: 404 NOT FOUND, Truck doesn't exist
-    deactivate TruckCTRL
-    TruckS -> TruckC: 404 NOT FOUND, Truck doesn't exist
-    deactivate TruckS
-    TruckC -> manager: Informs that Truck doesn't exist
-    deactivate TruckC
-    deactivate manager
+    PathCTRL --> PathS: 404 NOT FOUND, path doesn't exist
+    deactivate PathCTRL
+    PathS --> PathC: 404 NOT FOUND, path doesn't exist
+    deactivate PathS
+    PathC --> manager: informs path doesn't exist
+    deactivate PathC
+
 end
 
+deactivate manager
 
 @enduml

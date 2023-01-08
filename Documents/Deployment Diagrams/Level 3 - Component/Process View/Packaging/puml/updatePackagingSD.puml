@@ -1,0 +1,220 @@
+@startuml updatePackagingSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+
+participant Google as Google <<System(C4)>>
+box "<<System(C4)>>\n       System" #LightYellow
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant PackagingComponent as PackagingC <<Component(C4)>>
+        participant PackagingService as PackagingS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant PackagingController as PackagingCTRL <<Container(C4)>>
+
+    end box
+    box "<<Container(C4)>>\n       Logistics" #LightBlue
+        participant PackagingRoute as Route <<Component(C4)>>
+        participant PackagingController as Controller <<Component(C4)>>
+        participant PackagingService as Service <<Component(C4)>>
+        participant PackagingRepository as Repository <<Component(C4)>>
+        participant Persistence as Persistence <<Component(C4)>>
+    end box
+    participant WarehouseManagement as WarehouseManagement <<Container(C4)>>
+end box
+
+
+activate manager
+manager->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate Google
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+    deactivate Google
+
+end
+
+
+
+LoginC --> manager: informs about the success of login
+deactivate LoginC
+
+activate manager
+manager -> PackagingC: I want to update a Packaging
+activate PackagingC
+
+
+
+PackagingC -> manager: asks for packaging ID and new info
+deactivate PackagingC
+
+manager -> PackagingC: inserts the information about the Packaging
+activate PackagingC
+
+PackagingC -> PackagingS: updatePackaging(packaging)
+activate PackagingS
+
+PackagingS -> PackagingCTRL: PATCH updatePackaging(packaging)
+activate PackagingCTRL
+
+PackagingCTRL -> PackagingCTRL: checkCookie()
+
+
+
+
+PackagingCTRL -> Route: PATCH updatePackaging(packaging)
+activate Route
+Route -> Controller: PATCH updatePackaging(packaging)
+activate Controller
+
+Controller -> WarehouseManagement: GET exiestsDelivery(DeliveryID)
+activate WarehouseManagement
+
+alt Packaging exists and Delivery exists
+
+    WarehouseManagement -> Controller: 200 OK
+
+    Controller -> Service: updatePackaging(packaging)
+    activate Service
+    Service -> Repository: getPackagingById(packagingInfo.id)
+    activate Repository
+    Repository -> Persistence: findOne(packagingInfo.id)
+    activate Persistence
+    Persistence --> Repository: Packaging
+
+
+    Repository --> Service: Packaging
+
+    Service -> Repository: update(packagingInfo)
+
+    Repository -> Persistence: save(packagingInfo)
+
+    Persistence --> Repository: true
+
+    Repository --> Service: packagingInfo
+
+    Service --> Controller: packagingInfo
+
+    Controller --> Route: 200 OK + packagingInfo
+
+    Route --> PackagingCTRL: 200 OK + packagingInfo
+
+    PackagingCTRL --> PackagingS: 200 OK + packagingInfo
+
+    PackagingS --> PackagingC: 200 OK + packagingInfo
+
+    PackagingC --> manager: shows updated information
+
+else Packaging doesn't exist and Delivery exists
+
+    WarehouseManagement -> Controller: 200 OK
+
+    Controller -> Service: updatePackaging(PackagingInfo)
+
+    Service -> Repository: getPackagingById(PackagingInfo.id)
+
+    Repository -> Persistence: findOne(PackagingInfo.id)
+
+    Persistence --> Repository: null
+    deactivate Persistence
+    Repository --> Service: null
+    deactivate Repository
+    Service -> Controller: error, Packaging doesn't exist
+    deactivate Service
+    Controller --> Route: 404 NOT FOUND, Packaging doesn't exist
+
+    Route --> PackagingCTRL: 404 NOT FOUND, Packaging doesn't exist
+
+    PackagingCTRL --> PackagingS: 404 NOT FOUND, Packaging doesn't exist
+
+    PackagingS --> PackagingC: 404 NOT FOUND, Packaging doesn't exist
+
+    PackagingC --> manager: informs about the failure of the update
+
+else Delivery doesn't exist
+
+    WarehouseManagement -> Controller: 404 NOT FOUND
+    deactivate WarehouseManagement
+    Controller -> Route: 404 NOT FOUND
+    deactivate Controller
+    Route --> PackagingCTRL: 404 NOT FOUND
+    deactivate Route
+
+    PackagingCTRL --> PackagingS: 404 NOT FOUND
+    deactivate PackagingCTRL
+    PackagingS --> PackagingC: 404 NOT FOUND
+    deactivate PackagingS
+    PackagingC --> manager: informs about the incorrect Delivery ID
+    deactivate PackagingC
+    deactivate manager
+end
+
+
+
+
+@enduml
