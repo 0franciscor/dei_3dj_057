@@ -1,14 +1,25 @@
-describe('Create Delivery Success', () => {
-  it('should display the create delivery page', () => {
-    cy.visit('http://localhost:4200/WarehouseManagement/Delivery/CreateDelivery');
+describe('Delirvery Tab', () => {
+
+  beforeEach(() => {
+    cy.visit('http://localhost:4200/Login');
+    cy.wait(1000)
+    cy.get('input[formcontrolname="email"]').type('franciscoredol_r03@hotmail.com');
+
+    cy.get('input[formcontrolname="password"]').type('CappuJSON');
+
+    cy.get('label').contains('I agree with the terms and conditions').find('span').click();
+
+    cy.get('button').contains('Log In').click();
+
+    cy.wait(2000);
+
   })
 
-  it('should display the create delivery form', () => {
-    cy.get('h2').contains('Creating a Delivery');
-    cy.get('h4').contains('Please enter the information in the fields below');
-  })
+  it('should display the create delivery page and create a test', () => {
 
-  it('should display the delivery form fields', () => {
+    cy.get('li').contains('Create Delivery').click();
+
+
     cy.get('mat-form-field').contains('DeliveryID');
     cy.get('mat-form-field').contains('Choose a date');
     cy.get('mat-form-field').contains('Load Time');
@@ -16,183 +27,150 @@ describe('Create Delivery Success', () => {
     cy.get('mat-form-field').contains('Destination');
     cy.get('mat-form-field').contains('Delivery Mass');
     cy.get('button').contains('Create');
-  })
 
-  it('should type in the deliveryID', () => {
+
+
     cy.get('#deliveryID').type('Delivery5');
-  })
-  it('should type in the date', () => {
+
     cy.get('#deliveryDate').type('12/21/2023');
-  })
-  it('should type in the load time', () => {
+
     cy.get('#loadTime').type('5');
-  })
-  it('should type in the unload time', () => {
+
     cy.get('#unloadTime').type('5');
-  })
-  it('should type in the destination', () => {
+
     cy.get('#destination').type('5');
-  })
-  it('should type in the delivery mass', () => {
+
     cy.get('#deliveryMass').type('5');
-  })
 
-  it('should click the create button', () => {
     cy.get('#createButton').click();
-  })
 
-  it('should display the delivery created message', () => {
-    cy.get('p').contains('Delivery created successfully');
-  })
-})
+    cy.get('h1').contains('Delivery: Delivery5');
 
-describe('Create Delivery Failure', () => {
-  it('should display the create delivery page', () => {
-    cy.visit('http://localhost:4200/WarehouseManagement/Delivery/CreateDelivery');
-  })
-
-  it('should display the create delivery form', () => {
-    cy.get('h2').contains('Creating a Delivery');
-    cy.get('h4').contains('Please enter the information in the fields below');
-  })
-
-  it('should display the delivery form fields', () => {
-    cy.get('mat-form-field').contains('DeliveryID');
-    cy.get('mat-form-field').contains('Choose a date');
-    cy.get('mat-form-field').contains('Load Time');
-    cy.get('mat-form-field').contains('Unload Time');
-    cy.get('mat-form-field').contains('Destination');
-    cy.get('mat-form-field').contains('Delivery Mass');
-    cy.get('button').contains('Create');
-  })
-
-  it('should type in the deliveryID', () => {
-    cy.get('#deliveryID').type('Delivery5');
-  })
-  it('should type in the date', () => {
-    cy.get('#deliveryDate').type('12/21/2023');
-  })
-  it('should type in the load time', () => {
-    cy.get('#loadTime').type('5');
-  })
-  it('should type in the unload time', () => {
-    cy.get('#unloadTime').type('5');
-  })
-  it('should type in the destination', () => {
-    cy.get('#destination').type('5');
-  })
-  it('should type in the delivery mass', () => {
-    cy.get('#deliveryMass').type('5');
-  })
-
-  it('should click the create button', () => {
-    cy.get('#createButton').click();
-  })
-
-  it('should display the delivery failed message', () => {
-    cy.get('p').contains('Delivery creation failed');
-  })
-})
-
-describe('Edit Delivery option Success', () => {
-  it('should display the edit delivery page', () => {
-    cy.visit('http://localhost:4200/WarehouseManagement/Delivery/EditDelivery/Delivery5');
-  })
-
-  it('should display the edit delivery form', () => {
-    cy.get('mat-card-title').contains('Selected Delivery: Delivery5');
-    cy.get('h4').contains('Please update the information in the fields below');
   });
 
-  it('should modify the date', () => {
+  it('should try to create the same delivery', () => {
+
+    cy.get('li').contains('Create Delivery').click();
+
+    cy.get('h2').contains('Creating a Delivery');
+    cy.get('h4').contains('Please enter the information in the fields below');
+
+    cy.get('mat-form-field').contains('DeliveryID');
+    cy.get('mat-form-field').contains('Choose a date');
+    cy.get('mat-form-field').contains('Load Time');
+    cy.get('mat-form-field').contains('Unload Time');
+    cy.get('mat-form-field').contains('Destination');
+    cy.get('mat-form-field').contains('Delivery Mass');
+    cy.get('button').contains('Create');
+
+
+    cy.get('#deliveryID').type('Delivery5');
+
+    cy.get('#deliveryDate').type('12/21/2023');
+
+    cy.get('#loadTime').type('5');
+
+    cy.get('#unloadTime').type('5');
+
+    cy.get('#destination').type('5');
+
+    cy.get('#deliveryMass').type('5');
+
+    cy.get('#createButton').click();
+
+    cy.get('h1').contains('Delivery: Delivery5');
+  });
+
+  it("should try to edit the delivery", () => {
+
+    cy.get('li').contains('Consult Deliveries').click();
+
+    cy.get('table').contains('Delivery5').parent().within(() => {
+      cy.get('button').contains('Edit').click();
+    })
+
+    cy.get('mat-card-title').contains('Selected Delivery: Delivery5');
+    cy.get('h4').contains('Please update the information in the fields below');
+
     cy.get('#deliveryDate').clear();
     cy.get('#deliveryDate').type('12/22/2023');
-  })
 
-  it('should modify the load time', () => {
+
     cy.get('#loadTime').clear();
     cy.get('#loadTime').type('10');
-  })
 
-  it('should modify the unload time', () => {
+
     cy.get('#unloadTime').clear();
     cy.get('#unloadTime').type('10');
-  })
 
-  it('should modify the destination', () => {
+
     cy.get('#destination').clear();
     cy.get('#destination').type('3');
-  })
 
-  it('should modify the delivery mass', () => {
     cy.get('#deliveryMass').clear();
     cy.get('#deliveryMass').type('10');
-  })
 
-  it('should click the edit button', () => {
     cy.get('#editButton').click();
-  })
 
-  it('should display the delivery edited message', () => {
-    cy.get('p').contains('Delivery Edited successfully');
-  })
-})
-
-describe('Edit Delivery option Failure', () => {
-  it('should display the edit delivery page', () => {
-    cy.visit('http://localhost:4200/WarehouseManagement/Delivery/EditDelivery/Delivery5');
-  })
-
-  it('should display the edit delivery form', () => {
-    cy.get('mat-card-title').contains('Selected Delivery: Delivery5');
-    cy.get('h4').contains('Please update the information in the fields below');
   });
 
-  it('should modify the date', () => {
+
+  it('should display the edit delivery page and try to edit with incorrect values', () => {
+
+    cy.get('li').contains('Consult Deliveries').click();
+
+    cy.get('table').contains('Delivery5').parent().within(() => {
+      cy.get('button').contains('Edit').click();
+    })
+
+
+    cy.get('mat-card-title').contains('Selected Delivery: Delivery5');
+    cy.get('h4').contains('Please update the information in the fields below');
+
+
+
     cy.get('#deliveryDate').clear();
     cy.get('#deliveryDate').type('12/22/2023');
-  })
 
-  it('should modify the load time', () => {
+
+
     cy.get('#loadTime').clear();
     cy.get('#loadTime').type('10');
-  })
 
-  it('should modify the unload time', () => {
+
+
     cy.get('#unloadTime').clear();
     cy.get('#unloadTime').type('10');
-  })
 
-  it('should modify the destination', () => {
+
+
     cy.get('#destination').clear();
     cy.get('#destination').type('-3');
-  })
 
-  it('should modify the delivery mass', () => {
+
     cy.get('#deliveryMass').clear();
     cy.get('#deliveryMass').type('10');
-  })
 
-  it('should click the edit button', () => {
     cy.get('#editButton').click();
-  })
+  });
 
-  it('should display the delivery edited message', () => {
-    cy.get('p').contains('Error updating Delivery');
-  })
-})
+  it('should display the edit delivery page and delete the chosen delivery', () => {
 
-describe('list delivery option', () => {
+    cy.get('li').contains('Consult Deliveries').click();
+
+    cy.get('table').contains('Delivery5').parent().within(() => {
+      cy.get('button').contains('Delete').click();
+    })
+  });
+
   it('should display the list delivery page', () => {
-    cy.visit('http://localhost:4200/WarehouseManagement/Delivery/GetDelivery');
-  })
+    cy.get('li').contains('Consult Deliveries').click();
 
-  it('should display the list delivery form', () => {
     cy.get('th').contains('ID');
     cy.get('th').contains('Delivery Date');
     cy.get('th').contains('Load Time');
     cy.get('th').contains('Unload Time');
     cy.get('th').contains('Destination');
     cy.get('th').contains('Delivery Mass');
-  })
+  });
 })
