@@ -1,8 +1,10 @@
+:-consult('GA_distribute.pl').
 :-consult('bc_entrega.pl').
 :-consult('bc_armazens.pl').
 :-consult('bc_factos_camiao.pl').
 :-consult('US1.pl').
 :-consult('heuristics_geneticAlgorithm.pl').
+
 
 :-dynamic geracoes/1.
 :-dynamic populacao/1.
@@ -12,70 +14,56 @@
 :-dynamic date/1.
 :-dynamic idTruck/1.
 :-dynamic tarefas/1.
-
-%% FIND ALL DESTINATIONS OF DELIVERIES %%
-
-findAllDestination(Date, Result):-
-    findall(Destination, entrega(_,Date,_,Destination,_,_), Destinations1),
-    removeDuplicates(Destinations1, Destinations),
-    delete([], Destinations, Result).
-
-removeDuplicates([],[]):-!.
-removeDuplicates([H|T],[H1|L]):- removeDuplicates(T,L), ((\+member(H,L), H1 is H); H1=[]).
+:-dynamic totalMass/1.
+:-dynamic list_trucks/1.
 
 
-%% INTERSECTION BETWEEN THE DELIVERIES DESTINATIONS AND THE CITIES %%
-citiesToVisite(Date):-
-    findAllDestination(Date, Destinations),
-    sumMassOfDeliveriesWithSameDestination(Destinations).
-
-%% group deliveries that have the same destination %%
-
-sumMassOfDeliveriesWithSameDestination([]):-!.
-sumMassOfDeliveriesWithSameDestination([H|T]):- sumMassOfDeliveriesWithSameDestination(T),sumMassOfDeliveriesWithSameDestination1(H).
-
-sumMassOfDeliveriesWithSameDestination1(Destination):-
-    findall(Mass, entrega(_,_,Mass,Destination,_,_), Masses),
-    sum_list(Masses, Sum),
-    assert(totalMassOfDeliveries(Destination,Sum)).
-
-sum_list([],0).
-sum_list([H|T],Sum):- sum_list(T,Sum1), Sum is Sum1+H.
-
-%----------------------------------------------------------------------------------------%
-
-% tarefas(NTarefas).
-
-date(20230110).
 idTruck(eTruck01).
 
+genetic_algorithm_request(ListaCaminhoes,Date,Json):-
+	check_sv(),
+	genetic_algorithm(ListaCaminhoes,Date,BestPath),	
+	bestPathProlog_ToJson(Date,Truck,Result,Json).
 
-% parameteriza��o
+genetic_algorithm(ListaCaminhoes,Date,BestPath):-
+	(retract(date(_));true),
+    asserta(date(Date)),
+	getAllDeliveriesInADay(Date, DeliveryList),
+	(retract(list_trucks(_));true),
+    asserta(list_trucks(ListaCaminhoes)),
+	extractDestinations(DeliveryList, Destinations),
+	gera(Destinations, Path*_),
+	distributeDeliveries(Path,BestPath).
+
+
 inicializa(ListaEntregas):-
     length(ListaEntregas, N),
     (retract(tarefas(_));true),
     asserta(tarefas(N)),
     (retract(geracoes(_));true),
-    N1 is N * 3,
+    N1 is N * 15,
 	asserta(geracoes(N1)),
 	(retract(populacao(_));true),
-	asserta(populacao(N)),
+	N2 is N * 5,
+	asserta(populacao(N2)),
 	(retract(prob_cruzamento(_));true),
     asserta(prob_cruzamento(1/2)),
 	(retract(prob_mutacao(_));true),
 	asserta(prob_mutacao(1/4)).
 
 
-gera(ListaEntregas):-
+gera(ListaEntregas,Top):-
 	inicializa(ListaEntregas),
 	gera_populacao(Pop,ListaEntregas),
-	write('Pop='),write(Pop),nl,
-	avalia_populacao(Pop,PopAv),
-	write('PopAv='),write(PopAv),nl,
+	avalia_genes(Pop,PopAv),
 	ordena_populacao(PopAv,PopOrd),
 	geracoes(NG),
 	head(PopOrd,First),
-	gera_geracao(0,NG,PopOrd,First,0).
+	gera_geracao(0,NG,PopOrd,First,0,Top).
+
+calculateWeight([],0):-!.
+calculateWeight([H|T],Weight1):-entrega(H,_,Mass,_,_,_), calculateWeight(T,Weight), Weight1 is  Weight+Mass.
+
 
 gera_populacao(Pop, ListaEntregas):-
 	populacao(TamPop),
@@ -88,9 +76,15 @@ gera_populacao(Pop, ListaEntregas):-
 gera_populacao_heuristicas(ListaEntregas,TamPop,Populacao):-
 	date(Date),
     deliveriesInADay(Date,ListaEntregas,ListaEntregas1),
-    largestMassFirst(ListaEntregas1,WarehouseSorted),
-	closestWarehouseFirst(ListaEntregas1, PATH_LIST),
-    cheapestWarehouseFirst(ListaEntregas1,Result),
+	calculateWeight(ListaEntregas1,MaxWeight),
+	(retract(totalMass(_));true),
+    asserta(totalMass(MaxWeight)),
+	list_trucks(TruckList),
+	tarefas(NumT),
+	calculateRacio(TruckList, MaxWeight, NumT),
+    largestMassFirst1(ListaEntregas1,WarehouseSorted),
+	closestWarehouseFirst1(ListaEntregas1, PATH_LIST),
+    cheapestWarehouseFirst1(ListaEntregas1,Result),
     ((\+(WarehouseSorted==PATH_LIST),!, Populacao1=[WarehouseSorted,PATH_LIST]; Populacao1=WarehouseSorted)),
     ((\+member(Result,Populacao1),!, merge1(Populacao1, Result, Populacao)); Populacao=Populacao1),
 	retract(populacao(_)),
@@ -129,6 +123,7 @@ retira(N,[G1|Resto],G,[G1|Resto1]):-
 	N1 is N-1,
 	retira(N1,Resto,G,Resto1).
 
+
 avalia_populacao([],[]).
 avalia_populacao([Ind|Resto],[Ind*V|Resto1]):-
 	avalia(Ind,V),
@@ -138,9 +133,10 @@ avalia(Seq,V):-
 	date(Date),
 	findAllDeliveriesInACity(Date,Seq,ListaEntregas1),
 	idTruck(Truck),
-	carateristicasCam(Truck,_,_,Batery,_,_),
-	avalia(Seq,Truck,ListaEntregas1,Batery,0,V).
-
+	carateristicasCam(Truck,_,Capacity,Batery,_,_),
+	calculateWeight(ListaEntregas1,Weight),
+	((Weight > Capacity, V=100000);avalia(Seq,Truck,ListaEntregas1,Batery,0,V)).
+    
 
 avalia(Seq,Truck,ListaEntregas1,Batery,TotalTime,V):-
 	analisePath(Seq,Truck,ListaEntregas1,Batery,TotalTime,V).
@@ -168,34 +164,60 @@ media([_*Valor|Resto], Soma):-
     media(Resto, Soma1),
     Soma is Soma1 + Valor.
 
-gera_geracao(G,G,Pop,_,_):-!,
-	write('Geracao '), write(G), write(':'), nl, write(Pop), nl.
+
+avalia_genes([],[]):-!.
+avalia_genes([H|T],[H*Max|Resto]):-
+    split_genes(H,ResultList),
+    avalia_populacao(ResultList,PopAv),
+    getMaxTempo(PopAv,Max),
+    avalia_genes(T,Resto).
+
+
+split_genes(L,ResultList):-
+    distributeDeliveries(L, ResultList).
+
+getMaxTempo(L,Max):-    
+    getTempos(L,L1),
+    max(L1,Max).
+
+
+getTempos([],[]):-!.
+getTempos([_*Tempo|T], [Tempo|T1]):-
+    getTempos(T,T1).
+
+
+max([X],X).
+max([X|Xs],M):-
+    max(Xs,M1),
+    (X>M1 -> M=X; M=M1).
+
+gera_geracao(G,G,[Top|_],_,_,Top):-!.
 	
 
-gera_geracao(N,G,Pop,Last,N3):-
-	write('Geracao '), write(N), write(':'), nl, write(Pop), nl,
-	media(Pop,Media),
-    write('Media: '), write(Media), nl,
+gera_geracao(N,G,Pop,Last,N3,Top):-
 	length(Pop,TamPop),
-	NrMove is ceiling(TamPop/10),
+	NrMove is ceiling(TamPop*3/10),
 	remove_top10(Pop,PopMove,PopAux,NrMove,0),
 	random_permutation(PopAux,Pop1),
 	cruzamento(Pop1,NPop1),
 	mutacao(NPop1,NPop),
 	merge(NPop, PopMove, NPop2),
-	avalia_populacao(NPop2,NPopAv),
+	avalia_genes(NPop2,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
 	N1 is N+1,
 	((check_geracao1(NPopOrd,Last), Last1 = Last, N2 is N3 + 1, !)
 	;
 	(N2 is 0, head(NPopOrd,Last1))),
-	((check_geracao2(G,N2), !)
+	((check_geracao2(G,N2), head(NPopOrd,Top), !)
 	;
-	gera_geracao(N1,G,NPopOrd,Last1,N2)).
+	gera_geracao(N1,G,NPopOrd,Last1,N2,Top)).
+
+
+
 
 check_geracao1([Last|_],Last).
 check_geracao2(N,N1):-
-	N1>=(ceiling(sqrt(N) * 2)).
+	N1>=(ceiling(sqrt(N) * 6)).
 
 head([H|_],H).
 
@@ -332,6 +354,3 @@ mutacao23(G1,1,[G2|Ind],G2,[G1|Ind]):-!.
 mutacao23(G1,P,[G|Ind],G2,[G|NInd]):-
 	P1 is P-1,
 	mutacao23(G1,P1,Ind,G2,NInd).
-
-
-
