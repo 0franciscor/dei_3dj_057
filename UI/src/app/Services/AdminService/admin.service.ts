@@ -74,7 +74,7 @@ export class AdminService {
   async updateUser(user: any) {
     let url = this.urlOrigin+ 'api/user/';
     if(this.urlOrigin.includes("azure")){
-      url = 'https://auth57.azurewebsites.net/api/user/'+ user;
+      url = 'https://auth57.azurewebsites.net/api/user';
     }
 
     const data = user;

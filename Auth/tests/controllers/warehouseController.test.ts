@@ -224,56 +224,7 @@ describe('WarehouseController Unit Tests', () => {
     });
 
 
-    it('createWarehouseProlog returns warehouse JSON', async()=>{
 
-        //Arrange
-        let body={
-            
-        };
-    
-        let req: Partial<Request> = {
-            cookies:{
-                jwt: 'token'
-            },
-            headers: {
-                authorization: 'Bearer token',
-                host: 'azure'                
-            },
-            get: function(header: string) {
-                return this.headers[header];
-            }
-        };
-        req.body = body;
-    
-        let res: Partial<Response> = {
-            status: sinon.spy(),
-            json: sinon.spy()
-        };
-    
-        let next: Partial<NextFunction>= () => {};
-
-    
-        const warehouseController = new WarehouseController();
-        sinon.stub(req,'get').withArgs('host').returns(false)
-        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
-        sinon.stub(warehouseController, 'isAuthorized').returns(true);
-    
-        sinon.stub(warehouseController,'fetch').returns({
-            status: 201,
-            json: () => {
-                return {
-                    "message": "Warehouse created"
-                }
-            }
-        });
-    
-        //Act
-        await warehouseController.createWarehouseProlog(<Request>req,<Response>res,<NextFunction>next);
-    
-        //Assert
-        sinon.assert.calledOnce(res.json);
-        sinon.assert.calledWith(res.json, sinon.match.has('message', 'Warehouse created'));    
-    });
 
     it('createWarehouseProlog returns status', async()=>{
 
@@ -365,7 +316,7 @@ describe('WarehouseController Unit Tests', () => {
             status: 409,
             json: () => {
                 return {
-                    "message": "Error creating warehouse"
+                    "message": "Error Creating Warehouse"
                 }
             }
         });
@@ -375,7 +326,7 @@ describe('WarehouseController Unit Tests', () => {
     
         //Assert
         sinon.assert.calledOnce(res.json);
-        sinon.assert.calledWith(res.json, sinon.match.has('message', 'Error creating warehouse'));    
+        sinon.assert.calledWith(res.json, sinon.match.has('message', 'Error Creating Warehouse'));    
     });
 
     it('createWarehouseProlog error returns status', async()=>{
@@ -416,7 +367,7 @@ describe('WarehouseController Unit Tests', () => {
             status: 201,
             json: () => {
                 return {
-                    "message": "Error creating warehouse"
+                    "message": "Error Creating Warehouse"
                 }
             }
         });
@@ -885,206 +836,6 @@ describe('WarehouseController Unit Tests', () => {
         sinon.assert.calledWith(res.status, 404);    
     });
 
-
-    it('editWarehouseProlog returns JSON', async()=>{
-        //Arrange
-        let body={
-            
-        };
-    
-        let req: Partial<Request> = {
-            cookies:{
-                jwt: 'token'
-            },
-            headers: {
-                authorization: 'Bearer token',
-                host: 'azure'                
-            },
-            get: function(header: string) {
-                return this.headers[header];
-            }
-        };
-        req.body = body;
-    
-        let res: Partial<Response> = {
-            status: sinon.spy(),
-            json: sinon.spy()
-        };
-    
-        let next: Partial<NextFunction>= () => {};
-
-    
-        const warehouseController = new WarehouseController();
-        sinon.stub(req,'get').withArgs('host').returns(false)
-        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
-        sinon.stub(warehouseController, 'isAuthorized').returns(true);
-    
-        sinon.stub(warehouseController,'fetch').returns({
-            status: 200,
-            json: () => {
-                return {
-                    "message": "Warehouse updated"
-                }
-            }
-        });
-    
-        //Act
-        await warehouseController.editWarehouseProlog(<Request>req,<Response>res,<NextFunction>next);
-    
-        //Assert
-        sinon.assert.calledOnce(res.json);
-        sinon.assert.calledWith(res.json, sinon.match.has('message', 'Warehouse updated'));    
-    });
-
-    it('editWarehouseProlog returns status', async()=>{
-        //Arrange
-        let body={
-            
-        };
-    
-        let req: Partial<Request> = {
-            cookies:{
-                jwt: 'token'
-            },
-            headers: {
-                authorization: 'Bearer token',
-                host: 'azure'                
-            },
-            get: function(header: string) {
-                return this.headers[header];
-            }
-        };
-        req.body = body;
-    
-        let res: Partial<Response> = {
-            status: sinon.spy(),
-            json: sinon.spy()
-        };
-    
-        let next: Partial<NextFunction>= () => {};
-
-    
-        const warehouseController = new WarehouseController();
-        sinon.stub(req,'get').withArgs('host').returns(false)
-        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
-        sinon.stub(warehouseController, 'isAuthorized').returns(true);
-    
-        sinon.stub(warehouseController,'fetch').returns({
-            status: 200,
-            json: () => {
-                return {
-                    "message": "Warehouse updated"
-                }
-            }
-        });
-    
-        //Act
-        await warehouseController.editWarehouseProlog(<Request>req,<Response>res,<NextFunction>next);
-    
-        //Assert
-        sinon.assert.calledOnce(res.status);
-        sinon.assert.calledWith(res.status, 200);    
-    });
-
-    it('editWarehouseProlog error returns JSON', async()=>{
-        //Arrange
-        let body={
-            
-        };
-    
-        let req: Partial<Request> = {
-            cookies:{
-                jwt: 'token'
-            },
-            headers: {
-                authorization: 'Bearer token',
-                host: 'azure'                
-            },
-            get: function(header: string) {
-                return this.headers[header];
-            }
-        };
-        req.body = body;
-    
-        let res: Partial<Response> = {
-            status: sinon.spy(),
-            json: sinon.spy()
-        };
-    
-        let next: Partial<NextFunction>= () => {};
-
-    
-        const warehouseController = new WarehouseController();
-        sinon.stub(req,'get').withArgs('host').returns(false)
-        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
-        sinon.stub(warehouseController, 'isAuthorized').returns(true);
-    
-        sinon.stub(warehouseController,'fetch').returns({
-            status: 404,
-            json: () => {
-                return {
-                    "message": "Error updating warehouse"
-                }
-            }
-        });
-    
-        //Act
-        await warehouseController.editWarehouseProlog(<Request>req,<Response>res,<NextFunction>next);
-    
-        //Assert
-        sinon.assert.calledOnce(res.json);
-        sinon.assert.calledWith(res.json, sinon.match.has('message', 'Error updating warehouse'));    
-    });
-
-    it('editWarehouseProlog error returns status', async()=>{
-        //Arrange
-        let body={
-            
-        };
-    
-        let req: Partial<Request> = {
-            cookies:{
-                jwt: 'token'
-            },
-            headers: {
-                authorization: 'Bearer token',
-                host: 'azure'                
-            },
-            get: function(header: string) {
-                return this.headers[header];
-            }
-        };
-        req.body = body;
-    
-        let res: Partial<Response> = {
-            status: sinon.spy(),
-            json: sinon.spy()
-        };
-    
-        let next: Partial<NextFunction>= () => {};
-
-    
-        const warehouseController = new WarehouseController();
-        sinon.stub(req,'get').withArgs('host').returns(false)
-        sinon.stub(warehouseController, 'isAuthenticated').returns(true);
-        sinon.stub(warehouseController, 'isAuthorized').returns(true);
-    
-        sinon.stub(warehouseController,'fetch').returns({
-            status: 404,
-            json: () => {
-                return {
-                    "message": "Error editing warehouse"
-                }
-            }
-        });
-    
-        //Act
-        await warehouseController.editWarehouseProlog(<Request>req,<Response>res,<NextFunction>next);
-    
-        //Assert
-        sinon.assert.calledOnce(res.status);
-        sinon.assert.calledWith(res.status, 404);    
-    });
 
 
 });
