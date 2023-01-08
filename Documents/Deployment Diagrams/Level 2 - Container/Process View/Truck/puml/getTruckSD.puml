@@ -1,4 +1,4 @@
-@startuml getAllTruckSD
+@startuml getTruckSD
 autonumber
 
 skinparam sequence {
