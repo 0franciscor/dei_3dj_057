@@ -7,66 +7,64 @@
 	},
 	"item": [
 		{
-			"name": "getAllSuccess",
+			"name": "createDelivery",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Returns an Array\", function () {\r",
+							"pm.test(\"Comparing DeliveryID value\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"DeliveryTeste123\");\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Response time is less than 200ms\", function () {\r",
-							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"pm.test(\"Comparing Delivery Date value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2023-11-30T23:30:00Z\");\r",
 							"});\r",
 							"\r",
-							"pm.test(\"DeliveryList\", function () {\r",
-							"    pm.response.to.have.jsonBody(\r",
-							"        [\r",
-							"            {\r",
-							"                \"deliveryID\": \"Delivery1\",\r",
-							"                \"deliveryDate\": \"2022-11-03T10:30:00\",\r",
-							"                \"loadTime\": 10.0,\r",
-							"                \"unloadTime\": 1.0,\r",
-							"                \"destination\": \"TH1\",\r",
-							"                \"deliveryMass\": 30.0\r",
-							"            },\r",
-							"            {\r",
-							"                \"deliveryID\": \"Delivery2\",\r",
-							"                \"deliveryDate\": \"2022-11-09T15:30:00\",\r",
-							"                \"loadTime\": 15.0,\r",
-							"                \"unloadTime\": 2.0,\r",
-							"                \"destination\": \"TM1\",\r",
-							"                \"deliveryMass\": 0.5\r",
-							"            },\r",
-							"            {\r",
-							"                \"deliveryID\": \"Delivery3\",\r",
-							"                \"deliveryDate\": \"2023-01-10T20:30:00\",\r",
-							"                \"loadTime\": 20.0,\r",
-							"                \"unloadTime\": 3.0,\r",
-							"                \"destination\": \"TS1\",\r",
-							"                \"deliveryMass\": 0.9\r",
-							"            }\r",
-							"        ]\r",
-							"    );\r",
-							"})\r",
-							""
+							"pm.test(\"Comparing Load Time value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.loadTime).to.eql(30.0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Unload Time value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.unloadTime).to.eql(15.0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Destination value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.destination).to.eql(\"1\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Delivery Mass value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryMass).to.eql(3.0);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deliveryID\": \"DeliveryTeste123\",\r\n    \"deliveryDate\": \"2023-11-30T23:30:00Z\",\r\n    \"loadTime\": 30,\r\n    \"unloadTime\": 15,\r\n    \"destination\": \"1\",\r\n    \"deliveryMass\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "https://localhost:5001/api/deliveries/GetAll",
+					"raw": "https://localhost:5001/api/deliveries/CreateDelivery",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -75,7 +73,7 @@
 					"path": [
 						"api",
 						"deliveries",
-						"GetAll"
+						"CreateDelivery"
 					]
 				}
 			},
@@ -105,20 +103,13 @@
 							"    pm.response.to.have.jsonBody(\r",
 							"        [\r",
 							"            {\r",
-							"                \"deliveryID\": \"Delivery1\",\r",
-							"                \"deliveryDate\": \"2022-11-03T10:30:00\",\r",
-							"                \"loadTime\": 10.0,\r",
-							"                \"unloadTime\": 1.0,\r",
-							"                \"destination\": \"TH1\",\r",
-							"                \"deliveryMass\": 30.0\r",
-							"            },\r",
-							"            {\r",
-							"                \"deliveryID\": \"Delivery2\",\r",
-							"                \"deliveryDate\": \"2022-11-09T15:30:00\",\r",
-							"                \"loadTime\": 15.0,\r",
-							"                \"unloadTime\": 2.0,\r",
-							"                \"destination\": \"TM1\",\r",
-							"                \"deliveryMass\": 0.5\r",
+							"                \"deliveryID\": \"DeliveryTeste123\",\r",
+							"                \"deliveryDate\": \"2023-11-30T23:30:00Z\",\r",
+							"                \"loadTime\": 30.0,\r",
+							"                \"unloadTime\": 15.0,\r",
+							"                \"destination\": \"1\",\r",
+							"                \"deliveryMass\": 3.0,\r",
+							"                \"deliveryDateProlog\": null\r",
 							"            }\r",
 							"        ]\r",
 							"    );\r",
@@ -137,7 +128,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "\"01/11/2022,10/11/2022\"",
+					"raw": "\"25/11/2023,01/12/2023\"",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -155,6 +146,75 @@
 						"api",
 						"deliveries",
 						"GetByPeriod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getByIDSuccess",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delivery not found status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing DeliveryID value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"DeliveryTeste123\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Delivery Date value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2023-11-30T23:30:00\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Load Time value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.loadTime).to.eql(30.0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Unload Time value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.unloadTime).to.eql(15.0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Destination value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.destination).to.eql(\"1\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comparing Delivery Mass value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.deliveryMass).to.eql(3.0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/deliveries/GetByID/DeliveryTeste123",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"deliveries",
+						"GetByID",
+						"DeliveryTeste123"
 					]
 				}
 			},
@@ -187,7 +247,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery5",
+					"raw": "https://localhost:5001/api/deliveries/GetByID/DeliveryTeste1234",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -197,191 +257,7 @@
 						"api",
 						"deliveries",
 						"GetByID",
-						"Delivery5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getByIDSuccess - Delivery1",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Delivery Found Code 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"pm.test(\"Check if it returns all variables correctly\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery1\");\r",
-							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-03T10:30:00\");\r",
-							"    pm.expect(jsonData.loadTime).to.eql(10);\r",
-							"    pm.expect(jsonData.unloadTime).to.eql(1);\r",
-							"    pm.expect(jsonData.destination).to.eql(\"TH1\");\r",
-							"    pm.expect(jsonData.deliveryMass).to.eql(30);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 200ms\", function () {\r",
-							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery1",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"api",
-						"deliveries",
-						"GetByID",
-						"Delivery1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getByIDSuccess - Delivery2",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Delivery Found Code 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"pm.test(\"Check if it returns all variables correctly\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery2\");\r",
-							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-09T15:30:00\");\r",
-							"    pm.expect(jsonData.loadTime).to.eql(15);\r",
-							"    pm.expect(jsonData.unloadTime).to.eql(2);\r",
-							"    pm.expect(jsonData.destination).to.eql(\"TM1\");\r",
-							"    pm.expect(jsonData.deliveryMass).to.eql(0.5);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 200ms\", function () {\r",
-							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery2",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"api",
-						"deliveries",
-						"GetByID",
-						"Delivery2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "createDelivery - Delivery4",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Successful POST request\", function () {\r",
-							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Delivery JSON\", function () {\r",
-							"    pm.response.to.have.jsonBody(\r",
-							"        {\r",
-							"            \"deliveryID\": \"Delivery4\",\r",
-							"            \"deliveryDate\": \"2022-11-30T23:30:00Z\",\r",
-							"            \"loadTime\": 30,\r",
-							"            \"unloadTime\": 15,\r",
-							"            \"destination\": \"TS1\",\r",
-							"            \"deliveryMass\": 3\r",
-							"        }\r",
-							"    );\r",
-							"})\r",
-							"\r",
-							"pm.test(\"Comparing DeliveryID value\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Comparing Delivery Date value\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-30T23:30:00Z\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Comparing Load Time value\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.loadTime).to.eql(30);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Comparing Unload Time value\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.unloadTime).to.eql(15);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Comparing Destination value\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.destination).to.eql(\"TS1\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Comparing Delivery Mass value\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryMass).to.eql(3);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"deliveryID\": \"Delivery4\",\r\n    \"deliveryDate\": \"2022-11-30T23:30:00Z\",\r\n    \"loadTime\": 30,\r\n    \"unloadTime\": 15,\r\n    \"destination\": \"TS1\",\r\n    \"deliveryMass\": 3\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:5001/api/deliveries/CreateDelivery",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"api",
-						"deliveries",
-						"CreateDelivery"
+						"DeliveryTeste1234"
 					]
 				}
 			},
@@ -400,14 +276,9 @@
 							"\r",
 							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
-							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-29T23:30:00Z\");\r",
-							"})\r",
-							"\r",
-							"pm.test(\"Comparing Dates\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-29T23:30:00Z\");\r",
-							"});"
+							"    pm.expect(jsonData.deliveryID).to.eql(\"DeliveryTeste123\");\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2024-11-30T23:30:00Z\");\r",
+							"})"
 						],
 						"type": "text/javascript"
 					}
@@ -418,7 +289,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"deliveryDate\":\"2022-11-29T23:30:00Z\"\r\n}",
+					"raw": "{\r\n    \"deliveryID\": \"DeliveryTeste123\",\r\n    \"deliveryDate\": \"2024-11-30T23:30:00Z\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -454,7 +325,7 @@
 							"\r",
 							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"DeliveryTeste123\");\r",
 							"    pm.expect(jsonData.loadTime).to.eql(35);\r",
 							"})\r",
 							"\r",
@@ -472,7 +343,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"loadTime\":35\r\n}",
+					"raw": "{\r\n    \"deliveryID\":\"DeliveryTeste123\",\r\n    \"loadTime\":35\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -508,15 +379,9 @@
 							"\r",
 							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"DeliveryTeste123\");\r",
 							"    pm.expect(jsonData.unloadTime).to.eql(20);\r",
-							"})\r",
-							"\r",
-							"pm.test(\"Comparing Unload Times\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.unloadTime).to.eql(20);\r",
-							"});\r",
-							""
+							"})"
 						],
 						"type": "text/javascript"
 					}
@@ -527,7 +392,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"unloadTime\": 20\r\n}",
+					"raw": "{\r\n    \"deliveryID\":\"DeliveryTeste123\",\r\n    \"unloadTime\": 20\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -563,14 +428,9 @@
 							"\r",
 							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
-							"    pm.expect(jsonData.destination).to.eql(\"TM1\");\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"DeliveryTeste123\");\r",
+							"    pm.expect(jsonData.destination).to.eql(\"2\");\r",
 							"})\r",
-							"\r",
-							"pm.test(\"Comparing Destinations\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.destination).to.eql(\"TM1\");\r",
-							"});\r",
 							""
 						],
 						"type": "text/javascript"
@@ -582,7 +442,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"destination\":\"TM1\"\r\n}",
+					"raw": "{\r\n    \"deliveryID\":\"DeliveryTeste123\",\r\n    \"destination\":\"2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -618,15 +478,9 @@
 							"\r",
 							"pm.test(\"Delivery of the Updated JSON\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"DeliveryTeste123\");\r",
 							"    pm.expect(jsonData.deliveryMass).to.eql(3);\r",
-							"})\r",
-							"\r",
-							"pm.test(\"Comparing Masses\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryMass).to.eql(3);\r",
-							"});\r",
-							""
+							"})"
 						],
 						"type": "text/javascript"
 					}
@@ -637,7 +491,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deliveryID\":\"Delivery4\",\r\n    \"deliveryMass\":3\r\n}",
+					"raw": "{\r\n    \"deliveryID\":\"DeliveryTeste123\",\r\n    \"deliveryMass\":3\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -672,11 +526,11 @@
 							"});\r",
 							"pm.test(\"Check if all Variables were correctly Patched\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.deliveryID).to.eql(\"Delivery4\");\r",
-							"    pm.expect(jsonData.deliveryDate).to.eql(\"2022-11-29T23:30:00\");\r",
+							"    pm.expect(jsonData.deliveryID).to.eql(\"DeliveryTeste123\");\r",
+							"    pm.expect(jsonData.deliveryDate).to.eql(\"2024-11-30T23:30:00\");\r",
 							"    pm.expect(jsonData.loadTime).to.eql(35);\r",
 							"    pm.expect(jsonData.unloadTime).to.eql(20);\r",
-							"    pm.expect(jsonData.destination).to.eql(\"TM1\");\r",
+							"    pm.expect(jsonData.destination).to.eql(\"2\");\r",
 							"    pm.expect(jsonData.deliveryMass).to.eql(3);\r",
 							"});\r",
 							"\r",
@@ -692,7 +546,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery4",
+					"raw": "https://localhost:5001/api/deliveries/GetByID/DeliveryTeste123",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -702,14 +556,14 @@
 						"api",
 						"deliveries",
 						"GetByID",
-						"Delivery4"
+						"DeliveryTeste123"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "deleteDelivery - Delivery4",
+			"name": "deleteDelivery - DeliveryTeste123",
 			"event": [
 				{
 					"listen": "test",
@@ -727,7 +581,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/deliveries/delete/Delivery4",
+					"raw": "https://localhost:5001/api/deliveries/delete/DeliveryTeste123",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -737,7 +591,7 @@
 						"api",
 						"deliveries",
 						"delete",
-						"Delivery4"
+						"DeliveryTeste123"
 					]
 				}
 			},
@@ -766,7 +620,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/deliveries/delete/Delivery4",
+					"raw": "https://localhost:5001/api/deliveries/delete/DeliveryTeste123",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -776,7 +630,7 @@
 						"api",
 						"deliveries",
 						"delete",
-						"Delivery4"
+						"DeliveryTeste123"
 					]
 				}
 			},
@@ -809,7 +663,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/deliveries/GetByID/Delivery4",
+					"raw": "https://localhost:5001/api/deliveries/GetByID/DeliveryTeste123",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -819,7 +673,7 @@
 						"api",
 						"deliveries",
 						"GetByID",
-						"Delivery4"
+						"DeliveryTeste123"
 					]
 				}
 			},
