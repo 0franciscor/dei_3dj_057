@@ -76,7 +76,6 @@ export default class UserRepo implements IUserRepo {
     const userDocument= await this.userSchema.find();
     let users: User[]=[];
     userDocument.forEach(user=>{
-      if(user.role != "deleted")
         users.push(UserMap.toDomain(user));
     });
     return users;
