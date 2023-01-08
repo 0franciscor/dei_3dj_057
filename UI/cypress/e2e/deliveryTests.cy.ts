@@ -111,6 +111,8 @@ describe('Delirvery Tab', () => {
     cy.get('#deliveryMass').type('10');
 
     cy.get('#editButton').click();
+    
+    cy.get('h1').contains('Delivery Edited: Delivery5');
 
   });
 
@@ -152,6 +154,7 @@ describe('Delirvery Tab', () => {
     cy.get('#deliveryMass').type('10');
 
     cy.get('#editButton').click();
+
   });
 
   it('should display the edit delivery page and delete the chosen delivery', () => {
