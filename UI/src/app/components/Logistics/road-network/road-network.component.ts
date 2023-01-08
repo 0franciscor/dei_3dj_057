@@ -507,7 +507,6 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       let intersects = raycaster.intersectObjects(this.roads);
       
       if(intersects.length != 0){
-        console.log("intersecting")
         // Get the intersection point and calculate the distance between it and the bottom of the truck
         let intersection = intersects[0];
         let distance = intersection.point.z - this.selectedTruck.position.z;

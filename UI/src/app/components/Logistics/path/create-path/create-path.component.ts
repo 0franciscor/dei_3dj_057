@@ -55,7 +55,6 @@ export class CreatePathComponent implements OnInit {
     this.formCreatePath.controls['pathID'].setValue("path"+ this.formCreatePath.controls['startWHId'].value + this.formCreatePath.controls['destinationWHId'].value)
     // this.formCreatePath.value.pathID ="path"+ this.formCreatePath.value.startWHId + this.formCreatePath.value.destinationWHId
    
-    console.log(this.formCreatePath.valid)
     if(this.formCreatePath.valid){
      
       let answer = await this.pathService.createPath(this.formCreatePath.value);

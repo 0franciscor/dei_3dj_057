@@ -360,7 +360,6 @@ export default class TruckController implements ITruckController {
       id: req.params.id
     }
     
-    console.log(prologBody)
     const response_prolog = await this.fetch(url_prolog, 'POST', prologBody,req.headers.cookie, httpAgent, req.headers.origin);
 
     if(response_prolog.status != 200){
