@@ -1,0 +1,131 @@
+@startuml deleteUserAdminSD
+autonumber
+
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Admin" as admin
+
+participant Google as Google <<System(C4)>>
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as loginController <<Component(C4)>>
+        participant LoginService as loginService <<Component(C4)>>
+    
+        participant CancelUserComponent as cancelUserComponent <<Component(C4)>>
+        participant AdminService as adminService <<Component(C4)>>
+        
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as userController <<Container(C4)>> 
+        participant UserService as userService <<Container(C4)>> 
+        participant UserRepository as userRepository <<Container(C4)>> 
+
+    end box
+
+
+end box
+
+activate admin
+admin->loginController: I want to login
+
+activate loginController
+
+alt Login through email and password in EletricGo
+
+
+    loginController -> loginService: login(email, password)
+    activate loginService
+    loginService -> userController: POST Login(email, password)
+    activate userController
+
+    userController -> userService: login(email, password)
+    activate userService
+    userService -> userRepository: findByEmail(email)
+    activate userRepository
+    userRepository --> userService: User
+    deactivate userRepository
+    userService -> userService: checkPassword(password, User)
+    userService --> userController: Success
+    deactivate userService
+
+
+    userController --> loginService: 200 OK + Cookie
+    deactivate userController
+
+    loginService --> loginController: 200 OK
+    deactivate loginService
+
+else Login through Google
+
+    loginController -> Google: Login with Google account
+    activate Google
+    Google --> loginController: 200 OK
+    deactivate
+    loginController -> loginService: loginWithGoogle()
+    activate loginService
+    loginService -> userController: POST LoginWithGoogle()
+    activate userController
+    userController -> userService: userExists()
+    activate userService
+    userService -> userRepository: findByEmail(email)
+    activate userRepository
+    userRepository --> userService: User
+    deactivate userRepository
+    userService --> userController: User
+    deactivate userService
+    userController --> loginService: 200 OK + Cookie
+    deactivate userController
+    loginService --> loginController: 200 OK
+    deactivate loginService
+
+end
+
+loginController --> admin: informs about the success of login
+deactivate loginController
+
+admin -> cancelUserComponent: I want to delete a user
+activate cancelUserComponent
+
+cancelUserComponent --> admin: displays a list of available users
+
+admin -> cancelUserComponent: selects a user to delete
+
+cancelUserComponent -> adminService: updateUser(data)
+activate adminService
+
+adminService -> userController: PATCH updateUser(data)
+activate userController
+
+userController -> userService: updateUser(data)
+activate userService
+
+userService -> userRepository: save(data)
+activate userRepository
+
+userRepository --> userService
+deactivate userRepository
+
+userService --> userController
+deactivate userService
+
+userController --> adminService
+deactivate userController
+
+adminService --> cancelUserComponent
+deactivate adminService
+
+cancelUserComponent --> admin: deletes the account and redirects to the main
+deactivate cancelUserComponent
+
+deactivate admin
+
+@enduml

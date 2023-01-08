@@ -1,0 +1,27 @@
+@startuml deleteUserSSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor User as admin
+participant EletricGO as system <<System(C4)>>
+
+
+admin -> system: I want to delete a User
+activate system
+
+system --> admin: displays info of the current user
+deactivate system
+
+admin -> system: clicks on the delete button
+activate system
+
+system --> admin: informs about the success of the operation
+
+deactivate system
+deactivate admin
+
+@enduml

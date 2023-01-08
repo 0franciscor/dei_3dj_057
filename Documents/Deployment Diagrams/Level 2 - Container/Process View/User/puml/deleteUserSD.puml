@@ -1,0 +1,75 @@
+@startuml deleteUserSD
+autonumber
+
+skinparam sequence {
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+actor "User" as admin
+
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant UI as system <<Container(C4)>>
+participant AUTH as auth <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->system: I want to login
+activate system
+
+alt Login through email and password in EletricGo
+
+system -> auth: POST Login(email, password)
+activate auth
+
+auth --> system: 200 OK
+deactivate auth
+
+else Login through Google
+
+system -> Google: Login with Google account
+activate Google
+Google --> system: 200 OK
+deactivate Google
+
+end
+
+system --> admin: informs about the success of login
+
+
+
+admin -> system: I want to delete my user account
+
+system --> admin: displays the information about the user
+
+
+admin -> system: clicks on the delete button
+
+
+system -> auth: POST UpdateUser(userDTO)
+activate auth
+
+alt If the User exists in the system and the operation is successful 
+auth --> system: 200 OK(response)
+deactivate auth
+
+system --> admin: informs about the success of the operation\n and redirects to the login page
+
+else If there was a problem with the operation
+
+activate auth
+auth --> system: 400 Bad Request
+deactivate auth
+
+system --> admin: informs that the user was not deleted
+
+end
+
+deactivate system
+deactivate admin
+
+@enduml
