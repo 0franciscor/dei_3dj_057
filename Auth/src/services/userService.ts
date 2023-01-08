@@ -151,7 +151,17 @@ export default class UserService implements IUserService{
     private encryptUserInfo(user: IUserDTO) {
         user.firstName = "xxxxxx";
         user.lastName = "xxxxxx";
-        user.phoneNumber = "xxxxxxxxx";
+        user.phoneNumber = this.encryptPhoneNumber();
         user.role = "deleted";
+    }
+
+    private encryptPhoneNumber(): string {
+        let result = '';
+        const characters = 'a*dfghjk_';
+        const charactersLength = characters.length;
+        for (let i = 0; i < 9; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
     }
 }

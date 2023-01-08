@@ -20,6 +20,7 @@ export class CancelUserComponent implements OnInit {
     public accountList: any[] = [];
     public selectedUser: any;
     public selectedUserOption: any;
+    isDeleted!: boolean;
 
     constructor(private ngZone:NgZone,private loginService: LoginService, public dialog: MatDialog, public route: ActivatedRoute, private adminService: AdminService, private router: Router) { }
 
@@ -63,6 +64,10 @@ export class CancelUserComponent implements OnInit {
 
     onUserSelected() {
         this.selectedUser = this.accountList.find(element => element.email == this.selectedUserOption);
+        this.isDeleted = false;
+        if(this.selectedUser.role == "deleted"){
+            this.isDeleted = true;
+        }
     }
 
     async onSubmit() {
