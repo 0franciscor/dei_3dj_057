@@ -101,7 +101,7 @@ export default class PlanningController implements IPlanningController {
     const response = await this.fetch(url_prolog, 'POST', data,req.headers.cookie,httpAgent); 
     if(response.status != 200){
       res.status(503);
-      return res.json(response.json());
+      return res.json({message: "Error"});
     }
     const info = await response.json();
     res.status(200);
@@ -125,7 +125,10 @@ export default class PlanningController implements IPlanningController {
 
     const data = req.body;
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie ,httpAgent); 
-
+    if(response.status != 200){
+      res.status(503);
+      return res.json({message: "Error"});
+    }
     const info = await response.json();
     res.status(200);
     return res.json(info);
@@ -151,7 +154,7 @@ export default class PlanningController implements IPlanningController {
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie, httpAgent); 
     if(response.status != 200){
       res.status(503);
-      return res.json(response.json());
+      return res.json({message: "Error"});
     }
     const info = await response.json();
     res.status(200);
@@ -177,7 +180,7 @@ export default class PlanningController implements IPlanningController {
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie, httpAgent); 
     if(response.status != 200){
       res.status(503);
-      return res.json(response.json());
+      return res.json({message: "Error"});
     }
     const info = await response.json();
     res.status(200);
@@ -201,7 +204,10 @@ export default class PlanningController implements IPlanningController {
 
     const data = req.body;
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie ,httpAgent); 
-
+    if(response.status != 200){
+      res.status(503);
+      return res.json({message: "Error"});
+    }
     const info = await response.json();
     res.status(200);
     return res.json(info);
