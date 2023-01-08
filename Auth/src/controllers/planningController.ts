@@ -188,6 +188,7 @@ export default class PlanningController implements IPlanningController {
   }
 
   async geneticAlgorithm(req: Request, res: Response, next: NextFunction) {
+    
     if(req.headers.authorization!=undefined)
       req.cookies["jwt"]=req.headers.authorization.split("=")[1];
     if(!this.isAuthenticated(req)){
@@ -201,14 +202,18 @@ export default class PlanningController implements IPlanningController {
     req.headers.cookie = "jwt="+req.cookies["jwt"];
     const url_prolog = 'https://vs-gate.dei.isep.ipp.pt:30382/genetic_algorithm';
     const httpAgent = new http.Agent({rejectUnauthorized: false});
-
+    
     const data = req.body;
+
     const response = await this.fetch(url_prolog, 'POST', data, req.headers.cookie ,httpAgent); 
+
     if(response.status != 200){
       res.status(503);
       return res.json({message: "Error"});
     }
+    
     const info = await response.json();
+
     res.status(200);
     return res.json(info);
   }

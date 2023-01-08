@@ -17,9 +17,10 @@ export class TruckPlanningComponent implements OnInit {
   formPlanning!: FormGroup;
 
   public infoList: any []=[]
-
+  public isGenetic: boolean = false;
 
   public truck : any;
+
   constructor(private ngZone:NgZone,private loginService:LoginService ,private fb: FormBuilder, private router: Router, private planningService:PlanningService, private tripService:TripService) { }
 
   selectedPlan={
@@ -31,6 +32,16 @@ export class TruckPlanningComponent implements OnInit {
    truck:"",
    info:[]
   }
+
+  info={
+    truck1:"",
+    bestRoute1:"",
+    truck2:"",
+    bestRoute2:"",
+    truck3:"",
+    bestRoute3:"",
+  }
+
 
   isAuth: boolean = false;
   authorizedRoles: string[] = ["logMan","admin"];
@@ -59,16 +70,22 @@ export class TruckPlanningComponent implements OnInit {
   let yourDate=this.formatDate(this.formPlanning.value.planDate);
   let datesplit=(yourDate).split("/");
 
+  if(datesplit[1].charAt(0)=="0"){
+    datesplit[1]=datesplit[1].charAt(1)
+  }
+
   if(datesplit[2].charAt(0)=="0"){
     datesplit[2]=datesplit[2].charAt(1)
   }
   
   this.finaldate = datesplit[0]+datesplit[1]+datesplit[2];
   
+  
  }
 
 
   async getBestPath(){
+    this.isGenetic=false;
     this.formPlanning.controls['truckName'].setValue("eTruck01");
     if(this.formPlanning.valid){
       this.onSubmit();
@@ -83,6 +100,7 @@ export class TruckPlanningComponent implements OnInit {
   }
 
   async getHighestMassFirst(){
+    this.isGenetic=false;
     this.onSubmit();
     let answer = await this.planningService.getHighestMassFirst(this.finaldate)
     this.showPlan=await answer.json()
@@ -91,6 +109,7 @@ export class TruckPlanningComponent implements OnInit {
   }
 
   async getClosestWarehouse(){
+    this.isGenetic=false;
     this.onSubmit();
     let answer = await this.planningService.getClosestWarehouse(this.finaldate)
     this.showPlan=await answer.json()
@@ -99,6 +118,7 @@ export class TruckPlanningComponent implements OnInit {
   }
 
   async getCheapestPath(){
+    this.isGenetic=false;
     this.onSubmit();
     let answer = await this.planningService.getCheapestPath(this.finaldate)
     this.showPlan=await answer.json()
@@ -109,8 +129,9 @@ export class TruckPlanningComponent implements OnInit {
   async getGeneticAlgorithm(){
     this.onSubmit();
     let answer = await this.planningService.getGeneticAlgorithm(this.finaldate)
-    this.showPlan=await answer.json()
-    this.infoList= this.showPlan.info
+    this.info = answer
+    this.isGenetic=true;
+
     
   }
 
