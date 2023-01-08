@@ -117,7 +117,7 @@ export class PlanningService{
       const body= {pathList:pathlist.bestRoute, date:date}
       const plan = await this.sendFetch(url2,'POST',body, this.getJwt())
     
-    
+  
     return plan 
   }
 
@@ -132,9 +132,9 @@ export class PlanningService{
 
 
     const response = await this.sendFetch(url,'POST',data, this.getJwt());
-    const pathlist=await response.json();
-    
-    return pathlist
+    const pathList = await response.json();
+
+    return pathList
   }
 
   async sendFetch(url: string, method: string, data: any, cookie: any) {

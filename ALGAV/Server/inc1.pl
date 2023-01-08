@@ -537,7 +537,21 @@ findAllDeliveriesInACity(Date,[H|T], Deliveries):- findAllDeliveriesInACity(Date
 genetic_algorithm_request(Date,Json):-
 	check_sv(),
 	genetic_algorithm(["eTruck01","eTruck02"],Date,BestPath),
-	bestPathProlog_ToJson(BestPath,Json).
+	resultGenetic_Prolog_ToJson(BestPath,Json).
+
+resultGenetic_Prolog_ToJson(Result,NoJson):-
+	bestPathProlog_ToJson(Result,ResulJs),
+	getNthElement(ResulJs,0,Element1),
+	getNthElement(ResulJs,1,Element2),
+	getNthElement(ResulJs,2,Element3),
+	NoJson=json([truck1 = "eTruck01", bestRoute1 = Element1, 
+	truck2="eTruck02", bestRoute2 = Element2,
+	truck3 = "extraTruck", bestRoute3 = Element3]).
+
+%% get element at index n 
+getNthElement([H|_],0,H):-!.
+getNthElement([_|T],N,Element):- N1 is N-1, getNthElement(T,N1,Element).
+
 
 bestPathProlog_ToJson([],[]):-!.
 bestPathProlog_ToJson([H|T],[String|Json]):-

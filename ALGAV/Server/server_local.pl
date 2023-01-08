@@ -254,6 +254,7 @@ genetic_algorithm(Request):-
 server():-
         delete_base_de_conhecimento(),
         create_base_de_conhecimento(),
+        genetic_algorithm_request("202319", Json),
         http_server(http_dispatch, [port(3002)]),
         !.
 

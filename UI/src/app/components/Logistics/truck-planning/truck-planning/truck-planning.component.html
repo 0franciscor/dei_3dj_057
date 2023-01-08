@@ -64,9 +64,8 @@
             <mat-card class="planinfo-card" *ngIf="showPlan">
                 <mat-card-title>Plan information</mat-card-title>
 
-                <mat-card-content>
-                    <p>Truck Name: {{showPlan.truck}}</p>
-
+                <mat-card-content *ngIf="!isGenetic">
+                    <p >Truck Name: {{showPlan.truck}}</p>
                     <div *ngFor="let info of infoList">
                         <br>
                         <p> Warehouse:{{info.warehouse}}</p>
@@ -74,8 +73,26 @@
                         <br>
                     </div>
 
+                    
+
                     <button mat-button (click)="savePlan()">Save</button>
                 </mat-card-content>
+
+                <mat-card-content *ngIf="isGenetic">
+                    
+                    <div *ngIf="isGenetic">
+                        <p>Truck - {{info.truck1}}</p>
+                        <p>Path - {{info.bestRoute1}}</p>
+                        <br>
+                        <p>Truck - {{info.truck2}}</p>
+                        <p>Path - {{info.bestRoute2}}</p>
+                        <br>
+                        <p>Truck - {{info.truck3}}</p>
+                        <p>Path - {{info.bestRoute3}}</p>
+                    </div>
+                    
+                </mat-card-content>
+
             </mat-card>
 
         </div>

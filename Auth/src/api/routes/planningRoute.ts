@@ -29,9 +29,8 @@ export default (app: Router) => {
         (req,res,next)=>ctrl.heuristicMassAndDistance(req,res,next)
     );
 
-    route.post('/geneticAlgortithm',
-    (req,res,next)=>ctrl.geneticAlgorithm(req,res,next)
-);
-    
+    route.post('/geneticAlgorithm',
+        (req,res,next)=>ctrl.geneticAlgorithm(req,res,next)
+    );
  
 };
