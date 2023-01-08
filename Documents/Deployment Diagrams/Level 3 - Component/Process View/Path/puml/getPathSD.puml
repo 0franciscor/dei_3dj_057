@@ -1,0 +1,177 @@
+@startuml getPathSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+
+participant Google as Google <<System(C4)>>
+box "<<System(C4)>>\n       System" #LightYellow
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant PathComponent as PathC <<Component(C4)>>
+        participant PathService as PathS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant PathController as PathCTRL <<Container(C4)>>
+
+    end box
+    box "<<Container(C4)>>\n       Logistics" #LightBlue
+        participant PathRoute as Route <<Component(C4)>>
+        participant PathController as Controller <<Component(C4)>>
+        participant PathService as Service <<Component(C4)>>
+        participant PathRepository as Repository <<Component(C4)>>
+        participant Persistence as Persistence <<Component(C4)>>
+    end box
+   
+end box
+
+
+activate manager
+manager->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate Google
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+    deactivate Google
+
+end
+
+
+
+LoginC --> manager: informs about the success of login
+deactivate LoginC
+
+manager -> PathC: I  want to get a path
+activate PathC
+
+PathC --> manager: asks for path origin and destination
+deactivate PathC
+
+manager -> PathC: inserts path origin and destination
+activate PathC
+
+PathC -> PathS: getPath(origin, destination)
+activate PathS
+
+PathS -> PathCTRL: GET getPath(origin, destination)
+activate PathCTRL
+
+PathCTRL -> PathCTRL: checkCookie()
+
+PathCTRL -> Route: GET getPath(origin, destination)
+activate Route
+
+Route -> Controller: GET getPath(origin, destination)
+activate Controller
+
+Controller -> Service: getPath(origin, destination)
+activate Service
+Service -> Repository: getPath(origin, destination)
+activate Repository
+Repository -> Persistence: findOne(origin, destination)
+activate Persistence
+
+alt path exists
+    Persistence --> Repository: pathInfo
+
+    Repository --> Service: pathInfo
+
+    Service --> Controller: pathInfo
+
+    Controller --> Route: 200 OK + pathInfo
+
+    Route --> PathCTRL: 200 OK + pathInfo
+
+    PathCTRL --> PathS: 200 OK + pathInfo
+
+    PathS --> PathC: 200 OK + pathInfo
+
+    PathC --> manager: shows information about path
+
+else path doesn't exists
+
+    Persistence --> Repository: null
+    deactivate Persistence
+    Repository --> Service: null
+    deactivate Repository
+    Service --> Controller: error, path doesn't exist
+    deactivate Service
+    Controller --> Route: 404 NOT FOUND, path doesn't exist
+    deactivate Controller
+    Route --> PathCTRL: 404 NOT FOUND, path doesn't exist
+    deactivate Route
+    PathCTRL --> PathS: 404 NOT FOUND, path doesn't exist
+    deactivate PathCTRL
+    PathS --> PathC: 404 NOT FOUND, path doesn't exist
+    deactivate PathS
+    PathC --> manager: informs path doesn't exist
+    deactivate PathC
+
+end
+
+deactivate manager
+
+@enduml

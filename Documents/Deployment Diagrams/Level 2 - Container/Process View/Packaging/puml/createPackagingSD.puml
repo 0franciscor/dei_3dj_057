@@ -1,0 +1,98 @@
+@startuml createPackagingSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Logistics Manager" as manager
+box "<<System(C4)>>\n       System"
+participant UI as  UI <<Container(C4)>>
+participant Auth as  Auth <<Container(C4)>>
+participant Logistics as  Logistics <<Container(C4)>>
+participant WarehouseManagement as  WarehouseManagement <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate manager
+manager->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> Auth: POST Login(email, password)
+activate Auth
+
+Auth --> UI: 200 OK
+deactivate Auth
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+
+
+UI --> manager: informs about the success of login
+
+manager -> UI: I want to create a new Packaging
+
+
+UI -> manager: asks for the details on the new Packaging
+
+
+manager -> UI: inserts the information about the new Packaging
+
+
+
+UI -> Auth: POST createPackaging(PackagingInfo)
+activate Auth
+Auth -> Logistics: POST createPackaging(PackagingInfo)
+activate Logistics
+Logistics -> WarehouseManagement: GET ExistsDelivery(DeliveryID)
+activate WarehouseManagement
+
+
+
+alt Packaging doesn't exist and Delivery exists
+
+WarehouseManagement -> Logistics: 200 OK
+
+Logistics --> Auth: 201 Created
+Auth --> UI: 201 Created
+UI --> manager:  shows information about new Packaging
+
+
+else Packaging already exists and Delivery exists
+
+WarehouseManagement -> Logistics: 200 OK
+
+Logistics --> Auth: 409 Conflict
+Auth --> UI: 409 Conflict
+
+UI --> manager: informs about the failure of the creation
+
+else DeliveryID doesn't exist
+
+WarehouseManagement -> Logistics: 404 Not Found
+deactivate WarehouseManagement
+Logistics --> Auth: 404 Not Found
+Auth --> UI: 404 Not Found
+deactivate Logistics
+UI --> manager: informs about the incorrect Delivery ID
+
+
+end
+
+deactivate UI
+deactivate manager
+
+
+@enduml

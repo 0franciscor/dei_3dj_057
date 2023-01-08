@@ -1,0 +1,81 @@
+@startuml createWarehouseSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+box "<<EletricGo(C4)>>\n       System"
+participant UI as UI <<Container(C4)>>
+participant Auth as Auth <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> Auth: POST Login(email, password)
+activate Auth
+
+Auth --> UI: 200 OK
+deactivate Auth
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+
+
+UI --> admin: informs about the success of login
+
+admin -> UI: I want to create a new warehouse
+
+UI -> admin: asks for the details on the new warehouse
+
+admin -> UI: inserts the information about the new warehouse
+
+UI -> Auth: POST CreateWarehouse(warehouseDto)
+activate Auth
+Auth -> WM: POST CreateWarehouse(warehouseDto)
+activate WM
+
+alt If warehouse doesnt exist in the system  
+WM --> Auth: 200 OK
+Auth --> UI: 201 Created
+UI --> admin:  shows information about new warehouse
+
+
+else If a warehouse already exists with the id entered
+
+WM --> Auth: 409 CONFLICT
+Auth --> UI: 409 Conflict
+UI --> admin: informs about the failure of the creation
+
+
+else If the attributes do not respect the business rules
+
+
+WM --> Auth: 409 CONFLICT
+Auth --> UI: 409 Conflict
+UI --> admin: informs about the failure of the creation
+deactivate WM
+
+end 
+
+deactivate UI
+deactivate admin
+@enduml

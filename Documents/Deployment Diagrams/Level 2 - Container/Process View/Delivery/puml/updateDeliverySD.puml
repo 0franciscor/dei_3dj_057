@@ -1,0 +1,89 @@
+@startuml updateDeliverySD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+box "<<EletricGo(C4)>>\n\tSystem"
+participant UI as UI <<Container(C4)>>
+participant Auth as AUTH <<Container(C4)>>
+participant WarehouseManagement as WM <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> AUTH: POST Login(email, password)
+activate AUTH
+
+AUTH --> UI: 200 OK
+deactivate AUTH
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+
+
+UI --> admin: informs about the success of login
+
+admin -> UI: I want to update an existing delivery
+
+
+UI --> admin: asks for the id and details which are going to be updated
+
+
+admin -> UI: inserts the information about the delivery
+
+UI -> AUTH: PATCH UpdateDelivery(deliveryDTO)
+activate AUTH
+
+AUTH -> WM: PATCH UpdateDelivery(deliveryDTO)
+activate WM
+
+alt If the delivery ID matches and the information\n respects business rules
+WM --> AUTH: 200 OK(updatedObj)
+AUTH --> UI: 200 OK(updatedObj)
+deactivate WM
+
+UI --> admin: informs about the success of the operation \n and the delivery details
+
+else If the inserted info does not respect business rules
+
+activate WM
+WM --> AUTH: 400 Bad Request
+AUTH --> UI: 400 Bad Request
+deactivate WM
+
+UI --> admin: informs that the delivery was not updated
+
+else If the ID does not match any delivery
+
+activate WM
+WM --> AUTH: 400 Bad Request
+AUTH --> UI: 400 Bad Request
+deactivate WM
+
+UI --> admin: infroams that the delivery was not updated
+
+end
+
+deactivate UI
+deactivate admin
+
+@enduml

@@ -1,0 +1,217 @@
+@startuml UpdateWarehouseSD
+autonumber
+!pragma teoz true
+
+actor "Warehouse Manager" as admin
+
+participant Google as Google <<System(C4)>>
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+
+    box "<<Container(C4)>>\n           WarehouseC" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant WarehouseCompoent as WarehouseC <<Component(C4)>>
+        participant WarehouseService as WarehouseS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant WarehouseController as WarehouseCTRL <<Container(C4)>>
+
+    end box
+
+
+    box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+        participant WarehouseController as  CTL <<Component(C4)>>
+        participant WarehouseService as  SV <<Component(C4)>>
+        participant "Warehouse : Warehouse" as  Warehouse <<Component(C4)>>
+        participant "WarehouseDTO : WarehouseDTO" as  DTO <<Component(C4)>>
+        participant WarehouseRepository as  WR <<Component(C4)>>
+    end box
+end box
+
+activate admin
+admin->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+
+end
+
+
+
+LoginC --> admin: informs about the success of login
+deactivate LoginC
+
+admin -> WarehouseC: I want to update the details of a warehouse
+activate WarehouseC
+
+WarehouseC --> admin: asks for the ID of the warehouse
+deactivate WarehouseC
+
+admin -> WarehouseC: inserts the ID of the warehouse
+activate WarehouseC
+
+WarehouseC --> admin: asks for the information to update
+deactivate WarehouseC
+
+admin -> WarehouseC: inserts the information to update
+activate WarehouseC
+
+WarehouseC -> WarehouseS : updateWarehouse(warehouseDto)
+activate WarehouseS
+WarehouseS -> WarehouseCTRL : PUT editWarehouse(warehouseDto)
+activate WarehouseCTRL
+
+WarehouseCTRL -> WarehouseCTRL: checkCookie()
+
+WarehouseCTRL -> CTL : Update()
+activate CTL
+CTL -> SV : UpdateWarehouse(warehouseDto)
+activate SV
+alt If the Id entered matches the Id of a warehouse\n  in the system and the business rules for the\n  new attributes are respected
+
+    SV -> WR : GetById(warehouseDto.Id)
+
+    activate WR
+
+
+    WR --> SV : warehouse 
+
+
+    SV -> Warehouse : Update(warehouseDto)
+    activate Warehouse
+
+    deactivate Warehouse
+
+    SV -> Warehouse : toWarehouseDto()
+    activate Warehouse
+
+    Warehouse --> SV : warehouseDto
+    deactivate Warehouse 
+    SV --> CTL : warehouseDto
+
+
+
+    CTL --> WarehouseCTRL : 200 OK 
+
+    WarehouseCTRL --> WarehouseS : 200 OK 
+
+    WarehouseS --> WarehouseC : 200 OK 
+
+    WarehouseC --> admin: displays the updated information and \ninforms about the operation success
+
+
+else If the Id entered does not match the Id of a warehouse in the system
+
+
+
+    SV -> WR : GetById(warehouseDto.Id)
+
+
+    WR --> SV : null 
+
+
+
+    SV --> CTL : null
+   
+
+    CTL --> WarehouseCTRL : 409 CONFLICT 
+ 
+    WarehouseCTRL --> WarehouseS : 409 CONFLICT 
+  
+    WarehouseS --> WarehouseC : 409 CONFLICT 
+
+
+    WarehouseC --> admin : display a message error
+  
+
+else  If the business rules for the new attributes are not respected
+
+
+    SV -> WR : GetById(warehouseDto.Id)
+
+
+    WR --> SV : warehouse 
+    deactivate WR
+
+    SV -> Warehouse : Update(warehouseDto)
+    activate Warehouse
+
+    Warehouse --> SV : BusinessRuleValidationException
+    deactivate Warehouse 
+    SV --> CTL : InvalidOperationException
+
+    deactivate SV
+
+    CTL -->  WarehouseCTRL : 409 CONFLICT 
+
+    WarehouseCTRL --> WarehouseS : 409 CONFLICT 
+    deactivate WarehouseCTRL
+    WarehouseS --> WarehouseC : 409 CONFLICT 
+    deactivate WarehouseS
+    WarehouseC --> admin : display a message error
+    deactivate WarehouseC
+end 
+
+deactivate admin
+
+@enduml

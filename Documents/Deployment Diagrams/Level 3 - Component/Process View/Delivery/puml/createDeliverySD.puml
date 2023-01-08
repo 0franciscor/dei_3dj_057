@@ -1,0 +1,215 @@
+@startuml createDeliverySD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+participant Google as Google <<System(C4)>>
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant DeliveryCompoent as DeliveryC <<Component(C4)>>
+        participant DeliveryService as DeliveryS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant DeliveryController as DeliveryCTRL <<Container(C4)>>
+
+    end box
+
+
+    box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+        participant DeliveryController as  CTL <<Component(C4)>>
+        participant DeliveryService as  SV <<Component(C4)>>
+        participant "Delivery : Delivery" as  delivery <<Component(C4)>>
+        participant "DeliveryDTO : DeliveryDTO" as  DTO <<Component(C4)>>
+        participant DeliveryRepository as  DR <<Component(C4)>>
+    end box
+end box
+
+activate admin
+admin->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+
+end
+
+
+
+LoginC --> admin: informs about the success of login
+deactivate LoginC
+
+admin -> DeliveryC: I want to create a new Delivery
+activate DeliveryC
+
+DeliveryC --> admin: asks for the details on the new Delivery
+
+
+admin -> DeliveryC: inserts the information about the new Delivery
+
+DeliveryC -> DeliveryS: CreateDelivery(DeliveryDto)
+activate DeliveryS
+
+DeliveryS -> DeliveryCTRL: POST CreateDelivery(DeliveryDto)
+activate DeliveryCTRL
+
+DeliveryCTRL -> DeliveryCTRL: checkCookie()
+
+DeliveryCTRL -> CTL: POST CreateDelivery(DeliveryDto)
+activate CTL
+
+
+
+alt If the Delivery doesn't exist in the system 
+    UI -> CTL: POST Post(DeliveryDto)
+
+    CTL -> SV : CreateDelivery(DeliveryDto)
+    activate SV
+
+    SV -> delivery : Create(DeliveryDto)
+    activate delivery
+    delivery --> SV : Delivery 
+    deactivate delivery
+
+    SV -> DR : save(Delivery)
+    activate DR
+    DR --> SV : true 
+    deactivate DR
+
+    SV -> delivery : toDeliveryDTO()
+    activate delivery
+    delivery --> SV : DeliveryDto
+    deactivate delivery
+    SV --> CTL : DeliveryDto
+    deactivate SV
+    CTL --> DeliveryCTRL : DeliveryDto + 200 OK
+    deactivate CTL
+    DeliveryCTRL --> DeliveryS : DeliveryDto + 200 OK
+    DeliveryS --> DeliveryC : DeliveryDto + 200 OK
+    DeliveryC --> admin : informs about the success of the operation
+
+
+
+
+else If a Delivery already exists with the id entered
+
+
+    CTL -> SV : CreateDelivery(DeliveryDto)
+    activate CTL
+    activate SV
+
+    SV -> delivery : Create(DeliveryDto)
+    activate delivery
+    delivery --> SV : Delivery 
+    deactivate delivery
+
+    SV -> DR : save(Delivery)
+    activate DR
+    DR --> SV : false
+    deactivate DR
+    SV --> CTL : BadRequestException
+    deactivate SV
+
+    CTL --> DeliveryCTRL: 400 BAD REQUEST
+    deactivate CTL
+    DeliveryCTRL --> DeliveryS: 400 BAD REQUEST
+
+    DeliveryS --> DeliveryC: 400 BAD REQUEST
+
+    DeliveryC --> admin: informs about the fail of the operation
+
+else If the attributes do not respect the business rules
+
+
+    CTL -> SV : CreateDelivery(DeliveryDto)
+    activate CTL
+    activate SV
+
+    SV -> delivery : Create(DeliveryDto)
+    activate delivery
+    delivery --> SV : BusinessRuleValidationException
+    deactivate delivery
+
+    SV --> CTL : BusinessRuleValidationException
+    deactivate SV
+
+    CTL --> DeliveryCTRL: 400 BAD REQUEST
+    deactivate CTL
+    DeliveryCTRL --> DeliveryS: 400 BAD REQUEST
+    deactivate DeliveryCTRL
+    DeliveryS --> DeliveryC: 400 BAD REQUEST
+    deactivate DeliveryS
+    DeliveryC --> admin: informs about the fail of the operation
+    deactivate DeliveryC
+
+end 
+deactivate admin
+
+@enduml
+

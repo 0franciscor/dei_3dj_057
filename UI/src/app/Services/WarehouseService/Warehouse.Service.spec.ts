@@ -110,6 +110,55 @@ describe('WarehouseService', () => {
   });
 
 
+  it('should delete a warehouse', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteWarehouse('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteWarehouse('TH1');
+
+  });
+
+  it('should delete a warehouse prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteWarehouseProlog('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteWarehouseProlog('TH1');
+
+  });
+
+  it('should create a city prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.createCityProlog('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.createCityProlog('TH1');
+
+  });
+
+
   it('should get all warehouses', async () => {
     const response = {
       "warehouses": [

@@ -1,0 +1,355 @@
+@startuml getAllPathSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+
+actor "Logistics Manager" as manager
+
+participant Google as Google <<System(C4)>>
+box "<<System(C4)>>\n       System" #LightYellow
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant PathComponent as PathC <<Component(C4)>>
+        participant PathService as PathS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant PathController as PathCTRL <<Container(C4)>>
+
+    end box
+    box "<<Container(C4)>>\n       Logistics" #LightBlue
+        participant PathRoute as Route <<Component(C4)>>
+        participant PathController as Controller <<Component(C4)>>
+        participant PathService as Service <<Component(C4)>>
+        participant PathRepository as Repository <<Component(C4)>>
+        participant Persistence as Persistence <<Component(C4)>>
+    end box
+   
+end box
+
+
+activate manager
+manager->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate Google
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+    deactivate Google
+
+end
+
+
+
+LoginC --> manager: informs about the success of login
+deactivate LoginC
+
+manager -> PathC: I want to get all paths
+activate PathC
+PathC -> manager: Asks if wants to apply any filter
+
+alt no filters apllied
+
+    PathC -> PathS: getAllPaths()
+    activate PathS
+
+    PathS -> PathCTRL: GET getAllPaths()
+    activate PathCTRL
+
+    PathCTRL -> PathCTRL: checkCookie()
+
+    PathCTRL -> Route: GET getAllPaths()
+    activate Route
+
+
+    Route -> Controller: getAllPaths()
+    activate Controller
+
+    Controller -> Service: getAllPaths()
+    activate Service
+
+    Service -> Repository: getAllPaths()
+    activate Repository
+
+    Repository -> Persistence: findall()
+    activate Persistence
+
+    Persistence --> Repository: allPaths
+    deactivate Persistence
+
+    Repository --> Service: allPaths
+    deactivate Repository
+
+    Service --> Controller: allPaths
+    deactivate Service
+
+    Controller --> Route: 200 OK + allPaths
+    deactivate Controller
+
+    Route -> PathCTRL: 200 OK + allPaths
+    deactivate Route
+    PathCTRL -> PathS: 200 OK + allPaths
+
+    PathS -> PathC: 200 OK + allPaths
+
+    PathC -> manager: all allPaths
+
+
+else filters applied 
+alt startwh given and exists 
+    PathC -> PathS: getAllPaths(startWHId)
+
+
+    PathS -> PathCTRL: GET getAllPaths(startWHId)
+
+
+    PathCTRL -> PathCTRL: checkCookie()
+
+    PathCTRL -> Route: GET getAllPaths(startWHId)
+
+    activate Route
+
+
+    Route -> Controller: getAllPaths(startWHId)
+    activate Controller
+
+    Controller -> Service: getAllPaths(startWHId)
+    activate Service
+
+    Service -> Repository: getAllPaths(startWHId)
+    activate Repository
+
+    Repository -> Persistence: findall(startWHId)
+    activate Persistence
+
+    Persistence --> Repository: allPaths
+    deactivate Persistence
+
+    Repository --> Service: allPaths
+    deactivate Repository
+
+    Service --> Controller: allPaths
+    deactivate Service
+
+    Controller --> Route: 200 OK + allPaths
+    deactivate Controller
+
+    Route -> PathCTRL: 200 OK + allPaths
+    deactivate Route
+    PathCTRL -> PathS: 200 OK + allPaths
+
+    PathS -> PathC: 200 OK + allPaths
+
+    PathC -> manager: all allPaths
+
+
+else destinationWH given and exists
+
+    PathC -> PathS: getAllPaths(destinationWH)
+
+
+    PathS -> PathCTRL: GET getAllPaths(destinationWH)
+
+
+    PathCTRL -> PathCTRL: checkCookie()
+
+    PathCTRL -> Route: GET getAllPaths(destinationWH)
+
+    activate Route
+
+
+    Route -> Controller: getAllPaths(destinationWH)
+    activate Controller
+
+    Controller -> Service: getAllPaths(destinationWH)
+    activate Service
+
+    Service -> Repository: getAllPaths(destinationWH)
+    activate Repository
+
+    Repository -> Persistence: findall(destinationWH)
+    activate Persistence
+
+    Persistence --> Repository: allPaths
+    deactivate Persistence
+
+    Repository --> Service: allPaths
+    deactivate Repository
+
+    Service --> Controller: allPaths
+    deactivate Service
+
+    Controller --> Route: 200 OK + allPaths
+    deactivate Controller
+
+    Route -> PathCTRL: 200 OK + allPaths
+    deactivate Route
+    PathCTRL -> PathS: 200 OK + allPaths
+
+    PathS -> PathC: 200 OK + allPaths
+
+    PathC -> manager: all allPaths
+
+else startWHId and destinationWHId given exists
+
+    PathC -> PathS: getAllPaths(startWHId,destinationWH)
+
+
+    PathS -> PathCTRL: GET getAllPaths(startWHId,destinationWH)
+
+
+    PathCTRL -> PathCTRL: checkCookie(startWHId,destinationWH)
+
+    PathCTRL -> Route: GET getAllPaths(startWHId,destinationWH)
+
+    activate Route
+
+
+    Route -> Controller: getAllPaths(startWHId,destinationWH)
+    activate Controller
+
+    Controller -> Service: getAllPaths(startWHId,destinationWH)
+    activate Service
+
+    Service -> Repository: getAllPaths(startWHId,destinationWH)
+    activate Repository
+
+    Repository -> Persistence: findall(startWHId,destinationWH)
+    activate Persistence
+
+    Persistence --> Repository: allPaths
+    deactivate Persistence
+
+    Repository --> Service: allPaths
+    deactivate Repository
+
+    Service --> Controller: allPaths
+    deactivate Service
+
+    Controller --> Route: 200 OK + allPaths
+    deactivate Controller
+
+    Route -> PathCTRL: 200 OK + allPaths
+    deactivate Route
+
+    PathCTRL -> PathS: 200 OK + allPaths
+
+    PathS -> PathC: 200 OK + allPaths
+
+    PathC -> manager: all allPaths
+
+
+else if any of these given Id's dont exist
+
+    PathC -> PathS: getAllPaths(startWHId,destinationWH)
+
+
+    PathS -> PathCTRL: GET getAllPaths(startWHId,destinationWH)
+
+
+    PathCTRL -> PathCTRL: checkCookie(startWHId,destinationWH)
+
+    PathCTRL -> Route: GET getAllPaths(startWHId,destinationWH)
+    activate Route
+
+
+    Route -> Controller: getAllPaths(startWHId,destinationWH)
+    activate Controller
+
+    Controller -> Service: getAllPaths(startWHId,destinationWH)
+    activate Service
+
+    Service -> Repository: getAllPaths(startWHId,destinationWH)
+    activate Repository
+
+    Repository -> Persistence: findall(startWHId,destinationWH)
+    activate Persistence
+
+    Persistence --> Repository: Not found
+    deactivate Persistence
+
+    Repository --> Service: Not found
+    deactivate Repository
+
+    Service --> Controller: Not found
+    deactivate Service
+
+    Controller --> Route: 404 + Not found
+    deactivate Controller
+
+    Route -> PathCTRL: 404 + Not found
+    deactivate Route
+
+    PathCTRL -> PathS: 404 + Not found
+    deactivate PathCTRL
+
+    PathS -> PathC: 404 + Not found
+    deactivate PathS
+
+    PathC -> manager: 404 + Not found, possible wrong id
+    deactivate PathC
+    deactivate manager
+end
+
+@enduml

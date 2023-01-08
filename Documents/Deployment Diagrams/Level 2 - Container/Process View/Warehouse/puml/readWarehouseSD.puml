@@ -1,0 +1,76 @@
+@startuml readWarehouseSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+box "<<EletricGo(C4)>>\n       System"
+participant UI as UI <<Container(C4)>>
+participant Auth as Auth <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> Auth: POST Login(email, password)
+activate Auth
+
+Auth --> UI: 200 OK
+deactivate Auth
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+UI --> admin: informs about the success of login
+
+admin -> UI: I want to consult the details on a warehouse
+
+
+UI --> admin: asks for the ID of the warehouse
+
+
+admin -> UI: inserts the ID of the warehouse
+
+UI -> Auth: GET GetById(id)
+activate Auth
+Auth -> WM: GET GetById(id)
+activate WM
+
+alt If the Id entered matches the Id of a warehouse in the system
+
+WM --> Auth : 200 OK 
+Auth --> UI: 200 OK
+UI --> admin: displays the details of the requested warehouse
+
+
+else If the Id entered does not match the Id of a warehouse in the system
+
+WM --> Auth : 404 NOT FOUND
+Auth --> UI: 404 Not Found
+UI --> admin: display a message of error
+deactivate WM
+
+end
+
+deactivate UI
+deactivate admin
+
+
+@enduml

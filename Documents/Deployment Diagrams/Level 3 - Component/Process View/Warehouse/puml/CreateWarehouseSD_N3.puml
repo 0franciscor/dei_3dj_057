@@ -1,0 +1,208 @@
+
+@startuml CreateWarehouseSD
+autonumber
+!pragma teoz true
+
+
+actor "Warehouse Manager" as admin
+
+participant Google as Google <<System(C4)>>
+
+box "<<System(C4)>>\n       EletricGo" #LightYellow
+
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant WarehouseCompoent as WarehouseC <<Component(C4)>>
+        participant WarehouseService as WarehouseS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant WarehouseController as WarehouseCTRL <<Container(C4)>>
+
+    end box
+
+
+    box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+        participant WarehouseController as  CTL <<Component(C4)>>
+        participant WarehouseService as  SV <<Component(C4)>>
+        participant "Warehouse : Warehouse" as  Warehouse <<Component(C4)>>
+        participant "WarehouseDTO : WarehouseDTO" as  DTO <<Component(C4)>>
+        participant WarehouseRepository as  WR <<Component(C4)>>
+    end box
+end box
+
+activate admin
+admin->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+
+end
+
+
+
+LoginC --> admin: informs about the success of login
+deactivate LoginC
+admin -> WarehouseC: I want to create a new warehouse
+activate WarehouseC
+
+WarehouseC -> admin: asks for the details on the new warehouse
+deactivate WarehouseC
+
+admin -> WarehouseC: inserts the information about the new warehouse
+
+activate WarehouseC
+WarehouseC -> WarehouseS: createWarehouse(warehouseDto)
+activate WarehouseS
+WarehouseS -> WarehouseCTRL : POST createWarehouse(warehouseDto)
+activate WarehouseCTRL
+
+WarehouseCTRL -> WarehouseCTRL: checkCookie()
+
+WarehouseCTRL -> CTL : POST createWarehouse(warehouseDto)
+activate CTL
+alt If warehouse don´t exist in the system 
+
+
+    CTL -> SV : CreateWarehouse(warehouseDto)
+    activate SV
+
+    SV -> Warehouse : Create(warehouseDto)
+    activate Warehouse
+    Warehouse --> SV : warehouse 
+    deactivate Warehouse
+
+    SV -> WR : save(warehouse)
+    activate WR
+    WR --> SV : true 
+    deactivate WR
+
+    SV -> Warehouse : toWarehouseDTO()
+    activate Warehouse
+    Warehouse --> SV : warehouseDto
+    deactivate Warehouse
+    SV --> CTL : warehouseDto
+    deactivate SV
+    CTL --> WarehouseCTRL: 200 OK
+
+    WarehouseCTRL --> WarehouseS : 200 OK 
+
+    WarehouseS --> WarehouseC : 200 OK 
+
+
+    WarehouseC -> admin: informs about the success of the operation
+
+
+else If a warehouse already exists with the id entered
+
+
+  
+    CTL -> SV : CreateWarehouse(warehouseDto)
+    activate SV
+
+    SV -> Warehouse : Create(warehouseDto)
+    activate Warehouse
+    Warehouse --> SV : warehouse 
+    deactivate Warehouse
+
+    SV -> WR : save(warehouse)
+    activate WR
+    WR --> SV : false
+    deactivate WR
+    SV --> CTL : InvalidOperationException
+
+    deactivate SV
+    CTL --> WarehouseCTRL : InvalidOperationException
+
+    WarehouseCTRL --> WarehouseS : 409 CONFLICT 
+
+    WarehouseS --> WarehouseC : 409 CONFLICT 
+
+    WarehouseC -> admin: informs about the fail of the operation
+
+
+else If the attributes do not respect the business rules
+
+
+    CTL -> SV : CreateWarehouse(warehouseDto)
+    activate SV
+
+    SV -> Warehouse : Create(warehouseDto)
+    activate Warehouse
+    Warehouse --> SV : BusinessRuleValidationException
+    deactivate Warehouse
+
+    SV --> CTL : BusinessRuleValidationException
+    deactivate SV
+    CTL --> WarehouseCTRL : BusinessRuleValidationException
+    deactivate CTL
+    WarehouseCTRL --> WarehouseS : 409 CONFLICT 
+    deactivate WarehouseCTRL 
+    WarehouseS --> WarehouseC : 409 CONFLICT 
+    deactivate WarehouseS
+    WarehouseC -> admin: informs about the fail of the operation
+    deactivate WarehouseC 
+end 
+
+deactivate admin
+
+@enduml

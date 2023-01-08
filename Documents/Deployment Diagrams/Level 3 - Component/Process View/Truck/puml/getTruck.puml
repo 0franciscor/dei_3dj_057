@@ -8,41 +8,119 @@ ParticipantBorderColor black
 ParticipantBackgroundColor white
 }
 
-actor "Fleet Manager" as manager
+actor "Logistics Manager" as manager
 
-box "<<Container(C4)>>\n           UI" #SandyBrown
-participant "FleetManagerComponent" as FleetManagerComponent <<Component(C4)>>
-participant "TruckService" as TruckService <<Component(C4)>>
+participant Google as Google <<System(C4)>>
+box "<<System(C4)>>\n       System" #LightYellow
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant TruckComponent as TruckC <<Component(C4)>>
+        participant TruckS as TruckS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant TruckController as TruckCTRL <<Container(C4)>>
+
+    end box
+    box "<<Container(C4)>>\n       Logistics" #LightBlue
+        participant TruckRoute as Route <<Component(C4)>>
+        participant TruckController as Controller <<Component(C4)>>
+        participant TruckS as Service <<Component(C4)>>
+        participant TruckRepository as Repository <<Component(C4)>>
+        participant Persistence as Persistence <<Component(C4)>>
+    end box
+
 end box
-
-box "<<System(C4)>>\n       System" #LightGray
-participant Auth as  Auth <<Container(C4)>>
-box "<<Container(C4)>>\n       Logistics" #LightCyan
-participant TruckRoute as Route <<Component(C4)>>
-participant TruckController as Controller <<Component(C4)>>
-participant TruckService as Service <<Component(C4)>>
-participant TruckRepository as Repository <<Component(C4)>>
-participant Persistance as Persistance <<Component(C4)>>
-end box
-
 
 
 activate manager
+manager->LoginC: I want to login
+activate LoginC
 
-manager -> FleetManagerComponent: Asks to get a Truck
-activate FleetManagerComponent
-FleetManagerComponent -> manager: Asks for Truck ID
+alt Login through email and password in EletricGo
 
 
-manager ->FleetManagerComponent: Inserts Truck ID
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
 
-FleetManagerComponent -> TruckService: getTruck(TruckID)
-activate TruckService
-TruckService -> Auth: GET getTruck(TruckID)
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
 
-activate Auth
 
-Auth -> Route: GET getTruck(truckID)
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate Google
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+    deactivate Google
+
+end
+
+
+
+LoginC --> manager: informs about the success of login
+deactivate LoginC
+
+
+manager -> TruckC: Asks to get a Truck
+activate TruckC
+TruckC -> manager: Asks for Truck ID
+
+
+manager ->TruckC: Inserts Truck ID
+
+TruckC -> TruckS: getTruck(TruckID)
+activate TruckS
+TruckS -> TruckCTRL: GET getTruck(TruckID)
+activate TruckCTRL
+TruckCTRL -> TruckCTRL: checkCookie()
+
+TruckCTRL -> Route: GET getTruck(truckID)
 activate Route
 Route -> Controller: GET getTruck(truckID)
 activate Controller
@@ -54,45 +132,47 @@ activate Service
 
 Service -> Repository: getTruckById(truckID)
 activate Repository
-Repository -> Persistance: findOne(truckID)
-activate Persistance
+Repository -> Persistence: findOne(truckID)
+activate Persistence
 
 alt Truck exists
 
-Persistance -> Repository: truckInfo
-Repository->Service: truckInfo
+    Persistence -> Repository: truckInfo
+    Repository->Service: truckInfo
 
-Service -> Controller: truckInfo
-Controller->Route: truckInfo
-Route->Auth: 200 OK, TruckInfo
-Auth->TruckService: 200 OK, TruckInfo
-TruckService->FleetManagerComponent: 200 OK, TruckInfo
+    Service -> Controller: truckInfo
+    Controller->Route: truckInfo
+    Route->TruckCTRL: 200 OK, TruckInfo
+    TruckCTRL->TruckS: 200 OK, TruckInfo
+    TruckS->TruckC: 200 OK, TruckInfo
 
-FleetManagerComponent->manager: Shows required information about Truck
+    TruckC->manager: Shows required information about Truck
 
 
 else Truck doesn't exist
 
-Service -> Repository: getTruckById(TruckInfo.id)
+    Service -> Repository: getTruckById(TruckInfo.id)
 
-Repository -> Persistance: findOne(TruckID)
+    Repository -> Persistence: findOne(TruckID)
 
-Persistance->Repository: null
-deactivate Persistance
-Repository->Service: null
-deactivate Repository
-Service->Controller: error, Truck doesn't exist
-deactivate Service
-Controller->Route: 404 NOT FOUND, Truck doesn't exist
-deactivate Controller
-Route->Auth: 404 NOT FOUND, Truck doesn't exist
-deactivate Route
-Auth -> TruckService: 404 NOT FOUND, Truck doesn't exist
-deactivate Auth
-TruckService -> FleetManagerComponent: 404 NOT FOUND, Truck doesn't exist
-deactivate TruckService
-FleetManagerComponent -> manager: Informs that Truck doesn't exist
-deactivate FleetManagerComponent
+    Persistence->Repository: null
+    deactivate Persistence
+    Repository->Service: null
+    deactivate Repository
+    Service->Controller: error, Truck doesn't exist
+    deactivate Service
+    Controller->Route: 404 NOT FOUND, Truck doesn't exist
+    deactivate Controller
+    Route->TruckCTRL: 404 NOT FOUND, Truck doesn't exist
+    deactivate Route
+    TruckCTRL -> TruckS: 404 NOT FOUND, Truck doesn't exist
+    deactivate TruckCTRL
+    TruckS -> TruckC: 404 NOT FOUND, Truck doesn't exist
+    deactivate TruckS
+    TruckC -> manager: Informs that Truck doesn't exist
+    deactivate TruckC
+    deactivate manager
+end
 
 
 @enduml

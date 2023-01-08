@@ -1,0 +1,182 @@
+@startuml deletePackagingSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+actor "Logistics Manager" as manager
+
+participant Google as Google <<System(C4)>>
+box "<<System(C4)>>\n       System" #LightYellow
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant PackagingComponent as PackagingC <<Component(C4)>>
+        participant PackagingService as PackagingS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant PackagingController as PackagingCTRL <<Container(C4)>>
+
+    end box
+    box "<<Container(C4)>>\n       Logistics" #LightBlue
+        participant PackagingRoute as Route <<Component(C4)>>
+        participant PackagingController as Controller <<Component(C4)>>
+        participant PackagingService as Service <<Component(C4)>>
+        participant PackagingRepository as Repository <<Component(C4)>>
+        participant Persistence as Persistence <<Component(C4)>>
+    end box
+    
+end box
+
+
+activate manager
+manager->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate Google
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+    deactivate Google
+
+end
+
+
+
+LoginC --> manager: informs about the success of login
+deactivate LoginC
+manager -> PackagingC: I want to delete a Packaging
+activate PackagingC
+
+PackagingC -> manager: asks for Packaging ID
+deactivate PackagingC
+
+manager -> PackagingC: inserts Packaging ID
+activate PackagingC
+PackagingC -> PackagingS: deletePackaging(packagingID)
+activate PackagingS
+PackagingS -> PackagingCTRL: DELETE deletePackaging(packagingID)
+activate PackagingCTRL
+PackagingCTRL -> PackagingCTRL: checkCookie()
+
+PackagingCTRL -> Route: DELETE deletePackaging(packagingID)
+
+activate Route
+Route -> Controller: DELETE deletePackaging(packagingID)
+activate Controller
+
+Controller -> Service: deletePackaging(PackagingInfo)
+activate Service
+Service -> Repository: getPackagingById(PackagingInfo.id)
+activate Repository
+Repository -> Persistence: findOne(PackagingInfo.id)
+activate Persistence
+
+
+alt Packaging exists
+
+    Persistence --> Repository: packagingInfo
+
+    Repository --> Service: packagingInfo
+
+    Service -> Repository: delete(packagingID)
+
+    Repository -> Persistence: deleteOne(packagingID)
+
+    Persistence --> Repository: true
+
+    Repository --> Service: PackagingInfo
+
+    Service --> Controller: PackagingInfo
+
+    Controller --> Route: 200 OK + PackagingInfo
+
+    Route --> PackagingCTRL: 200 OK + PackagingInfo
+
+    PackagingCTRL --> PackagingS: 200 OK + PackagingInfo
+
+    PackagingS --> PackagingC: 200 OK + PackagingInfo
+
+    PackagingC --> manager: informs about the success of the deletion
+
+else Packaging doesn't exist
+
+    Persistence --> Repository: null
+    deactivate Persistence
+    Repository --> Service: null
+    deactivate Repository
+    Service --> Controller: error, Packaging doesn't exist
+    deactivate Service
+    Controller --> Route: 404 NOT FOUND, Packaging doesn't exist
+    deactivate Controller
+    Route --> PackagingCTRL: 404 NOT FOUND, Packaging doesn't exist
+    deactivate Route
+    PackagingCTRL --> PackagingS: 404 NOT FOUND, Packaging doesn't exist
+    deactivate PackagingCTRL
+    PackagingS --> PackagingC: 404 NOT FOUND, Packaging doesn't exist
+    deactivate PackagingS
+    PackagingC --> manager: informs about the failure of the deletion
+    deactivate PackagingC
+
+end
+
+deactivate manager
+
+@enduml

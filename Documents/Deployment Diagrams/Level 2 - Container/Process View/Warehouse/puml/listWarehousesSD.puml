@@ -1,0 +1,67 @@
+@startuml listWarehouseSD
+autonumber
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+actor "Warehouse Manager" as admin
+
+box "<<EletricGo(C4)>>\n       System"
+participant UI as UI <<Container(C4)>>
+participant Auth as Auth <<Container(C4)>>
+participant WarehouseManagement as  WM <<Container(C4)>>
+end box
+participant Google as Google <<System(C4)>>
+
+
+activate admin
+admin->UI: I want to login
+activate UI
+
+alt Login through email and password in EletricGo
+
+UI -> Auth: POST Login(email, password)
+activate Auth
+
+Auth --> UI: 200 OK
+deactivate Auth
+
+else Login through Google
+
+UI -> Google: Login with Google account
+activate Google
+Google --> UI: 200 OK
+deactivate Google
+
+end
+
+admin -> UI: I want to consult the warehouses in the system
+
+
+UI -> Auth: GET GetAll()
+activate Auth
+Auth -> WM: GET GetAll()
+activate WM
+
+alt if there are warehouses in the system
+
+WM --> Auth : 200 OK 
+Auth --> UI: 200 OK
+UI --> admin: show all warehouses in the system
+
+else If there are no warehouses in the system
+
+
+WM --> Auth : 404 NOT FOUND
+Auth --> UI: 404 Not Found
+UI --> admin: show message error "Warehouses not found"
+deactivate WM
+
+end
+
+deactivate UI
+deactivate admin
+
+@enduml

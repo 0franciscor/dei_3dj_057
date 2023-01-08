@@ -258,17 +258,25 @@ describe('DeliveryService', () => {
   });
 
   it('should Create a delivery prolog', async () => {
+    const date: Date = new Date("2023-05-05");
     const response = {
       "status": 201,
     };
-
+    const deliveryParam = {
+      "deliveryID": "1234",
+      "deliveryDate": date,
+      "loadTime": 5,
+      "unloadTime": 5,
+      "destination": "1",
+      "deliveryMass": 5
+    }
     const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
-    const delivery = await service.createDeliveryProlog("123");
+    const delivery = await service.createDeliveryProlog(deliveryParam);
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery.status).toEqual(201);
     service.urlOrigin = "https://azure:4200";
-    await service.createDeliveryProlog("123");
+    await service.createDeliveryProlog(deliveryParam);
   });
 
   it('should Update a delivery', async () => {
@@ -286,17 +294,39 @@ describe('DeliveryService', () => {
   });
 
   it('should Update a delivery prolog', async () => {
+    const date: Date = new Date("2023-05-05");
     const response = {
+      "deliveries": [
+        {
+          "deliveryID": "123",
+          "deliveryDateProlog": date,
+          "loadTime": 5,
+          "unloadTime": 5,
+          "destination": "1",
+          "deliveryMass": 5
+        }
+      ],
+      json() {
+        return this;
+      },
       "status": 200,
     };
+    const deliveryParam = {
+      "deliveryID": "1234",
+      "deliveryDate": date,
+      "loadTime": 5,
+      "unloadTime": 5,
+      "destination": "1",
+      "deliveryMass": 5
+    }
 
     const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
 
-    const delivery = await service.updateDeliveryProlog("123");
+    const delivery = await service.updateDeliveryProlog(deliveryParam);
     expect(fetchSpy).toHaveBeenCalled();
     expect(delivery.status).toEqual(200);
     service.urlOrigin = "https://azure:4200";
-    await service.updateDeliveryProlog("123");
+    await service.updateDeliveryProlog(deliveryParam);
   });
 
   it('should send a fetch without data', async () => {
@@ -308,6 +338,39 @@ describe('DeliveryService', () => {
     const status = await service.sendFetch('test', 'POST', 'null', "cookie");
     expect(status.status).toEqual(404);
   });
+
+  it('should delete delivery', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const delivery = await service.deleteDelivery("123");
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(delivery.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteDelivery("123");
+
+  });
+
+  it('should delete delivery prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const delivery = await service.deleteDeliveryProlog("123");
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(delivery.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteDeliveryProlog("123");
+
+  });
+
 });
 
 describe('WarehouseService', () => {
@@ -415,6 +478,55 @@ describe('WarehouseService', () => {
     expect(status.status).toEqual(200);
     service.urlOrigin = "https://azure:4200";
     await service.updateWarehouseProlog('TH1');
+  });
+
+
+  it('should delete a warehouse', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteWarehouse('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteWarehouse('TH1');
+
+  });
+
+  it('should delete a warehouse prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteWarehouseProlog('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteWarehouseProlog('TH1');
+
+  });
+
+  it('should create a city prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.createCityProlog('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.createCityProlog('TH1');
+
   });
 
 

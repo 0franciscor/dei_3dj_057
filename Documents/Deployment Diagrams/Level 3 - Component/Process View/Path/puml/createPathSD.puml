@@ -1,0 +1,213 @@
+@startuml createPathSD
+autonumber
+!pragma teoz true
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+actor "Logistics Manager" as manager
+
+participant Google as Google <<System(C4)>>
+box "<<System(C4)>>\n       System" #LightYellow
+    box "<<Container(C4)>>\n           UI" #LightCyan
+        
+        participant LoginController as LoginC <<Component(C4)>>
+        participant LoginService as LoginS <<Component(C4)>>
+    
+    
+    
+        participant PathComponent as PathC <<Component(C4)>>
+        participant PathService as PathS <<Component(C4)>>
+        
+
+    end box
+
+    box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
+
+        participant UserController as UserCTRL <<Container(C4)>> 
+        participant UserService as UserServ <<Container(C4)>> 
+        participant UserRepository as UserRepo <<Container(C4)>> 
+
+        participant PathController as PathCTRL <<Container(C4)>>
+
+    end box
+    box "<<Container(C4)>>\n       Logistics" #LightBlue
+        participant PathRoute as Route <<Component(C4)>>
+        participant PathController as Controller <<Component(C4)>>
+        participant PathService as Service <<Component(C4)>>
+        participant PathRepository as Repository <<Component(C4)>>
+        participant Persistence as Persistence <<Component(C4)>>
+    end box
+    participant WarehouseManagement as WarehouseManagement <<Container(C4)>>
+end box
+
+
+activate manager
+manager->LoginC: I want to login
+activate LoginC
+
+alt Login through email and password in EletricGo
+
+
+    LoginC -> LoginS: login(email, password)
+    activate LoginS
+    LoginS -> UserCTRL: POST Login(email, password)
+    activate UserCTRL
+
+    UserCTRL -> UserServ: login(email, password)
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ -> UserServ: checkPassword(password, User)
+    UserServ --> UserCTRL: Success
+    deactivate UserServ
+
+
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+else Login through Google
+
+    LoginC -> Google: Login with Google account
+    activate Google
+    Google --> LoginC: 200 OK
+    deactivate Google
+    LoginC -> LoginS: loginWithGoogle()
+    activate LoginS
+    LoginS -> UserCTRL: POST LoginWithGoogle()
+    activate UserCTRL
+    UserCTRL -> UserServ: userExists()
+    activate UserServ
+    UserServ -> UserRepo: findByEmail(email)
+    activate UserRepo
+    UserRepo --> UserServ: User
+    deactivate UserRepo
+    UserServ --> UserCTRL: User
+    deactivate UserServ
+    UserCTRL --> LoginS: 200 OK + Cookie
+    deactivate UserCTRL
+    LoginS --> LoginC: 200 OK
+    deactivate LoginS
+
+    deactivate Google
+
+end
+
+
+
+LoginC --> manager: informs about the success of login
+deactivate LoginC
+
+manager -> PathC: I want to create a new Path
+activate PathC
+
+PathC -> manager: asks for the details on the new Path
+deactivate PathC
+
+manager -> PathC: inserts the information about the new Path
+activate PathC
+
+PathC -> PathS: createPath(pathInfo)
+activate PathS
+
+PathS -> PathCTRL: POST createPath(pathInfo)
+activate PathCTRL
+
+PathCTRL -> PathCTRL: checkCookie()
+
+PathCTRL -> Route: POST createPath(pathInfo)
+activate Route
+Route -> Controller: POST createPath(pathInfo)
+activate Controller
+
+Controller -> WarehouseManagement: GET existsPath(startWhID)
+activate WarehouseManagement
+Controller -> WarehouseManagement: GET existsPath(destinationWhID)
+
+alt Path doesn't exist and Warehouse exists
+
+    WarehouseManagement -> Controller: 200 OK
+
+    Controller -> Service: createPath(pathInfo)
+    activate Service
+    Service -> Repository: getPathById(pathInfo.id)
+    activate Repository
+    Repository -> Persistence: findOne(pathInfo.id)
+    activate Persistence
+    Persistence --> Repository: null
+
+    Repository --> Service: null
+
+    Service -> Repository: save(pathInfo)
+
+    Repository -> Persistence: save(pathInfo)
+
+    Persistence --> Repository: true
+
+    Repository --> Service: pathInfo
+
+    Service --> Controller: pathInfo
+
+    Controller --> Route: 201 CREATED + pathInfo
+
+    Route --> PathCTRL: 201 CREATED
+
+    PathCTRL --> PathS: 201 CREATED
+
+    PathS --> PathC: 201 CREATED
+
+    PathC --> manager: informs about the success of the creation
+
+else Path already exists and Warehouse exists
+
+    WarehouseManagement -> Controller: 200 OK
+
+    Controller -> Service: createPath(pathInfo)
+
+    Service -> Repository: getPathById(pathInfo.id)
+
+    Repository -> Persistence: findOne(pathInfo.id)
+
+    Persistence --> Repository: Path
+    deactivate Persistence
+    Repository --> Service: Path
+    deactivate Repository
+    Service --> Controller: error, Path already exists
+    deactivate Service
+    Controller --> Route: 409 CONFLICT, Path already exists
+
+    Route --> PathCTRL: 409 CONFLICT, Path already exists
+
+    PathCTRL --> PathS: 409 CONFLICT, Path already exists
+
+    PathS --> PathC: 409 CONFLICT, Path already exists
+
+    PathC --> manager: informs about the failure of the creation
+
+
+else warehouse doesn't exist
+
+    WarehouseManagement -> Controller: 404 NOT FOUND
+    deactivate WarehouseManagement
+    Controller -> Route: 404 NOT FOUND
+    deactivate Controller
+    Route --> PathCTRL: 404 NOT FOUND
+    deactivate Route
+    PathCTRL -> PathS: 404 NOT FOUND
+    deactivate PathCTRL
+    PathS -> PathC: 404 NOT FOUND
+    deactivate PathS
+    PathC -> manager: informs warehouse doesn't exist
+    deactivate PathC
+
+end
+
+deactivate SPA
+deactivate manager
+
+@enduml

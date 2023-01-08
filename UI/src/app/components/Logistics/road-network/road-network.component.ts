@@ -1,18 +1,14 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, NgZone } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { random } from 'cypress/types/lodash';
 import { LoginService } from 'src/app/Services/LoginService/login.service';
 import { RoadNetworkService } from 'src/app/Services/RoadNetworkService/road-network.service';
 import * as THREE from 'three';
-import * as YUKA from 'yuka';
-import { Object3D, Raycaster, VSMShadowMap } from 'three';
-import { PCFShadowMap, PCFSoftShadowMap } from 'three';
+import { Object3D, PCFSoftShadowMap } from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import AutoTruck from './RoadNetworkJS/AutoTruck';
 import Player from './RoadNetworkJS/player';
 import roadNetworkTemplate from './RoadNetworkJS/road-network';
 import TruckNetwork from './RoadNetworkJS/truck-network';
-import { EntityManager } from 'yuka';
-
 
 interface Warehouse {
   id: string;
@@ -36,8 +32,6 @@ interface Truck {
   active: boolean;
 }
   
-
-
 
 @Component({
   selector: 'app-road-network',
@@ -109,6 +103,8 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
   private roadNetwork !: roadNetworkTemplate;
   private truckNetwork !: TruckNetwork;
+
+  private autoTruck !: AutoTruck;
 
   private updateOptions(options: string[]) {
     // Clear the existing options
@@ -247,12 +243,14 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
 
   private async createScene() {
+    
 
     let warehouses: Warehouse[] = await this.createWarehouses();
     
     let paths: any[] = await this.createPaths(warehouses);
 
     let positions = roadNetworkTemplate.calculatePositions(warehouses);
+    
     this.roadNetwork = new roadNetworkTemplate({
       positions: positions,
       paths: paths
@@ -265,7 +263,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
     this.truckNetwork.truckNames.forEach((truck) => {
       truckOption.push(truck);
     });
-
+    
     this.roadNetwork.object.children.forEach(objectGroup => {
       objectGroup.children.forEach(object => {
         if(object.name==""){
@@ -274,12 +272,16 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
           this.warehouses.push(object);
         }
       });
-       
+      
     });
-
-
-
+    
+    
+    
     this.scene = new THREE.Scene();
+    
+    this.autoTruck = new AutoTruck(this.scene);
+    this.autoTruck.buildPath(paths, positions);
+    this.autoTruck.yukaObject();
 
     const loader = new THREE.TextureLoader();
     loader.load('assets/sky.jpg', (texture) => {
@@ -389,48 +391,7 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
       sound.setVolume(0.5);
       sound.play();
     });
-
-    this.testYUKA(positions);
-
   }
-
-  private testYUKA(positions : any){
-    const vehicleGeometry = new THREE.ConeGeometry( 0.1, 0.5, 8 );
-    const vehicleMaterial = new THREE.MeshNormalMaterial();
-    const vehicleMesh = new THREE.Mesh( vehicleGeometry, vehicleMaterial );
-    vehicleMesh.matrixAutoUpdate = false;
-    this.scene.add(vehicleMesh); 
-    
-    const vehicle = new YUKA.Vehicle();
-    vehicle.setRenderComponent(vehicleMesh, this.sync);
-
-    const path = new YUKA.Path();
-    positions.forEach((position : any) => {
-      path.add(new YUKA.Vector3(position.x, position.y, position.z));
-    });
-
-    vehicle.position.copy(path.current());
-    const folllowPathBehavior = new YUKA.FollowPathBehavior(path, 0.5);
-
-    vehicle.steering.add(folllowPathBehavior);
-
-    this.entityManager = new YUKA.EntityManager();
-
-    this.entityManager.add(vehicle);
-
-    this.time = new YUKA.Time();
-    
-  }
-
-  public time!: YUKA.Time;
-  public entityManager!: YUKA.EntityManager;
-  
-
-  sync(entity:any, renderComponent:any) {
-    renderComponent.matrix.copy(entity.worldMatrix);  
-  }
-
-  private lastPosition = new THREE.Vector3();
 
   private animate() {
    
@@ -444,10 +405,10 @@ export class RoadNetworkComponent implements OnInit, AfterViewInit {
 
     }
     
-    const delta = this.time.update().getDelta();
-    this.entityManager.update(delta);
+    //Animate YUKA AI
+    const delta = this.autoTruck.time.update().getDelta();
+    this.autoTruck.entityManager.update(delta);
     this.renderer.render(this.scene, this.camera);
-
   }
  
 

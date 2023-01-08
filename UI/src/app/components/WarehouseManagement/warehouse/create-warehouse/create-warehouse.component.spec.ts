@@ -30,8 +30,8 @@ describe('CreateWarehouseComponent', () => {
     })
     .compileComponents();
 
-    fakeWarehouseService = jasmine.createSpyObj('WarehouseService', ['createWarehouse','createWarehouseProlog']);
-    fakeWarehouseService.createWarehouse.and.returnValue(Promise.resolve({status: 200}));
+    fakeWarehouseService = jasmine.createSpyObj('WarehouseService', ['createWarehouse','createWarehouseProlog','getWarehouse','createWarehouseProlog','createCityProlog','createCountryProlog']);
+    fakeWarehouseService.createWarehouse.and.returnValue(Promise.resolve({status: 201}));
 
     TestBed.overrideProvider(WarehouseService, {useValue: fakeWarehouseService});
     fakeLoginService = TestBed.inject(LoginService);
@@ -254,6 +254,55 @@ describe('WarehouseService', () => {
     expect(status.status).toEqual(200);
     service.urlOrigin = "https://azure:4200";
     await service.updateWarehouseProlog('TH1');
+  });
+
+
+  it('should delete a warehouse', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteWarehouse('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteWarehouse('TH1');
+
+  });
+
+  it('should delete a warehouse prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.deleteWarehouseProlog('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.deleteWarehouseProlog('TH1');
+
+  });
+
+  it('should create a city prolog', async () => {
+
+    const response = {
+      "status": 200,
+    };
+
+    const fetchSpy = spyOn<any>(service, 'sendFetch').and.returnValue(Promise.resolve(response));
+
+    const status = await service.createCityProlog('TH1');
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(status.status).toEqual(200);
+    service.urlOrigin = "https://azure:4200";
+    await service.createCityProlog('TH1');
+
   });
 
 

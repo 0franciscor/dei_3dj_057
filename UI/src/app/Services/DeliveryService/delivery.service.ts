@@ -87,7 +87,7 @@ export class DeliveryService {
     if(this.urlOrigin.includes("azure")){
       url = 'https://auth57.azurewebsites.net/api/delivery/createProlog';
     }
-
+    
     interface createDeliveryProlog {
       deliveryID: string,
       deliveryDateProlog: string,
@@ -96,7 +96,7 @@ export class DeliveryService {
       destination: string,
       deliveryMass: number,
     }
-
+    
     const data : createDeliveryProlog = {
       deliveryID: delivery.deliveryID,
       deliveryDateProlog: delivery.deliveryDate.getFullYear().toString() + (delivery.deliveryDate.getMonth()+1).toString().padStart(2, '0') + delivery.deliveryDate.getDate().toString().padStart(2, '0'),
@@ -125,7 +125,6 @@ export class DeliveryService {
       destination: string,
       deliveryMass: number,
     }
-
     const data : updateDeliveryProlog = {
       deliveryID: delivery.deliveryID,
       deliveryDate: delivery.deliveryDate.getFullYear().toString() + (delivery.deliveryDate.getMonth()+1).toString().padStart(2, '0') + delivery.deliveryDate.getDate().toString().padStart(2, '0'),

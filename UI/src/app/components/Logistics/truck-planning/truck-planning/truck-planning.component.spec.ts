@@ -75,6 +75,7 @@ describe('TruckPlanningComponent', () => {
 
   it('should get best path', async () => {
     component.formPlanning = new FormGroup({
+      truckName: new FormControl(''),
       planDate: new FormControl(''),
     });
     component.formPlanning.controls['planDate'].setValue("Mon Dec 05 2022 00:00:00 GMT+0000 (Western European Standard Time)");
