@@ -8,7 +8,7 @@ ParticipantBorderColor black
 ParticipantBackgroundColor white
 }
 
-actor "Logistics Manager" as manager
+actor "Fleet Manager" as manager
 
 participant Google as Google <<System(C4)>>
 box "<<System(C4)>>\n       System" #LightYellow

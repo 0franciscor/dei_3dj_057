@@ -1,4 +1,4 @@
-@startuml getAllTrucksSD
+@startuml seeRoadNetwork
 
 autonumber
 !pragma teoz true
@@ -8,7 +8,7 @@ ParticipantBorderColor black
 ParticipantBackgroundColor white
 }
 
-actor "Fleet Manager" as manager
+actor "Logistics Manager" as manager
 
 participant Google as Google <<System(C4)>>
 box "<<System(C4)>>\n       System" #LightYellow
@@ -18,11 +18,9 @@ box "<<System(C4)>>\n       System" #LightYellow
         participant LoginService as LoginS <<Component(C4)>>
     
     
+        participant RoadNetworkComponent as RNC <<Component(C4)>>
+        participant RoadNetworkService as RNS <<Component(C4)>>
     
-        participant TruckComponent as TruckC <<Component(C4)>>
-        participant TruckS as TruckS <<Component(C4)>>
-        
-
     end box
 
     box "<<Container(C4)>>\nAuthentication" #LightSkyBlue
@@ -32,14 +30,29 @@ box "<<System(C4)>>\n       System" #LightYellow
         participant UserRepository as UserRepo <<Container(C4)>> 
 
         participant TruckController as TruckCTRL <<Container(C4)>>
-
+        participant WarehouseController as WarehouseCTRL <<Container(C4)>>
+        participant PathsController as PathsCTRL <<Container(C4)>>
     end box
+
     box "<<Container(C4)>>\n       Logistics" #LightBlue
         participant TruckRoute as Route <<Component(C4)>>
         participant TruckController as Controller <<Component(C4)>>
         participant TruckS as Service <<Component(C4)>>
         participant TruckRepository as Repository <<Component(C4)>>
         participant Persistence as Persistence <<Component(C4)>>
+        participant PathRoute as PathRoute <<Component(C4)>>
+        participant PathController as PathController <<Component(C4)>>
+        participant PathService as PathService <<Component(C4)>>
+        participant PathRepository as PathRepository <<Component(C4)>>
+        participant Persistence as PathPersistence <<Component(C4)>>
+    end box
+
+     box "<<Container(C4)>>\nWarehouse Management" #LightGreen
+        participant WarehouseController as  CTL <<Component(C4)>>
+        participant WarehouseService as  SV <<Component(C4)>>
+        participant "Warehouse : Warehouse" as  Warehouse <<Component(C4)>>
+        participant "WarehouseDTO : WarehouseDTO" as  DTO <<Component(C4)>>
+        participant WarehouseRepository as  WR <<Component(C4)>>
     end box
 
 end box
@@ -107,11 +120,71 @@ LoginC --> manager: informs about the success of login
 deactivate LoginC
 
 
-manager -> TruckC: Asks to get all Trucks
-activate TruckC
-TruckC -> TruckS: getAllTrucks()
-activate TruckS
-TruckS -> TruckCTRL: GET getAllTrucks()
+manager -> RNC: Asks to see the Road Network
+activate RNC
+RNC -> RNS: getAllWarehouses()
+activate RNS
+
+RNS -> WarehouseCTRL: GET getAllWarehouses()
+activate WarehouseCTRL
+WarehouseCTRL -> WarehouseCTRL: checkCookie()
+
+WarehouseCTRL -> CTL: GET getAllWarehouses()
+activate CTL
+CTL -> SV: getAllWarehouses()
+activate SV
+SV -> WR : GetAll()
+activate WR
+
+WR --> SV : listOfWarehouses
+deactivate WR
+SV -> Warehouse : toWarehouseDto(listOfWarehouse)
+activate Warehouse
+
+Warehouse --> SV : listOfWarehousesDto
+deactivate Warehouse
+SV --> CTL : listOfWarehousesDto
+deactivate SV
+CTL --> WarehouseCTRL : 200 OK + listOfWarehouses
+deactivate CTL
+WarehouseCTRL --> RNS : 200 OK + listOfWarehouses
+deactivate WarehouseCTRL
+RNS --> RNC : 200 OK + listOfWarehouses
+
+loop for each Warehouse
+    RNC -> RNS: allPaths(warehouse)
+    RNS -> PathsCTRL: GET allPaths(warehouse)
+    activate PathsCTRL
+    PathsCTRL -> PathsCTRL: checkCookie()
+    PathsCTRL -> PathRoute: GET allPaths(warehouse)
+    activate PathRoute
+    PathRoute -> PathController: allPaths(warehouse)
+    activate PathController
+    PathController -> PathService: allPaths(warehouse)
+    activate PathService
+    PathService -> PathRepository: allPaths(warehouse)
+    activate PathRepository
+    PathRepository -> PathPersistence: findAll(warehouse)
+    activate PathPersistence
+    PathPersistence --> PathRepository: listOfPaths
+    deactivate PathPersistence
+    PathRepository --> PathService: listOfPaths
+    deactivate PathRepository
+    PathService --> PathController: listOfPaths
+    deactivate PathService
+    PathController --> PathRoute: 200 OK + listOfPaths
+    deactivate PathController
+    PathRoute --> PathsCTRL: 200 OK + listOfPaths
+    deactivate PathRoute
+    PathsCTRL --> RNS: 200 OK + listOfPaths
+    deactivate PathsCTRL
+    RNS --> RNC: 200 OK + listOfPaths
+    
+end
+
+RNC -> RNS: getAllTrucks()
+
+RNS -> TruckCTRL: GET getAllTrucks()
 activate TruckCTRL
 TruckCTRL -> TruckCTRL: checkAuth()
 TruckCTRL -> Route: GET getAllTrucks()
@@ -142,12 +215,12 @@ Controller->Route: 200 OK + AllTrucks
 deactivate Controller
 Route->TruckCTRL: 200 OK + AllTrucks
 deactivate Route
-TruckCTRL->TruckS: 200 OK + AllTrucks
+TruckCTRL->RNS: 200 OK + AllTrucks
 deactivate TruckCTRL
-TruckS->TruckC: 200 OK + AllTrucks
-deactivate TruckS
-TruckC->manager: Shows all Trucks
-deactivate TruckC
+RNS->RNC: 200 OK + AllTrucks
+deactivate RNS
+RNC->manager: Shows Road Network
+deactivate RNC
 deactivate manager
 
 
