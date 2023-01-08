@@ -21,6 +21,19 @@ describe('Admin Tab', () => {
         cy.get('mat-card-subtitle').contains('yes').should('be.visible');
     })
 
+    it('should display the Cancel user page correctly', () => {
+        cy.get('button').contains('Cancel User').click();
+        cy.url().should('include', 'Admin/CancelUser');
+        cy.get('mat-card-title').contains('List of Users').should('be.visible');
+        cy.get('mat-card-subtitle').contains('A place where you can check a users info').should('be.visible');
+        cy.get('mat-label').contains('User').should('be.visible');
+        cy.get('button').contains('Go Back').click();
+        cy.url().should('include', 'Admin/Home');
+    })
+
+
+
+
     it('should create a User', () => {
         cy.get('button').contains('Create User').click();
         cy.url().should('include', 'Admin/CreateUser');
@@ -36,7 +49,7 @@ describe('Admin Tab', () => {
         cy.get('input[formcontrolname="email"]').type('joao_santos@gmail.com');
         cy.get('input[formcontrolname="password"]').type('tomorrowandtomorrow');
         cy.get('input[formcontrolname="phoneNumber"]').type('857462816');
-        cy.get('input[formcontrolname="role').type('admin');
+        cy.get('mat-label').contains('Role').should('be.visible');
         cy.get('button').contains('Create').click();
 
     })
