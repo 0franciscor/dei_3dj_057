@@ -65,17 +65,9 @@ export class CancelUserComponent implements OnInit {
         this.selectedUser = this.accountList.find(element => element.email == this.selectedUserOption);
     }
 
-    encryptUserInfo() {
-        this.selectedUser.firstName = "xxxxxx";
-        this.selectedUser.lastName = "xxxxxx";
-        this.selectedUser.phoneNumber = "xxxxxxxxx";
-        this.selectedUser.role = "deleted";
-    }
-
     async onSubmit() {
-        this.encryptUserInfo();
-        let operationSucces = await this.adminService.updateUser(this.selectedUser);
-        this.ngOnInit();
+        const response = await this.adminService.updateUser(this.selectedUser);
+        this.goBack();
     }
 
     goBack() {

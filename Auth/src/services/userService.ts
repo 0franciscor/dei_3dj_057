@@ -73,10 +73,11 @@ export default class UserService implements IUserService{
     public async updateUser(userDTO: IUserDTO): Promise<Result<IUserDTO>> {
         try {  
             const user = await this.userRepo.findByEmail(userDTO.email);
+
             if(user===null){
                 return Result.fail<IUserDTO>("User not found");
             }else{
-                user.email= UserEmail.create(userDTO.email).getValue();
+                this.encryptUserInfo(userDTO);
 
                 const updatedUser = User.create(userDTO).getValue();
 
@@ -145,5 +146,12 @@ export default class UserService implements IUserService{
         } catch (error) {
             throw error
         }
+    }
+
+    private encryptUserInfo(user: IUserDTO) {
+        user.firstName = "xxxxxx";
+        user.lastName = "xxxxxx";
+        user.phoneNumber = "xxxxxxxxx";
+        user.role = "deleted";
     }
 }

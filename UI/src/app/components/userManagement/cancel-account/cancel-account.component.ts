@@ -52,19 +52,10 @@ export class CancelAccountComponent implements OnInit {
         }
     }
 
-
-    encryptUserInfo() {
-        this.myUser.firstName = "xxxxxx";
-        this.myUser.lastName = "xxxxxx";
-        this.myUser.phoneNumber = "xxxxxxxxx";
-        this.myUser.role = "deleted";
-    }
-
     async onSubmit() {
-        this.encryptUserInfo();
         let operationSucces = await this.adminService.updateUser(this.myUser);
 
-        if (operationSucces) {
+        if (operationSucces.status == 200) {
             const dialogRef = this.dialog.open(CancelAccountComponentDialog, {
                 width: '250px',
             });

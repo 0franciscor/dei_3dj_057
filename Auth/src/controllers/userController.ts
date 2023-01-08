@@ -137,9 +137,8 @@ export default class UserController implements IUserController{
                 res.status(404);
                 return res.send("user not found");
             }
-
             const userDTO = userOrError.getValue();
-            res.status(201);
+            res.status(200);
             return res.json(userDTO);
         } catch (error) {
             next(error)
